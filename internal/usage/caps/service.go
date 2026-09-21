@@ -41,6 +41,9 @@ type Request struct {
 	ReservationKey  string
 	Messages        []providers.Message
 	MaxOutputTokens int
+	// ExtraInputTokens is input the Messages do not show, such as a media
+	// payload uploaded out-of-band.
+	ExtraInputTokens int
 }
 
 type Reservation struct {
@@ -90,7 +93,7 @@ func (s *Service) Preflight(ctx context.Context, req Request) (*Reservation, err
 		return skippedScopedReservation(req, scope, "no_policy"), nil
 	}
 	usage := pricing.BillableUsage{
-		InputTokens:  int64(EstimateInputTokens(req.Messages)),
+		InputTokens:  int64(EstimateInputTokens(req.Messages) + req.ExtraInputTokens),
 		OutputTokens: int64(req.MaxOutputTokens),
 		ImageCount:   int64(CountImages(req.Messages)),
 	}
@@ -161,6 +164,18 @@ func (s *Service) Preflight(ctx context.Context, req Request) (*Reservation, err
 		reason: "reserved", providerName: req.ProviderName,
 		providerType: scope.ProviderType, modelID: scope.ModelID,
 	}, nil
+}
+
+func (s *Service) ResolvePricing(ctx context.Context, tenantID uuid.UUID, providerName, modelID string) (*store.ResolvedUsagePricing, error) {
+	if s == nil || s.store == nil {
+		return nil, sql.ErrNoRows
+	}
+	ctx = scopedRequestContext(ctx, Request{TenantID: tenantID, ProviderName: providerName, ModelID: modelID})
+	providerData, err := s.resolveProvider(ctx, tenantID, providerName)
+	if err != nil {
+		return nil, err
+	}
+	return s.store.ResolvePricing(ctx, tenantID, providerData.ID, providerData.Name, providerData.ProviderType, modelID)
 }
 
 func (r *Reservation) Reconcile(ctx context.Context, resp *providers.ChatResponse, callErr error) {

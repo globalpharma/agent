@@ -27,10 +27,10 @@ Single binary. Production-tested. Agents that orchestrate for you.
 </p>
 
 🌐 **Languages:**
+[🇻🇳 Tiếng Việt](_readmes/README.vi.md) ·
 [🇨🇳 简体中文](_readmes/README.zh-CN.md) ·
 [🇯🇵 日本語](_readmes/README.ja.md) ·
 [🇰🇷 한국어](_readmes/README.ko.md) ·
-[🇻🇳 Tiếng Việt](_readmes/README.vi.md) ·
 [🇵🇭 Tagalog](_readmes/README.tl.md) ·
 [🇪🇸 Español](_readmes/README.es.md) ·
 [🇧🇷 Português](_readmes/README.pt.md) ·
@@ -166,6 +166,9 @@ chmod +x prepare-env.sh && ./prepare-env.sh
 # Add at least one GOCLAW_*_API_KEY to .env, then:
 make up
 
+# If Postgres fails to start ("port 5432 already allocated"), set another host
+# port in .env, e.g. POSTGRES_PORT=5433 (see .env.example).
+
 # Web Dashboard at http://localhost:18790 (built-in)
 # Health check: curl http://localhost:18790/health
 
@@ -220,7 +223,7 @@ When `GOCLAW_*_API_KEY` environment variables are set, the gateway auto-onboards
 > | Image | Description |
 > |-------|-------------|
 > | `latest` | Backend + embedded web UI + Python (**recommended**) |
-> | `latest-base` | Backend API-only, no web UI, no runtimes |
+> | `latest-base` | Backend API-only, no web UI, no runtimes, no media probes (`read_video` and `read_audio` refuse without `ffprobe`; `read_document` falls back to the 1000-page ceiling without `pdfinfo`) |
 > | `latest-full` | All runtimes + skill dependencies pre-installed |
 > | `latest-otel` | Latest + OpenTelemetry tracing |
 > | `goclaw-web` | Standalone nginx + React SPA (for custom reverse proxy) |
@@ -249,7 +252,11 @@ Open **About** dialog → click **Update Now** (admin only). The update includes
   <img src="_statics/Agent Orchestration.jpg" alt="Agent Orchestration" width="800" />
 </p>
 
-Each agent runs with its own identity, tools, LLM provider, and context files. Three delegation modes — sync (wait), async (fire-and-forget), bidirectional — connected through explicit permission links with concurrency limits.
+Each agent runs with its own identity, tools, LLM provider, and context files.
+Agent Links define outbound, inbound, or bidirectional permission edges.
+Delegation can run synchronously or asynchronously and exchanges files through
+an isolated delegation workspace; validated outputs are published back under
+the caller's `.delegations/<delegation-id>/` directory.
 
 > Details: [Agent Teams docs](https://docs.goclaw.sh/#teams-what-are-teams)
 
@@ -363,10 +370,10 @@ GoClaw was originally inspired by the [OpenClaw](https://github.com/openclaw/ope
 
 ## Star History
 
-<a href="https://www.star-history.com/?repos=nextlevelbuilder%2Fgoclaw&type=date&legend=top-left">
+<a href="https://star-history.dera.page/#nextlevelbuilder/goclaw&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=nextlevelbuilder/goclaw&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/image?repos=nextlevelbuilder/goclaw&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/image?repos=nextlevelbuilder/goclaw&type=date&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://star-history.dera.page/svg?repos=nextlevelbuilder/goclaw&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://star-history.dera.page/svg?repos=nextlevelbuilder/goclaw&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://star-history.dera.page/svg?repos=nextlevelbuilder/goclaw&type=date&legend=top-left" />
  </picture>
 </a>

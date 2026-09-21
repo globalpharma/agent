@@ -53,7 +53,7 @@ func mockImageServer(t *testing.T, captured *[]byte) *httptest.Server {
 // asserts each required field is present and well-formed.
 //
 // Sub-cases:
-//   - Default (empty ImageModel) → tools[0].model == "gpt-image-2"
+//   - Default (empty ImageModel) → tools[0].model == DefaultImageModel
 //   - Legacy (ImageModel: "gpt-image-1.5") → tools[0].model == "gpt-image-1.5"
 //   - Rejected (ImageModel: "dall-e-3") → GenerateImage returns error containing "unsupported image model"
 func TestCodexGenerateImage_BuildsNativeRequest(t *testing.T) {
@@ -163,7 +163,7 @@ func TestCodexGenerateImage_BuildsNativeRequest(t *testing.T) {
 }
 
 // TestCodexGenerateImage_ImageModelDefault verifies that an empty ImageModel results
-// in the default gpt-image-2 model in the outbound tools[0].model field.
+// in DefaultImageModel in the outbound tools[0].model field.
 func TestCodexGenerateImage_ImageModelDefault(t *testing.T) {
 	var captured []byte
 	server := mockImageServer(t, &captured)
@@ -174,7 +174,7 @@ func TestCodexGenerateImage_ImageModelDefault(t *testing.T) {
 
 	_, err := p.GenerateImage(context.Background(), NativeImageRequest{
 		Prompt:      "test",
-		ImageModel:  "", // explicitly empty — should default to gpt-image-2
+		ImageModel:  "", // explicitly empty - should fall back to DefaultImageModel
 		AspectRatio: "1:1",
 	})
 	if err != nil {
@@ -190,8 +190,8 @@ func TestCodexGenerateImage_ImageModelDefault(t *testing.T) {
 		t.Fatal("tools array is empty")
 	}
 	tool, _ := tools[0].(map[string]any)
-	if imgModel, _ := tool["model"].(string); imgModel != "gpt-image-2" {
-		t.Errorf("tools[0].model = %q, want gpt-image-2 (default)", imgModel)
+	if imgModel, _ := tool["model"].(string); imgModel != DefaultImageModel {
+		t.Errorf("tools[0].model = %q, want %q (default)", imgModel, DefaultImageModel)
 	}
 }
 
@@ -342,5 +342,142 @@ func TestSizeFromAspect(t *testing.T) {
 		if got != tc.want {
 			t.Errorf("SizeFromAspect(%q) = %q, want %q", tc.ratio, got, tc.want)
 		}
+	}
+}
+
+// TestCodexGenerateImage_WithReferenceImage verifies that passing a single RefImage
+// embeds the image in the input content and does not populate input_reference in tools[0].
+func TestCodexGenerateImage_WithReferenceImage(t *testing.T) {
+	var captured []byte
+	server := mockImageServer(t, &captured)
+	defer server.Close()
+
+	p := NewCodexProvider("codex-test", &staticTokenSource{token: "tok"}, server.URL, "gpt-image-2")
+	p.retryConfig.Attempts = 1
+
+	req := NativeImageRequest{
+		Model:        "gpt-image-2",
+		Prompt:       "A red circle",
+		RefImages: []RefImage{
+			{
+				URL: "https://example.com/ref.png",
+			},
+		},
+		AspectRatio:  "1:1",
+		OutputFormat: "png",
+	}
+
+	_, err := p.GenerateImage(context.Background(), req)
+	if err != nil {
+		t.Fatalf("GenerateImage returned error: %v", err)
+	}
+
+	var body map[string]any
+	if err := json.Unmarshal(captured, &body); err != nil {
+		t.Fatalf("unmarshal captured body: %v", err)
+	}
+
+	// 1. Verify input contains input_image and input_text in user content
+	inputs, ok := body["input"].([]any)
+	if !ok || len(inputs) != 1 {
+		t.Fatalf("body[input]: expected []any length 1, got %T len %d", body["input"], len(inputs))
+	}
+	userMsg, ok := inputs[0].(map[string]any)
+	if !ok {
+		t.Fatalf("inputs[0] is not a map")
+	}
+	contents, ok := userMsg["content"].([]any)
+	if !ok || len(contents) != 2 {
+		t.Fatalf("content: expected []any length 2, got %T len %d", userMsg["content"], len(contents))
+	}
+
+	imgPart, ok := contents[0].(map[string]any)
+	if !ok {
+		t.Fatalf("contents[0] is not a map")
+	}
+	if imgPart["type"] != "input_image" || imgPart["image_url"] != "https://example.com/ref.png" {
+		t.Errorf("expected input_image with url, got: %v", imgPart)
+	}
+
+	textPart, ok := contents[1].(map[string]any)
+	if !ok {
+		t.Fatalf("contents[1] is not a map")
+	}
+	if textPart["type"] != "input_text" || textPart["text"] != "A red circle" {
+		t.Errorf("expected input_text with prompt, got: %v", textPart)
+	}
+
+	// 2. Verify tools[0] does not contain input_reference
+	tools, ok := body["tools"].([]any)
+	if !ok || len(tools) != 1 {
+		t.Fatalf("tools shape invalid")
+	}
+	tool, ok := tools[0].(map[string]any)
+	if !ok {
+		t.Fatalf("tools[0] not map")
+	}
+	if _, has := tool["input_reference"]; has {
+		t.Error("image_generation tool must not contain 'input_reference' field")
+	}
+}
+
+// TestCodexGenerateImage_WithMultipleReferenceImages verifies that passing multiple RefImages
+// embeds all of them in the input content in the correct order.
+func TestCodexGenerateImage_WithMultipleReferenceImages(t *testing.T) {
+	var captured []byte
+	server := mockImageServer(t, &captured)
+	defer server.Close()
+
+	p := NewCodexProvider("codex-test", &staticTokenSource{token: "tok"}, server.URL, "gpt-image-2")
+	p.retryConfig.Attempts = 1
+
+	req := NativeImageRequest{
+		Model:        "gpt-image-2",
+		Prompt:       "A red circle",
+		RefImages: []RefImage{
+			{
+				URL: "https://example.com/ref1.png",
+			},
+			{
+				Base64:   "b64data",
+				MimeType: "image/jpeg",
+			},
+		},
+		AspectRatio:  "1:1",
+		OutputFormat: "png",
+	}
+
+	_, err := p.GenerateImage(context.Background(), req)
+	if err != nil {
+		t.Fatalf("GenerateImage returned error: %v", err)
+	}
+
+	var body map[string]any
+	if err := json.Unmarshal(captured, &body); err != nil {
+		t.Fatalf("unmarshal captured body: %v", err)
+	}
+
+	inputs, _ := body["input"].([]any)
+	userMsg, _ := inputs[0].(map[string]any)
+	contents, _ := userMsg["content"].([]any)
+
+	// Expected: 2 images + 1 text prompt = 3 content parts
+	if len(contents) != 3 {
+		t.Fatalf("content: expected []any length 3, got len %d", len(contents))
+	}
+
+	imgPart1, _ := contents[0].(map[string]any)
+	if imgPart1["type"] != "input_image" || imgPart1["image_url"] != "https://example.com/ref1.png" {
+		t.Errorf("expected first input_image with url, got: %v", imgPart1)
+	}
+
+	imgPart2, _ := contents[1].(map[string]any)
+	if imgPart2["type"] != "input_image" || imgPart2["image_url"] != "data:image/jpeg;base64,b64data" {
+		t.Errorf("expected second input_image with base64 data url, got: %v", imgPart2)
+	}
+
+	textPart, _ := contents[2].(map[string]any)
+	if textPart["type"] != "input_text" || textPart["text"] != "A red circle" {
+		t.Errorf("expected input_text with prompt, got: %v", textPart)
 	}
 }

@@ -85,6 +85,8 @@ const (
 
 	MethodQuotaUsage = "quota.usage"
 
+	MethodLLMComplete = "llm.complete"
+
 	MethodSend = "send"
 )
 
@@ -143,6 +145,8 @@ const (
 	MethodTeamsTaskDelete          = "teams.tasks.delete"
 	MethodTeamsTaskDeleteBulk      = "teams.tasks.delete-bulk"
 	MethodTeamsTaskAssign          = "teams.tasks.assign"
+	MethodTeamsTaskCancel          = "teams.tasks.cancel"
+	MethodTeamsTaskRetry           = "teams.tasks.retry"
 	MethodTeamsTaskActiveBySession = "teams.tasks.active-by-session"
 	MethodTeamsMembersAdd          = "teams.members.add"
 	MethodTeamsMembersRemove       = "teams.members.remove"
@@ -161,6 +165,18 @@ const (
 // Team events
 const (
 	MethodTeamsEventsList = "teams.events.list"
+)
+
+// Tenants (multi-tenant management)
+const (
+	MethodTenantsList        = "tenants.list"
+	MethodTenantsGet         = "tenants.get"
+	MethodTenantsCreate      = "tenants.create"
+	MethodTenantsUpdate      = "tenants.update"
+	MethodTenantsUsersList   = "tenants.users.list"
+	MethodTenantsUsersAdd    = "tenants.users.add"
+	MethodTenantsUsersRemove = "tenants.users.remove"
+	MethodTenantsMine        = "tenants.mine"
 )
 
 // API key management
