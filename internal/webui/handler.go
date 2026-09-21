@@ -131,6 +131,23 @@ func injectBrandingMetadata(index []byte, cfg *config.Config) []byte {
 	if script := runtimeBrandingScript(branding); script != "" {
 		htmlDoc = insertOrReplaceHeadTag(htmlDoc, script)
 	}
+	if branding.ThemeColor != "" {
+		style := fmt.Sprintf(`<style id="goclaw-theme-override">:root,.dark{--primary:%s !important;--ring:%s !important;--sidebar-primary:%s !important;--sidebar-ring:%s !important;--chart-1:%s !important;--color-primary:%s !important;}</style>`,
+			html.EscapeString(branding.ThemeColor),
+			html.EscapeString(branding.ThemeColor),
+			html.EscapeString(branding.ThemeColor),
+			html.EscapeString(branding.ThemeColor),
+			html.EscapeString(branding.ThemeColor),
+			html.EscapeString(branding.ThemeColor))
+		htmlDoc = insertOrReplaceHeadTag(htmlDoc, style)
+	}
+	if branding.LogoURL != "" {
+		reLoader := regexp.MustCompile(`(?is)<img[^>]*class="loader-logo"[^>]*>`)
+		appName := firstNonEmpty(branding.AppName, "Logo")
+		replacement := fmt.Sprintf(`<img src="%s" alt="%s" class="loader-logo" style="object-fit:contain" />`,
+			html.EscapeString(branding.LogoURL), html.EscapeString(appName))
+		htmlDoc = reLoader.ReplaceAllString(htmlDoc, replacement)
+	}
 	return []byte(htmlDoc)
 }
 
