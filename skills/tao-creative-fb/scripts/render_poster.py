@@ -17,9 +17,24 @@ if sys.platform == "win32":
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
-REFS_DIR = REPO_ROOT / "skills" / "tao-creative-fb" / "assets" / "references"
-OUTPUT_DIR = REPO_ROOT / "skills" / "tao-creative-fb" / "output"
+SCRIPT_DIR = Path(__file__).resolve().parent
+SKILL_DIR = SCRIPT_DIR.parent
+
+# Resolve references directory across local and container paths
+candidate_refs = [
+    SKILL_DIR / "assets" / "references",
+    Path("/app/data/skills/tao-creative-fb/assets/references"),
+    Path("/app/workspace/skills/tao-creative-fb/assets/references"),
+    SKILL_DIR.parent.parent / "skills" / "tao-creative-fb" / "assets" / "references",
+]
+REFS_DIR = SKILL_DIR / "assets" / "references"
+for c in candidate_refs:
+    if c.exists():
+        REFS_DIR = c
+        break
+
+# Default output directory: /app/workspace/output if in docker, else skill output
+OUTPUT_DIR = Path("/app/workspace/output") if Path("/app/workspace").exists() else (SKILL_DIR / "output")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 BRAIN_DIR = Path("C:/Users/Surface/.gemini/antigravity/brain/552b4a88-d83e-4471-97a6-f32d72fa14d4")
@@ -44,7 +59,7 @@ def get_master_logo(target_h: int = 38):
     if not p.exists():
         p = REFS_DIR / "real_logo_globalpharma_master.png"
     if not p.exists():
-        p = REPO_ROOT / "skills" / "tao-creative-fb" / "assets" / "globalpharma_logo.png"
+        p = SKILL_DIR / "assets" / "globalpharma_logo.png"
     
     if p.exists():
         logo = Image.open(p).convert("RGBA")
@@ -311,11 +326,39 @@ def render_pro_affiliate():
     return out_file
 
 def main():
-    print("=== TẠO 3 CREATIVE ĐẲNG CẤP PRO, CHUYÊN NGHIỆP, STOP-SCROLLING ===")
-    render_pro_nutricomp()
-    render_pro_prontosan()
-    render_pro_affiliate()
-    print("=== HOÀN TẤT XUẤT 3 ẢNH PRO ===")
+    import argparse
+    import shutil
+    global OUTPUT_DIR
+
+    parser = argparse.ArgumentParser(description="Render Pro Meta Creatives")
+    parser.add_argument("--type", choices=["nutricomp", "prontosan", "affiliate", "all"], default="all", help="Product creative type")
+    parser.add_argument("--output-dir", default=None, help="Output directory")
+    args, _ = parser.parse_known_args()
+
+    if args.output_dir:
+        OUTPUT_DIR = Path(args.output_dir)
+        OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+    print(f"=== TẠO CREATIVE ĐẲNG CẤP PRO (TYPE: {args.type.upper()}, OUTPUT: {OUTPUT_DIR}) ===")
+    results = []
+    if args.type in ("nutricomp", "all"):
+        results.append(render_pro_nutricomp())
+    if args.type in ("prontosan", "all"):
+        results.append(render_pro_prontosan())
+    if args.type in ("affiliate", "all"):
+        results.append(render_pro_affiliate())
+
+    # Sync to common output paths for agent convenience
+    sync_targets = [Path("/app/workspace/output"), Path("/app/data/skills/tao-creative-fb/output")]
+    for out_f in results:
+        for st in sync_targets:
+            if st.exists() and st != OUTPUT_DIR:
+                try:
+                    shutil.copy2(out_f, st / out_f.name)
+                except Exception:
+                    pass
+
+    print(f"=== HOÀN TẤT XUẤT {len(results)} ẢNH PRO ===")
 
 if __name__ == "__main__":
     main()

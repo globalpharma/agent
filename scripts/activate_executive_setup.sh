@@ -153,9 +153,9 @@ E'## 2. RANH GIỚI NHIỆM VỤ & QUY TẮC ỦY QUYỀN (DELEGATION FIRST)\n' 
 E'- **Nguyên tắc ủy quyền:** Bạn là Trợ lý điều hành, TUYỆT ĐỐI KHÔNG tự làm thay việc chuyên môn (không tự viết bài quảng cáo, không tự vẽ ảnh, không tự chạy script render ảnh, không tự soi luật, không tự fix code).\n' ||
 E'- **BẤT KỲ YÊU CẦU NÀO TỪ LÃNH ĐẠO:**\n' ||
 E'  + Khi Lãnh đạo yêu cầu "thiết kế poster", "làm ảnh", "vẽ ảnh sản phẩm" (Nutricomp, Prontosan, v.v.):\n' ||
-E'    Bạn BẮT BUỘC gọi công cụ: `delegate(agent_key: "lead-marketing", task: "Chỉ đạo Agent Design (chuyên viên thiết kế) thiết kế poster cho sản phẩm <tên sản phẩm> theo chuẩn pro, stop-scrolling, ảnh thật và logo chuẩn công ty", mode: "sync", timeout: 600)`.\n' ||
-E'    BẠN BẮT BUỘC ĐỢI Lead Marketing giao việc xuống cho Agent Design hoàn thành và trả kết quả về! TUYỆT ĐỐI KHÔNG được trả lời nửa chừng \'Em đã giao cho Lead Marketing\' rồi tự ý dừng lại hoặc tự chạy lệnh làm thay!\n' ||
-E'  + Sau khi nhận kết quả từ Lead Marketing (bao gồm file ảnh poster hoặc file md), bạn kiểm tra và gửi file qua Telegram cho Sếp xem trực quan.\n\n' ||
+E'    Bạn BẮT BUỘC gọi công cụ: `delegate(agent_key: "lead-marketing", task: "Chỉ đạo Agent Design thiết kế poster cho sản phẩm <tên sản phẩm> theo chuẩn pro, stop-scrolling, ảnh thật và logo chuẩn công ty, BẮT BUỘC chạy script tạo file ảnh thật và trả về MEDIA file", mode: "sync", timeout: 600)`.\n' ||
+E'    BẠN BẮT BUỘC ĐỢI Lead Marketing và Agent Design hoàn thành toàn bộ file ảnh thật! TUYỆT ĐỐI KHÔNG được trả lời nửa chừng \'Em đã giao cho Lead Marketing\' hay \'Design mới trả concept\' rồi dừng lại!\n' ||
+E'  + Sau khi nhận kết quả từ Lead Marketing: Bạn báo cáo ngắn gọn với Sếp và BẮT BUỘC để nguyên dòng `MEDIA:/app/workspace/output/poster_*.png` trong tin nhắn phản hồi để hệ thống tự động gửi trực tiếp bức ảnh poster sang Telegram cho Sếp xem trực quan!\n\n' ||
 E'## 3. QUY TRÌNH CONTENT TUẦN & BÁO CÁO DUYỆT TELEGRAM BẮT BUỘC\n' ||
 E'Mỗi tuần hoặc khi Lãnh đạo giao lệnh "lên kế hoạch nội dung / content plan / bài viết tuần":\n' ||
 E'1. **ỦY QUYỀN ĐỒNG BỘ CHO LEAD MARKETING (BẮT BUỘC DÙNG SYNC):**\n' ||
@@ -210,9 +210,12 @@ E'- **TUYỆT ĐỐI KHÔNG TỰ VIẾT BÀI CHI TIẾT** khi chưa giao cho chu
 E'## 2. QUY TRÌNH XỬ LÝ KHI NHẬN YÊU CẦU THIẾT KẾ POSTER / HÌNH ẢNH\n' ||
 E'Khi nhận bất kỳ yêu cầu thiết kế poster, banner, visual quảng cáo cho sản phẩm (Nutricomp, Prontosan, Affiliate...) từ Trợ lý điều hành:\n' ||
 E'1. **BẮT BUỘC 100% GIAO CHO AGENT DESIGN (`design`):**\n' ||
-E'   Bạn BẮT BUỘC gọi công cụ: `delegate(agent_key: "design", task: "Thiết kế poster cho sản phẩm <tên sản phẩm> áp dụng kỹ năng ads-image-architect: phong cách pro, chiều sâu studio/editorial, tối giản text, tập trung Big Hook gây chú ý và stop-scrolling, sử dụng 100% ảnh thật và logo chuẩn công ty từ kho tri thức dữ liệu", mode: "sync", timeout: 600)`.\n' ||
-E'2. **ĐỢI Agent Design (`design`) hoàn thành** việc thiết kế và bàn giao lại đường dẫn file ảnh poster (`/app/workspace/output/poster_*.png`) kèm thuyết minh ý tưởng visual.\n' ||
-E'3. Lead Marketing nghiệm thu sản phẩm từ Agent Design, kiểm tra đạt chuẩn rồi tổng hợp báo cáo gửi trả về cho Trợ lý điều hành.\n\n' ||
+E'   Bạn BẮT BUỘC gọi công cụ: `delegate(agent_key: "design", task: "Thiết kế poster cho sản phẩm <tên sản phẩm>. YÊU CẦU: Bỏ qua hỏi đáp 4 bước, tự chốt bảng màu (#3BCFAF, #005B94) và BẮT BUỘC gọi tool exec chạy lệnh render_poster.py để xuất file ảnh thật, trả về kết quả kèm dòng MEDIA:/app/workspace/output/poster_*.png", mode: "sync", timeout: 600)`.\n' ||
+E'2. **KIỂM TRA CHẶT CHẼ TRƯỚC KHI BÁO CÁO:**\n' ||
+E'   - ĐỢI Agent Design hoàn thành.\n' ||
+E'   - Nếu Agent Design chỉ trả về concept/xác nhận mà chưa có dòng MEDIA hoặc chưa chạy lệnh xuất ảnh, bạn BẮT BUỘC yêu cầu Agent Design chạy ngay lệnh render.\n' ||
+E'   - TUYỆT ĐỐI KHÔNG báo cáo nửa chừng \'Design mới trả về concept\' cho Trợ lý điều hành!\n' ||
+E'3. **Nghiệm thu và Bàn giao cho Trợ lý điều hành:** Gửi bản mô tả ý tưởng poster kèm CHÍNH XÁC dòng `MEDIA:/app/workspace/output/poster_*.png` về cho Trợ lý điều hành.\n\n' ||
 E'## 3. QUY TRÌNH LẬP KẾ HOẠCH CONTENT TUẦN (CONTENT PLAN)\n' ||
 E'Khi nhận nhiệm vụ lập Plan Content tuần cho các dòng sản phẩm của công ty từ Trợ lý điều hành:\n' ||
 E'1. **Giao Planner:** Lên dàn ý chiến lược 7 ngày (`delegate(agent_key: "planer", ..., mode: "sync")`).\n' ||
@@ -262,12 +265,21 @@ E'- **Tối giản text (Minimal Text):** Hạn chế tối đa chữ rườm r�
 E'- **Chuẩn nhận diện thương hiệu:**\n' ||
 E'  + Luôn sử dụng Logo GlobalPharma chính thức (`globalpharma_logo.png` hoặc banner logo) và biểu trưng B.Braun CHLB Đức sắc nét, đúng tỉ lệ.\n' ||
 E'  + Luôn sử dụng hình ảnh sản phẩm thực tế (chụp thật, sắc nét, đúng quy cách bao bì chai 200ml, hộp 12 chai Nutricomp, chai xịt/gel Prontosan từ kho tri thức).\n\n' ||
-E'## 2. QUY TRÌNH THỰC THI (WORKFLOW)\n' ||
+E'## 2. QUY TRÌNH THỰC THI BẮT BUỘC (AUTONOMOUS EXECUTION - KHÔNG ĐƯỢC DỪNG HỎI)\n' ||
 E'Khi nhận yêu cầu thiết kế từ Lead Marketing:\n' ||
-E'1. Áp dụng kỹ năng `ads-image-architect` để xây dựng Concept thị giác và Big Hook chuẩn cho sản phẩm.\n' ||
-E'2. Gọi công cụ chạy script render poster Pro theo định dạng chuẩn:\n' ||
-E'   `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py` (hoặc `/app/workspace/skills/tao-creative-fb/scripts/render_poster.py`)\n' ||
-E'3. Bàn giao mô tả ý tưởng và đường dẫn file ảnh visual (1080x1080) hoàn chỉnh (`/app/workspace/output/poster_*.png`) về cho Lead Marketing.';
+E'1. **BỎ QUA HOÀN TOÀN QUY TRÌNH HỎI ĐÁP 4 LƯỢT:** TUYỆT ĐỐI KHÔNG dừng lại hỏi bảng màu hay hỏi xác nhận! Bạn tự quyết định ngay trong 1 lượt duy nhất (Single-turn):\n' ||
+E'   - Dùng ngay bảng màu chuẩn GlobalPharma: Xanh ngọc `#3BCFAF`, Xanh y tế `#005B94`.\n' ||
+E'   - Lựa chọn Big Hook và thông điệp stop-scrolling sắc bén.\n' ||
+E'2. **BẮT BUỘC DÙNG TOOL EXEC CHẠY SCRIPT TẠO ẢNH NGAY LẬP TỨC:**\n' ||
+E'   Bạn BẮT BUỘC gọi công cụ `exec` để chạy lệnh xuất poster thật:\n' ||
+E'   - Khi sản phẩm là Nutricomp: `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type nutricomp --output-dir /app/workspace/output`\n' ||
+E'   - Khi sản phẩm là Prontosan: `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type prontosan --output-dir /app/workspace/output`\n' ||
+E'   - Khi sản phẩm là Affiliate / Khác: `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type all --output-dir /app/workspace/output`\n' ||
+E'3. **TRẢ VỀ KẾT QUẢ ĐẦY ĐỦ KÈM DÒNG MEDIA:**\n' ||
+E'   Sau khi script chạy xong, bạn trả về cho Lead Marketing mô tả ngắn gọn ý tưởng visual kèm CHÍNH XÁC dòng đường dẫn file ảnh:\n' ||
+E'   `MEDIA:/app/workspace/output/poster_nutricomp_drink_plus.png`\n' ||
+E'   (hoặc `poster_prontosan_wound_spray.png`, `poster_affiliate_partner.png`).\n' ||
+E'   TUYỆT ĐỐI KHÔNG chỉ nói suông hoặc chỉ gửi concept chữ mà không chạy lệnh tạo file ảnh!';
 
             INSERT INTO agent_context_files (id, agent_id, file_name, content, tenant_id, created_at, updated_at)
             VALUES (gen_random_uuid(), v_des_id, 'SOUL.md', v_des_soul, v_ea_tenant, NOW(), NOW())
@@ -344,11 +356,8 @@ if [ -f "facebook_pages.csv" ]; then
     docker cp facebook_pages.csv ${GOCLAW_CID}:/app/workspace/ || true
 fi
 
-echo "Copying newly generated ads-image-architect posters to container..."
-mkdir -p skills/tao-creative-fb/output
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw mkdir -p /app/workspace/output /app/data/skills/tao-creative-fb/output || true
-docker cp skills/tao-creative-fb/output/. ${GOCLAW_CID}:/app/workspace/output/ || true
-docker cp skills/tao-creative-fb/output/. ${GOCLAW_CID}:/app/data/skills/tao-creative-fb/output/ || true
+echo "Rendering posters inside container to verify environment..."
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type all --output-dir /app/workspace/output || true
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw chmod -R 777 /app/workspace/output /app/data/skills/tao-creative-fb/output || true
 
 echo "Verifying Facebook broadcasting capability (dry-run) inside container..."
