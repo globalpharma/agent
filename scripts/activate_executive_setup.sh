@@ -286,6 +286,29 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
         RAISE NOTICE 'Configured background.provider and background.model for tenant %', v_ea_tenant;
     END IF;
 
+    -- Configure create_image builtin tool to route via studioaigg (gemini-2.5-flash-image) and openai-codex
+    INSERT INTO builtin_tools (name, display_name, description, category, enabled, settings, requires, metadata, created_at, updated_at)
+    VALUES (
+        'create_image',
+        'Create Image',
+        'Generate images from text descriptions using AI',
+        'media',
+        true,
+        '{"providers":[{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true},{"provider":"openai-codex","model":"gpt-image-1.5","enabled":true}]}'::jsonb,
+        '{}'::text[],
+        '{}'::jsonb,
+        NOW(),
+        NOW()
+    )
+    ON CONFLICT (name) DO UPDATE SET 
+        enabled = true,
+        settings = '{"providers":[{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true},{"provider":"openai-codex","model":"gpt-image-1.5","enabled":true}]}'::jsonb,
+        updated_at = NOW();
+    RAISE NOTICE 'Configured builtin_tools settings for create_image';
+
+    -- Ensure marketing agents can freely use create_image tool
+    UPDATE agents SET tools_config = '{}' WHERE agent_key IN ('dev', 'content', 'design', 'lead-marketing');
+
 END $$;
 EOSQL
 
@@ -369,12 +392,19 @@ docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e P
 echo "=== ALL TELEGRAM SESSIONS IN DB ==="
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -c "SELECT id, session_key, channel, user_id, updated_at, jsonb_array_length(messages) as msg_count FROM sessions WHERE channel = 'telegram' OR session_key ILIKE '%telegram%' ORDER BY updated_at DESC;" || true
 
-echo "=== LAST 10 MESSAGES OF SẾP TELEGRAM SESSION ==="
+echo "=== BUILTIN TOOLS (CREATE_IMAGE SETTINGS) ==="
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -c "SELECT name, enabled, settings FROM builtin_tools WHERE name = 'create_image';" || true
+
+echo "=== LAST 8 MESSAGES OF SẾP TELEGRAM SESSION ==="
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -c "
-SELECT (elem->>'timestamp')::text as ts, (elem->>'role')::text as role, SUBSTRING((elem->>'content')::text FROM 1 FOR 250) as content 
-FROM sessions, jsonb_array_elements(messages) as elem 
-WHERE session_key = 'agent:dev:telegram:direct:5781808621' 
-ORDER BY elem->>'timestamp' DESC LIMIT 10;
+SELECT (m->>'role') as role, SUBSTRING((m->>'content') FROM 1 FOR 300) as content
+FROM (
+    SELECT jsonb_array_elements(messages) as m, row_number() over () as rn
+    FROM sessions
+    WHERE session_key = 'agent:dev:telegram:direct:5781808621'
+) sub
+ORDER BY rn DESC
+LIMIT 8;
 " || true
 
 echo "=== ALL CRON JOBS IN POSTGRESQL (TÁC VỤ ĐỊNH KỲ) ==="

@@ -38,10 +38,13 @@ Mục tiêu: Cung cấp kiến thức chăm sóc sức khỏe, nuôi dưỡng t�
 **Quy trình 5 bước:**
 1. **Đề xuất ý tưởng:** Đề xuất 3 chủ đề giáo dục sức khỏe/dinh dưỡng (tiêu đề + góc tiếp cận) dựa trên sản phẩm được yêu cầu.
 2. **Người dùng chọn:** Chờ người dùng chọn 1 trong 3 ý tưởng.
-3. **Sinh nội dung:**
-   - **1 Caption (80–150 từ):** Gồm [Hook y khoa / thấu cảm] + [Kiến thức dinh dưỡng / cơ chế sản phẩm] + [Soft CTA tư vấn hoặc chia sẻ].
-   - **1 Hình ảnh (1024x1024):** Phong cách nhiếp ảnh y khoa ấm áp, đời thực, màu sắc chuẩn nhận diện B.Braun (xanh y tế, trắng tinh khiết, ánh sáng tự nhiên).
-4. **Xem trước (Preview):** Hiển thị đầy đủ hình ảnh và caption để người dùng kiểm duyệt.
+3. **Sinh nội dung (BẮT BUỘC TẠO CẢ CAPTION LẪN HÌNH ẢNH TRONG CÙNG LƯỢT):**
+   Ngay khi người dùng chọn 1 ý tưởng, bạn BẮT BUỘC thực hiện ĐỒNG THỜI cả hai việc trong cùng lượt trả lời này:
+   - **Viết Caption (80–150 từ):** Gồm [Hook y khoa / thấu cảm] + [Kiến thức dinh dưỡng / cơ chế sản phẩm B.Braun] + [Soft CTA tư vấn hoặc chia sẻ].
+   - **BẮT BUỘC GỌI TOOL `create_image` ĐỂ TẠO ẢNH:**
+     Bạn PHẢI gọi công cụ `create_image(prompt: "...")` với prompt chi tiết mô tả hình ảnh y khoa chân thực, ấm áp, ánh sáng studio y tế, sản phẩm B.Braun chính hãng.
+     ⚠️ **CẢNH BÁO QUAN TRỌNG:** TUYỆT ĐỐI KHÔNG được chỉ mô tả ý tưởng ảnh bằng lời văn hay chỉ trả về mỗi bài caption. BẮT BUỘC PHẢI GỌI TOOL `create_image` để tạo ra file ảnh thực tế!
+4. **Xem trước (Preview):** Hiển thị đầy đủ cả bài viết Caption và bức ảnh vừa sinh (kèm cú pháp `MEDIA:<đường dẫn ảnh>`) để người dùng xem trước trọn vẹn cả bài lẫn ảnh.
 5. **Đăng bài THÔNG MINH theo dòng sản phẩm (Product-Aware Broadcasting):**
    - Danh sách Fanpage được phân loại theo `product_group` (`nutricomp`, `prontosan`, hoặc `all`) trong `skills/tao-creative-fb/pages.json`.
    - **Tự động nhận diện dòng sản phẩm:** Script `scripts/post_facebook.py` tự động phân tích caption hoặc cờ `--product [nutricomp|prontosan|all|auto]`:

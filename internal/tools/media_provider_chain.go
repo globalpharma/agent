@@ -418,7 +418,7 @@ func wrapPoolProvider(ctx context.Context, reg *providers.Registry, entryProvide
 // Used as fallback when the provider doesn't carry its DB type.
 func providerTypeFromName(name string) string {
 	switch {
-	case name == "gemini" || strings.HasPrefix(name, "gemini"):
+	case name == "studioaigg" || name == "gemini" || strings.HasPrefix(name, "gemini"):
 		return "gemini"
 	case name == "openrouter":
 		return "openrouter"
@@ -426,7 +426,7 @@ func providerTypeFromName(name string) string {
 		return "minimax"
 	case name == "alibaba" || name == "dashscope" || name == "bailian":
 		return "dashscope"
-	case name == "openai" || strings.HasPrefix(name, "openai-"):
+	case name == "openai-codex" || name == "openai" || strings.HasPrefix(name, "openai-"):
 		return "openai"
 	case name == "anthropic":
 		return "anthropic"

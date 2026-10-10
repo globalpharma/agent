@@ -36,16 +36,18 @@ type credentialProvider interface {
 }
 
 // imageGenProviderPriority is the default order for image generation providers.
-var imageGenProviderPriority = []string{"openrouter", "gemini", "openai", "minimax", "dashscope", "byteplus"}
+var imageGenProviderPriority = []string{"studioaigg", "gemini", "openai-codex", "openai", "openrouter", "minimax", "dashscope", "byteplus"}
 
 // imageGenModelDefaults maps provider names to default image generation models.
 var imageGenModelDefaults = map[string]string{
-	"openrouter": "google/gemini-2.5-flash-image",
-	"openai":     "gpt-image-1.5",
-	"gemini":     "gemini-2.5-flash-image",
-	"minimax":    "image-01",
-	"dashscope":  "wan2.6-image",
-	"byteplus":   "seedream-5-0-260128",
+	"studioaigg":   "gemini-2.5-flash-image",
+	"gemini":       "gemini-2.5-flash-image",
+	"openai-codex": "gpt-image-1.5",
+	"openai":       "gpt-image-1.5",
+	"openrouter":   "google/gemini-2.5-flash-image",
+	"minimax":      "image-01",
+	"dashscope":    "wan2.6-image",
+	"byteplus":     "seedream-5-0-260128",
 }
 
 // CreateImageTool generates images using an image generation API.
