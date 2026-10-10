@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"net/http"
 	"strings"
 
 	"github.com/google/uuid"
@@ -154,7 +155,10 @@ func (p *ChatGPTOAuthRouter) call(ctx context.Context, fn func(Provider) (*ChatR
 func (p *ChatGPTOAuthRouter) orderedProviders(ctx context.Context, modality string, advance bool) ([]Provider, error) {
 	candidates := p.routeCandidates(ctx)
 	if len(candidates) == 0 {
-		return nil, fmt.Errorf("no authenticated chatgpt_oauth providers available")
+		return nil, &HTTPError{
+			Status: http.StatusServiceUnavailable,
+			Body:   "no authenticated chatgpt_oauth providers available",
+		}
 	}
 
 	if p.strategy == chatGPTOAuthStrategyPriorityOrder {
@@ -182,7 +186,10 @@ func (p *ChatGPTOAuthRouter) orderedProviders(ctx context.Context, modality stri
 		fallback = nil
 	}
 	if len(active) == 0 {
-		return nil, fmt.Errorf("no route-eligible chatgpt_oauth providers available: %s", strings.Join(blocked, ", "))
+		return nil, &HTTPError{
+			Status: http.StatusTooManyRequests,
+			Body:   fmt.Sprintf("no route-eligible chatgpt_oauth providers available: %s", strings.Join(blocked, ", ")),
+		}
 	}
 	if p.strategy != chatGPTOAuthStrategyRoundRobin || len(active) == 1 {
 		ordered := append([]Provider(nil), active...)
@@ -210,7 +217,10 @@ func (p *ChatGPTOAuthRouter) priorityOrderedProviders(candidates []chatGPTOAuthR
 		ordered = append(ordered, candidate.provider)
 	}
 	if len(ordered) == 0 {
-		return nil, fmt.Errorf("no route-eligible chatgpt_oauth providers available: %s", strings.Join(blocked, ", "))
+		return nil, &HTTPError{
+			Status: http.StatusTooManyRequests,
+			Body:   fmt.Sprintf("no route-eligible chatgpt_oauth providers available: %s", strings.Join(blocked, ", ")),
+		}
 	}
 	return ordered, nil
 }
