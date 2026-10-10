@@ -226,4 +226,22 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
 END $$;
 EOSQL
 
+echo "Setting up Marketing Skill (tao-creative-fb) and Python dependencies..."
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T goclaw pip install --break-system-packages requests python-dotenv || echo "Pip install warning, continuing..."
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T goclaw mkdir -p /app/data/skills /app/workspace/skills || true
+
+if [ -d "skills/tao-creative-fb" ]; then
+    echo "Copying skills/tao-creative-fb to container..."
+    docker cp skills/tao-creative-fb goclaw-goclaw-1:/app/data/skills/ || true
+    docker cp skills/tao-creative-fb goclaw-goclaw-1:/app/workspace/skills/ || true
+fi
+
+if [ -f "facebook_pages.csv" ]; then
+    docker cp facebook_pages.csv goclaw-goclaw-1:/app/workspace/ || true
+fi
+
+echo "Verifying Facebook broadcasting capability (dry-run) inside container..."
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T goclaw python3 /app/workspace/skills/tao-creative-fb/scripts/post_facebook.py --image /app/workspace/skills/tao-creative-fb/output/test_image.png --caption "Test bài đăng hệ thống Marketing GlobalPharma" --dry-run || echo "Dry-run check completed with warning"
+
 echo "Executive setup script executed successfully."
+
