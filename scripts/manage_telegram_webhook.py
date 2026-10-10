@@ -54,16 +54,26 @@ def main():
         print("Usage: manage_telegram_webhook.py <raw_credentials_string>")
         sys.exit(1)
 
+    token_only = False
     raw_creds = sys.argv[1]
+    if raw_creds == "--token-only" and len(sys.argv) > 2:
+        token_only = True
+        raw_creds = sys.argv[2]
+
     enc_key = os.getenv("GOCLAW_ENCRYPTION_KEY", "")
 
     try:
         creds = parse_credentials(raw_creds, enc_key)
         token = creds.get("token")
         if not token:
-            print("[ERROR] No token found in credentials object:", creds)
+            if not token_only:
+                print("[ERROR] No token found in credentials object:", creds)
             sys.exit(1)
         
+        if token_only:
+            print(token)
+            return
+
         # Masked token for logs
         masked = token[:6] + "..." + token[-4:] if len(token) > 10 else "***"
         print(f"[OK] Successfully extracted Telegram Bot Token: {masked}")
