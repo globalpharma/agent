@@ -2,7 +2,7 @@ name: Deploy GoClaw to VPS
 
 on:
   push:
-    branches: [main, dev]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -20,7 +20,8 @@ jobs:
             set -e
             cd /opt/goclaw
             echo "Pulling latest changes from git..."
-            git fetch origin main
+            rm -f .git/refs/remotes/origin/main.lock .git/index.lock || true
+            git fetch origin main || (sleep 2 && git fetch origin main)
             git reset --hard origin/main
             git clean -fd || true
             echo "Updating and restarting containers..."
