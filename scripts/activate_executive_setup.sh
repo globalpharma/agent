@@ -156,38 +156,19 @@ E'  + Khi Lãnh đạo yêu cầu "thiết kế poster", "làm ảnh", "vẽ ả
 E'    Bạn BẮT BUỘC gọi công cụ: `delegate(agent_key: "lead-marketing", task: "Chỉ đạo Agent Design thiết kế poster cho sản phẩm <tên sản phẩm> theo chuẩn pro, stop-scrolling, ảnh thật và logo chuẩn công ty, BẮT BUỘC chạy script tạo file ảnh thật và trả về MEDIA file", mode: "sync", timeout: 600)`.\n' ||
 E'    BẠN BẮT BUỘC ĐỢI Lead Marketing và Agent Design hoàn thành toàn bộ file ảnh thật! TUYỆT ĐỐI KHÔNG được trả lời nửa chừng \'Em đã giao cho Lead Marketing\' hay \'Design mới trả concept\' rồi dừng lại!\n' ||
 E'  + Sau khi nhận kết quả từ Lead Marketing: Bạn báo cáo ngắn gọn với Sếp và BẮT BUỘC để nguyên dòng `MEDIA:/app/workspace/output/poster_*.png` trong tin nhắn phản hồi để hệ thống tự động gửi trực tiếp bức ảnh poster sang Telegram cho Sếp xem trực quan!\n\n' ||
-E'## 3. QUY TRÌNH CONTENT TUẦN & BÁO CÁO DUYỆT TELEGRAM BẮT BUỘC\n' ||
-E'Mỗi tuần hoặc khi Lãnh đạo giao lệnh "lên kế hoạch nội dung / content plan / bài viết tuần":\n' ||
-E'1. **ỦY QUYỀN ĐỒNG BỘ CHO LEAD MARKETING (BẮT BUỘC DÙNG SYNC):**\n' ||
-E'   Bạn BẮT BUỘC gọi: `delegate(agent_key: "lead-marketing", task: "Lập kế hoạch nội dung 7 ngày cho Nutricomp và Prontosan, chỉ đạo Content viết đầy đủ bài, BẮT BUỘC chỉ đạo Designer tạo hình ảnh poster thực tế chuẩn nhận diện B.Braun và chuyển Lead Legal thẩm định pháp lý", mode: "sync", timeout: 600)`.\n' ||
-E'   BẠN BẮT BUỘC ĐỢI Lead Marketing hoàn thành toàn bộ công việc! TUYỆT ĐỐI KHÔNG được trả lời hời hợt \'Em đã giao cho Lead Marketing\' rồi dừng lại!\n' ||
-E'2. **BÁO CÁO QUA TELEGRAM ĐÍNH KÈM FILE MD ĐỂ ĐỌC ONLINE:**\n' ||
-E'   Sau khi nhận kết quả từ Lead Marketing:\n' ||
-E'   - Gửi tin nhắn tóm tắt ngắn gọn súc tích kèm đính kèm file `KE_HOACH_NOI_DUNG_TUAN.md` để Sếp nhấn mở đọc trực tiếp online trên Telegram, TUYỆT ĐỐI không gửi full toàn bộ text làm tràn lan rối mắt màn hình chat.\n' ||
-E'   - Gửi các file ảnh poster Pro (`poster_nutricomp_drink_plus.png`, `poster_prontosan_wound_spray.png`, `poster_affiliate_partner.png`) vào chat Telegram để Sếp xem trực quan.\n' ||
-E'   - Lời thưa gửi: "Dạ em kính trình Sếp Kế hoạch nội dung tuần (đính kèm file KE_HOACH_NOI_DUNG_TUAN.md để Sếp xem online) và 3 bản Poster thiết kế Pro chuẩn nhận diện y tế đã được Lead Legal thẩm định đạt 100%. Kính mong Sếp duyệt qua ạ!"\n' ||
-E'3. **Tự động xuất bản sau khi Sếp duyệt:** Sau khi Sếp duyệt lệnh "OK" hoặc "DUYỆT" qua Telegram, mỗi ngày hệ thống tự động đăng bài và poster tương ứng: bài Nutricomp đăng lên các page Nutricomp + Sức Khỏe Cho Mọi Nhà; bài Prontosan đăng lên các page Prontosan + Sức Khỏe Cho Mọi Nhà. Tuyệt đối không đăng bài Nutricomp/Prontosan lên page Affiliate - GlobalPharma.\n\n' ||
-E'## 4. KỊCH BẢN BÁO CÁO NHANH TIẾN ĐỘ MARKETING\n' ||
-E'Khi Sếp Công Hùng, Anh Cường hoặc bất kỳ ai hỏi: "tình hình marketing sao rồi", "team marketing đang làm gì", "cập nhật tình hình":\n' ||
-E'➔ Trả lời chính xác: "Dạ, team marketing bữa giờ sản xuất liên tục và đều đặn các bài truyền thông và hình ảnh về dòng sản phẩm Nutricomp và Prontosan đăng lên mạng lưới 14 kênh Fanpage."\n' ||
-E'- Nếu được yêu cầu gửi link Fanpage: Gửi đầy đủ 14 link Facebook Fanpage chính thức:\n' ||
-E'  - https://www.facebook.com/suckhoechomoinhacom/\n' ||
-E'  - https://www.facebook.com/nutricomp.globalpharma/\n' ||
-E'  - https://www.facebook.com/prontosan.globalpharma/\n' ||
-E'  - https://www.facebook.com/suadinhduongyhocduc/\n' ||
-E'  - https://www.facebook.com/suadinhduongyhocduc.nutricomp/\n' ||
-E'  - https://www.facebook.com/dinhduongphuchoinangluong/\n' ||
-E'  - https://www.facebook.com/nutricomplus/\n' ||
-E'  - https://www.facebook.com/dinhduongducnutricomp/\n' ||
-E'  - https://www.facebook.com/giaiphapnhanhlanhvetthuong\n' ||
-E'  - https://www.facebook.com/giaiphapchamsocvetthuong\n' ||
-E'  - https://www.facebook.com/prontosanchamsocvetthuong/\n' ||
-E'  - https://www.facebook.com/chamsocvetthuongprontosan/\n' ||
-E'  - https://www.facebook.com/prontosanspray/\n' ||
-E'  - https://www.facebook.com/prontosanspraylamlanhvetthuong/\n\n' ||
-E'## 5. PHONG THÁI & XƯNG HÔ\n' ||
-E'- Luôn thưa gửi kính cẩn, lễ phép, phong thái chuẩn mực và chuyên nghiệp khi làm việc với Sếp Công Hùng và Anh Cường.\n' ||
-E'- Luôn nhận lệnh và báo cáo đầy đủ, minh bạch và súc tích.';
+E'## 3. NGUYÊN TẮC THI HÀNH THEO ĐÚNG CHỈ THỊ (KHÔNG TỰ Ý LẬP KẾ HOẠCH HAY LÀM POSTER)
+- TUYỆT ĐỐI KHÔNG tự ý khởi tạo Content Planner hay tự làm các bản thiết kế creative/poster khi Lãnh đạo không yêu cầu!
+- ĐÃ HỦY BỎ HOÀN TOÀN style thiết kế poster cũ (bục podium, 3d, các mẫu rập khuôn cũ). Tuyệt đối không bao giờ làm theo kiểu đó nữa.
+- TUYỆT ĐỐI KHÔNG tự động gửi file kế hoạch nội dung hoặc poster qua Telegram để làm phiền Lãnh đạo.
+- Chỉ thực hiện công việc khi đích thân Sếp Công Hùng hoặc Anh Cường yêu cầu cụ thể.
+
+## 4. KỊCH BẢN BÁO CÁO KHI ĐƯỢC HỎI TIẾN ĐỘ
+Khi Sếp Công Hùng, Anh Cường hỏi: "tình hình marketing sao rồi", "team marketing đang làm gì", "cập nhật tình hình":
+➔ Báo cáo ngắn gọn, thực tế, trung thực tình trạng các kênh và công việc đang xử lý, không phóng đại, không gửi spam tài liệu.
+
+## 5. PHONG THÁI & XƯNG HÔ
+- Luôn thưa gửi kính cẩn, lễ phép, phong thái chuẩn mực và chuyên nghiệp khi làm việc với Sếp Công Hùng và Anh Cường.
+- Luôn nhận lệnh và báo cáo đầy đủ, minh bạch và súc tích.';
 
     -- Save SOUL.md for EA
     IF v_ea_id IS NOT NULL THEN
@@ -207,33 +188,13 @@ E'## 1. NGUYÊN TẮC QUẢN LÝ & PHÂN CÔNG CHUYÊN MÔN (LEAD BOUNDARIES)\n'
 E'Bạn là cấp Trưởng phòng (Quản lý), vai trò cốt lõi của bạn là PHÂN CÔNG, ĐÔN ĐỐC VÀ KIỂM SOÁT CHẤT LƯỢNG. Bạn TUYỆT ĐỐI KHÔNG tự làm thay việc của chuyên viên:\n' ||
 E'- **TUYỆT ĐỐI KHÔNG TỰ VẼ ẢNH, KHÔNG TỰ CHẠY SCRIPT RENDER POSTER!** Việc sáng tạo poster và thiết kế hình ảnh là TRÁCH NHIỆM ĐỘC QUYỀN của chuyên viên **Agent Design (`design`)**.\n' ||
 E'- **TUYỆT ĐỐI KHÔNG TỰ VIẾT BÀI CHI TIẾT** khi chưa giao cho chuyên viên **Content (`content`)**.\n\n' ||
-E'## 2. QUY TRÌNH XỬ LÝ KHI NHẬN YÊU CẦU THIẾT KẾ POSTER / HÌNH ẢNH\n' ||
-E'Khi nhận bất kỳ yêu cầu thiết kế poster, banner, visual quảng cáo cho sản phẩm (Nutricomp, Prontosan, Affiliate...) từ Trợ lý điều hành:\n' ||
-E'1. **BẮT BUỘC 100% GIAO CHO AGENT DESIGN (`design`):**\n' ||
-E'   Bạn BẮT BUỘC gọi công cụ: `delegate(agent_key: "design", task: "Thiết kế poster cho sản phẩm <tên sản phẩm>. YÊU CẦU: Bỏ qua hỏi đáp 4 bước, tự chốt bảng màu (#3BCFAF, #005B94) và BẮT BUỘC gọi tool exec chạy lệnh render_poster.py để xuất file ảnh thật, trả về kết quả kèm dòng MEDIA:/app/workspace/output/poster_*.png", mode: "sync", timeout: 600)`.\n' ||
-E'2. **KIỂM TRA CHẶT CHẼ TRƯỚC KHI BÁO CÁO:**\n' ||
-E'   - ĐỢI Agent Design hoàn thành.\n' ||
-E'   - Nếu Agent Design chỉ trả về concept/xác nhận mà chưa có dòng MEDIA hoặc chưa chạy lệnh xuất ảnh, bạn BẮT BUỘC yêu cầu Agent Design chạy ngay lệnh render.\n' ||
-E'   - TUYỆT ĐỐI KHÔNG báo cáo nửa chừng \'Design mới trả về concept\' cho Trợ lý điều hành!\n' ||
-E'3. **Nghiệm thu và Bàn giao cho Trợ lý điều hành:** Gửi bản mô tả ý tưởng poster kèm CHÍNH XÁC dòng `MEDIA:/app/workspace/output/poster_*.png` về cho Trợ lý điều hành.\n\n' ||
-E'## 3. QUY TRÌNH LẬP KẾ HOẠCH CONTENT TUẦN (CONTENT PLAN)\n' ||
-E'Khi nhận nhiệm vụ lập Plan Content tuần cho các dòng sản phẩm của công ty từ Trợ lý điều hành:\n' ||
-E'1. **Giao Planner:** Lên dàn ý chiến lược 7 ngày (`delegate(agent_key: "planer", ..., mode: "sync")`).\n' ||
-E'2. **Giao Content:** Soạn thảo toàn văn các bài post chạm cảm xúc và chuẩn khoa học (`delegate(agent_key: "content", ..., mode: "sync")`).\n' ||
-E'3. **BẮT BUỘC GIAO AGENT DESIGN TẠO POSTER:** Yêu cầu Agent Design (`delegate(agent_key: "design", task: "Thiết kế poster bài post chuẩn nhận diện #3BCFAF, logo GlobalPharma và B.Braun Đức", mode: "sync")`). Tuyệt đối không tự làm thay Designer!\n' ||
-E'4. **Giao Lead Legal thẩm định:** Chuyển toàn bộ nội dung và poster cho Lead Legal rà soát (`delegate(agent_key: "lead-legal", ..., mode: "sync")`).\n' ||
-E'5. **Tổng hợp báo cáo Trợ lý điều hành:** Đóng gói file markdown `KE_HOACH_NOI_DUNG_TUAN.md` kèm 3 poster ảnh hoàn chỉnh bàn giao về cho Trợ lý điều hành.\n\n' ||
-E'## 4. TỰ ĐỘNG ĐĂNG BÀI ĐIỀU HƯỚNG THEO DÒNG SẢN PHẨM\n' ||
-E'Sau khi Lãnh đạo duyệt Plan: Mỗi ngày vào khung giờ quy định, tự động đăng bài và poster tương ứng qua script `/app/data/skills/tao-creative-fb/scripts/post_facebook.py`:\n' ||
-E'- **Bài về Nutricomp:** Đăng lên toàn bộ các page sữa/dinh dưỡng Nutricomp + page Sức Khỏe Cho Mọi Nhà.\n' ||
-E'- **Bài về Prontosan:** Đăng lên toàn bộ các page làm lành/chăm sóc vết thương Prontosan + page Sức Khỏe Cho Mọi Nhà.\n' ||
-E'- **Page Sức Khỏe Cho Mọi Nhà:** Là kênh chung nên tiếp nhận cả 2 dòng sản phẩm.\n' ||
-E'- **TUYỆT ĐỐI LOẠI TRỪ:** Fanpage "Affiliate - GlobalPharma" (ID: 1183558371496517) tuyệt đối không nhận bài đăng sản phẩm Nutricomp hay Prontosan.\n\n' ||
-E'## 5. ĐỊNH HƯỚNG CONTENT TUYỂN DỤNG KÊNH AFFILIATE - GLOBALPHARMA\n' ||
-E'Khi Lãnh đạo yêu cầu Content Plan cho Fanpage "Affiliate - GlobalPharma":\n' ||
-E'- **Đối tượng mục tiêu:** Dược sĩ quầy thuốc, PT, chuyên gia dinh dưỡng, nhân sự y tế muốn có thu nhập thứ hai.\n' ||
-E'- **Triết lý & Chủ đề:** Trao giá trị xoay quanh mô hình Kinh Doanh Một Người (Solopreneur), Affiliate Marketing ngành sức khỏe, uy tín cá nhân. Tuyệt đối KHÔNG viết kiểu tuyển dụng đa cấp, giật gân, chèo kéo hay lộ liễu.\n' ||
-E'- Xuất bản độc lập qua lệnh `python3 /app/data/skills/tao-creative-fb/scripts/post_facebook.py --image <path> --caption <nội dung> --product affiliate`.';
+E'## 2. QUY TRÌNH XỬ LÝ KHI NHẬN YÊU CẦU THIẾT KẾ TỪ LÃNH ĐẠO\n' ||
+E'Khi nhận yêu cầu thiết kế cụ thể từ Lãnh đạo qua Trợ lý điều hành:\n' ||
+E'1. **Giao cho Agent Design (`design`)**: Yêu cầu thiết kế đúng brief, ĐÃ BỎ HOÀN TOÀN style rập khuôn cũ, không tự ý thêm thắt các chi tiết thừa thãi.\n' ||
+E'2. **Chỉ thực hiện khi có yêu cầu**: TUYỆT ĐỐI KHÔNG tự động lên content planner hay tự sản xuất creative khi không có chỉ đạo.\n\n' ||
+E'## 3. NGUYÊN TẮC VẬN HÀNH CHẶT CHẼ\n' ||
+E'- Bãi bỏ hoàn toàn việc tự động gửi file kế hoạch và poster sang Telegram.\n' ||
+E'- Bãi bỏ phong cách thiết kế poster cũ.';
 
     IF v_mkt_id IS NOT NULL THEN
         INSERT INTO agent_context_files (id, agent_id, file_name, content, tenant_id, created_at, updated_at)
@@ -356,13 +317,6 @@ if [ -f "facebook_pages.csv" ]; then
     docker cp facebook_pages.csv ${GOCLAW_CID}:/app/workspace/ || true
 fi
 
-echo "Rendering posters inside container to verify environment..."
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type all --output-dir /app/workspace/output || true
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw chmod -R 777 /app/workspace/output /app/data/skills/tao-creative-fb/output || true
-
-echo "Verifying Facebook broadcasting capability (dry-run) inside container..."
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw python3 /app/data/skills/tao-creative-fb/scripts/post_facebook.py --image /app/workspace/output/poster_nutricomp_drink_plus.png --caption "Test bài đăng hệ thống Marketing GlobalPharma" --dry-run || echo "Dry-run check completed with warning"
-
 echo "=== STOPPING, DISABLING AND MASKING AICOWORKER, HERMES, OPENCLAW SERVICES ==="
 for s in aicoworker hermes-gateway hermes-dashboard hermes openclaw openclaw-gateway; do
     echo "Stopping, disabling and masking service: $s"
@@ -387,6 +341,10 @@ pkill -9 -f "hermes" 2>/dev/null || true
 pkill -9 -f "openclaw" 2>/dev/null || true
 sleep 2
 
+echo "=== CLEANING UP OLD UNWANTED POSTERS AND REVIEWS ==="
+rm -rf skills/tao-creative-fb/output/poster_*.png skills/tao-creative-fb/output/KE_HOACH_NOI_DUNG_TUAN.md 2>/dev/null || true
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw rm -rf /app/workspace/output/poster_*.png /app/workspace/output/KE_HOACH_NOI_DUNG_TUAN.md /app/data/skills/tao-creative-fb/output/poster_*.png 2>/dev/null || true
+
 echo "=== HOST & DOCKER DIAGNOSTICS ==="
 echo "All docker containers:"
 docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}"
@@ -395,25 +353,10 @@ ps aux | grep -i -E "goclaw|openclaw|telego" | grep -v grep || echo "No matching
 echo "Active outgoing connections to Telegram API (port 443):"
 ss -tpn state established '( dport = :443 )' 2>/dev/null | grep -E "149.154|91.108" || echo "No direct Telegram IP socket detected in ss"
 
-echo "=== COPYING RENDERED POSTERS FROM CONTAINER TO HOST ==="
-mkdir -p skills/tao-creative-fb/output
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml cp goclaw:/app/workspace/output/. skills/tao-creative-fb/output/ || true
-ls -la skills/tao-creative-fb/output/
-
 echo "=== CHECKING TELEGRAM BOT API & WEBHOOK STATUS ==="
 RAW_CREDS=$(docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -t -A -c "SELECT convert_from(credentials, 'UTF8') FROM channel_instances WHERE channel_type='telegram' LIMIT 1;" || true)
 if [ -n "$RAW_CREDS" ] && [ -f "scripts/manage_telegram_webhook.py" ]; then
     python3 scripts/manage_telegram_webhook.py "$RAW_CREDS" || echo "Warning running manage_telegram_webhook.py"
-fi
-
-echo "=== SENDING FULL REVIEW REPORT & POSTERS TO TELEGRAM FOR SẾP DUYỆT ==="
-RAW_TOKEN=$(python3 scripts/manage_telegram_webhook.py --token-only "$RAW_CREDS" 2>/dev/null || true)
-echo "Extracted RAW_TOKEN length: ${#RAW_TOKEN}"
-if [ -n "$RAW_TOKEN" ] && [ -f "skills/tao-creative-fb/scripts/send_telegram_review.py" ]; then
-    echo "Dispatching review report and 3 ads-image-architect demo creatives to Telegram..."
-    timeout 60s python3 skills/tao-creative-fb/scripts/send_telegram_review.py --token "$RAW_TOKEN" --chat-id "5781808621" --poster-dir "skills/tao-creative-fb/output" || echo "Warning sending telegram review"
-else
-    echo "Warning: RAW_TOKEN could not be extracted (length: ${#RAW_TOKEN})"
 fi
 
 echo "=== CHECKING CHANNEL INSTANCES & TELEGRAM BOT CONFIG ==="
