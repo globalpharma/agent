@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-render_poster.py - Thiết kế visual và poster y tế tự nhiên, chuẩn xác cho GlobalPharma.
-Sử dụng 100% ẢNH SẢN PHẨM THẬT & LOGO CHÍNH THỨC từ Kho Tri Thức Dữ Liệu Công Ty.
-Tuân thủ tuyệt đối quy chuẩn ads-image-architect (Zero brand CTA inside, bố cục thoáng đãng, lâm sàng).
+render_pro_creatives.py - Tạo 3 ấn phẩm quảng cáo Meta Ads đẳng cấp PRO, CHUYÊN NGHIỆP,
+STOP-SCROLLING, HẠN CHẾ TEXT, TẬP TRUNG 1 THÔNG ĐIỆP CHÍNH THEO CHUẨN ADS-IMAGE-ARCHITECT.
+Sử dụng hình nền studio/editorial cao cấp kết hợp 100% sản phẩm thật và logo chính thức.
 """
 
-import os
 import sys
+import os
 
 if sys.platform == "win32":
     try:
@@ -14,23 +14,22 @@ if sys.platform == "win32":
         sys.stderr.reconfigure(encoding="utf-8")
     except Exception:
         pass
-
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
-SCRIPT_DIR = Path(__file__).resolve().parent
-REPO_ROOT = SCRIPT_DIR.parent.parent.parent
-ASSETS_DIR = SCRIPT_DIR.parent / "assets"
-REFS_DIR = ASSETS_DIR / "references"
+REPO_ROOT = Path(__file__).resolve().parent.parent
+REFS_DIR = REPO_ROOT / "skills" / "tao-creative-fb" / "assets" / "references"
+OUTPUT_DIR = REPO_ROOT / "skills" / "tao-creative-fb" / "output"
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
+BRAIN_DIR = Path("C:/Users/Surface/.gemini/antigravity/brain/552b4a88-d83e-4471-97a6-f32d72fa14d4")
 
 def get_font(size: int, bold: bool = False):
     candidates = [
-        "C:\\Windows\\Fonts\\arialbd.ttf" if bold else "C:\\Windows\\Fonts\\arial.ttf",
         "C:\\Windows\\Fonts\\segoeuib.ttf" if bold else "C:\\Windows\\Fonts\\segoeui.ttf",
+        "C:\\Windows\\Fonts\\arialbd.ttf" if bold else "C:\\Windows\\Fonts\\arial.ttf",
+        "C:\\Windows\\Fonts\\calibrib.ttf" if bold else "C:\\Windows\\Fonts\\calibri.ttf",
         "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-        "/usr/share/fonts/TTF/DejaVuSans-Bold.ttf" if bold else "/usr/share/fonts/TTF/DejaVuSans.ttf",
-        "/etc/apk/fonts/arial.ttf"
     ]
     for p in candidates:
         if os.path.exists(p):
@@ -40,276 +39,283 @@ def get_font(size: int, bold: bool = False):
                 continue
     return ImageFont.load_default()
 
-
-def get_banner_logo(target_h: int = 55):
-    logo_path = REFS_DIR / "real_logo_globalpharma_banner.png"
-    if not logo_path.exists():
-        logo_path = ASSETS_DIR / "globalpharma_logo.png"
-    if not logo_path.exists():
-        logo_path = Path("ui/web/public/globalpharma-logo.png")
-    if logo_path.exists():
-        logo = Image.open(logo_path).convert("RGBA")
+def get_master_logo(target_h: int = 38):
+    p = REFS_DIR / "real_logo_globalpharma_banner.png"
+    if not p.exists():
+        p = REFS_DIR / "real_logo_globalpharma_master.png"
+    if not p.exists():
+        p = REPO_ROOT / "skills" / "tao-creative-fb" / "assets" / "globalpharma_logo.png"
+    
+    if p.exists():
+        logo = Image.open(p).convert("RGBA")
         ratio = target_h / logo.height
         new_w = int(logo.width * ratio)
         return logo.resize((new_w, target_h), Image.Resampling.LANCZOS)
     return None
 
+def draw_text_with_shadow(draw, pos, text, fill, font, shadow_color=(0, 0, 0, 180), offset=(1, 2)):
+    x, y = pos
+    ox, oy = offset
+    draw.text((x + ox, y + oy), text, fill=shadow_color, font=font)
+    draw.text((x, y), text, fill=fill, font=font)
 
-def render_nutricomp_poster(output_path: str, variant: str = "box12", force: bool = False):
-    """
-    Creative 1: Hộp quà 12 chai Nutricomp Drink Renal Vanilla (B.Braun CHLB Đức)
-    Sử dụng 100% ảnh chụp thật studio hộp quà 12 chai & bao bì từ kho dữ liệu.
-    """
+def create_drop_shadow(alpha_mask, offset=(0, 20), blur_radius=25, shadow_alpha=120):
+    """Tạo bóng đổ tự nhiên cho vật thể"""
+    w, h = alpha_mask.size
+    shadow = Image.new("RGBA", (w + abs(offset[0]) + blur_radius * 2, h + abs(offset[1]) + blur_radius * 2), (0, 0, 0, 0))
+    # Place alpha mask in black
+    black_obj = Image.new("RGBA", (w, h), (10, 15, 25, shadow_alpha))
+    black_obj.putalpha(alpha_mask)
+    
+    paste_x = blur_radius + max(0, offset[0])
+    paste_y = blur_radius + max(0, offset[1])
+    shadow.paste(black_obj, (paste_x, paste_y), black_obj)
+    shadow = shadow.filter(ImageFilter.GaussianBlur(blur_radius))
+    return shadow, (paste_x, paste_y)
+
+def draw_pill(draw, x, y, text, font, bg_color, text_color, padding=(16, 8), border_color=None):
+    bbox = font.getbbox(text)
+    tw = bbox[2] - bbox[0]
+    th = bbox[3] - bbox[1]
+    pw, ph = padding
+    box = [(x, y), (x + tw + pw * 2, y + th + ph * 2)]
+    radius = (th + ph * 2) // 2
+    draw.rounded_rectangle(box, radius=radius, fill=bg_color, outline=border_color, width=1 if border_color else 0)
+    # text vertical centering
+    tx = x + pw - bbox[0]
+    ty = y + ph - bbox[1]
+    draw.text((tx, ty), text, fill=text_color, font=font)
+    return x + tw + pw * 2 + 12  # return next x
+
+# ==============================================================================
+# 1. CREATIVE 1: NUTRICOMP RENAL (B.BRAUN CHLB ĐỨC) - LUXURY DARK TEAL STUDIO
+# ==============================================================================
+def render_pro_nutricomp():
     w, h = 1080, 1080
-    canvas = Image.new("RGBA", (w, h), (255, 255, 255, 255))
-    
-    # 1. Gradient nền y tế cao cấp
-    draw_canvas = ImageDraw.Draw(canvas)
-    for y in range(h):
-        ratio = y / h
-        if ratio < 0.25:
-            r = int(255 - ratio * 10)
-            g = int(255 - ratio * 5)
-            b = int(255 - ratio * 8)
-        elif ratio < 0.75:
-            r, g, b = 252, 254, 253
-        else:
-            sub = (ratio - 0.75) / 0.25
-            r = int(252 - sub * 12)
-            g = int(254 - sub * 8)
-            b = int(253 - sub * 10)
-        draw_canvas.line([(0, y), (w, y)], fill=(r, g, b, 255))
-    
-    draw = ImageDraw.Draw(canvas)
-    
-    # 2. Header: Logo GlobalPharma thật + Text đối tác B.Braun
-    logo = get_banner_logo(target_h=52)
-    if logo:
-        canvas.paste(logo, (50, 38), logo)
-        logo_end_x = 50 + logo.width
+    bg_path = REFS_DIR / "bg_luxury_teal_podium.jpg"
+    if not bg_path.exists():
+        bg_path = BRAIN_DIR / "luxury_teal_podium_1791617178766.jpg"
+    if bg_path.exists():
+        canvas = Image.open(bg_path).convert("RGBA").resize((w, h), Image.Resampling.LANCZOS)
     else:
-        logo_end_x = 240
+        canvas = Image.new("RGBA", (w, h), (4, 47, 46, 255))
         
-    draw.line([(logo_end_x + 20, 42), (logo_end_x + 20, 88)], fill="#CBD5E1", width=2)
-    draw.text((logo_end_x + 35, 46), "ĐỐI TÁC PHÂN PHỐI CHÍNH THỨC", fill="#64748B", font=get_font(13, bold=True))
-    draw.text((logo_end_x + 35, 68), "B.BRAUN (CHLB ĐỨC) TẠI VIỆT NAM", fill="#005B94", font=get_font(15, bold=True))
+    # Darken top slightly for maximum text contrast
+    overlay = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    draw_ov = ImageDraw.Draw(overlay)
+    for y in range(400):
+        alpha = int(140 * (1 - y / 400))
+        draw_ov.line([(0, y), (w, y)], fill=(3, 20, 24, alpha))
+    canvas = Image.alpha_composite(canvas, overlay)
     
-    badge_x, badge_y = w - 210, 38
-    draw.rounded_rectangle([(badge_x, badge_y), (w - 50, badge_y + 52)], radius=10, fill="#F8FAFC", outline="#E2E8F0", width=1)
-    draw.text((badge_x + 18, badge_y + 8), "NHẬP KHẨU 100%", fill="#64748B", font=get_font(12, bold=True))
-    draw.text((badge_x + 18, badge_y + 26), "CHLB ĐỨC", fill="#B91C1C", font=get_font(16, bold=True))
-    
-    # 3. Tiêu đề thương hiệu chuẩn kho tri thức
-    draw.text((50, 118), "DINH DƯỠNG Y HỌC CHUYÊN BIỆT CHO NGƯỜI BỆNH THẬN", fill="#0F766E", font=get_font(19, bold=True))
-    draw.text((50, 148), "COMBO HỘP QUÀ 12 CHAI NUTRICOMP® RENAL", fill="#0F172A", font=get_font(34, bold=True))
-    draw.text((50, 198), "Năng lượng cao 400 kcal/chai • Kiểm soát nghiêm ngặt Natri, Kali & Phospho", fill="#475569", font=get_font(18, bold=False))
-    
-    # 4. CHÈN ẢNH SẢN PHẨM THẬT (Combo 12 chai studio)
-    prod_path = REFS_DIR / "real_nutricomp_combo12_giftbox.png"
+    # PRODUCT PACKSHOT: 12-Bottle Combo Box on Marble Podium
+    prod_path = REFS_DIR / "cut_nutricomp_box.png"
     if not prod_path.exists():
-        prod_path = REFS_DIR / "ref_nutricomp_box12.jpg"
-    
-    if prod_path.exists():
-        prod_img = Image.open(prod_path).convert("RGBA")
-        target_prod_w = 980
-        prod_ratio = target_prod_w / prod_img.width
-        target_prod_h = int(prod_img.height * prod_ratio)
-        if target_prod_h > 560:
-            target_prod_h = 560
-            prod_ratio = target_prod_h / prod_img.height
-            target_prod_w = int(prod_img.width * prod_ratio)
-            
-        prod_resized = prod_img.resize((target_prod_w, target_prod_h), Image.Resampling.LANCZOS)
-        prod_x = (w - target_prod_w) // 2
-        prod_y = 238
-        canvas.paste(prod_resized, (prod_x, prod_y), prod_resized if prod_resized.mode == "RGBA" else None)
-    
-    # 5. Các thẻ Callout y khoa chuẩn từ kho tri thức
-    callouts = [
-        ("400 KCAL / 200ML", "Năng lượng cao 2.0 kcal/ml", "Phục hồi thể trạng suy kiệt"),
-        ("14G ĐẠM CHẤT LƯỢNG", "Đạm sinh học giá trị cao", "Bù đắp thiếu hụt lọc máu"),
-        ("ÍT ĐIỆN GIẢI AN TOÀN", "Kiểm soát Natri, Kali, P", "Bảo vệ chức năng thận"),
-        ("GIÀU OMEGA-3 & FOS", "Bổ sung EPA, DHA & FOS", "Dễ uống, êm bụng dễ tiêu")
-    ]
-    
-    card_w = 230
-    card_h = 110
-    spacing = 16
-    start_x = (w - (4 * card_w + 3 * spacing)) // 2
-    card_y = 820
-    
-    for i, (title, l1, l2) in enumerate(callouts):
-        cx = start_x + i * (card_w + spacing)
-        draw.rounded_rectangle([(cx, card_y), (cx + card_w, card_y + card_h)], radius=12, fill="#FFFFFF", outline="#0D9488", width=2)
-        draw.text((cx + 14, card_y + 14), title, fill="#0F766E", font=get_font(14, bold=True))
-        draw.text((cx + 14, card_y + 45), l1, fill="#334155", font=get_font(13, bold=False))
-        draw.text((cx + 14, card_y + 72), l2, fill="#64748B", font=get_font(12, bold=False))
+        prod_path = REFS_DIR / "real_nutricomp_combo12_giftbox.png"
         
-    # 6. Chân trang uy tín y khoa
-    draw.line([(50, h - 110), (w - 50, h - 110)], fill="#E2E8F0", width=1)
-    draw.text((50, h - 85), "CÔNG TY CỔ PHẦN GLOBALPHARMA • PHÂN PHỐI CHÍNH HÃNG B.BRAUN TẠI VIỆT NAM", fill="#0F172A", font=get_font(15, bold=True))
-    draw.text((50, h - 55), "Thực phẩm dinh dưỡng y học (FSMP) • Sử dụng theo tư vấn của chuyên gia dinh dưỡng và y tế", fill="#64748B", font=get_font(13, bold=False))
-    draw.text((w - 280, h - 72), "Hotline: 0783 114 115", fill="#005B94", font=get_font(18, bold=True))
+    if prod_path.exists():
+        prod = Image.open(prod_path).convert("RGBA")
+        target_w = 780
+        ratio = target_w / prod.width
+        target_h = int(prod.height * ratio)
+        prod_resized = prod.resize((target_w, target_h), Image.Resampling.LANCZOS)
+        
+        # Soft 3D cast shadow onto marble
+        alpha = prod_resized.split()[3]
+        shadow, (spx, spy) = create_drop_shadow(alpha, offset=(0, 25), blur_radius=20, shadow_alpha=160)
+        
+        pos_x = (w - target_w) // 2
+        pos_y = 470  # Sits right atop marble pedestal
+        
+        canvas.paste(shadow, (pos_x - spx, pos_y - spy), shadow)
+        canvas.paste(prod_resized, (pos_x, pos_y), prod_resized)
 
-    Path(output_path).parent.mkdir(parents=True, exist_ok=True)
-    canvas.convert("RGB").save(output_path, "PNG", quality=95)
-    print(f"[SUCCESS] Đã tạo Creative 1 Nutricomp từ ảnh thật: {output_path}")
-    return output_path
-
-
-def render_prontosan_poster(output_path: str, force: bool = False):
-    """
-    Creative 2: Prontosan Wound Spray 75ml (B.Braun CHLB Đức)
-    Sử dụng 100% ảnh chụp chai thật và ảnh ứng dụng lâm sàng thực tế của B.Braun.
-    """
-    w, h = 1080, 1080
-    canvas = Image.new("RGBA", (w, h), (255, 255, 255, 255))
-    
-    # 1. Gradient nền y tế sạch sẽ Châu Âu
-    draw_canvas = ImageDraw.Draw(canvas)
-    for y in range(h):
-        ratio = y / h
-        r = int(246 + ratio * 7)
-        g = int(251 + ratio * 3)
-        b = int(255)
-        draw_canvas.line([(0, y), (w, y)], fill=(r, g, b, 255))
     draw = ImageDraw.Draw(canvas)
     
-    # 2. Header Logo
-    logo = get_banner_logo(target_h=52)
+    # HEADER BRANDING
+    # Logo GlobalPharma master in clean translucent glass card
+    logo = get_master_logo(target_h=36)
     if logo:
-        canvas.paste(logo, (50, 38), logo)
-        logo_end_x = 50 + logo.width
+        card_w = logo.width + 36
+        card_h = 52
+        draw.rounded_rectangle([(50, 42), (50 + card_w, 42 + card_h)], radius=12, fill=(255, 255, 255, 245))
+        canvas.paste(logo, (68, 50), logo)
+    
+    # Partner Badge top right
+    draw_pill(draw, w - 280, 42, "CHLB ĐỨC • B.BRAUN", get_font(15, bold=True), (15, 23, 42, 220), "#F8FAFC", padding=(18, 10), border_color="#38BDF8")
+    
+    # HOOK & MAIN MESSAGE (TẬP TRUNG, ÍT CHỮ, BẮT MẮT TỐI ĐA)
+    # Tagline nhỏ
+    draw_text_with_shadow(draw, (50, 130), "DINH DƯỠNG Y HỌC LÂM SÀNG", "#38BDF8", get_font(18, bold=True), shadow_color=(0, 0, 0, 200))
+    
+    # Giant Punchy Hook
+    draw_text_with_shadow(draw, (50, 160), "2.0 KCAL / ML", "#FFFFFF", get_font(52, bold=True), shadow_color=(0, 0, 0, 240))
+    draw_text_with_shadow(draw, (50, 228), "HỒI PHỤC THỂ TRẠNG SUY KIỆT", "#F1F5F9", get_font(34, bold=True), shadow_color=(0, 0, 0, 220))
+    
+    # Sub-hook (1 dòng tinh tế)
+    draw_text_with_shadow(draw, (50, 280), "Công thức chuyên biệt cho người bệnh thận • Kiểm soát nghiêm ngặt Điện giải", "#94A3B8", get_font(17, bold=False), shadow_color=(0, 0, 0, 200))
+    
+    # 2 Glassmorphism Feature Pills at bottom
+    pill1_x = 50
+    pill2_x = draw_pill(draw, pill1_x, h - 90, "● 12 Chai 200ml Tiệt Trùng Nguyên Seal", get_font(15, bold=True), (15, 23, 42, 210), "#FFFFFF", padding=(20, 10), border_color="#0D9488")
+    draw_pill(draw, pill2_x + 10, h - 90, "● Đạm Chất Lượng Cao 14g/chai", get_font(15, bold=True), (15, 23, 42, 210), "#38BDF8", padding=(20, 10), border_color="#0D9488")
+
+    out_file = OUTPUT_DIR / "poster_nutricomp_drink_plus.png"
+    canvas.convert("RGB").save(out_file, "PNG", quality=95)
+    print(f"[PRO SUCCESS] Nutricomp Pro Creative: {out_file}")
+    return out_file
+
+# ==============================================================================
+# 2. CREATIVE 2: PRONTOSAN WOUND SPRAY (B.BRAUN CHLB ĐỨC) - CLINICAL WATER WAVE
+# ==============================================================================
+def render_pro_prontosan():
+    w, h = 1080, 1080
+    bg_path = REFS_DIR / "bg_prontosan_clinical.jpg"
+    if not bg_path.exists():
+        bg_path = BRAIN_DIR / "prontosan_clinical_bg_1791617199866.jpg"
+    if bg_path.exists():
+        canvas = Image.open(bg_path).convert("RGBA").resize((w, h), Image.Resampling.LANCZOS)
     else:
-        logo_end_x = 240
+        canvas = Image.new("RGBA", (w, h), (240, 249, 255, 255))
         
-    draw.line([(logo_end_x + 20, 42), (logo_end_x + 20, 88)], fill="#CBD5E1", width=2)
-    draw.text((logo_end_x + 35, 46), "GIẢI PHÁP CHĂM SÓC VẾT THƯƠNG CHUẨN CHÂU ÂU", fill="#64748B", font=get_font(13, bold=True))
-    draw.text((logo_end_x + 35, 68), "B.BRAUN MEDICAL AG (CHLB ĐỨC)", fill="#005B94", font=get_font(15, bold=True))
+    # Darken/gradient overlay at top for pristine white-medical readability
+    overlay = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    draw_ov = ImageDraw.Draw(overlay)
+    for y in range(380):
+        alpha = int(180 * (1 - y / 380))
+        draw_ov.line([(0, y), (w, y)], fill=(255, 255, 255, alpha))
+    canvas = Image.alpha_composite(canvas, overlay)
     
-    badge_x, badge_y = w - 210, 38
-    draw.rounded_rectangle([(badge_x, badge_y), (w - 50, badge_y + 52)], radius=10, fill="#F0FDF4", outline="#BBF7D0", width=1)
-    draw.text((badge_x + 18, badge_y + 8), "TIÊU CHUẨN Y KHOA", fill="#166534", font=get_font(12, bold=True))
-    draw.text((badge_x + 18, badge_y + 26), "ISO 13485", fill="#047857", font=get_font(16, bold=True))
-    
-    # 3. Tiêu đề
-    draw.text((50, 118), "CHUẨN BỊ NỀN VẾT THƯƠNG & PHÁ VỠ MÀNG BIOFILM TẬN GỐC", fill="#005B94", font=get_font(19, bold=True))
-    draw.text((50, 148), "PRONTOSAN® WOUND SPRAY 75ML", fill="#0F172A", font=get_font(34, bold=True))
-    draw.text((50, 198), "Đột phá kết hợp Betaine 0.1% & Polyhexanide (PHMB) 0.1% • Không đau rát, an toàn mô hạt", fill="#475569", font=get_font(18, bold=False))
-    
-    # 4. CHÈN 2 ẢNH THẬT: THAO TÁC XỊT LÂM SÀNG & CHAI SẢN PHẨM CHÍNH HÃNG
+    # PRODUCT PACKSHOT: Authentic Prontosan Bottle standing on Pedestal
+    prod_path = REFS_DIR / "cut_prontosan_bottle.png"
+    if not prod_path.exists():
+        prod_path = REFS_DIR / "real_prontosan_wound_spray_bottle.webp"
+        
+    if prod_path.exists():
+        prod = Image.open(prod_path).convert("RGBA")
+        target_h = 580
+        ratio = target_h / prod.height
+        target_w = int(prod.width * ratio)
+        prod_resized = prod.resize((target_w, target_h), Image.Resampling.LANCZOS)
+        
+        # Soft shadow
+        alpha = prod_resized.split()[3]
+        shadow, (spx, spy) = create_drop_shadow(alpha, offset=(5, 18), blur_radius=15, shadow_alpha=120)
+        
+        pos_x = (w - target_w) // 2 + 30
+        pos_y = 390  # Sits right on the marble pedestal
+        
+        canvas.paste(shadow, (pos_x - spx, pos_y - spy), shadow)
+        canvas.paste(prod_resized, (pos_x, pos_y), prod_resized)
+
+    # Inset photo: Real Clinical Application action (Circle Badge)
     action_path = REFS_DIR / "real_prontosan_wound_spray_action.jpg"
-    bottle_path = REFS_DIR / "real_prontosan_wound_spray_bottle.webp"
-    
     if action_path.exists():
         act_img = Image.open(action_path).convert("RGBA")
-        act_resized = act_img.resize((480, 520), Image.Resampling.LANCZOS)
-        mask = Image.new("L", (480, 520), 0)
-        ImageDraw.Draw(mask).rounded_rectangle([(0, 0), (480, 520)], radius=18, fill=255)
+        badge_size = 210
+        act_resized = act_img.resize((badge_size, badge_size), Image.Resampling.LANCZOS)
         
-        draw.rounded_rectangle([(50, 250), (50 + 480, 250 + 520)], radius=20, fill="#FFFFFF", outline="#E2E8F0", width=2)
-        canvas.paste(act_resized, (50, 250), mask)
+        mask = Image.new("L", (badge_size, badge_size), 0)
+        ImageDraw.Draw(mask).ellipse([(0, 0), (badge_size, badge_size)], fill=255)
         
-        draw.rounded_rectangle([(70, 715), (410, 750)], radius=8, fill="#0F172ACC")
-        draw.text((85, 725), "ỨNG DỤNG LÂM SÀNG BỞI CHUYÊN VIÊN Y TẾ", fill="#FFFFFF", font=get_font(12, bold=True))
+        badge_x = 70
+        badge_y = 520
+        
+        # White border behind
+        border_box = [(badge_x - 4, badge_y - 4), (badge_x + badge_size + 4, badge_y + badge_size + 4)]
+        draw_border = ImageDraw.Draw(canvas)
+        draw_border.ellipse(border_box, fill="#0284C7")
+        canvas.paste(act_resized, (badge_x, badge_y), mask)
+        
+        # Small tag under badge
+        draw_border.rounded_rectangle([(badge_x - 10, badge_y + badge_size - 20), (badge_x + badge_size + 10, badge_y + badge_size + 14)], radius=8, fill="#0F172A")
+        draw_border.text((badge_x + 12, badge_y + badge_size - 13), "ỨNG DỤNG LÂM SÀNG", fill="#FFFFFF", font=get_font(12, bold=True))
 
-    if bottle_path.exists():
-        bot_img = Image.open(bottle_path).convert("RGBA")
-        draw.rounded_rectangle([(560, 250), (w - 50, 250 + 520)], radius=20, fill="#FFFFFF", outline="#E2E8F0", width=2)
-        bot_resized = bot_img.resize((430, 480), Image.Resampling.LANCZOS)
-        canvas.paste(bot_resized, (580, 270), bot_resized)
-        
-        draw.rounded_rectangle([(580, 715), (920, 750)], radius=8, fill="#005B94CC")
-        draw.text((595, 725), "CHAI XỊT 75ML VÔ TRÙNG B.BRAUN CHÍNH HÃNG", fill="#FFFFFF", font=get_font(12, bold=True))
-        
-    # 5. Các thẻ Callout cơ chế y khoa
-    cards = [
-        ("BETAINE 0.1%", "Phá vỡ màng Biofilm vi khuẩn", "Làm sạch sâu nền tổn thương"),
-        ("PHMB 0.1%", "Kháng khuẩn phổ rộng (MRSA)", "Không độc hại mô hạt lành"),
-        ("0% ĐAU RÁT", "Dịu nhẹ êm ái khi tiếp xúc", "Tối ưu cho loét tì đè, bỏng"),
-        ("TIỆN LỢI TỦ THUỐC", "Dạng xịt 75ml vô trùng chuẩn", "Dùng an toàn 8 tuần sau mở")
-    ]
+    draw = ImageDraw.Draw(canvas)
     
-    card_w = 230
-    card_h = 110
-    spacing = 16
-    start_x = (w - (4 * card_w + 3 * spacing)) // 2
-    card_y = 820
-    
-    for i, (title, l1, l2) in enumerate(cards):
-        cx = start_x + i * (card_w + spacing)
-        draw.rounded_rectangle([(cx, card_y), (cx + card_w, card_y + card_h)], radius=12, fill="#FFFFFF", outline="#0284C7", width=2)
-        draw.text((cx + 14, card_y + 14), title, fill="#0284C7", font=get_font(14, bold=True))
-        draw.text((cx + 14, card_y + 45), l1, fill="#334155", font=get_font(13, bold=False))
-        draw.text((cx + 14, card_y + 72), l2, fill="#64748B", font=get_font(12, bold=False))
+    # HEADER BRANDING
+    logo = get_master_logo(target_h=36)
+    if logo:
+        card_w = logo.width + 36
+        draw.rounded_rectangle([(50, 42), (50 + card_w, 94)], radius=12, fill=(255, 255, 255, 245))
+        canvas.paste(logo, (68, 50), logo)
         
-    # 6. Chân trang
-    draw.line([(50, h - 110), (w - 50, h - 110)], fill="#E2E8F0", width=1)
-    draw.text((50, h - 85), "CÔNG TY CỔ PHẦN GLOBALPHARMA • ĐỐI TÁC PHÂN PHỐI CHÍNH THỨC B.BRAUN TẠI VIỆT NAM", fill="#0F172A", font=get_font(15, bold=True))
-    draw.text((50, h - 55), "Trang thiết bị y tế chuẩn bị nền vết thương • Đọc kỹ hướng dẫn sử dụng trước khi dùng", fill="#64748B", font=get_font(13, bold=False))
-    draw.text((w - 280, h - 72), "Hotline: 0783 114 115", fill="#005B94", font=get_font(18, bold=True))
+    draw_pill(draw, w - 290, 42, "CHỨNG NHẬN ISO 13485", get_font(14, bold=True), "#0284C7", "#FFFFFF", padding=(18, 10))
+    
+    # BIG BOLD HOOK (TẬP TRUNG THÔNG ĐIỆP CHÍNH)
+    draw.text((50, 125), "TIÊU CHUẨN CHĂM SÓC VẾT THƯƠNG CHÂU ÂU", fill="#0369A1", font=get_font(17, bold=True))
+    draw.text((50, 155), "PHÁ VỠ MÀNG BIOFILM", fill="#0F172A", font=get_font(48, bold=True))
+    draw.text((50, 220), "0% ĐAU RÁT • NHANH LÀNH GẤP 2 LẦN", fill="#0284C7", font=get_font(28, bold=True))
+    draw.text((50, 268), "Dung dịch xịt 75ml vô trùng • Kháng khuẩn vượt trội Betaine & Polyhexanide", fill="#475569", font=get_font(16, bold=False))
+    
+    # 2 Sleek Value Pills at Bottom
+    pill1_x = 50
+    pill2_x = draw_pill(draw, pill1_x, h - 90, "● Betaine 0.1% + PHMB 0.1%", get_font(15, bold=True), "#0F172A", "#FFFFFF", padding=(20, 10))
+    draw_pill(draw, pill2_x + 10, h - 90, "● Không Độc Hại Mô Hạt Lành", get_font(15, bold=True), "#FFFFFF", "#0284C7", padding=(20, 10), border_color="#0284C7")
 
-    Path(output_path).parent.mkdir(parents=True, exist_ok=True)
-    canvas.convert("RGB").save(output_path, "PNG", quality=95)
-    print(f"[SUCCESS] Đã tạo Creative 2 Prontosan từ ảnh thật: {output_path}")
-    return output_path
+    out_file = OUTPUT_DIR / "poster_prontosan_wound_spray.png"
+    canvas.convert("RGB").save(out_file, "PNG", quality=95)
+    print(f"[PRO SUCCESS] Prontosan Pro Creative: {out_file}")
+    return out_file
 
-
-def render_affiliate_poster(output_path: str, force: bool = False):
-    """
-    Creative 3: Fanpage Tuyển Dụng Affiliate - GlobalPharma (Solopreneur)
-    Sử dụng bức ảnh chân dung Dược sĩ uy tín kết hợp thay thế hoàn toàn Logo giả
-    bằng LOGO CHÍNH THỨC GLOBALPHARMA từ kho dữ liệu và tinh chỉnh thẻ giá trị.
-    """
+# ==============================================================================
+# 3. CREATIVE 3: DƯỢC SĨ SOLOPRENEUR (EDITORIAL / FORBES AESTHETIC)
+# ==============================================================================
+def render_pro_affiliate():
     w, h = 1080, 1080
-    base_portrait = REPO_ROOT / "affiliate_solopreneur_ad_1791614479171.jpg"
-    if not base_portrait.exists():
-        base_portrait = Path("C:/Users/Surface/.gemini/antigravity/brain/552b4a88-d83e-4471-97a6-f32d72fa14d4/affiliate_solopreneur_ad_1791614479171.jpg")
-    
-    if base_portrait.exists():
-        canvas = Image.open(base_portrait).convert("RGBA")
-        if canvas.size != (w, h):
-            canvas = canvas.resize((w, h), Image.Resampling.LANCZOS)
+    bg_path = REFS_DIR / "bg_pharmacist_editorial.jpg"
+    if not bg_path.exists():
+        bg_path = BRAIN_DIR / "pharmacist_editorial_1791617224959.jpg"
+    if bg_path.exists():
+        canvas = Image.open(bg_path).convert("RGBA").resize((w, h), Image.Resampling.LANCZOS)
     else:
         canvas = Image.new("RGBA", (w, h), (15, 23, 42, 255))
         
+    # Darker gradient banner across top for editorial branding and readability
+    overlay = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    draw_ov = ImageDraw.Draw(overlay)
+    for y in range(380):
+        alpha = int(220 * (1 - (y / 380) ** 1.3))
+        draw_ov.line([(0, y), (w, y)], fill=(8, 16, 28, alpha))
+    # Bottom gradient for bottom pills
+    for y in range(h - 180, h):
+        alpha = int(200 * ((y - (h - 180)) / 180))
+        draw_ov.line([(0, y), (w, y)], fill=(5, 12, 22, alpha))
+    canvas = Image.alpha_composite(canvas, overlay)
+    
     draw = ImageDraw.Draw(canvas)
     
-    # ĐÈ LÊN GÓC TRÊN TRÁI BẰNG LOGO MASTER GLOBALPHARMA CHÍNH THỨC
-    logo = get_banner_logo(target_h=58)
+    # HEADER BRANDING
+    logo = get_master_logo(target_h=36)
     if logo:
-        box_w = 450
-        box_h = 105
-        draw.rounded_rectangle([(35, 30), (35 + box_w, 30 + box_h)], radius=14, fill="#FFFFFF", outline="#E2E8F0", width=1)
-        canvas.paste(logo, (50, 42), logo)
-        draw.line([(50, 42 + logo.height + 6), (50 + box_w - 30, 42 + logo.height + 6)], fill="#E2E8F0", width=1)
-        draw.text((50, 42 + logo.height + 10), "MẠNG LƯỚI ĐỐI TÁC Y TẾ & SỨC KHỎE • GLOBALPHARMA", fill="#0F766E", font=get_font(12, bold=True))
+        card_w = logo.width + 36
+        draw.rounded_rectangle([(50, 42), (50 + card_w, 94)], radius=12, fill=(255, 255, 255, 245))
+        canvas.paste(logo, (68, 50), logo)
         
-    Path(output_path).parent.mkdir(parents=True, exist_ok=True)
-    canvas.convert("RGB").save(output_path, "PNG", quality=95)
-    print(f"[SUCCESS] Đã tạo Creative 3 Affiliate với logo chuẩn công ty: {output_path}")
-    return output_path
+    draw_pill(draw, w - 280, 42, "HEALTHCARE SOLOPRENEUR", get_font(13, bold=True), (15, 23, 42, 220), "#38BDF8", padding=(18, 10), border_color="#0284C7")
+    
+    # BIG EDITORIAL HOOK
+    draw_text_with_shadow(draw, (50, 125), "MÔ HÌNH HỢP TÁC DÀNH CHO DƯỢC SĨ & CHUYÊN GIA Y TẾ", "#38BDF8", get_font(16, bold=True), shadow_color=(0, 0, 0, 220))
+    draw_text_with_shadow(draw, (50, 155), "DƯỢC SĨ SOLOPRENEUR", "#FFFFFF", get_font(48, bold=True), shadow_color=(0, 0, 0, 250))
+    draw_text_with_shadow(draw, (50, 220), "XÂY THU NHẬP THỨ 2 TỪ UY TÍN Y KHOA", "#F1F5F9", get_font(28, bold=True), shadow_color=(0, 0, 0, 240))
+    draw_text_with_shadow(draw, (50, 266), "Phân phối trực tiếp Dinh dưỡng y học & Thiết bị y tế B.Braun CHLB Đức", "#E2E8F0", get_font(17, bold=False), shadow_color=(0, 0, 0, 220))
+    
+    # 2 Sleek Value Pills at Bottom
+    pill1_x = 50
+    pill2_x = draw_pill(draw, pill1_x, h - 85, "● 0 Vốn Ôm Hàng • 0 Áp Doanh Số", get_font(15, bold=True), (15, 23, 42, 230), "#FFFFFF", padding=(20, 10), border_color="#38BDF8")
+    draw_pill(draw, pill2_x + 10, h - 85, "● 100% Sản Phẩm Y Khoa Chính Hãng", get_font(15, bold=True), (15, 23, 42, 230), "#38BDF8", padding=(20, 10), border_color="#0D9488")
 
+    out_file = OUTPUT_DIR / "poster_affiliate_partner.png"
+    canvas.convert("RGB").save(out_file, "PNG", quality=95)
+    print(f"[PRO SUCCESS] Affiliate Pro Creative: {out_file}")
+    return out_file
 
 def main():
-    import argparse
-    parser = argparse.ArgumentParser(description="Tạo poster tự nhiên chuẩn nhận diện y tế GlobalPharma")
-    parser.add_argument("--type", choices=["nutricomp", "prontosan", "affiliate", "all"], default="all")
-    parser.add_argument("--variant", choices=["box12", "combo12", "emotion", "bottles"], default="box12")
-    parser.add_argument("--output-dir", default="output")
-    parser.add_argument("--force", action="store_true", help="Buộc render đè ảnh cũ")
-    args = parser.parse_args()
-
-    out_dir = Path(args.output_dir)
-    out_dir.mkdir(parents=True, exist_ok=True)
-
-    if args.type in ("nutricomp", "all"):
-        render_nutricomp_poster(str(out_dir / "poster_nutricomp_drink_plus.png"), variant=args.variant, force=args.force)
-    if args.type in ("prontosan", "all"):
-        render_prontosan_poster(str(out_dir / "poster_prontosan_wound_spray.png"), force=args.force)
-    if args.type in ("affiliate", "all"):
-        render_affiliate_poster(str(out_dir / "poster_affiliate_partner.png"), force=args.force)
-
+    print("=== TẠO 3 CREATIVE ĐẲNG CẤP PRO, CHUYÊN NGHIỆP, STOP-SCROLLING ===")
+    render_pro_nutricomp()
+    render_pro_prontosan()
+    render_pro_affiliate()
+    print("=== HOÀN TẤT XUẤT 3 ẢNH PRO ===")
 
 if __name__ == "__main__":
     main()
