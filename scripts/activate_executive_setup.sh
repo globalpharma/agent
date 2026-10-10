@@ -393,7 +393,19 @@ done
 # Check supervisor or supervisorctl
 which supervisorctl && supervisorctl stop all 2>/dev/null || true
 
-# Hard kill all remaining processes
+# Check user systemd for aicoworker
+su - aicoworker -c "systemctl --user stop openclaw openclaw-gateway hermes 2>/dev/null || true"
+su - aicoworker -c "systemctl --user disable openclaw openclaw-gateway hermes 2>/dev/null || true"
+su - aicoworker -c "systemctl --user mask openclaw openclaw-gateway hermes 2>/dev/null || true"
+loginctl disable-linger aicoworker 2>/dev/null || true
+
+# Remove execute permissions from host hermes and openclaw binaries to prevent restart
+find /usr /home /root -name "openclaw" -o -name "openclaw-gateway" -o -name "hermes" 2>/dev/null | grep -E "bin/|venv/" | while read f; do
+    echo "Disabling binary execution: $f"
+    chmod 000 "$f" 2>/dev/null || true
+done
+
+# Hard kill all remaining host processes
 pkill -9 -f "hermes" 2>/dev/null || true
 pkill -9 -f "openclaw" 2>/dev/null || true
 pkill -9 -f "openclaw-gateway" 2>/dev/null || true
