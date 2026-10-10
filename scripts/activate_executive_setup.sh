@@ -363,12 +363,17 @@ docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0
 echo "Verifying Facebook broadcasting capability (dry-run) inside container..."
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw python3 /app/data/skills/tao-creative-fb/scripts/post_facebook.py --image /app/workspace/output/poster_nutricomp_drink_plus.png --caption "Test bài đăng hệ thống Marketing GlobalPharma" --dry-run || echo "Dry-run check completed with warning"
 
-echo "=== STOPPING AND DISABLING LEGACY HOST OPENCLAW PROCESSES ==="
-ps aux | grep -i "openclaw" | grep -v grep || echo "No openclaw process in ps"
+echo "=== STOPPING AND DISABLING CONFLICTING HERMES & OPENCLAW PROCESSES ==="
+ps aux | grep -i -E "openclaw|hermes" | grep -v grep || echo "No openclaw/hermes process in ps"
+systemctl stop hermes 2>/dev/null || true
+systemctl disable hermes 2>/dev/null || true
+systemctl stop hermes-agent 2>/dev/null || true
+systemctl disable hermes-agent 2>/dev/null || true
 systemctl stop openclaw-gateway 2>/dev/null || true
 systemctl disable openclaw-gateway 2>/dev/null || true
 systemctl stop openclaw 2>/dev/null || true
 systemctl disable openclaw 2>/dev/null || true
+pkill -9 -f "hermes" 2>/dev/null || true
 pkill -9 -f "openclaw" 2>/dev/null || true
 pkill -9 -f "openclaw-gateway" 2>/dev/null || true
 
@@ -409,7 +414,10 @@ docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e P
 
 echo "Restarting goclaw container to acquire sole connection to Telegram..."
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml restart goclaw || true
-sleep 5
+sleep 6
+
+echo "=== VERIFYING ACTIVE TELEGRAM CONNECTIONS (MUST ONLY BE GOCLAW) ==="
+ss -tpn state established '( dport = :443 )' 2>/dev/null | grep -E "149.154|91.108" || echo "No direct Telegram IP socket detected in ss"
 
 echo "=== GOCLAW INDEX SCRIPT TAGS (from container localhost:18790) ==="
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T goclaw wget -qO- http://localhost:18790/ | grep -E "src=|href=" | grep "assets" | head -n 15 || true
