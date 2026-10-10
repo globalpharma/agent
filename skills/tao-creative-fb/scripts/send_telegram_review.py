@@ -139,7 +139,7 @@ def main():
             "<b>Tiêu đề:</b> PHỤC HỒI THỂ TRẠNG VƯỢT TRỘI VỚI 300 KCAL TỪ B.BRAUN CHLB ĐỨC\n\n"
             "<b>Nội dung trích đoạn:</b>\n"
             "Chăm sóc người thân sau phẫu thuật hay người già suy kiệt, nỗi sợ lớn nhất là người bệnh chán ăn, sút cân nhanh chóng. Mỗi chai Nutricomp Drink Plus 200ml cung cấp trọn vẹn 300 kcal cùng đạm sinh học và khoáng chất y khoa chuẩn Châu Âu, giúp người bệnh lấy lại sức sống chỉ sau vài ngày.\n\n"
-            "✔ <b>Thiết kế:</b> Phối màu #3BCFAF &amp; #005B94 chuẩn nhận diện GlobalPharma &amp; B.Braun Đức.\n"
+            "✔ <b>Thiết kế:</b> Thiết kế chuẩn theo bộ 4 tham chiếu của Sếp (Gradient Ngọc lục bảo #013D29, Hộp 12 chai Nutricomp Drink Renal mở nắp, splash sữa 400 kcal, Nút Đặt mua ngay 3D, Cờ Đức &amp; Bộ 3 cam kết quốc tế, Disclaimer FSMP). Do Agent Design (GPT-5.6-sol) phụ trách.\n"
             "✔ <b>Kênh xuất bản dự kiến:</b> 6 Fanpage Nutricomp + Fanpage Sức Khỏe Cho Mọi Nhà."
         )
         send_photo(bot_token, chat_id, str(img_nutri), caption_nutri)
