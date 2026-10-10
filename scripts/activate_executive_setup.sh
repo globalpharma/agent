@@ -254,5 +254,12 @@ fi
 echo "Verifying Facebook broadcasting capability (dry-run) inside container..."
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T goclaw python3 /app/workspace/skills/tao-creative-fb/scripts/post_facebook.py --image /app/workspace/skills/tao-creative-fb/output/test_image.png --caption "Test bài đăng hệ thống Marketing GlobalPharma" --dry-run || echo "Dry-run check completed with warning"
 
+echo "=== CHECKING CHANNEL INSTANCES & TELEGRAM BOT CONFIG ==="
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -c "SELECT id, name, display_name, channel_type, agent_id, enabled, config FROM channel_instances;"
+
+echo "=== CHECKING TELEGRAM IN GOCLAW LOGS ==="
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml logs --tail=150 goclaw | grep -i -E "telegram|channel|pairing" || echo "No telegram/channel/pairing logs found."
+
 echo "Executive setup script executed successfully."
+
 
