@@ -307,23 +307,54 @@ echo "Restarting goclaw container to acquire sole connection to Telegram..."
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml restart goclaw || true
 sleep 5
 
-echo "=== CHECKING CADDY CONFIGURATION & WEB UI ==="
-if [ -f /etc/caddy/Caddyfile ]; then
-    echo "--- /etc/caddy/Caddyfile ---"
-    cat /etc/caddy/Caddyfile
+echo "=== GOCLAW INDEX SCRIPT TAGS (from container localhost:18790) ==="
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T goclaw wget -qO- http://localhost:18790/ | grep -E "src=|href=" | grep "assets" | head -n 15 || true
+
+echo "=== CADDY GOCLAW-ASSETS DIRECTORY ==="
+ls -la /root/.caddy/data/goclaw-assets/ 2>/dev/null || true
+ls -la /root/.caddy/data/goclaw-assets/assets 2>/dev/null | head -n 20 || true
+
+echo "=== UPDATING CADDYFILE TO REVERSE PROXY ALL TO GOCLAW ==="
+if [ -f /root/.caddy/Caddyfile ]; then
+    python3 -c '
+import re
+
+with open("/root/.caddy/Caddyfile", "r") as f:
+    content = f.read()
+
+new_block = """# BEGIN GoClaw - agent.globalpharma.vn
+agent.globalpharma.vn {
+\tencode zstd gzip
+
+\treverse_proxy 127.0.0.1:18795 {
+\t\theader_up Host {host}
+\t\theader_up X-Real-IP {remote_host}
+\t\theader_up X-Forwarded-Proto https
+\t}
+}
+# END GoClaw - agent.globalpharma.vn"""
+
+pattern = r"# BEGIN GoClaw - agent\.globalpharma\.vn.*?# END GoClaw - agent\.globalpharma\.vn"
+if re.search(pattern, content, flags=re.DOTALL):
+    content = re.sub(pattern, new_block, content, flags=re.DOTALL)
+    with open("/root/.caddy/Caddyfile", "w") as f:
+        f.write(content)
+    print("Replaced GoClaw Caddyfile block successfully")
+else:
+    print("GoClaw block pattern not found in Caddyfile")
+'
+    echo "Reloading Caddy container..."
+    docker exec caddy caddy reload 2>/dev/null || docker restart caddy || true
+    sleep 2
 fi
-find /etc /opt -name "*Caddyfile*" -exec echo "--- {} ---" \; -exec cat {} \; 2>/dev/null || true
 
-echo "=== DOCKER CADDY CONTAINER CONFIG ==="
-docker exec caddy cat /etc/caddy/Caddyfile 2>/dev/null || echo "No /etc/caddy/Caddyfile in caddy container"
-docker inspect caddy --format '{{json .Mounts}}' 2>/dev/null || true
-
-echo "=== GOCLAW DIRECT ASSET TESTS ==="
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T goclaw wget -S -O /dev/null http://localhost:18790/assets/index-DHYZ0Vor.js 2>&1 | head -n 15 || true
-curl -sI http://127.0.0.1:18795/assets/index-DHYZ0Vor.js || true
-
-echo "=== GOCLAW CONTAINER IMAGE & BUILD DATE ==="
-docker inspect goclaw-goclaw-1 --format 'Image: {{.Image}}, Created: {{.Created}}' || true
+echo "=== VERIFYING PUBLIC AGENT.GLOBALPHARMA.VN AFTER FIX ==="
+curl -sI https://agent.globalpharma.vn/ || true
+MAIN_JS=$(curl -s https://agent.globalpharma.vn/ | grep -o 'src="/assets/index-[^"]*"' | head -n 1 | cut -d'"' -f2)
+echo "Detected Main JS: $MAIN_JS"
+if [ -n "$MAIN_JS" ]; then
+    curl -sI "https://agent.globalpharma.vn$MAIN_JS" || true
+fi
 
 echo "Executive setup script executed successfully."
 
