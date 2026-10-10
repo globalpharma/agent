@@ -342,9 +342,14 @@ if [ -n "$RAW_CREDS" ] && [ -f "scripts/manage_telegram_webhook.py" ]; then
 fi
 
 echo "=== SENDING FULL REVIEW REPORT & POSTERS TO TELEGRAM FOR SẾP DUYỆT ==="
-RAW_TOKEN=$(python3 -c "import json, sys; d=json.loads('''$RAW_CREDS'''); print(d.get('token',''))" 2>/dev/null || true)
+RAW_TOKEN=$(python3 scripts/manage_telegram_webhook.py --token-only "$RAW_CREDS" 2>/dev/null || true)
+echo "Extracted RAW_TOKEN length: ${#RAW_TOKEN}"
 if [ -n "$RAW_TOKEN" ] && [ -f "skills/tao-creative-fb/scripts/send_telegram_review.py" ]; then
+    python3 -m pip install --break-system-packages pillow 2>/dev/null || true
+    python3 skills/tao-creative-fb/scripts/render_poster.py --type all --output-dir skills/tao-creative-fb/output 2>/dev/null || true
     python3 skills/tao-creative-fb/scripts/send_telegram_review.py --token "$RAW_TOKEN" --chat-id "5781808621" --poster-dir "skills/tao-creative-fb/output" || echo "Warning sending telegram review"
+else
+    echo "Warning: RAW_TOKEN could not be extracted (length: ${#RAW_TOKEN})"
 fi
 
 echo "=== CHECKING CHANNEL INSTANCES & TELEGRAM BOT CONFIG ==="

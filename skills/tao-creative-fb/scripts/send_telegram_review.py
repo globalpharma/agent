@@ -31,6 +31,9 @@ def send_message(bot_token: str, chat_id: str, text: str):
     try:
         with urllib.request.urlopen(req) as resp:
             return json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        print(f"[ERROR] send_message HTTP {e.code}: {e.read().decode('utf-8')}")
+        return None
     except Exception as e:
         print(f"[ERROR] send_message failed: {e}")
         return None
@@ -82,6 +85,9 @@ def send_photo(bot_token: str, chat_id: str, photo_path: str, caption: str):
     try:
         with urllib.request.urlopen(req) as resp:
             return json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        print(f"[ERROR] send_photo HTTP {e.code}: {e.read().decode('utf-8')}")
+        return None
     except Exception as e:
         print(f"[ERROR] send_photo failed: {e}")
         return None
