@@ -307,8 +307,18 @@ echo "Restarting goclaw container to acquire sole connection to Telegram..."
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml restart goclaw || true
 sleep 5
 
-echo "=== CHECKING TELEGRAM INBOUND & ERROR LOGS AFTER CLEANUP ==="
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml logs --tail=50 goclaw | grep -i -E "telegram|telego|409|getUpdates" || echo "No telegram conflict logs"
+echo "=== CHECKING CADDY CONFIGURATION & WEB UI ==="
+if [ -f /etc/caddy/Caddyfile ]; then
+    echo "--- /etc/caddy/Caddyfile ---"
+    cat /etc/caddy/Caddyfile
+fi
+find /etc /opt -name "*Caddyfile*" -exec echo "--- {} ---" \; -exec cat {} \; 2>/dev/null || true
+
+echo "--- Response from goclaw container (port 18790) ---"
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T goclaw wget -qO- http://localhost:18790/ | head -n 25 || true
+
+echo "--- Response from host port 18795 ---"
+curl -s http://127.0.0.1:18795/ | head -n 25 || true
 
 echo "Executive setup script executed successfully."
 
