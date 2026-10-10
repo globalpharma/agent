@@ -363,52 +363,28 @@ docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0
 echo "Verifying Facebook broadcasting capability (dry-run) inside container..."
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw python3 /app/data/skills/tao-creative-fb/scripts/post_facebook.py --image /app/workspace/output/poster_nutricomp_drink_plus.png --caption "Test bài đăng hệ thống Marketing GlobalPharma" --dry-run || echo "Dry-run check completed with warning"
 
-echo "=== STOPPING AND DISABLING CONFLICTING HERMES & OPENCLAW PROCESSES ==="
-for p in $(pgrep -f "hermes" || true); do
-    echo "Inspecting PID $p:"
-    ps -fp $p || true
-    systemctl status $p 2>/dev/null | head -n 8 || true
-done
-for p in $(pgrep -f "openclaw" || true); do
-    echo "Inspecting PID $p:"
-    ps -fp $p || true
-    systemctl status $p 2>/dev/null | head -n 8 || true
+echo "=== STOPPING, DISABLING AND MASKING AICOWORKER, HERMES, OPENCLAW SERVICES ==="
+for s in aicoworker hermes-gateway hermes-dashboard hermes openclaw openclaw-gateway; do
+    echo "Stopping, disabling and masking service: $s"
+    systemctl stop "$s" 2>/dev/null || true
+    systemctl disable "$s" 2>/dev/null || true
+    systemctl mask "$s" 2>/dev/null || true
 done
 
-echo "Systemd services matching hermes/openclaw/claw:"
-systemctl list-unit-files | grep -i -E "hermes|openclaw|claw" || echo "None in list-unit-files"
-
-# Check and kill PM2 processes if any
-which pm2 && pm2 delete all 2>/dev/null || true
-su - aicoworker -c "which pm2 && pm2 delete all" 2>/dev/null || true
-
-# Stop, disable and mask any systemd units found
-for unit in $(systemctl list-unit-files | grep -i -E "hermes|openclaw|claw" | awk '{print $1}'); do
-    echo "Stopping, disabling and masking systemd unit: $unit"
+for unit in $(systemctl list-unit-files 2>/dev/null | grep -i -E "aicoworker|hermes|openclaw|claw" | awk '{print $1}'); do
+    echo "Stopping, disabling and masking matching unit: $unit"
     systemctl stop "$unit" 2>/dev/null || true
     systemctl disable "$unit" 2>/dev/null || true
     systemctl mask "$unit" 2>/dev/null || true
 done
 
-# Check supervisor or supervisorctl
-which supervisorctl && supervisorctl stop all 2>/dev/null || true
-
-# Check user systemd for aicoworker
-su - aicoworker -c "systemctl --user stop openclaw openclaw-gateway hermes 2>/dev/null || true"
-su - aicoworker -c "systemctl --user disable openclaw openclaw-gateway hermes 2>/dev/null || true"
-su - aicoworker -c "systemctl --user mask openclaw openclaw-gateway hermes 2>/dev/null || true"
 loginctl disable-linger aicoworker 2>/dev/null || true
 
-# Remove execute permissions from host hermes and openclaw binaries to prevent restart
-find /usr /home /root -name "openclaw" -o -name "openclaw-gateway" -o -name "hermes" 2>/dev/null | grep -E "bin/|venv/" | while read f; do
-    echo "Disabling binary execution: $f"
-    chmod 000 "$f" 2>/dev/null || true
-done
-
-# Hard kill all remaining host processes
+# Hard kill all processes of user aicoworker and conflicting binaries
+pkill -9 -u aicoworker 2>/dev/null || true
+pkill -9 -f "aicoworker" 2>/dev/null || true
 pkill -9 -f "hermes" 2>/dev/null || true
 pkill -9 -f "openclaw" 2>/dev/null || true
-pkill -9 -f "openclaw-gateway" 2>/dev/null || true
 sleep 2
 
 echo "=== HOST & DOCKER DIAGNOSTICS ==="
