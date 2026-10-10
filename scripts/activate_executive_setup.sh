@@ -189,7 +189,7 @@ E'## 3. QUY TRÌNH KIỂM DUYỆT PHÁP LÝ BẮT BUỘC\n' ||
 E'- Mọi Plan Content và bản thảo bài viết + ảnh poster sau khi sản xuất xong BẮT BUỘC phải chuyển sang cho **Lead Legal** (`delegate` cho Lead Legal) để rà soát pháp lý y tế.\n' ||
 E'- CHỈ KHI Lead Legal phản hồi "APPROVED / ĐẠT" thì mới gửi báo cáo lên Trợ lý điều hành để trình Sếp duyệt.\n\n' ||
 E'## 4. TỰ ĐỘNG ĐĂNG BÀI ĐIỀU HƯỚNG THEO DÒNG SẢN PHẨM\n' ||
-E'Sau khi Lãnh đạo duyệt Plan: Mỗi ngày vào khung giờ quy định, tự động đăng bài và poster tương ứng qua script `post_facebook.py` trong skill `tao-creative-fb`. Hệ thống tự động nhận diện và phân luồng kênh đăng:\n' ||
+E'Sau khi Lãnh đạo duyệt Plan: Mỗi ngày vào khung giờ quy định, tự động đăng bài và poster tương ứng qua script `/app/data/skills/tao-creative-fb/scripts/post_facebook.py`. Hệ thống tự động nhận diện và phân luồng kênh đăng:\n' ||
 E'- **Bài về Nutricomp:** Đăng lên toàn bộ các page sữa/dinh dưỡng Nutricomp + page Sức Khỏe Cho Mọi Nhà.\n' ||
 E'- **Bài về Prontosan:** Đăng lên toàn bộ các page làm lành/chăm sóc vết thương Prontosan + page Sức Khỏe Cho Mọi Nhà.\n' ||
 E'- **Page Sức Khỏe Cho Mọi Nhà:** Là kênh chung nên tiếp nhận cả 2 dòng sản phẩm.\n' ||
@@ -199,7 +199,7 @@ E'Khi Lãnh đạo yêu cầu Content Plan cho Fanpage "Affiliate - GlobalPharma
 E'- **Đối tượng mục tiêu:** Dược sĩ quầy thuốc, Personal Trainer (PT), chuyên gia dinh dưỡng, nhân sự y tế, những ai muốn kiếm thêm thu nhập từ kiến thức sức khỏe.\n' ||
 E'- **Triết lý & Chủ đề:** Trao giá trị xoay quanh mô hình Kinh Doanh Một Người (Solopreneur), Affiliate Marketing ngành y tế/chăm sóc sức khỏe, tự do tài chính, xây dựng uy tín cá nhân.\n' ||
 E'- **Tone & Mood:** Tinh tế, đĩnh đạc, truyền cảm hứng, chuyên nghiệp và có chiều sâu tri thức. Tuyệt đối KHÔNG viết kiểu tuyển dụng đa cấp, giật gân, chèo kéo hay lộ liễu.\n' ||
-E'- Xuất bản độc lập qua lệnh `python3 skills/tao-creative-fb/scripts/post_facebook.py --image <path> --caption <nội dung> --product affiliate`.';
+E'- Xuất bản độc lập qua lệnh `python3 /app/data/skills/tao-creative-fb/scripts/post_facebook.py --image <path> --caption <nội dung> --product affiliate`.';
 
     IF v_mkt_id IS NOT NULL THEN
         INSERT INTO agent_context_files (id, agent_id, file_name, content, tenant_id, created_at, updated_at)
@@ -234,6 +234,17 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
         RAISE NOTICE 'SOUL.md updated for Lead Legal';
     END IF;
 
+    IF v_ea_tenant IS NOT NULL THEN
+        INSERT INTO system_configs (key, value, tenant_id, updated_at)
+        VALUES ('background.provider', 'openai-codex', v_ea_tenant, NOW())
+        ON CONFLICT (key, tenant_id) DO UPDATE SET value = EXCLUDED.value, updated_at = NOW();
+
+        INSERT INTO system_configs (key, value, tenant_id, updated_at)
+        VALUES ('background.model', 'gpt-5.5', v_ea_tenant, NOW())
+        ON CONFLICT (key, tenant_id) DO UPDATE SET value = EXCLUDED.value, updated_at = NOW();
+        RAISE NOTICE 'Configured background.provider and background.model for tenant %', v_ea_tenant;
+    END IF;
+
 END $$;
 EOSQL
 
@@ -247,6 +258,8 @@ if [ -d "skills/tao-creative-fb" ]; then
     echo "Copying skills/tao-creative-fb to container ($GOCLAW_CID)..."
     docker cp skills/tao-creative-fb ${GOCLAW_CID}:/app/data/skills/ || true
     docker cp skills/tao-creative-fb ${GOCLAW_CID}:/app/workspace/skills/ || true
+    # Sync to all active agent team workspaces so both relative and absolute paths resolve cleanly
+    docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T goclaw bash -c 'for d in /app/workspace/teams/*/*; do if [ -d "$d" ]; then mkdir -p "$d/skills"; cp -r /app/data/skills/tao-creative-fb "$d/skills/" 2>/dev/null || true; fi; done' || true
 fi
 
 if [ -f "facebook_pages.csv" ]; then
@@ -254,26 +267,20 @@ if [ -f "facebook_pages.csv" ]; then
 fi
 
 echo "Verifying Facebook broadcasting capability (dry-run) inside container..."
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T goclaw python3 /app/workspace/skills/tao-creative-fb/scripts/post_facebook.py --image /app/workspace/skills/tao-creative-fb/output/test_image.png --caption "Test bài đăng hệ thống Marketing GlobalPharma" --dry-run || echo "Dry-run check completed with warning"
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T goclaw python3 /app/data/skills/tao-creative-fb/scripts/post_facebook.py --image /app/data/skills/tao-creative-fb/output/test_image.png --caption "Test bài đăng hệ thống Marketing GlobalPharma" --dry-run || echo "Dry-run check completed with warning"
 
 echo "=== HOST & DOCKER DIAGNOSTICS ==="
 echo "All docker containers:"
 docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}"
 echo "Host processes matching goclaw or telego:"
 ps aux | grep -i -E "goclaw|telego" | grep -v grep || echo "No matching host processes"
+echo "Active outgoing connections to Telegram API (port 443):"
+ss -tpn state established '( dport = :443 )' 2>/dev/null | grep -E "149.154|91.108" || echo "No direct Telegram IP socket detected in ss"
 
 echo "=== CHECKING TELEGRAM BOT API & WEBHOOK STATUS ==="
-TG_TOKEN=$(docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -t -A -c "SELECT credentials->>'token' FROM channel_instances WHERE channel_type='telegram' LIMIT 1;" || true)
-if [ -n "$TG_TOKEN" ]; then
-    echo "Querying getMe..."
-    curl -s "https://api.telegram.org/bot${TG_TOKEN}/getMe" || true
-    echo ""
-    echo "Querying getWebhookInfo..."
-    curl -s "https://api.telegram.org/bot${TG_TOKEN}/getWebhookInfo" || true
-    echo ""
-    echo "Resetting webhook and dropping any stuck pending updates to avoid 409 Conflict..."
-    curl -s "https://api.telegram.org/bot${TG_TOKEN}/deleteWebhook?drop_pending_updates=true" || true
-    echo ""
+RAW_CREDS=$(docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -t -A -c "SELECT convert_from(credentials, 'UTF8') FROM channel_instances WHERE channel_type='telegram' LIMIT 1;" || true)
+if [ -n "$RAW_CREDS" ] && [ -f "scripts/manage_telegram_webhook.py" ]; then
+    python3 scripts/manage_telegram_webhook.py "$RAW_CREDS" || echo "Warning running manage_telegram_webhook.py"
 fi
 
 echo "=== CHECKING CHANNEL INSTANCES & TELEGRAM BOT CONFIG ==="
@@ -285,7 +292,7 @@ docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e P
 
 echo "=== CHECKING RECENT SESSIONS & LATEST MESSAGES ==="
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -c "SELECT session_key, channel, updated_at, jsonb_array_length(messages) as msg_count FROM sessions ORDER BY updated_at DESC LIMIT 5;" || true
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -c "SELECT session_key, jsonb_pretty(jsonb_path_query_array(messages, '$[last-3 to last]')) FROM sessions WHERE channel = 'telegram' ORDER BY updated_at DESC LIMIT 1;" || true
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -c "SELECT session_key, (messages->-1)->>'role' as last_role, SUBSTRING((messages->-1)->>'content' FROM 1 FOR 300) as last_content FROM sessions WHERE channel = 'telegram' ORDER BY updated_at DESC LIMIT 1;" || true
 
 echo "=== CHECKING RECENT TELEGRAM CONVERSATION LOGS ==="
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml logs --tail=100 goclaw | grep -i -A 10 -B 3 "inbound: scheduling message" || echo "No scheduling logs"
