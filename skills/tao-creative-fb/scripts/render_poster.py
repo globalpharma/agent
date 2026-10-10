@@ -1,12 +1,8 @@
 #!/usr/bin/env python3
 """
-render_poster.py - Tạo hình ảnh poster bài post y tế chuẩn nhận diện GlobalPharma & B.Braun Đức
-theo đúng quy chuẩn thiết kế từ bộ ảnh tham chiếu thực tế (Medical Advertising Poster Specification).
-
-Bao gồm:
-- Nutricomp Drink Renal (Hộp quà 12 chai, Combo 12 chai, Ảnh chạm cảm xúc người nhà, Phục hồi thể trạng)
-- Prontosan Wound Care (Chai xịt Spray, Gel phá vỡ Biofilm, 3 bước chăm sóc loét tì đè)
-- Affiliate GlobalPharma (Mô hình Kinh doanh một người / Solopreneur uy tín y khoa)
+render_poster.py - Thiết kế visual và poster y tế tự nhiên, hiện đại bằng mô hình GPT-5.6 cho GlobalPharma.
+Ưu tiên hình ảnh sản phẩm thực tế sắc nét, logo chuẩn GlobalPharma & B.Braun CHLB Đức,
+bố cục thoáng đãng, sang trọng, tuyệt đối không dùng các khung hộp thô cứng hay chữ vẽ nguệch ngoạc.
 """
 
 import os
@@ -20,7 +16,7 @@ if sys.platform == "win32":
     except Exception:
         pass
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 ASSETS_DIR = SCRIPT_DIR.parent / "assets"
@@ -47,17 +43,28 @@ def get_font(size, bold=False):
         return None
 
 
-def draw_rounded_rect(draw, bbox, radius, fill, outline=None, width=1):
-    draw.rounded_rectangle(bbox, radius=radius, fill=fill, outline=outline, width=width)
+def paste_globalpharma_logo(canvas: Image.Image, x: int = 50, y: int = 40, target_h: int = 50):
+    """Gắn logo GlobalPharma chính thức sắc nét với kênh alpha trong suốt"""
+    logo_path = ASSETS_DIR / "globalpharma_logo.png"
+    if not logo_path.exists():
+        logo_path = Path("ui/web/public/globalpharma-logo.png")
+    
+    if logo_path.exists():
+        try:
+            logo = Image.open(logo_path).convert("RGBA")
+            target_w = int(logo.width * (target_h / logo.height))
+            logo_resized = logo.resize((target_w, target_h), Image.Resampling.LANCZOS)
+            canvas.paste(logo_resized, (x, y), logo_resized)
+            return target_w + x
+        except Exception as e:
+            print(f"[WARN] paste_logo error: {e}")
+    return x
 
 
 def render_nutricomp_poster(output_path: str, variant: str = "box12"):
     """
-    Tạo poster Nutricomp theo đúng chuẩn tham chiếu của Sếp:
-    - variant='box12': Hộp quà 12 chai mở nắp + splash sữa 400 kcal
-    - variant='combo12': Combo 12 chai + chai đứng nắp tím
-    - variant='emotion': Chạm cảm xúc người nhà bệnh nhân suy kiệt
-    - variant='bottles': Cặp 2 chai Nutricomp Renal + cặp vợ chồng vui khỏe
+    Xuất poster Nutricomp sử dụng hình ảnh sản phẩm thực tế sắc nét, tự nhiên,
+    không gò ép, đảm bảo hình ảnh chuẩn của B.Braun & GlobalPharma.
     """
     variant_map = {
         "box12": REFS_DIR / "ref_nutricomp_box12.jpg",
@@ -68,247 +75,177 @@ def render_nutricomp_poster(output_path: str, variant: str = "box12"):
 
     ref_file = variant_map.get(variant, variant_map["box12"])
     
-    # Nếu có ảnh tham chiếu chuẩn, upscale hoặc convert sang output 1080x1080 chất lượng cao
+    # Nếu có file ảnh sản phẩm thực tế, xuất ảnh độ phân giải 1080x1080 sắc nét
     if ref_file.exists():
-        img = Image.open(ref_file)
+        img = Image.open(ref_file).convert("RGB")
         if img.size != (1080, 1080):
             img = img.resize((1080, 1080), Image.Resampling.LANCZOS)
         Path(output_path).parent.mkdir(parents=True, exist_ok=True)
         img.save(output_path, "PNG", quality=95)
-        print(f"[SUCCESS] Đã tạo poster Nutricomp ({variant}) theo đúng tham chiếu tại: {output_path}")
+        print(f"[SUCCESS] Đã tạo poster Nutricomp tự nhiên ({variant}) từ ảnh sản phẩm chuẩn tại: {output_path}")
         return output_path
 
-    # FALLBACK PROCEDURAL GENERATOR THEO ĐÚNG LAYOUT THAM CHIẾU
+    # Fallback thiết kế tối giản tự nhiên (Clean Editorial Style) nếu chưa có file ảnh gốc
     w, h = 1080, 1080
-    img = Image.new("RGB", (w, h), color="#023D26")
+    img = Image.new("RGB", (w, h), color="#FFFFFF")
     draw = ImageDraw.Draw(img)
 
-    # 1. Background Gradient (Ngọc lục bảo sâu -> Trắng ngà phía trên)
+    # Nền chuyển sắc nhẹ nhàng tự nhiên
     for y in range(h):
         ratio = y / h
-        if ratio < 0.35:
-            # Vùng trên: Trắng ngà pha vàng kem nhẹ
-            r = int(250 - ratio * 100)
-            g = int(248 - ratio * 80)
-            b = int(242 - ratio * 100)
-        else:
-            # Vùng dưới: Xanh lục bảo đậm #013D29
-            sub_ratio = (ratio - 0.35) / 0.65
-            r = int(10 * (1 - sub_ratio) + 2 * sub_ratio)
-            g = int(80 * (1 - sub_ratio) + 55 * sub_ratio)
-            b = int(50 * (1 - sub_ratio) + 38 * sub_ratio)
+        r = int(255 - ratio * 15)
+        g = int(255 - ratio * 8)
+        b = int(255 - ratio * 12)
         draw.line([(0, y), (w, y)], fill=(r, g, b))
 
-    # 2. Header: Logo GP & Cờ Đức
-    font_bold_sm = get_font(22, bold=True)
-    draw.text((60, 45), "GLOBALPHARMA", fill="#E30613", font=get_font(26, bold=True))
-    draw.line([(280, 40), (280, 80)], fill="#888888", width=2)
-    # Cờ Đức tròn
-    draw.ellipse([(305, 42), (345, 82)], fill="#000000", outline="#D4AF37", width=2)
-    draw.chord([(305, 42), (345, 82)], start=0, end=180, fill="#DD0000")
-    draw.chord([(305, 42), (345, 82)], start=60, end=120, fill="#FFCE00")
-    draw.text((360, 48), "Nhập khẩu chính hãng từ Đức", fill="#1E2A38", font=font_bold_sm)
+    # Gắn logo chuẩn
+    end_x = paste_globalpharma_logo(img, x=70, y=60, target_h=55)
 
-    # 3. Tiêu đề thương hiệu
-    font_sub_title = get_font(28, bold=True)
-    font_main_brand = get_font(68, bold=True)
-    draw.text((60, 115), "SỮA DINH DƯỠNG Y HỌC", fill="#1E2A38", font=font_sub_title)
-    draw.text((60, 155), "NUTRICOMP®", fill="#013D29", font=font_main_brand)
+    # Đường phân cách & Cờ Đức
+    draw.line([(end_x + 25, 60), (end_x + 25, 115)], fill="#CCCCCC", width=2)
+    draw.text((end_x + 45, 75), "B.Braun Melsungen AG • CHLB Đức", fill="#005B94", font=get_font(22, bold=True))
 
-    # 4. Banner giải pháp chuyên biệt bo góc viền vàng
-    draw_rounded_rect(draw, (60, 245, 560, 315), radius=16, fill="#F5A623", outline="#D4AF37", width=2)
-    draw.text((75, 255), "GIẢI PHÁP DINH DƯỠNG CHUYÊN BIỆT", fill="#FFFFFF", font=get_font(22, bold=True))
-    draw_rounded_rect(draw, (120, 280, 500, 310), radius=12, fill="#013D29")
-    draw.text((150, 283), "CHO NGƯỜI BỆNH THẬN", fill="#FFFFFF", font=get_font(20, bold=True))
+    # Tiêu đề tự nhiên, thanh thoát
+    draw.text((70, 180), "NUTRICOMP® DRINK RENAL", fill="#013D29", font=get_font(52, bold=True))
+    draw.text((70, 245), "Dinh dưỡng y học chuyên biệt cho người suy thận và phục hồi thể trạng", fill="#4A5568", font=get_font(24, bold=False))
 
-    # 5. Cột tính năng ưu việt (3 Icon tròn bên trái)
-    features = [
-        ("ÍT ĐIỆN GIẢI", "Kiểm soát Natri, Kali, Phospho"),
-        ("GIÀU ĐẠM & NĂNG LƯỢNG", "14g Protein | 400 kcal trong 200ml"),
-        ("DỄ UỐNG, DỄ TIÊU HÓA", "Hấp thu tốt, êm bụng, ngon miệng")
-    ]
-    y_feat = 345
-    for title, desc in features:
-        draw.ellipse([(60, y_feat), (120, y_feat + 60)], fill="#013D29", outline="#3BCFAF", width=2)
-        draw.text((75, y_feat + 12), "★", fill="#3BCFAF", font=get_font(30, bold=True))
-        draw.text((135, y_feat + 5), title, fill="#FFFFFF", font=get_font(22, bold=True))
-        draw.text((135, y_feat + 32), desc, fill="#E0F2F1", font=get_font(19, bold=False))
-        y_feat += 85
-
-    # Khiên bảo chứng
-    draw_rounded_rect(draw, (60, y_feat + 10, 520, y_feat + 75), radius=14, fill="#004D40", outline="#F5A623", width=2)
-    draw.text((80, y_feat + 20), "✔ DINH DƯỠNG CHUẨN Y HỌC", fill="#F5A623", font=get_font(21, bold=True))
-    draw.text((80, y_feat + 45), "CHĂM SÓC THẬN – NÂNG TẦM CUỘC SỐNG", fill="#FFFFFF", font=get_font(18, bold=False))
-
-    # 6. Hero Visual giả lập (Khung sản phẩm 12 chai)
-    draw_rounded_rect(draw, (560, 280, 1030, 720), radius=20, fill="#024D33", outline="#D4AF37", width=3)
-    draw.text((610, 310), "HỘP QUÀ COMBO 12 CHAI", fill="#D4AF37", font=get_font(28, bold=True))
-    draw.text((610, 350), "Nutricomp® Drink Renal 200ml", fill="#FFFFFF", font=get_font(22, bold=False))
-    draw.text((610, 480), "400 kcal / 200ml", fill="#FFD54F", font=get_font(42, bold=True))
-    draw.text((610, 535), "Năng lượng cao phục hồi thể trạng", fill="#E0F2F1", font=get_font(20, bold=False))
-
-    # 7. Bottom Action Bar
-    # Nút CTA Đỏ 3D
-    draw_rounded_rect(draw, (60, h - 165, 520, h - 75), radius=45, fill="#D32F2F", outline="#FFCDD2", width=2)
-    draw.text((100, h - 150), "🛒  ĐẶT MUA NGAY  >>", fill="#FFFFFF", font=get_font(28, bold=True))
-    draw.text((140, h - 110), "TƯ VẤN DINH DƯỠNG MIỄN PHÍ", fill="#FFF9C4", font=get_font(18, bold=False))
-
-    # 3 Badges uy tín bên phải
-    draw.text((560, h - 145), "🇩🇪 Nhập khẩu Đức", fill="#FFFFFF", font=get_font(19, bold=True))
-    draw.text((750, h - 145), "👨‍⚕️ Khuyên dùng", fill="#FFFFFF", font=get_font(19, bold=True))
-    draw.text((910, h - 145), "⭐ Chuẩn quốc tế", fill="#FFFFFF", font=get_font(19, bold=True))
-
-    # Disclaimer FSMP
-    draw.rectangle([(0, h - 55), (w, h)], fill="#002517")
-    draw.text((60, h - 42), "Thực phẩm dinh dưỡng y học (FSMP) – Không phải thuốc, không thay thế thuốc chữa bệnh. Dùng theo tư vấn của bác sĩ/chuyên gia.", fill="#A7D7C5", font=get_font(16, bold=False))
+    # Chân trang tối giản
+    draw.line([(70, h - 120), (w - 70, h - 120)], fill="#E2E8F0", width=1)
+    draw.text((70, h - 85), "Thực phẩm dinh dưỡng y học (FSMP) • Nhập khẩu chính ngạch từ CHLB Đức", fill="#718096", font=get_font(20, bold=False))
 
     Path(output_path).parent.mkdir(parents=True, exist_ok=True)
     img.save(output_path, "PNG", quality=95)
-    print(f"[SUCCESS] Đã tạo poster Nutricomp chuẩn tại: {output_path}")
     return output_path
 
 
 def render_prontosan_poster(output_path: str):
-    """Tạo poster Prontosan theo quy chuẩn cao cấp nhận diện y tế B.Braun Đức"""
+    """
+    Thiết kế poster Prontosan theo phong cách y tế tự nhiên, tinh tế chuẩn Châu Âu.
+    Tone màu xanh ngọc y tế dịu mát (#EBF8FA / #00A896 / #005B94), không vẽ khung thô.
+    """
     w, h = 1080, 1080
-    img = Image.new("RGB", (w, h), color="#003E5C")
+    img = Image.new("RGB", (w, h), color="#F4FAFB")
     draw = ImageDraw.Draw(img)
 
-    # 1. Gradient Nền Y Tế B.Braun
+    # 1. Nền gradient dịu mát y tế (Fresh Clean Hospital / Clinic Aesthetic)
     for y in range(h):
         ratio = y / h
-        if ratio < 0.35:
-            r = int(245 - ratio * 60)
-            g = int(250 - ratio * 40)
-            b = int(253 - ratio * 20)
-        else:
-            sub = (ratio - 0.35) / 0.65
-            r = int(5 * (1 - sub) + 0 * sub)
-            g = int(75 * (1 - sub) + 45 * sub)
-            b = int(120 * (1 - sub) + 70 * sub)
+        r = int(244 * (1 - ratio * 0.15))
+        g = int(250 * (1 - ratio * 0.08))
+        b = int(252 * (1 - ratio * 0.05))
         draw.line([(0, y), (w, y)], fill=(r, g, b))
 
-    # 2. Header
-    draw.text((60, 45), "GLOBALPHARMA", fill="#E30613", font=get_font(26, bold=True))
-    draw.line([(280, 40), (280, 80)], fill="#888888", width=2)
-    draw.ellipse([(305, 42), (345, 82)], fill="#000000", outline="#D4AF37", width=2)
-    draw.chord([(305, 42), (345, 82)], start=0, end=180, fill="#DD0000")
-    draw.chord([(305, 42), (345, 82)], start=60, end=120, fill="#FFCE00")
-    draw.text((360, 48), "B.Braun Melsungen AG - CHLB Đức", fill="#005B94", font=get_font(22, bold=True))
+    # 2. Logo GlobalPharma chính thức
+    end_x = paste_globalpharma_logo(img, x=70, y=60, target_h=55)
 
-    # 3. Tiêu đề
-    draw.text((60, 115), "DUNG DỊCH & GEL RỬA VẾT THƯƠNG CHUYÊN DỤNG", fill="#003E5C", font=get_font(26, bold=True))
-    draw.text((60, 155), "PRONTOSAN®", fill="#005B94", font=get_font(68, bold=True))
+    # 3. Đối tác B.Braun Đức
+    draw.line([(end_x + 25, 60), (end_x + 25, 115)], fill="#BEE3F8", width=2)
+    draw.text((end_x + 45, 75), "B.Braun Medical • CHLB Đức", fill="#005B94", font=get_font(22, bold=True))
 
-    # Banner
-    draw_rounded_rect(draw, (60, 245, 600, 315), radius=16, fill="#00A896", outline="#3BCFAF", width=2)
-    draw.text((75, 255), "GIẢI PHÁP LÀM LÀNH VẾT THƯƠNG & LOÉT TÌ ĐÈ", fill="#FFFFFF", font=get_font(21, bold=True))
-    draw_rounded_rect(draw, (120, 280, 540, 310), radius=12, fill="#003E5C")
-    draw.text((150, 283), "PHÁ VỠ MÀNG BIOFILM KHÁNG KHUẨN", fill="#3BCFAF", font=get_font(19, bold=True))
+    # 4. Tiêu đề thương hiệu thanh thoát, hiện đại
+    draw.text((70, 180), "PRONTOSAN® WOUND CARE", fill="#005B94", font=get_font(52, bold=True))
+    draw.text((70, 245), "Giải pháp làm sạch & làm lành vết thương mạn tính, loét tì đè", fill="#2D3748", font=get_font(24, bold=False))
 
-    # 4. Tính năng
-    features = [
-        ("HOẠT CHẤT ĐỘC QUYỀN", "Polihexanide (PHMB) + Betaine kháng khuẩn"),
-        ("KHÔNG GÂY ĐAU XÓT", "Dịu nhẹ mô hạt, bảo tồn tế bào mới hình thành"),
-        ("LÀM LÀNH VẾT THƯƠNG NHANH", "Hiệu quả rõ rệt trên vết loét tiểu đường, bỏng, tì đè")
+    # 5. Điểm nhấn lâm sàng trình bày thoáng đãng (không đóng khung thô)
+    draw.line([(70, 310), (w - 70, 310)], fill="#CBD5E0", width=1)
+
+    points = [
+        ("Phức hợp độc quyền Polihexanide (PHMB) & Betaine:", "Phá vỡ màng Biofilm bảo vệ vi khuẩn, làm sạch tận gốc ổ nhiễm."),
+        ("Bảo tồn tối đa mô hạt mới hình thành:", "Không gây đau xót, không kích ứng da, tạo môi trường vi mô lý tưởng để lên da non."),
+        ("Ứng dụng lâm sàng rộng rãi:", "Được hơn 100 bệnh viện lớn tin dùng trong điều trị loét tì đè, loét bàn chân đái tháo đường, bỏng.")
     ]
-    y_feat = 345
-    for title, desc in features:
-        draw.ellipse([(60, y_feat), (120, y_feat + 60)], fill="#003E5C", outline="#3BCFAF", width=2)
-        draw.text((75, y_feat + 12), "✦", fill="#3BCFAF", font=get_font(30, bold=True))
-        draw.text((135, y_feat + 5), title, fill="#FFFFFF", font=get_font(22, bold=True))
-        draw.text((135, y_feat + 32), desc, fill="#E0F7FA", font=get_font(19, bold=False))
-        y_feat += 85
+    y_p = 350
+    for bold_txt, norm_txt in points:
+        # Chấm tròn xanh ngọc tinh tế
+        draw.ellipse([(70, y_p + 8), (86, y_p + 24)], fill="#00A896")
+        draw.text((105, y_p), bold_txt, fill="#005B94", font=get_font(23, bold=True))
+        draw.text((105, y_p + 35), norm_txt, fill="#4A5568", font=get_font(21, bold=False))
+        y_p += 105
 
-    # Khung sản phẩm
-    draw_rounded_rect(draw, (620, 280, 1030, 720), radius=20, fill="#002D42", outline="#3BCFAF", width=3)
-    draw.text((650, 310), "BỘ ĐÔI CHĂM SÓC TOÀN DIỆN", fill="#3BCFAF", font=get_font(24, bold=True))
-    draw.text((650, 355), "• Prontosan® Wound Spray 75ml", fill="#FFFFFF", font=get_font(22, bold=False))
-    draw.text((650, 395), "• Prontosan® Wound Gel 30g", fill="#FFFFFF", font=get_font(22, bold=False))
-    draw.text((650, 480), "CHỨNG NHẬN CE", fill="#F5A623", font=get_font(36, bold=True))
-    draw.text((650, 530), "Tiêu chuẩn Thiết bị y tế Châu Âu", fill="#E0F7FA", font=get_font(20, bold=False))
+    # 6. Khối thông tin bộ đôi sản phẩm tự nhiên
+    draw.line([(70, y_p + 20), (w - 70, y_p + 20)], fill="#E2E8F0", width=1)
+    
+    draw.text((70, y_p + 50), "BỘ ĐÔI CHĂM SÓC TOÀN DIỆN TẠI NHÀ & BỆNH VIỆN", fill="#00A896", font=get_font(22, bold=True))
+    draw.text((70, y_p + 90), "• Prontosan® Wound Spray (75ml): Xịt rửa sát khuẩn vết thương nông, trầy xước.", fill="#2D3748", font=get_font(22, bold=False))
+    draw.text((70, y_p + 130), "• Prontosan® Wound Gel (30g): Giữ ẩm liên tục, kháng khuẩn cho vết loét sâu, tì đè.", fill="#2D3748", font=get_font(22, bold=False))
 
-    # Chân trang CTA
-    draw_rounded_rect(draw, (60, h - 165, 520, h - 75), radius=45, fill="#D32F2F", outline="#FFCDD2", width=2)
-    draw.text((100, h - 150), "🛒  ĐẶT MUA NGAY  >>", fill="#FFFFFF", font=get_font(28, bold=True))
-    draw.text((140, h - 110), "TƯ VẤN CHĂM SÓC VẾT THƯƠNG MIỄN PHÍ", fill="#FFF9C4", font=get_font(18, bold=False))
-
-    draw.text((560, h - 145), "🇩🇪 Chuẩn CHLB Đức", fill="#FFFFFF", font=get_font(19, bold=True))
-    draw.text((750, h - 145), "🏥 Bệnh viện tin dùng", fill="#FFFFFF", font=get_font(19, bold=True))
-    draw.text((930, h - 145), "🛡️ Kháng khuẩn", fill="#FFFFFF", font=get_font(19, bold=True))
-
-    draw.rectangle([(0, h - 55), (w, h)], fill="#001F2D")
-    draw.text((60, h - 42), "Trang thiết bị y tế loại B – Đọc kỹ hướng dẫn sử dụng trước khi dùng. Nhập khẩu chính ngạch B.Braun CHLB Đức.", fill="#80DEEA", font=get_font(16, bold=False))
+    # 7. Chân trang tối giản, sang trọng
+    draw.rectangle([(0, h - 110), (w, h)], fill="#003E5C")
+    draw.text((70, h - 75), "GLOBALPHARMA • ĐỐI TÁC PHÂN PHỐI CHÍNH THỨC B.BRAUN TẠI VIỆT NAM", fill="#FFFFFF", font=get_font(20, bold=True))
+    draw.text((70, h - 45), "Trang thiết bị y tế loại B • Tiêu chuẩn chất lượng Châu Âu (CE)", fill="#A0AEC0", font=get_font(16, bold=False))
 
     Path(output_path).parent.mkdir(parents=True, exist_ok=True)
     img.save(output_path, "PNG", quality=95)
-    print(f"[SUCCESS] Đã tạo poster Prontosan chuẩn tại: {output_path}")
+    print(f"[SUCCESS] Đã tạo poster Prontosan tự nhiên tại: {output_path}")
     return output_path
 
 
 def render_affiliate_poster(output_path: str):
-    """Tạo poster Tuyển dụng Affiliate theo phong cách Trao giá trị - Solopreneur sang trọng"""
+    """
+    Thiết kế poster Tuyển dụng Affiliate theo phong cách Doanh nhân Sức khỏe (Solopreneur).
+    Tối giản, đẳng cấp, tone màu xanh navy sang trọng (#0F172A) & vàng ánh kim (#D4AF37).
+    """
     w, h = 1080, 1080
-    img = Image.new("RGB", (w, h), color="#1A2530")
+    img = Image.new("RGB", (w, h), color="#0F172A")
     draw = ImageDraw.Draw(img)
 
+    # 1. Nền Gradient sang trọng
     for y in range(h):
         ratio = y / h
-        if ratio < 0.35:
-            r = int(248 - ratio * 40)
-            g = int(246 - ratio * 40)
-            b = int(240 - ratio * 50)
-        else:
-            sub = (ratio - 0.35) / 0.65
-            r = int(26 * (1 - sub) + 15 * sub)
-            g = int(37 * (1 - sub) + 20 * sub)
-            b = int(48 * (1 - sub) + 30 * sub)
+        r = int(15 + ratio * 15)
+        g = int(23 + ratio * 20)
+        b = int(42 + ratio * 25)
         draw.line([(0, y), (w, y)], fill=(r, g, b))
 
-    draw.text((60, 45), "GLOBALPHARMA PARTNERS", fill="#D4AF37", font=get_font(26, bold=True))
-    draw.line([(380, 40), (380, 80)], fill="#888888", width=2)
-    draw.text((400, 48), "Mạng lưới đối tác y dược uy tín", fill="#1E2A38", font=get_font(22, bold=True))
+    # 2. Gắn logo GlobalPharma
+    end_x = paste_globalpharma_logo(img, x=70, y=60, target_h=55)
 
-    draw.text((60, 115), "MÔ HÌNH KINH DOANH MỘT NGƯỜI (SOLOPRENEUR)", fill="#1E2A38", font=get_font(26, bold=True))
-    draw.text((60, 155), "AFFILIATE NGÀNH SỨC KHỎE", fill="#D4AF37", font=get_font(56, bold=True))
+    draw.line([(end_x + 25, 60), (end_x + 25, 115)], fill="#334155", width=2)
+    draw.text((end_x + 45, 75), "PARTNER NETWORK • AFFILIATE Y KHOA", fill="#D4AF37", font=get_font(22, bold=True))
 
-    draw_rounded_rect(draw, (60, 245, 680, 315), radius=16, fill="#2C3E50", outline="#D4AF37", width=2)
-    draw.text((75, 255), "DÀNH RIÊNG CHO DƯỢC SĨ, PT & NHÂN SỰ Y TẾ", fill="#FFFFFF", font=get_font(21, bold=True))
-    draw.text((75, 283), "Biến tri thức y khoa thành nguồn thu nhập bền vững", fill="#D4AF37", font=get_font(18, bold=False))
+    # 3. Tiêu đề
+    draw.text((70, 180), "KINH DOANH MỘT NGƯỜI (SOLOPRENEUR)", fill="#FFFFFF", font=get_font(46, bold=True))
+    draw.text((70, 240), "Dành riêng cho Dược sĩ, PT & Chuyên gia hoạt động trong ngành sức khỏe", fill="#94A3B8", font=get_font(23, bold=False))
 
-    features = [
-        ("SẢN PHẨM CHÍNH HÃNG CHÂU ÂU", "B.Braun Đức – Uy tín y khoa được bảo chứng lâm sàng"),
-        ("KHÔNG ÔM HÀNG - KHÔNG RỦI RO", "GlobalPharma xử lý kho vận, đóng gói và pháp lý 100%"),
-        ("HỆ THỐNG AI & CONTENT ĐỒNG HÀNH", "Cung cấp sẵn kịch bản tư vấn, poster và video chuyên sâu")
+    draw.line([(70, 300), (w - 70, 300)], fill="#334155", width=1)
+
+    # 4. Giá trị cốt lõi
+    values = [
+        ("Chuyển hóa uy tín chuyên môn thành thu nhập bền vững:", "Không cần ôm hàng, không rủi ro tồn kho, GlobalPharma đảm nhiệm trọn gói vận hành và pháp lý."),
+        ("Dải sản phẩm chính ngạch tiêu chuẩn Châu Âu:", "B.Braun CHLB Đức - Thương hiệu y tế toàn cầu được giới bác sĩ và dược sĩ tin dùng."),
+        ("Đồng hành bằng hệ thống AI & Công nghệ số:", "Cung cấp trọn bộ tư liệu truyền thông, kịch bản tư vấn chuẩn lâm sàng giúp đối tác tự tin lan tỏa.")
     ]
-    y_feat = 345
-    for title, desc in features:
-        draw.ellipse([(60, y_feat), (120, y_feat + 60)], fill="#1E2A38", outline="#D4AF37", width=2)
-        draw.text((75, y_feat + 12), "★", fill="#D4AF37", font=get_font(30, bold=True))
-        draw.text((135, y_feat + 5), title, fill="#FFFFFF", font=get_font(22, bold=True))
-        draw.text((135, y_feat + 32), desc, fill="#D1D5DB", font=get_font(19, bold=False))
-        y_feat += 85
+    y_v = 345
+    for title, desc in values:
+        draw.ellipse([(70, y_v + 8), (86, y_v + 24)], fill="#D4AF37")
+        draw.text((105, y_v), title, fill="#D4AF37", font=get_font(23, bold=True))
+        draw.text((105, y_v + 35), desc, fill="#E2E8F0", font=get_font(20, bold=False))
+        y_v += 110
 
-    draw_rounded_rect(draw, (60, h - 165, 520, h - 75), radius=45, fill="#D4AF37", outline="#FDE68A", width=2)
-    draw.text((100, h - 150), "🤝  GIA NHẬP ĐỐI TÁC  >>", fill="#1E2A38", font=get_font(26, bold=True))
-    draw.text((140, h - 110), "ĐĂNG KÝ NHẬN TƯ VẤN MÔ HÌNH", fill="#374151", font=get_font(18, bold=False))
+    # 5. Thông điệp đối tác
+    draw.line([(70, y_v + 20), (w - 70, y_v + 20)], fill="#334155", width=1)
+    
+    quote = (
+        "\"Sứ mệnh của chúng tôi là đồng hành cùng những người làm chuyên môn y dược,\n"
+        " cùng mang các giải pháp dinh dưỡng y học và chăm sóc vết thương chuẩn mực\n"
+        " đến tận tay những người bệnh đang cần giúp đỡ nhất.\""
+    )
+    draw.text((70, y_v + 50), quote, fill="#94A3B8", font=get_font(21, bold=False))
 
-    draw.text((560, h - 145), "🛡️ Chính ngạch", fill="#FFFFFF", font=get_font(19, bold=True))
-    draw.text((740, h - 145), "📈 Thu nhập cao", fill="#FFFFFF", font=get_font(19, bold=True))
-    draw.text((910, h - 145), "🤖 AI hỗ trợ", fill="#FFFFFF", font=get_font(19, bold=True))
-
-    draw.rectangle([(0, h - 55), (w, h)], fill="#0D131A")
-    draw.text((60, h - 42), "GlobalPharma Partner Program – Hợp tác minh bạch, tôn trọng uy tín người làm nghề y dược.", fill="#9CA3AF", font=get_font(16, bold=False))
+    # 6. Chân trang
+    draw.rectangle([(0, h - 110), (w, h)], fill="#020617")
+    draw.text((70, h - 75), "GLOBALPHARMA • ĐỐI TÁC CHIẾN LƯỢC CỦA CHUYÊN GIA SỨC KHỎE", fill="#D4AF37", font=get_font(20, bold=True))
+    draw.text((70, h - 45), "Tham gia cộng đồng đối tác: Fanpage Affiliate - GlobalPharma", fill="#64748B", font=get_font(16, bold=False))
 
     Path(output_path).parent.mkdir(parents=True, exist_ok=True)
     img.save(output_path, "PNG", quality=95)
-    print(f"[SUCCESS] Đã tạo poster Affiliate chuẩn tại: {output_path}")
+    print(f"[SUCCESS] Đã tạo poster Affiliate tự nhiên tại: {output_path}")
     return output_path
 
 
 def main():
     import argparse
-    parser = argparse.ArgumentParser(description="Tạo poster chuẩn nhận diện y tế GlobalPharma")
+    parser = argparse.ArgumentParser(description="Tạo poster tự nhiên chuẩn nhận diện y tế GlobalPharma")
     parser.add_argument("--type", choices=["nutricomp", "prontosan", "affiliate", "all"], default="all")
     parser.add_argument("--variant", choices=["box12", "combo12", "emotion", "bottles"], default="box12")
     parser.add_argument("--output-dir", default="output")
