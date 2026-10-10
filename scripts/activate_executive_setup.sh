@@ -257,9 +257,17 @@ docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T gocl
 echo "=== CHECKING CHANNEL INSTANCES & TELEGRAM BOT CONFIG ==="
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -c "SELECT id, name, display_name, channel_type, agent_id, enabled, config FROM channel_instances;"
 
-echo "=== CHECKING TELEGRAM IN GOCLAW LOGS ==="
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml logs --tail=150 goclaw | grep -i -E "telegram|channel|pairing" || echo "No telegram/channel/pairing logs found."
+echo "=== CHECKING AGENTS & LLM PROVIDERS ==="
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -c "SELECT id, agent_key, display_name, provider, model FROM agents;"
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -c "SELECT id, name, provider_type, base_url, is_active FROM llm_providers;"
+
+echo "=== CHECKING RECENT TELEGRAM CONVERSATION LOGS ==="
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml logs --tail=100 goclaw | grep -i -C 4 "5781808621" || echo "No conversation logs with 5781808621"
+
+echo "=== CHECKING GOCLAW ERROR / WARN LOGS ==="
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml logs --tail=100 goclaw | grep -i -E "level=WARN|level=ERROR" || echo "No WARN/ERROR logs"
 
 echo "Executive setup script executed successfully."
+
 
 
