@@ -1,0 +1,32 @@
+[
+  {
+    "id": "100234567890001",
+    "name": "GlobalPharma - Dinh Dưỡng Y Học Lâm Sàng",
+    "token": "EAAV8YPOyjNY...",
+    "enabled": true
+  },
+  {
+    "id": "100234567890002",
+    "name": "Nutricomp Việt Nam - Dinh Dưỡng Suy Thận",
+    "token": "EAAV8YPOyjNY...",
+    "enabled": true
+  },
+  {
+    "id": "100234567890003",
+    "name": "Nutricomp Drink Plus - Phục Hồi Sau Mổ",
+    "token": "EAAV8YPOyjNY...",
+    "enabled": true
+  },
+  {
+    "id": "100234567890004",
+    "name": "Prontosan Việt Nam - Chăm Sóc Vết Thương Chuẩn Đức",
+    "token": "EAAV8YPOyjNY...",
+    "enabled": true
+  },
+  {
+    "id": "100234567890005",
+    "name": "Chăm Sóc Người Bệnh Thận Tại Nhà",
+    "token": "EAAV8YPOyjNY...",
+    "enabled": true
+  }
+]
