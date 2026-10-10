@@ -20,6 +20,8 @@ jobs:
             set -e
             cd /opt/goclaw
             echo "Pulling latest changes from git..."
+            git reset --hard HEAD || true
+            git clean -fd || true
             git pull origin main || git pull origin dev || echo "Git pull warning, continuing..."
             echo "Updating and restarting containers..."
             docker compose -f docker-compose.yml -f docker-compose.postgres.yml pull
