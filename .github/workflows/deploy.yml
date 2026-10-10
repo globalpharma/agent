@@ -3,6 +3,8 @@ name: Deploy GoClaw to VPS
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - '.github/workflows/diagnose.yml'
   workflow_dispatch:
 
 jobs:

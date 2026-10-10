@@ -1,0 +1,29 @@
+name: Diagnose VPS GoClaw
+
+on:
+  workflow_dispatch:
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Inspect VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST || '147.93.159.110' }}
+          username: ${{ secrets.VPS_USERNAME || 'root' }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            cd /opt/goclaw
+            echo "=== RECENT GOCLAW LOGS (LAST 120 LINES) ==="
+            docker compose -f docker-compose.yml -f docker-compose.postgres.yml logs --tail 120 goclaw
+            
+            echo "=== RECENT POSTGRES SESSIONS ==="
+            docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T postgres psql -U postgres -d goclaw -c "SELECT session_key, channel, updated_at, jsonb_array_length(messages) as msg_count FROM sessions ORDER BY updated_at DESC LIMIT 6;"
+            
+            echo "=== LATEST 5 MESSAGES IN TELEGRAM SESSION ==="
+            docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T postgres psql -U postgres -d goclaw -c "SELECT m->>'role' as role, SUBSTRING(m->>'content' FROM 1 FOR 250) as content, m->>'timestamp' as ts FROM sessions, jsonb_array_elements(messages) as m WHERE session_key LIKE '%telegram:direct:5781808621' ORDER BY (m->>'timestamp')::text DESC LIMIT 5;"
+            
+            echo "=== CHECKING DELEGATE SESSIONS ==="
+            docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T postgres psql -U postgres -d goclaw -c "SELECT session_key, channel, updated_at, jsonb_array_length(messages) as msg_count FROM sessions WHERE session_key LIKE 'delegate:%' ORDER BY updated_at DESC LIMIT 5;"
