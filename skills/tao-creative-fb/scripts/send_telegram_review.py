@@ -127,7 +127,7 @@ def main():
         "⛔ <b>Tuyệt đối loại trừ:</b> Fanpage <i>Affiliate - GlobalPharma</i> (để dành tuyến bài tuyển dụng đối tác riêng).\n\n"
         "<b>3. Xác nhận Pháp lý:</b>\n"
         "Lead Legal xác nhận: <code>APPROVED</code> — 100% đúng định vị dinh dưỡng y tế &amp; thiết bị chăm sóc vết thương B.Braun Đức, không có từ cấm 'đặc trị' hay 'thuốc chữa bệnh'.\n\n"
-        "Dưới đây là <b>3 BẢN VISUAL &amp; BÀI VIẾT THIẾT KẾ TỰ NHIÊN MỚI</b> do <b>Agent Design (mô hình GPT-5.6)</b> vừa hoàn thiện, đảm bảo ảnh sản phẩm thực tế sắc nét và logo chuẩn GlobalPharma &amp; B.Braun, kính mời Sếp xem qua ạ 👇"
+        "Dưới đây là <b>3 BẢN VISUAL ĐỘT PHÁ MỚI</b> do <b>Agent Design (mô hình GPT-5.6)</b> vừa ứng dụng trực tiếp kỹ năng <b>ads-image-architect</b> thiết kế (chuẩn sáng tạo Meta Ads: hand-drawn callouts, ảnh sản phẩm thực tế và logo GlobalPharma sắc nét, loại bỏ hoàn toàn nút CTA thô cứng), kính mời Sếp xem qua ạ 👇"
     )
     send_message(bot_token, chat_id, msg_plan)
 
