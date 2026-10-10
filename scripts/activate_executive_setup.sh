@@ -269,11 +269,20 @@ fi
 echo "Verifying Facebook broadcasting capability (dry-run) inside container..."
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T goclaw python3 /app/data/skills/tao-creative-fb/scripts/post_facebook.py --image /app/data/skills/tao-creative-fb/output/test_image.png --caption "Test bài đăng hệ thống Marketing GlobalPharma" --dry-run || echo "Dry-run check completed with warning"
 
+echo "=== STOPPING AND DISABLING LEGACY HOST OPENCLAW PROCESSES ==="
+ps aux | grep -i "openclaw" | grep -v grep || echo "No openclaw process in ps"
+systemctl stop openclaw-gateway 2>/dev/null || true
+systemctl disable openclaw-gateway 2>/dev/null || true
+systemctl stop openclaw 2>/dev/null || true
+systemctl disable openclaw 2>/dev/null || true
+pkill -9 -f "openclaw" 2>/dev/null || true
+pkill -9 -f "openclaw-gateway" 2>/dev/null || true
+
 echo "=== HOST & DOCKER DIAGNOSTICS ==="
 echo "All docker containers:"
 docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}"
-echo "Host processes matching goclaw or telego:"
-ps aux | grep -i -E "goclaw|telego" | grep -v grep || echo "No matching host processes"
+echo "Host processes matching goclaw, openclaw or telego:"
+ps aux | grep -i -E "goclaw|openclaw|telego" | grep -v grep || echo "No matching host processes"
 echo "Active outgoing connections to Telegram API (port 443):"
 ss -tpn state established '( dport = :443 )' 2>/dev/null | grep -E "149.154|91.108" || echo "No direct Telegram IP socket detected in ss"
 
@@ -294,11 +303,12 @@ echo "=== CHECKING RECENT SESSIONS & LATEST MESSAGES ==="
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -c "SELECT session_key, channel, updated_at, jsonb_array_length(messages) as msg_count FROM sessions ORDER BY updated_at DESC LIMIT 5;" || true
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -c "SELECT session_key, (messages->-1)->>'role' as last_role, SUBSTRING((messages->-1)->>'content' FROM 1 FOR 300) as last_content FROM sessions WHERE channel = 'telegram' ORDER BY updated_at DESC LIMIT 1;" || true
 
-echo "=== CHECKING RECENT TELEGRAM CONVERSATION LOGS ==="
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml logs --tail=100 goclaw | grep -i -A 10 -B 3 "inbound: scheduling message" || echo "No scheduling logs"
+echo "Restarting goclaw container to acquire sole connection to Telegram..."
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml restart goclaw || true
+sleep 5
 
-echo "=== CHECKING GOCLAW ERROR / WARN LOGS ==="
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml logs --tail=100 goclaw | grep -i -E "level=WARN|level=ERROR|error|failed" || echo "No WARN/ERROR logs"
+echo "=== CHECKING TELEGRAM INBOUND & ERROR LOGS AFTER CLEANUP ==="
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml logs --tail=50 goclaw | grep -i -E "telegram|telego|409|getUpdates" || echo "No telegram conflict logs"
 
 echo "Executive setup script executed successfully."
 
