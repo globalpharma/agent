@@ -71,6 +71,14 @@ func (h *spaHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// For missing static assets (/assets/*), return 404 immediately.
+	// Never fall back to index.html for hashed asset files, as returning HTML
+	// causes browser SyntaxError / TypeError when dynamically importing JS modules.
+	if strings.HasPrefix(r.URL.Path, "/assets/") {
+		http.NotFound(w, r)
+		return
+	}
+
 	// SPA fallback: serve index.html for any unmatched route.
 	// This handles client-side routing (React Router).
 	h.serveIndex(w, r)

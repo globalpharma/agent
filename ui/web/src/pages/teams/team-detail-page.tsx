@@ -7,11 +7,8 @@ import { BoardHeader } from "./board/board-header";
 import { BoardContainer } from "./board/board-container";
 import { TeamInfoDialog } from "./board/team-info-dialog";
 import { TeamMembersDialog } from "./board/team-members-dialog";
+import { TeamWorkspaceDialog } from "./board/team-workspace-dialog";
 import type { TeamData, TeamMemberData, TeamAccessSettings, ScopeEntry } from "@/types/team";
-
-const TeamWorkspaceDialog = lazy(() =>
-  import("./board/team-workspace-dialog").then((m) => ({ default: m.TeamWorkspaceDialog }))
-);
 
 interface TeamDetailPageProps {
   teamId: string;
@@ -149,14 +146,12 @@ export function TeamDetailPage({ teamId, onBack }: TeamDetailPageProps) {
       />
 
       {/* Workspace dialog */}
-      <Suspense fallback={null}>
-        <TeamWorkspaceDialog
-          open={workspaceOpen}
-          onOpenChange={setWorkspaceOpen}
-          teamId={teamId}
-          scopes={scopes}
-        />
-      </Suspense>
+      <TeamWorkspaceDialog
+        open={workspaceOpen}
+        onOpenChange={setWorkspaceOpen}
+        teamId={teamId}
+        scopes={scopes}
+      />
 
       {/* Delete confirmation */}
       <ConfirmDeleteDialog

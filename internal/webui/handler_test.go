@@ -83,4 +83,19 @@ func TestHandlerKeepsHashedAssetsImmutable(t *testing.T) {
 	}
 }
 
+func TestHandlerMissingAssetsReturn404(t *testing.T) {
+	fsys := fstest.MapFS{
+		"index.html":           &fstest.MapFile{Data: []byte(`<!doctype html><title>GoClaw</title>`)},
+		"assets/app-abc123.js": &fstest.MapFile{Data: []byte(`console.log("ok")`)},
+	}
+
+	h := NewHandlerForFS(fsys, config.Default())
+	rec := httptest.NewRecorder()
+	h.ServeHTTP(rec, httptest.NewRequest(http.MethodGet, "/assets/non-existent-chunk.js", nil))
+
+	if rec.Code != http.StatusNotFound {
+		t.Fatalf("status = %d, want 404", rec.Code)
+	}
+}
+
 var _ fs.FS = fstest.MapFS{}
