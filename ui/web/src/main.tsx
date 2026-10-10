@@ -29,6 +29,22 @@ window.addEventListener("unhandledrejection", (event) => {
   }
 });
 
+/**
+ * Automatically recover from stale Vite chunk hashes following a deployment.
+ * When Vite fails to dynamically fetch a chunk because the server hash changed,
+ * it emits a `vite:preloadError` event. Reloading the page fetches the updated index.html.
+ */
+window.addEventListener("vite:preloadError", () => {
+  const reloaded = sessionStorage.getItem("vite-preload-reloaded");
+  if (!reloaded) {
+    sessionStorage.setItem("vite-preload-reloaded", "1");
+    window.location.reload();
+  }
+});
+
+// Clear reload guard on successful load
+sessionStorage.removeItem("vite-preload-reloaded");
+
 const LOADER_MIN_MS = 800;
 const loaderStart = performance.now();
 
