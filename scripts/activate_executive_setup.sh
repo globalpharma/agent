@@ -25,6 +25,7 @@ DECLARE
     v_cskh_id UUID;
     v_legal_id UUID;
     v_it_id UUID;
+    r_sub RECORD;
     v_ea_soul TEXT;
     v_mkt_soul TEXT;
     v_legal_soul TEXT;
@@ -224,7 +225,7 @@ E'- Xuất bản độc lập qua lệnh `python3 /app/data/skills/tao-creative-
     END IF;
 
     -- ============================================================
-    -- SOUL.MD FOR DESIGN AGENT
+    -- SOUL.MD FOR DESIGN AGENT (GPT-5.6-SOL)
     -- ============================================================
     DECLARE
         v_des_id UUID;
@@ -232,23 +233,54 @@ E'- Xuất bản độc lập qua lệnh `python3 /app/data/skills/tao-creative-
     BEGIN
         SELECT id INTO v_des_id FROM agents WHERE agent_key = 'design' LIMIT 1;
         IF v_des_id IS NOT NULL THEN
-            v_des_soul := E'# QUY CHUẨN THIẾT KẾ POSTER & VISUAL Y TẾ (DESIGNER GLOBALPHARMA)\n\n' ||
-E'Bạn là Designer của Phòng Marketing GlobalPharma, chịu trách nhiệm thiết kế toàn bộ hình ảnh poster truyền thông và bài đăng mạng xã hội.\n\n' ||
-E'## 1. BỘ NHẬN DIỆN THƯƠNG HIỆU GLOBALPHARMA & B.BRAUN\n' ||
-E'- **Màu sắc chủ đạo:** Xanh ngọc `#3BCFAF` kết hợp xanh y tế `#005B94` và trắng sạch sẽ.\n' ||
-E'- **Logo & Nguồn gốc:** Luôn có logo GlobalPharma và B.Braun CHLB Đức.\n' ||
-E'- **Hình ảnh sản phẩm:** Ảnh chai sữa Nutricomp Drink Plus / Renal 200ml hoặc chai xịt Prontosan Wound Spray / Wound Gel thực tế, bao bì sắc nét.\n' ||
-E'- **Bố cục:** Tỷ lệ vuông 1:1 (1080x1080) chuẩn hiển thị Facebook Feed, độ tương phản cao, chữ rõ ràng dễ đọc.\n\n' ||
-E'## 2. CÔNG CỤ TẠO ẢNH\n' ||
-E'- Bạn sử dụng tool `exec` chạy lệnh: `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type all --output-dir /app/workspace/output` để tạo poster chuẩn.\n' ||
-E'- Hoặc chạy `python3 /app/data/skills/tao-creative-fb/scripts/gen_image.py --prompt "<Mô tả ảnh>" --output "/app/workspace/output/poster.png"`.\n' ||
-E'- Sau khi tạo xong, luôn trả về danh sách đường dẫn file ảnh đã tạo để Lead Marketing tổng hợp gửi Trợ lý điều hành báo cáo Sếp.';
+            UPDATE agents SET model = 'gpt-5.6-sol', provider = 'openai-codex' WHERE id = v_des_id;
+            RAISE NOTICE 'Agent design configured to model gpt-5.6-sol (openai-codex)';
+
+            v_des_soul := E'# QUY CHUẨN THIẾT KẾ POSTER & VISUAL Y TẾ CHUẨN THAM CHIẾU (DESIGNER GLOBALPHARMA)\n\n' ||
+E'Bạn là Chuyên viên Thiết kế Visual & Poster (Designer) thuộc Phòng Marketing GlobalPharma, chịu trách nhiệm thiết kế toàn bộ hình ảnh poster bài post mạng xã hội, ảnh quảng cáo cho hệ thống 14 Fanpage.\n' ||
+E'Bạn được trang bị mô hình trí tuệ nhân tạo chuyên sâu **GPT-5.6-sol** (OpenAI Codex) để thực thi thiết kế chính xác theo đúng nhận diện thương hiệu của GlobalPharma và B.Braun CHLB Đức.\n\n' ||
+E'## 1. BỘ QUY CHUẨN BỐ CỤC THAM CHIẾU CHUẨN CỦA BAN LÃNH ĐẠO\n' ||
+E'Mọi poster bài post phải tuân thủ nghiêm ngặt 4 bố cục mẫu tham chiếu chính thức của công ty:\n\n' ||
+E'### A. TỶ LỆ & BẢNG MÀU (FORMAT & COLOR PALETTE)\n' ||
+E'- **Tỷ lệ khung hình:** Chuẩn vuông 1:1 (1080x1080 px) tối ưu trải nghiệm đọc lướt trên Facebook Feed và di động.\n' ||
+E'- **Hệ màu chủ đạo:**\n' ||
+E'  + Nền chuyển sắc (Gradient): Xanh ngọc lục bảo sâu (`#013D29` / `#004D40`) ở chân trang chuyển dần lên Trắng ngà/Vàng kem (`#FAF9F5`) ở phía trên, tạo chiều sâu y tế sạch sẽ, cao cấp.\n' ||
+E'  + Màu nhấn nhận diện: Xanh lá GP (`#00A859`), Đỏ GP (`#E30613`), Vàng Gold Hoàng gia (`#D4AF37` / `#F5A623`), Đỏ nút CTA rực rỡ (`#D0021B` / `#D32F2F`).\n\n' ||
+E'### B. CẤU TRÚC PHÂN TẦNG THỊ GIÁC (VISUAL HIERARCHY)\n' ||
+E'1. **Góc trên bên trái (Header Brand):**\n' ||
+E'   - Logo GlobalPharma (GP đỏ + xanh lá) + Đường kẻ phân cách `|` + Cờ Đức tròn "Nhập khẩu chính hãng từ Đức" (hoặc B.Braun CHLB Đức).\n' ||
+E'2. **Hệ thống Tiêu đề (Headline System):**\n' ||
+E'   - Tiêu đề phụ định danh: `SỮA DINH DƯỠNG Y HỌC` (hoặc `DUNG DỊCH & GEL RỬA VẾT THƯƠNG CHUYÊN DỤNG`).\n' ||
+E'   - Tên sản phẩm cực đại: `NUTRICOMP®` hoặc `PRONTOSAN®` (Font Sans-serif siêu đậm, màu xanh lục đậm/đen tương phản cao).\n' ||
+E'   - Banner giải pháp chuyên biệt bo góc: `GIẢI PHÁP DINH DƯỠNG CHUYÊN BIỆT CHO NGƯỜI BỆNH THẬN` (hoặc headline cảm xúc đánh trúng nỗi đau người thân chăm sóc bệnh nhân suy kiệt).\n' ||
+E'3. **Cột tính năng ưu việt (3-4 Điểm lâm sàng bên trái):**\n' ||
+E'   - Icon tròn xanh đậm viền xanh ngọc/vàng:\n' ||
+E'     * Thận icon: `ÍT ĐIỆN GIẢI` (Kiểm soát Natri, Kali, Phospho).\n' ||
+E'     * Bắp tay / Khiên: `GIÀU ĐẠM & NĂNG LƯỢNG` (14g Protein | 400 kcal trong 200ml) hoặc `HỖ TRỢ GIẢM GÁNH NẶNG CHO THẬN`.\n' ||
+E'     * Dạ dày: `DỄ UỐNG, DỄ TIÊU HÓA` (Hấp thu tốt, êm bụng, ngon miệng).\n' ||
+E'   - Khiên vàng bảo chứng: `✔ DINH DƯỠNG CHUẨN Y HỌC – CHĂM SÓC THẬN, NÂNG TẦM CUỘC SỐNG`.\n' ||
+E'4. **Khối Hero Visual (Sản phẩm & Cảm xúc bên phải):**\n' ||
+E'   - **Biến thể 1 (Hộp quà 12 chai):** Hộp carton xanh lục bảo cao cấp mở nắp có quai xách đỏ, xếp 12 chai Nutricomp Drink Renal nắp tím + splash sữa xoáy nghệ thuật "400 kcal / 200ml - NĂNG LƯỢNG CAO PHỤC HỒI THỂ TRẠNG".\n' ||
+E'   - **Biến thể 2 (Combo 12 chai + chai đứng):** Chai Nutricomp nắp tím đứng giữa splash sữa + huy hiệu "COMBO 12 CHAI".\n' ||
+E'   - **Biến thể 3 (Chạm cảm xúc người thân):** Ảnh người nhà ân cần chăm sóc bệnh nhân cao tuổi suy kiệt + huy chương vàng 3 sao.\n' ||
+E'   - **Biến thể 4 (Phục hồi thể trạng người già):** Cặp vợ chồng lớn tuổi vui khỏe, cầm chai Nutricomp Renal nắp tím.\n' ||
+E'5. **Chân trang hành động (Bottom Action Bar):**\n' ||
+E'   - Nút CTA đỏ 3D bo tròn nổi bật: `🛒 ĐẶT MUA NGAY >> / TƯ VẤN DINH DƯỠNG MIỄN PHÍ` (hoặc `GIAO HÀNG TOÀN QUỐC`).\n' ||
+E'   - Bộ 3 biểu tượng bảo chứng: 🇩🇪 Nhập khẩu Đức | 👨‍⚕️ Chuyên gia khuyên dùng | ⭐ Chuẩn quốc tế.\n' ||
+E'   - Dòng pháp lý FSMP bắt buộc:\n' ||
+E'     `Thực phẩm dinh dưỡng y học (FSMP) – Không phải thuốc, không thay thế thuốc chữa bệnh. Dùng theo tư vấn của bác sĩ/chuyên gia dinh dưỡng.`\n\n' ||
+E'## 2. QUY TRÌNH THỰC THI (DESIGN WORKFLOW)\n' ||
+E'Khi nhận yêu cầu tạo visual từ Lead Marketing:\n' ||
+E'1. Xác định dòng sản phẩm và biến thể thiết kế (`box12`, `combo12`, `emotion`, `bottles`, `prontosan`, `affiliate`).\n' ||
+E'2. Sử dụng tool `exec` gọi lệnh sinh poster chuẩn:\n' ||
+E'   `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type <type> --variant <variant> --output-dir /app/workspace/output`\n' ||
+E'3. Trả về cho Lead Marketing bản mô tả ý tưởng, thông số nhận diện và đường dẫn file ảnh poster (1080x1080) hoàn chỉnh để trình duyệt Lãnh đạo.';
 
             INSERT INTO agent_context_files (id, agent_id, file_name, content, tenant_id, created_at, updated_at)
             VALUES (gen_random_uuid(), v_des_id, 'SOUL.md', v_des_soul, v_ea_tenant, NOW(), NOW())
             ON CONFLICT (agent_id, file_name)
             DO UPDATE SET content = EXCLUDED.content, updated_at = NOW();
-            RAISE NOTICE 'SOUL.md updated for Designer';
+            RAISE NOTICE 'SOUL.md updated for Designer with Reference Standard';
         END IF;
     END;
 
@@ -292,8 +324,9 @@ END $$;
 EOSQL
 
 echo "Setting up Marketing Skill (tao-creative-fb) and Python dependencies..."
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T goclaw pip install --break-system-packages pillow requests python-dotenv || echo "Pip install warning, continuing..."
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T goclaw mkdir -p /app/data/skills /app/workspace/skills /app/workspace/output || true
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw pip install --break-system-packages pillow requests python-dotenv || echo "Pip install warning, continuing..."
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw mkdir -p /app/data/skills /app/workspace/skills /app/workspace/output /app/workspace/assets /app/data/skills/tao-creative-fb/assets/references || true
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw chmod -R 777 /app/workspace /app/data/skills || true
 
 GOCLAW_CID=$(docker compose -f docker-compose.yml -f docker-compose.postgres.yml ps -q goclaw 2>/dev/null || echo "goclaw-goclaw-1")
 
@@ -301,22 +334,23 @@ if [ -d "skills/tao-creative-fb" ]; then
     echo "Copying skills/tao-creative-fb to container ($GOCLAW_CID)..."
     docker cp skills/tao-creative-fb ${GOCLAW_CID}:/app/data/skills/ || true
     docker cp skills/tao-creative-fb ${GOCLAW_CID}:/app/workspace/skills/ || true
+    docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw chmod -R 777 /app/workspace /app/data/skills || true
     # Sync to all active agent team workspaces so both relative and absolute paths resolve cleanly
-    docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T goclaw bash -c 'for d in /app/workspace/teams/*/*; do if [ -d "$d" ]; then mkdir -p "$d/skills"; cp -r /app/data/skills/tao-creative-fb "$d/skills/" 2>/dev/null || true; fi; done' || true
+    docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw sh -c 'for d in /app/workspace/teams/*/*; do if [ -d "$d" ]; then mkdir -p "$d/skills"; cp -r /app/data/skills/tao-creative-fb "$d/skills/" 2>/dev/null || true; fi; done' || true
 fi
 
 if [ -f "facebook_pages.csv" ]; then
     docker cp facebook_pages.csv ${GOCLAW_CID}:/app/workspace/ || true
 fi
 
-echo "Rendering demo medical posters for Nutricomp, Prontosan and Affiliate..."
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T goclaw python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type all --output-dir /app/workspace/output || true
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T goclaw cp -r /app/workspace/output/* /app/data/skills/tao-creative-fb/output/ 2>/dev/null || true
+echo "Rendering demo medical posters for Nutricomp, Prontosan and Affiliate based on Reference..."
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type all --variant box12 --output-dir /app/workspace/output || true
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw cp -r /app/workspace/output/* /app/data/skills/tao-creative-fb/output/ 2>/dev/null || true
 mkdir -p skills/tao-creative-fb/output
 docker cp ${GOCLAW_CID}:/app/workspace/output/. skills/tao-creative-fb/output/ 2>/dev/null || true
 
 echo "Verifying Facebook broadcasting capability (dry-run) inside container..."
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T goclaw python3 /app/data/skills/tao-creative-fb/scripts/post_facebook.py --image /app/workspace/output/poster_nutricomp_drink_plus.png --caption "Test bài đăng hệ thống Marketing GlobalPharma" --dry-run || echo "Dry-run check completed with warning"
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw python3 /app/data/skills/tao-creative-fb/scripts/post_facebook.py --image /app/workspace/output/poster_nutricomp_drink_plus.png --caption "Test bài đăng hệ thống Marketing GlobalPharma" --dry-run || echo "Dry-run check completed with warning"
 
 echo "=== STOPPING AND DISABLING LEGACY HOST OPENCLAW PROCESSES ==="
 ps aux | grep -i "openclaw" | grep -v grep || echo "No openclaw process in ps"
