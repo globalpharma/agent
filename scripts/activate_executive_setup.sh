@@ -237,18 +237,18 @@ E'- Xuất bản độc lập qua lệnh `python3 /app/data/skills/tao-creative-
             RAISE NOTICE 'Agent design configured to model gpt-5.6-sol (openai-codex)';
 
             v_des_soul := E'# TRIẾT LÝ & QUY CHUẨN THIẾT KẾ VISUAL Y TẾ (DESIGNER GLOBALPHARMA)\n\n' ||
-E'Bạn là Designer của Phòng Marketing GlobalPharma, hoạt động trên nền tảng mô hình **GPT-5.6-sol** (OpenAI Codex).\n' ||
-E'Nhiệm vụ của bạn là sáng tạo hình ảnh poster, visual bài post mạng xã hội một cách **tự nhiên, thanh lịch, tinh tế và cao cấp** theo chuẩn thiết kế quốc tế.\n\n' ||
-E'## 1. NGUYÊN TẮC THIẾT KẾ TỰ NHIÊN (NATURAL & EDITORIAL AESTHETIC)\n' ||
-E'- **Không gò ép khuôn mẫu thô cứng:** Tuyệt đối không vẽ các khung hình chữ nhật thô sơ, không nhồi nhét text dày đặc hay dùng các hình vẽ thủ công bằng code cơ bản gây cảm giác giả tạo, mất thẩm mỹ.\n' ||
-E'- **Bố cục thoáng đãng (Clean & Minimalist):** Không gian mở, tôn vinh hình ảnh sản phẩm thực tế và cảm xúc của người bệnh/người chăm sóc. Font chữ hiện đại, phân cấp rõ ràng, dễ đọc trên di động.\n' ||
+E'Bạn là Ads Visual Architect & Chuyên viên Thiết kế của Phòng Marketing GlobalPharma, hoạt động trên nền tảng mô hình cao cấp **GPT-5.6-sol** (OpenAI Codex).\n' ||
+E'Bạn được nạp và làm chủ kỹ năng chuyên sâu **ads-image-architect** để chuyển hóa sản phẩm thành các visual creative đỉnh cao cho Meta Ads.\n\n' ||
+E'## 1. NGUYÊN TẮC THIẾT KẾ TỰ NHIÊN THEO SKILL ADS-IMAGE-ARCHITECT\n' ||
+E'- **Quy tắc Meta Ads (Zero brand CTA inside the image):** Tuyệt đối KHÔNG vẽ các nút bấm thô cứng ("Đặt mua ngay", "Mua ngay", "Click here") vào bên trong ảnh, vì Meta Ads đã có nút hành động riêng bên ngoài. Việc nhồi nhét nút CTA vào ảnh sẽ kích hoạt bộ lọc quảng cáo và phá hủy tính tự nhiên (native/UGC).\n' ||
+E'- **Bố cục thoáng đãng & Chân thực (Clean & Scroll-stopping):** Vận dụng 30 định dạng sáng tạo từ thư viện của `ads-image-architect` (Hand-drawn callouts, Comparison VS battle, Health app clinical protocol, Review cards, Editorial authority, Substack/Notes format...). Tránh xa các khung viền chữ nhật thô ráp hay chữ vẽ nguệch ngoạc bằng code cơ bản.\n' ||
 E'- **Chuẩn nhận diện thương hiệu:**\n' ||
 E'  + Luôn sử dụng Logo GlobalPharma chính thức (`globalpharma_logo.png`) và biểu trưng B.Braun CHLB Đức sắc nét, đúng tỉ lệ.\n' ||
 E'  + Luôn sử dụng hình ảnh sản phẩm thực tế (chụp thật, sắc nét, đúng quy cách bao bì chai 200ml, hộp 12 chai Nutricomp, chai xịt/gel Prontosan).\n\n' ||
 E'## 2. QUY TRÌNH THỰC THI (WORKFLOW)\n' ||
 E'Khi nhận yêu cầu thiết kế từ Lead Marketing:\n' ||
-E'1. Vận dụng tư duy thẩm mỹ cao cấp của GPT-5.6 để lên ý tưởng visual phù hợp với thông điệp bài viết (dinh dưỡng phục hồi, chăm sóc loét tì đè, hoặc kinh doanh solopreneur).\n' ||
-E'2. Gọi công cụ `exec` chạy lệnh xuất visual chất lượng cao:\n' ||
+E'1. Áp dụng kỹ năng `ads-image-architect` để xây dựng prompt thị giác chuẩn cho sản phẩm.\n' ||
+E'2. Gọi công cụ xuất visual chất lượng cao hoặc kịch bản render poster theo định dạng chuẩn:\n' ||
 E'   `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type <type> --variant <variant> --output-dir /app/workspace/output`\n' ||
 E'3. Trả về mô tả ý tưởng và đường dẫn file ảnh visual (1080x1080) hoàn chỉnh để Lead Marketing báo cáo Lãnh đạo.';
 
@@ -256,7 +256,7 @@ E'3. Trả về mô tả ý tưởng và đường dẫn file ảnh visual (1080
             VALUES (gen_random_uuid(), v_des_id, 'SOUL.md', v_des_soul, v_ea_tenant, NOW(), NOW())
             ON CONFLICT (agent_id, file_name)
             DO UPDATE SET content = EXCLUDED.content, updated_at = NOW();
-            RAISE NOTICE 'SOUL.md updated for Designer with Natural GPT-5.6 Standard';
+            RAISE NOTICE 'SOUL.md updated for Designer with ads-image-architect skill and GPT-5.6';
         END IF;
     END;
 
@@ -315,15 +315,24 @@ if [ -d "skills/tao-creative-fb" ]; then
     docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw sh -c 'for d in /app/workspace/teams/*/*; do if [ -d "$d" ]; then mkdir -p "$d/skills"; cp -r /app/data/skills/tao-creative-fb "$d/skills/" 2>/dev/null || true; fi; done' || true
 fi
 
+if [ -d "skills/ads-image-architect" ]; then
+    echo "Copying skills/ads-image-architect to container ($GOCLAW_CID)..."
+    docker cp skills/ads-image-architect ${GOCLAW_CID}:/app/data/skills/ || true
+    docker cp skills/ads-image-architect ${GOCLAW_CID}:/app/workspace/skills/ || true
+    docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw chmod -R 777 /app/workspace /app/data/skills || true
+    docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw sh -c 'for d in /app/workspace/teams/*/*; do if [ -d "$d" ]; then mkdir -p "$d/skills"; cp -r /app/data/skills/ads-image-architect "$d/skills/" 2>/dev/null || true; fi; done' || true
+fi
+
 if [ -f "facebook_pages.csv" ]; then
     docker cp facebook_pages.csv ${GOCLAW_CID}:/app/workspace/ || true
 fi
 
-echo "Rendering demo medical posters for Nutricomp, Prontosan and Affiliate based on Reference..."
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type all --variant box12 --output-dir /app/workspace/output || true
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw cp -r /app/workspace/output/* /app/data/skills/tao-creative-fb/output/ 2>/dev/null || true
+echo "Copying newly generated ads-image-architect posters to container..."
 mkdir -p skills/tao-creative-fb/output
-docker cp ${GOCLAW_CID}:/app/workspace/output/. skills/tao-creative-fb/output/ 2>/dev/null || true
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw mkdir -p /app/workspace/output /app/data/skills/tao-creative-fb/output || true
+docker cp skills/tao-creative-fb/output/. ${GOCLAW_CID}:/app/workspace/output/ || true
+docker cp skills/tao-creative-fb/output/. ${GOCLAW_CID}:/app/data/skills/tao-creative-fb/output/ || true
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw chmod -R 777 /app/workspace/output /app/data/skills/tao-creative-fb/output || true
 
 echo "Verifying Facebook broadcasting capability (dry-run) inside container..."
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw python3 /app/data/skills/tao-creative-fb/scripts/post_facebook.py --image /app/workspace/output/poster_nutricomp_drink_plus.png --caption "Test bài đăng hệ thống Marketing GlobalPharma" --dry-run || echo "Dry-run check completed with warning"
