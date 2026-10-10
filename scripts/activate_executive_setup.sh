@@ -364,18 +364,40 @@ echo "Verifying Facebook broadcasting capability (dry-run) inside container..."
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw python3 /app/data/skills/tao-creative-fb/scripts/post_facebook.py --image /app/workspace/output/poster_nutricomp_drink_plus.png --caption "Test bài đăng hệ thống Marketing GlobalPharma" --dry-run || echo "Dry-run check completed with warning"
 
 echo "=== STOPPING AND DISABLING CONFLICTING HERMES & OPENCLAW PROCESSES ==="
-ps aux | grep -i -E "openclaw|hermes" | grep -v grep || echo "No openclaw/hermes process in ps"
-systemctl stop hermes 2>/dev/null || true
-systemctl disable hermes 2>/dev/null || true
-systemctl stop hermes-agent 2>/dev/null || true
-systemctl disable hermes-agent 2>/dev/null || true
-systemctl stop openclaw-gateway 2>/dev/null || true
-systemctl disable openclaw-gateway 2>/dev/null || true
-systemctl stop openclaw 2>/dev/null || true
-systemctl disable openclaw 2>/dev/null || true
+for p in $(pgrep -f "hermes" || true); do
+    echo "Inspecting PID $p:"
+    ps -fp $p || true
+    systemctl status $p 2>/dev/null | head -n 8 || true
+done
+for p in $(pgrep -f "openclaw" || true); do
+    echo "Inspecting PID $p:"
+    ps -fp $p || true
+    systemctl status $p 2>/dev/null | head -n 8 || true
+done
+
+echo "Systemd services matching hermes/openclaw/claw:"
+systemctl list-unit-files | grep -i -E "hermes|openclaw|claw" || echo "None in list-unit-files"
+
+# Check and kill PM2 processes if any
+which pm2 && pm2 delete all 2>/dev/null || true
+su - aicoworker -c "which pm2 && pm2 delete all" 2>/dev/null || true
+
+# Stop, disable and mask any systemd units found
+for unit in $(systemctl list-unit-files | grep -i -E "hermes|openclaw|claw" | awk '{print $1}'); do
+    echo "Stopping, disabling and masking systemd unit: $unit"
+    systemctl stop "$unit" 2>/dev/null || true
+    systemctl disable "$unit" 2>/dev/null || true
+    systemctl mask "$unit" 2>/dev/null || true
+done
+
+# Check supervisor or supervisorctl
+which supervisorctl && supervisorctl stop all 2>/dev/null || true
+
+# Hard kill all remaining processes
 pkill -9 -f "hermes" 2>/dev/null || true
 pkill -9 -f "openclaw" 2>/dev/null || true
 pkill -9 -f "openclaw-gateway" 2>/dev/null || true
+sleep 2
 
 echo "=== HOST & DOCKER DIAGNOSTICS ==="
 echo "All docker containers:"
