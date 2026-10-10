@@ -314,11 +314,16 @@ if [ -f /etc/caddy/Caddyfile ]; then
 fi
 find /etc /opt -name "*Caddyfile*" -exec echo "--- {} ---" \; -exec cat {} \; 2>/dev/null || true
 
-echo "--- Response from goclaw container (port 18790) ---"
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T goclaw wget -qO- http://localhost:18790/ | head -n 25 || true
+echo "=== DOCKER CADDY CONTAINER CONFIG ==="
+docker exec caddy cat /etc/caddy/Caddyfile 2>/dev/null || echo "No /etc/caddy/Caddyfile in caddy container"
+docker inspect caddy --format '{{json .Mounts}}' 2>/dev/null || true
 
-echo "--- Response from host port 18795 ---"
-curl -s http://127.0.0.1:18795/ | head -n 25 || true
+echo "=== GOCLAW DIRECT ASSET TESTS ==="
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T goclaw wget -S -O /dev/null http://localhost:18790/assets/index-DHYZ0Vor.js 2>&1 | head -n 15 || true
+curl -sI http://127.0.0.1:18795/assets/index-DHYZ0Vor.js || true
+
+echo "=== GOCLAW CONTAINER IMAGE & BUILD DATE ==="
+docker inspect goclaw-goclaw-1 --format 'Image: {{.Image}}, Created: {{.Created}}' || true
 
 echo "Executive setup script executed successfully."
 
