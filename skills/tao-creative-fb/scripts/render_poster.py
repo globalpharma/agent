@@ -61,11 +61,16 @@ def paste_globalpharma_logo(canvas: Image.Image, x: int = 50, y: int = 40, targe
     return x
 
 
-def render_nutricomp_poster(output_path: str, variant: str = "box12"):
+def render_nutricomp_poster(output_path: str, variant: str = "box12", force: bool = False):
     """
     Xuất poster Nutricomp sử dụng hình ảnh sản phẩm thực tế sắc nét, tự nhiên,
     không gò ép, đảm bảo hình ảnh chuẩn của B.Braun & GlobalPharma.
     """
+    out = Path(output_path)
+    if not force and out.exists() and out.stat().st_size > 200000:
+        print(f"[SKIP] Đã có ảnh Nutricomp chất lượng cao (>200KB): {output_path}")
+        return output_path
+
     variant_map = {
         "box12": REFS_DIR / "ref_nutricomp_box12.jpg",
         "combo12": REFS_DIR / "ref_nutricomp_combo12.jpg",
@@ -118,11 +123,16 @@ def render_nutricomp_poster(output_path: str, variant: str = "box12"):
     return output_path
 
 
-def render_prontosan_poster(output_path: str):
+def render_prontosan_poster(output_path: str, force: bool = False):
     """
     Thiết kế poster Prontosan theo phong cách y tế tự nhiên, tinh tế chuẩn Châu Âu.
     Tone màu xanh ngọc y tế dịu mát (#EBF8FA / #00A896 / #005B94), không vẽ khung thô.
     """
+    out = Path(output_path)
+    if not force and out.exists() and out.stat().st_size > 200000:
+        print(f"[SKIP] Đã có ảnh Prontosan chất lượng cao (>200KB): {output_path}")
+        return output_path
+
     w, h = 1080, 1080
     img = Image.new("RGB", (w, h), color="#F4FAFB")
     draw = ImageDraw.Draw(img)
@@ -180,11 +190,16 @@ def render_prontosan_poster(output_path: str):
     return output_path
 
 
-def render_affiliate_poster(output_path: str):
+def render_affiliate_poster(output_path: str, force: bool = False):
     """
     Thiết kế poster Tuyển dụng Affiliate theo phong cách Doanh nhân Sức khỏe (Solopreneur).
     Tối giản, đẳng cấp, tone màu xanh navy sang trọng (#0F172A) & vàng ánh kim (#D4AF37).
     """
+    out = Path(output_path)
+    if not force and out.exists() and out.stat().st_size > 200000:
+        print(f"[SKIP] Đã có ảnh Affiliate chất lượng cao (>200KB): {output_path}")
+        return output_path
+
     w, h = 1080, 1080
     img = Image.new("RGB", (w, h), color="#0F172A")
     draw = ImageDraw.Draw(img)
@@ -249,17 +264,18 @@ def main():
     parser.add_argument("--type", choices=["nutricomp", "prontosan", "affiliate", "all"], default="all")
     parser.add_argument("--variant", choices=["box12", "combo12", "emotion", "bottles"], default="box12")
     parser.add_argument("--output-dir", default="output")
+    parser.add_argument("--force", action="store_true", help="Buộc render đè ảnh cũ")
     args = parser.parse_args()
 
     out_dir = Path(args.output_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
     if args.type in ("nutricomp", "all"):
-        render_nutricomp_poster(str(out_dir / "poster_nutricomp_drink_plus.png"), variant=args.variant)
+        render_nutricomp_poster(str(out_dir / "poster_nutricomp_drink_plus.png"), variant=args.variant, force=args.force)
     if args.type in ("prontosan", "all"):
-        render_prontosan_poster(str(out_dir / "poster_prontosan_wound_spray.png"))
+        render_prontosan_poster(str(out_dir / "poster_prontosan_wound_spray.png"), force=args.force)
     if args.type in ("affiliate", "all"):
-        render_affiliate_poster(str(out_dir / "poster_affiliate_partner.png"))
+        render_affiliate_poster(str(out_dir / "poster_affiliate_partner.png"), force=args.force)
 
 
 if __name__ == "__main__":
