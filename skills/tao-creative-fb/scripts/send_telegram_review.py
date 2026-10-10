@@ -127,7 +127,11 @@ def main():
         "⛔ <b>Tuyệt đối loại trừ:</b> Fanpage <i>Affiliate - GlobalPharma</i> (để dành tuyến bài tuyển dụng đối tác riêng).\n\n"
         "<b>3. Xác nhận Pháp lý:</b>\n"
         "Lead Legal xác nhận: <code>APPROVED</code> — 100% đúng định vị dinh dưỡng y tế &amp; thiết bị chăm sóc vết thương B.Braun Đức, không có từ cấm 'đặc trị' hay 'thuốc chữa bệnh'.\n\n"
-        "Dưới đây là <b>3 BẢN VISUAL ĐỘT PHÁ MỚI</b> do <b>Agent Design</b> sử dụng <b>100% ẢNH SẢN PHẨM THẬT &amp; LOGO CHÍNH THỨC từ Kho Tri Thức Dữ Liệu Công Ty</b>, thiết kế theo chuẩn <b>ads-image-architect</b> (không nút CTA thô, bố cục y tế cao cấp), kính mời Sếp xem qua ạ 👇"
+        "Dưới đây là <b>3 BẢN CREATIVE ĐẲNG CẤP PRO & STOP-SCROLLING MỚI</b> do <b>Phòng Marketing & Agent Design</b> vừa nâng cấp toàn diện:\n"
+        "• <b>Phong cách Studio / Editorial Châu Âu:</b> Ánh sáng bục bệ marble sang trọng và chiều sâu thị giác mạnh mẽ.\n"
+        "• <b>Tối giản & Đột phá:</b> Cắt giảm toàn bộ text rườm rà, tập trung 100% vào <b>Big Hook</b> kích thích dừng ngón tay (Stop Scrolling).\n"
+        "• <b>100% Ảnh sản phẩm thật & Logo Master</b> từ Kho Tri Thức Dữ Liệu Công Ty.\n\n"
+        "Kính mời Sếp xem qua và đánh giá trực tiếp dưới đây ạ 👇"
     )
     send_message(bot_token, chat_id, msg_plan)
 
@@ -135,12 +139,11 @@ def main():
     img_nutri = p_dir / "poster_nutricomp_drink_plus.png"
     if img_nutri.exists():
         caption_nutri = (
-            "<b>🥛 DEMO 1: COMBO 12 CHAI NUTRICOMP® DRINK RENAL VANILLA (100% ẢNH THẬT TỪ KHO DỮ LIỆU CÔNG TY)</b>\n\n"
-            "<b>Tiêu đề:</b> GIẢI PHÁP DINH DƯỠNG Y HỌC CHUYÊN BIỆT CHO NGƯỜI BỆNH THẬN\n\n"
-            "<b>Nội dung trích đoạn:</b>\n"
-            "Hộp quà cao cấp 12 chai Nutricomp® Drink Renal Vanilla nhập khẩu nguyên hộp từ CHLB Đức. Mỗi chai 200ml cung cấp năng lượng cao 400 kcal (2.0 kcal/ml), 14g đạm sinh học, kiểm soát nghiêm ngặt Natri - Kali - Phospho và giàu Omega-3, FOS giúp phục hồi thể trạng tối ưu cho người bệnh lọc máu/chạy thận.\n\n"
-            "✔ <b>Ảnh &amp; Logo:</b> 100% ảnh chụp thật studio combo 12 chai và Logo GlobalPharma chính thức có dấu ® từ kho tri thức công ty.\n"
-            "✔ <b>Kênh xuất bản dự kiến:</b> 6 Fanpage Nutricomp + Fanpage Sức Khỏe Cho Mọi Nhà."
+            "<b>🥛 CREATIVE 1 (PRO): COMBO 12 CHAI NUTRICOMP® RENAL (B.BRAUN CHLB ĐỨC)</b>\n\n"
+            "🔥 <b>Big Hook:</b> <code>2.0 KCAL / ML — HỒI PHỤC THỂ TRẠNG SUY KIỆT</code>\n"
+            "✨ <b>Visual:</b> Bục Marble Studio cao cấp, ánh sáng y tế Dark Teal sang trọng, ảnh chụp thật combo 12 chai nguyên seal.\n"
+            "💎 <b>Định vị:</b> Dinh dưỡng y học lâm sàng cho người bệnh thận & suy kiệt dinh dưỡng.\n\n"
+            "✔ <i>Chuẩn Meta Ads: Không chèn nút CTA giả trong ảnh, tập trung thị giác tối đa.</i>"
         )
         send_photo(bot_token, chat_id, str(img_nutri), caption_nutri)
 
@@ -148,12 +151,11 @@ def main():
     img_pronto = p_dir / "poster_prontosan_wound_spray.png"
     if img_pronto.exists():
         caption_pronto = (
-            "<b>🛡️ DEMO 2: PRONTOSAN® WOUND SPRAY 75ML (100% ẢNH THẬT B.BRAUN TỪ KHO DỮ LIỆU CÔNG TY)</b>\n\n"
-            "<b>Tiêu đề:</b> PHÁ VỠ MÀNG BIOFILM - BẢO VỆ TOÀN DIỆN VẾT LOÉT TÌ ĐÈ &amp; VẾT THƯƠNG MẠN TÍNH\n\n"
-            "<b>Nội dung trích đoạn:</b>\n"
-            "Tại sao vết loét tì đè ở người nằm lâu hay vết thương tiểu đường lại lâu lành và tái phát nhiễm trùng? Thủ phạm là màng Biofilm bảo vệ vi khuẩn. Prontosan của B.Braun Đức với phức hợp Betaine 0.1% và Polyhexanide (PHMB) 0.1% giúp phá vỡ màng Biofilm tận gốc, làm sạch dịu nhẹ 0% đau rát, an toàn mô hạt và đạt chuẩn ISO 13485.\n\n"
-            "✔ <b>Ảnh &amp; Logo:</b> 100% ảnh chụp chai xịt 75ml thật và ảnh ứng dụng lâm sàng thực tế của B.Braun Medical AG cùng Logo GlobalPharma chính thức.\n"
-            "✔ <b>Kênh xuất bản dự kiến:</b> 6 Fanpage Prontosan + Fanpage Sức Khỏe Cho Mọi Nhà."
+            "<b>🛡️ CREATIVE 2 (PRO): PRONTOSAN® WOUND SPRAY 75ML (B.BRAUN CHLB ĐỨC)</b>\n\n"
+            "🔥 <b>Big Hook:</b> <code>PHÁ VỠ MÀNG BIOFILM — 0% ĐAU RÁT • NHANH LÀNH GẤP 2 LẦN</code>\n"
+            "✨ <b>Visual:</b> Làn sóng nước tinh khiết y khoa & phòng lab vô trùng, chai xịt thật 75ml trên bục pedestal kèm huy hiệu thao tác lâm sàng.\n"
+            "💎 <b>Đột phá:</b> Phức hợp Betaine 0.1% & Polyhexanide (PHMB) 0.1% chuẩn Châu Âu ISO 13485.\n\n"
+            "✔ <i>Chuẩn Meta Ads: Gây ấn tượng mạnh mẽ cho người nhà bệnh nhân loét mạn tính & vết thương lâu lành.</i>"
         )
         send_photo(bot_token, chat_id, str(img_pronto), caption_pronto)
 
@@ -161,12 +163,11 @@ def main():
     img_aff = p_dir / "poster_affiliate_partner.png"
     if img_aff.exists():
         caption_aff = (
-            "<b>💼 DEMO 3: VISUAL TUYỂN DỤNG ĐỐI TÁC (FANPAGE AFFILIATE - GLOBALPHARMA)</b>\n\n"
-            "<b>Tiêu đề:</b> MÔ HÌNH KINH DOANH MỘT NGƯỜI (SOLOPRENEUR) DÀNH CHO DƯỢC SĨ &amp; CHUYÊN GIA SỨC KHỎE\n\n"
-            "<b>Nội dung trích đoạn:</b>\n"
-            "Bạn có kiến thức y dược và mong muốn gia tăng nguồn thu nhập thứ hai bền vững? GlobalPharma mở ra mạng lưới Affiliate đồng hành cùng các Dược sĩ, Huấn luyện viên thể hình (PT), Chuyên gia dinh dưỡng. Trao giá trị sức khỏe với các sản phẩm chính ngạch B.Braun Đức, không ôm hàng, không rủi ro vận hành.\n\n"
-            "✔ <b>Thiết kế:</b> Phong cách Doanh nhân Sức khỏe (Solopreneur) tự nhiên, sang trọng, đẳng cấp với Logo GlobalPharma chính thức.\n"
-            "✔ <b>Kênh xuất bản dự kiến:</b> Kênh riêng Fanpage Affiliate - GlobalPharma (ID: 1183558371496517)."
+            "<b>💼 CREATIVE 3 (PRO): DƯỢC SĨ SOLOPRENEUR (ĐỐI TÁC Y TẾ GLOBALPHARMA)</b>\n\n"
+            "🔥 <b>Big Hook:</b> <code>DƯỢC SĨ SOLOPRENEUR — XÂY THU NHẬP THỨ 2 TỪ UY TÍN Y KHOA</code>\n"
+            "✨ <b>Visual:</b> Phong cách chân dung tạp chí Forbes/Bloomberg đẳng cấp, Dược sĩ chuyên nghiệp, không gian y tế kính hiện đại.\n"
+            "💎 <b>Giá trị cốt lõi:</b> 0 vốn ôm hàng • 0 áp doanh số • 100% Sản phẩm Y khoa chính ngạch B.Braun Đức.\n\n"
+            "✔ <i>Chuẩn Meta Ads: Tôn vinh uy tín chuyên gia y tế, loại bỏ hoàn toàn cảm giác đa cấp/tuyển dụng thô.</i>"
         )
         send_photo(bot_token, chat_id, str(img_aff), caption_aff)
 
