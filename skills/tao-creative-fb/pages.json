@@ -4,6 +4,7 @@
     "name": "Affiliate - GlobalPharma",
     "category": "Giáo dục",
     "token": "EAAV8YPOyjNYBStuCHntrsGIYVTnhJJqwtOVyYZBnMnE2HB1blfbv59BRa2ZAZC2QBZCqGqdV0ZAjlfgZAik22bG3fuYyR4B1pFBVzoIpZBWeJZC3VZArZCqcqff5qYwiPIGLH7YrjKlj4ZC2tObl3aHYMVKAlWMQrJI8mjZBZAZACpfBF7DYbSddhxdE7K8FIp4dsZAD2tm07MB",
+    "product_group": "all",
     "enabled": true
   },
   {
@@ -11,6 +12,7 @@
     "name": "Prontosan Spray - Giải Pháp Nhanh Lành Vết Thương",
     "category": "Giáo dục",
     "token": "EAAV8YPOyjNYBSqXZAuvp3F8oEVPArbKBT8RWdLdZAgkiCh26f0HR4FdEvN1WZBr7Exkg70euiC3O9LeUh5YqpZBsbB5G9wxtu1kwJCMVIwS6L7OdzHtkeXZAihKn6qwGS8Dx5WnhpiptbdXx23S6zM51MgRHLbbtZAQo2OP8zod1bMo9qSg1CeZBGZBZB47EmumVbSd8l",
+    "product_group": "prontosan",
     "enabled": true
   },
   {
@@ -18,6 +20,7 @@
     "name": "Chăm sóc vết thương Prontosan - GlobalPharma",
     "category": "Giáo dục",
     "token": "EAAV8YPOyjNYBSndZAYHYZAmlnyM6hRsq3pI2CgXHz8Tiw3yRYWFDDThLylimpioz9teNvDjp2khDLZBVWZAbffXz2uOAnx6CneR8Mhx0e37vz1oZBd35GVitcLCLjAimk2jRFVLZAhfGprPUmwI3n0PLMESDGTcxbC72LCeSaQxq4ZBjLCWRcfuWWilrjCRZAGxp51TS",
+    "product_group": "prontosan",
     "enabled": true
   },
   {
@@ -25,6 +28,7 @@
     "name": "Prontosan Spray Làm Lành Vết Thương Bền Vững - GlobalPharma",
     "category": "Giáo dục",
     "token": "EAAV8YPOyjNYBSoFdMUbC9dVdNZALUsraPXwR7V5GLJwhsmKC4f0S3qnx3Upqs2mvBCevCR929sGjVZCk4WZBRQiRoDdMJgfVvXoWyKV1UxpoDZACXi7eHNkaSlmqFmcSGzWXGrGZCZBXYw70UEl8Wyt6WE6wZCthR8ZAYHZA2nnwi9c9nsDsZC2hWbyq6JjzSYMJFCwwcn",
+    "product_group": "prontosan",
     "enabled": true
   },
   {
@@ -32,6 +36,7 @@
     "name": "Giải Pháp Chăm Sóc Vết Thương",
     "category": "Giáo dục",
     "token": "EAAV8YPOyjNYBStnKxeZCZBHVsikEFmepGQvx9pnFp9ZCeu40ZAO7hMqiGREMP8CvoULBEEKx8YIkpEQGrXGw1unmOf24kiQcWhZCdGwZCGD03MprKUwMTtmmseT4ikpZAQdOsio8MQE3Dz9YXKhtPVQqeVIA3YTHMhuurZAgbaVtRdXcp9WXvpZABRMl1bIZAaaNudseft",
+    "product_group": "prontosan",
     "enabled": true
   },
   {
@@ -39,6 +44,7 @@
     "name": "Giải Pháp Nhanh Lành Vết Thương Prontosan - GlobalPharma",
     "category": "Trang web giáo dục",
     "token": "EAAV8YPOyjNYBSpru1dXd0UO1DEHgramFY343HjKn4hSMe9BukQQWSxdflybNKZBIqMHKHZCqa0uYZCht0eb5pvkghnnwaCo8OAeZAgOMXigegWeUxHBd4ToC2GZCI3k8YqUB1g1ugVWGr26FYLz10OH97vEK1knQUJDtCLUg7mbXAwDmRZBEPsZC9kDShHACubzX7vv",
+    "product_group": "prontosan",
     "enabled": true
   },
   {
@@ -46,6 +52,7 @@
     "name": "Sữa Dinh Dưỡng Y Học Đức - GlobalPharma",
     "category": "Trang web giáo dục",
     "token": "EAAV8YPOyjNYBSqbCbhBZAldVUlYBVq0bhiZB4N5JTjBNSAZBnxD2g3jsOZArvTvkSaeM2Hf1ZADcWrFnjFY7CJV5IMaJK79GCdt2VBZCuuFzAAPBLdDsFZCDJZAVyxsth1vNmrDShSDs9NU2LusTjZAlOQ25ashWNMo9C4vqeldp52deBiJm284u7IS0RTZBxZCQ2pKrZA9f",
+    "product_group": "nutricomp",
     "enabled": true
   },
   {
@@ -53,6 +60,7 @@
     "name": "Dinh Dưỡng Phục Hồi Năng Lượng",
     "category": "Trang web giáo dục",
     "token": "EAAV8YPOyjNYBStbzZAgsQZB9e7VzKKZCpCvbshF530vgJRPMmJN8PZBIf3ZA6ojVPBlZBUlTu2JLuw9cNda5Vmf0qedpltWmkCXzLeJPpYOCME5iinjCvKT9lR1ZByLcKHdYqazgWLp6m05PCZBP6ZBzVnd3qSUlSuQDlHMv98kCxHtwyGQGbeP5ShNuAWspyHetC2egZD",
+    "product_group": "nutricomp",
     "enabled": true
   },
   {
@@ -60,6 +68,7 @@
     "name": "Sữa Dinh Dưỡng Y Học Đức Nutricomp",
     "category": "Trang web giáo dục",
     "token": "EAAV8YPOyjNYBSuR75DgvXnWnol25ZBSoIm3mPHR4Ihcm5QZCbGZCgIuJK0gOkgQ8GQ43gmNF2ZC0T6AQVun0jQKcgnIvtSyTdgRGaGOat2VLQvZBciZATQOUdAzRH53Bolh6L7yITIlXcGCsnz8Q80H01J3Yn1DGRGhOExZAnbsaNpxTvpZCBwiwh0ZAmsB6ZAGrALskUZD",
+    "product_group": "nutricomp",
     "enabled": true
   },
   {
@@ -67,6 +76,7 @@
     "name": "Prontosan Chăm sóc vết thương nhanh lành - GlobalPharma",
     "category": "Trang web giáo dục",
     "token": "EAAV8YPOyjNYBSiRtpJ86NTJFxeSlBdbcKdwWZAwKXTvextA0PiJarkVKZApnvZCA5ZA1DvWYmW10IAelxaFRIihX0H4EaVMhvPDdy0ysZBTN5cqRDWRtw9gJCAPlNEZAqjctihqMXHIvLZC5KIaiCdjCZA6EZBopT3Otc4atANeEK96L76RPdkFQoGYh0VpobjFWSlZB8ZD",
+    "product_group": "prontosan",
     "enabled": true
   },
   {
@@ -74,6 +84,7 @@
     "name": "Nutricomp - GlobalPharma",
     "category": "Blog cá nhân",
     "token": "EAAV8YPOyjNYBSv7aEC8HCFr2AL5e5TJ51hhkM5ItQ8V77uolbg9Km68qUltcNn3mmwQZCJ3T2Sr7GV2XU70OHCKkZBnzWjFCgVer9PHUGOhHOym4bOiqUp2Xr12zLIcHu21dtCirbHIwhHbnqse0Lw6frSgH1ZCswOnAd9pExwNrIxvsquCiKWdCaYTdFK8iaUZD",
+    "product_group": "nutricomp",
     "enabled": true
   },
   {
@@ -81,6 +92,7 @@
     "name": "Nutricomp Plus - GlobalPharma",
     "category": "Công ty phần mềm",
     "token": "EAAV8YPOyjNYBSvydJWA12O3P2HLjIQYfZAxWplgYUDIw10yIxn5BbGyB3JUB3APvI3pzz4m4xQzs8ZCyvmcCIc8d7tdaUXRBySgL7rIMWp9RZBPOqDImoxEZCeRbvH9FTqxzw8QUdEjAqSXUNyZCiZBDFZA2dywNsEeOPF2m8F46zWZCMkcsFfIf2ytbrsZCER3ceOT0ZD",
+    "product_group": "nutricomp",
     "enabled": true
   },
   {
@@ -88,6 +100,7 @@
     "name": "Sức Khỏe Cho Mọi Nhà",
     "category": "Trang web giáo dục",
     "token": "EAAV8YPOyjNYBSrj4C0RerQmBGUZAPljgLR7aN9ZAmkpaSZCEUbelyqK3NmbsdJUWJBRSCxwOox0NnSPpLZAxaZCpalfJrjmHOmfLlL4CGRlMUYxblLCCXU6GZC8daHvmNfmIInVnZASggloP2xZAQ9awLY0YMUVUEsxHdYHfjtBGle8uZA8xAHZCeFcd7ONL7eHnaZB1PwZD",
+    "product_group": "all",
     "enabled": true
   },
   {
@@ -95,6 +108,7 @@
     "name": "Giải Pháp Nhanh Lành Vết Thương - GlobalPharma",
     "category": "Trang web giáo dục",
     "token": "EAAV8YPOyjNYBSmXhLC8KqCEcsCtrOQnyUBXDKdWSoykvS4jaHbHIUpgG5w43bygDm1RvyBL1LJ3fRLrHB9nJIqzZCv2NDZCHSUZA4ZAB7fAyM1ZBkB8ngKZA4dVjlInAiDU8LtbTRWms70GxQxDA70S4Yl3zHxQGnpXievyvhtpF4ObfWOVAJSikBs2kupXZBH9tmkZD",
+    "product_group": "prontosan",
     "enabled": true
   },
   {
@@ -102,6 +116,7 @@
     "name": "Sữa Dinh Dưỡng Đức Nutricomp - GlobalPharma",
     "category": "Giáo dục",
     "token": "EAAV8YPOyjNYBSiA6VtJRIuHPeowgw5zG9igK1I0hxCzN2CYPTl6Q41Ly1qNfAdGF6jPmkyVXqgFZBY1hSVSvnzaSCLEw53cQ4LhplSVF6cQfc1qSZBWi8re3N0ylcDKIJQD0Vu4IEAtJQsKZB1slgYkLpeDSTBIk6S4cZAOgXnXE2USCnsiEIrhJ34Li127fAsUZD",
+    "product_group": "nutricomp",
     "enabled": true
   },
   {
@@ -109,6 +124,7 @@
     "name": "Globalpharmavn - Sức Khỏe Cho Mọi Nhà",
     "category": "Y tế & Sức khỏe",
     "token": "EAAV8YPOyjNYBShWL9BhFb4oQOTeBC7guKsChbPUbOshVyTgRXNaN9alo1xc4qkcS3zi1plaepuYmZAn3YPiKOlubjYOnBp5vrIvLa7obZCVhaheLX6ScmMEcUw2EphPZCdcojkPk8zTnJYC0kgyMZAvmApLCpUPdrWrWWe1pPLguZBcFDLeQTZAwqyIW975YV8GS0ZB",
+    "product_group": "all",
     "enabled": true
   },
   {
@@ -116,6 +132,7 @@
     "name": "Nutricomp Renal - GlobalPharma",
     "category": "Agency marketing",
     "token": "EAAV8YPOyjNYBSl94yja1QKENHBofNQuzlhLmZBRPAvvAIsLXkNA2SXUfNLM6IT1r9dKSuSQZA90xViqYWGu40XUrgLK6YYEHjCszX1ZAoBe08dpqx4UZAYV4w7I2wXHE0PkK7sMNusHVrGQeZCuiq2fsMcSjgae0Jhy2t0aGk6kXSzwSck4v0bTXiOQut38AYY3EZD",
+    "product_group": "nutricomp",
     "enabled": true
   }
 ]
