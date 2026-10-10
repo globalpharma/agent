@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-send_telegram_review.py - Gửi trọn gói Kế hoạch nội dung tuần + Hình ảnh Poster Demo
-từ Trợ lý điều hành & Phòng Marketing GlobalPharma qua Telegram cho Sếp duyệt.
+send_telegram_review.py - Gửi Kế hoạch nội dung tuần (file Markdown để đọc online)
+kèm 3 bản Poster Pro (Stop-scrolling, minimal text) qua Telegram cho Sếp duyệt.
 """
 
 import os
@@ -36,6 +36,60 @@ def send_message(bot_token: str, chat_id: str, text: str):
         return None
     except Exception as e:
         print(f"[ERROR] send_message failed: {e}")
+        return None
+
+
+def send_document(bot_token: str, chat_id: str, doc_path: str, caption: str = ""):
+    url = f"https://api.telegram.org/bot{bot_token}/sendDocument"
+    boundary = "----WebKitFormBoundary7MA4YWxkTrZu0gW"
+    
+    with open(doc_path, "rb") as f:
+        file_bytes = f.read()
+
+    filename = Path(doc_path).name
+
+    body = []
+    # chat_id
+    body.append(f"--{boundary}".encode("utf-8"))
+    body.append(f'Content-Disposition: form-data; name="chat_id"'.encode("utf-8"))
+    body.append(b"")
+    body.append(str(chat_id).encode("utf-8"))
+    
+    # caption
+    if caption:
+        body.append(f"--{boundary}".encode("utf-8"))
+        body.append(f'Content-Disposition: form-data; name="caption"'.encode("utf-8"))
+        body.append(b"")
+        body.append(caption.encode("utf-8"))
+
+        body.append(f"--{boundary}".encode("utf-8"))
+        body.append(f'Content-Disposition: form-data; name="parse_mode"'.encode("utf-8"))
+        body.append(b"")
+        body.append(b"HTML")
+
+    # document
+    body.append(f"--{boundary}".encode("utf-8"))
+    body.append(f'Content-Disposition: form-data; name="document"; filename="{filename}"'.encode("utf-8"))
+    body.append(b"Content-Type: text/markdown")
+    body.append(b"")
+    body.append(file_bytes)
+
+    body.append(f"--{boundary}--".encode("utf-8"))
+    body.append(b"")
+
+    payload = b"\r\n".join(body)
+    req = urllib.request.Request(url, data=payload, headers={
+        "Content-Type": f"multipart/form-data; boundary={boundary}"
+    })
+
+    try:
+        with urllib.request.urlopen(req, timeout=35) as resp:
+            return json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        print(f"[ERROR] send_document HTTP {e.code}: {e.read().decode('utf-8')}")
+        return None
+    except Exception as e:
+        print(f"[ERROR] send_document failed: {e}")
         return None
 
 
@@ -107,35 +161,37 @@ def main():
 
     print(f"[INFO] Bắt đầu gửi báo cáo duyệt tuần tới Telegram Chat ID: {chat_id}")
 
-    # 1. Tin nhắn mở đầu: Báo cáo kế hoạch tuần
-    msg_plan = (
-        "<b>📋 BÁO CÁO KẾ HOẠCH NỘI DUNG TUẦN &amp; XIN PHÊ DUYỆT</b>\n"
+    # 1. Tin nhắn tóm tắt súc tích mở đầu (Không tràn lan toàn văn)
+    msg_intro = (
+        "<b>📋 BÁO CÁO KẾ HOẠCH NỘI DUNG TUẦN & XIN PHÊ DUYỆT</b>\n"
         "<i>Kính gửi: Sếp Công Hùng và Anh Cường</i>\n"
         "<i>Người báo cáo: GP - Trợ lý điều hành (thay mặt Phòng Marketing)</i>\n\n"
-        "Dạ thưa Sếp, em đã điều phối <b>Lead Marketing</b> chỉ đạo chuyên viên <b>Planner</b> lên lịch, <b>Content</b> soạn thảo bài viết, <b>Designer</b> thiết kế poster và <b>Lead Legal</b> đã thẩm định pháp lý y tế đạt chuẩn 100%.\n\n"
-        "<b>1. Phân bổ kế hoạch 7 ngày:</b>\n"
-        "• <b>Thứ 2 (Nutricomp Drink Plus):</b> Giải pháp phục hồi thể trạng cho người sau phẫu thuật, ốm dậy (300 kcal/chai).\n"
-        "• <b>Thứ 3 (Prontosan Wound Spray):</b> Chăm sóc loét tì đè ở người cao tuổi, người tai biến nằm lâu.\n"
-        "• <b>Thứ 4 (Nutricomp Renal):</b> Dinh dưỡng lâm sàng chuyên biệt cho người suy thận mạn giai đoạn tiền chạy thận.\n"
-        "• <b>Thứ 5 (Prontosan Wound Gel):</b> Phá vỡ màng Biofilm vi khuẩn, làm lành vết thương tiểu đường và vết bỏng.\n"
-        "• <b>Thứ 6 (Nutricomp Drink Plus):</b> Bổ sung dinh dưỡng dạng uống liền cho bệnh nhân ung thư, người kém ăn.\n"
-        "• <b>Thứ 7 (Prontosan Spray):</b> Cẩm nang sơ cứu và xử lý vết thương trầy xước, vết rách da không xót tại nhà.\n"
-        "• <b>Chủ nhật (Dinh dưỡng &amp; Sức khỏe gia đình):</b> Chăm sóc sức khỏe chủ động từ chuyên gia y tế Châu Âu.\n\n"
-        "<b>2. Điều hướng Fanpage mục tiêu:</b>\n"
-        "✔ Bài Nutricomp ➔ Đăng hệ thống 6 Page Sữa Nutricomp + Page <i>Sức Khỏe Cho Mọi Nhà</i>.\n"
-        "✔ Bài Prontosan ➔ Đăng hệ thống 6 Page Vết thương Prontosan + Page <i>Sức Khỏe Cho Mọi Nhà</i>.\n"
-        "⛔ <b>Tuyệt đối loại trừ:</b> Fanpage <i>Affiliate - GlobalPharma</i> (để dành tuyến bài tuyển dụng đối tác riêng).\n\n"
-        "<b>3. Xác nhận Pháp lý:</b>\n"
-        "Lead Legal xác nhận: <code>APPROVED</code> — 100% đúng định vị dinh dưỡng y tế &amp; thiết bị chăm sóc vết thương B.Braun Đức, không có từ cấm 'đặc trị' hay 'thuốc chữa bệnh'.\n\n"
-        "Dưới đây là <b>3 BẢN CREATIVE ĐẲNG CẤP PRO & STOP-SCROLLING MỚI</b> do <b>Phòng Marketing & Agent Design</b> vừa nâng cấp toàn diện:\n"
-        "• <b>Phong cách Studio / Editorial Châu Âu:</b> Ánh sáng bục bệ marble sang trọng và chiều sâu thị giác mạnh mẽ.\n"
-        "• <b>Tối giản & Đột phá:</b> Cắt giảm toàn bộ text rườm rà, tập trung 100% vào <b>Big Hook</b> kích thích dừng ngón tay (Stop Scrolling).\n"
-        "• <b>100% Ảnh sản phẩm thật & Logo Master</b> từ Kho Tri Thức Dữ Liệu Công Ty.\n\n"
-        "Kính mời Sếp xem qua và đánh giá trực tiếp dưới đây ạ 👇"
+        "Dạ thưa Sếp, toàn bộ chi tiết <b>Kế hoạch nội dung 7 ngày</b>, phân bổ 14 kênh Fanpage và báo cáo thẩm định Pháp lý y tế (APPROVED 100%) đã được đóng gói thành file markdown đính kèm dưới đây để Sếp có thể <b>nhấn mở đọc online trực tiếp ngay trên Telegram</b> tiện lợi, không bị rối màn hình chat:\n\n"
+        "📄 <b>File chi tiết:</b> <code>KE_HOACH_NOI_DUNG_TUAN.md</code> (Đính kèm ngay dưới)\n"
+        "🎨 <b>Hình ảnh:</b> 3 bản thiết kế Poster Pro mới (Stop-scrolling, tối giản text, 100% ảnh thật & logo chuẩn).\n\n"
+        "Kính mời Sếp mở file đọc online và xem các bản poster ở dưới ạ 👇"
     )
-    send_message(bot_token, chat_id, msg_plan)
+    send_message(bot_token, chat_id, msg_intro)
 
-    # 2. Poster 1: Nutricomp Drink Renal Combo 12 Chai
+    # 2. Gửi file Markdown đính kèm để đọc online trực tiếp trên Telegram
+    doc_path = p_dir / "KE_HOACH_NOI_DUNG_TUAN.md"
+    if not doc_path.exists():
+        # Fallback to repo skills dir
+        doc_path = Path("skills/tao-creative-fb/output/KE_HOACH_NOI_DUNG_TUAN.md")
+    
+    if doc_path.exists():
+        doc_caption = (
+            "📄 <b>KẾ HOẠCH NỘI DUNG TUẦN (7 NGÀY CHI TIẾT & 14 FANPAGE)</b>\n"
+            "<i>Nhấn vào file để xem trực tiếp online trên Telegram</i>"
+        )
+        print(f"[INFO] Đang gửi file document {doc_path} qua Telegram...")
+        res_doc = send_document(bot_token, chat_id, str(doc_path), doc_caption)
+        if res_doc and res_doc.get("ok"):
+            print("[OK] Đã gửi file KE_HOACH_NOI_DUNG_TUAN.md thành công!")
+        else:
+            print(f"[WARN] send_document response: {res_doc}")
+
+    # 3. Poster 1: Nutricomp Drink Renal Combo 12 Chai
     img_nutri = p_dir / "poster_nutricomp_drink_plus.png"
     if img_nutri.exists():
         caption_nutri = (
@@ -147,7 +203,7 @@ def main():
         )
         send_photo(bot_token, chat_id, str(img_nutri), caption_nutri)
 
-    # 3. Poster 2: Prontosan Wound Spray
+    # 4. Poster 2: Prontosan Wound Spray
     img_pronto = p_dir / "poster_prontosan_wound_spray.png"
     if img_pronto.exists():
         caption_pronto = (
@@ -159,7 +215,7 @@ def main():
         )
         send_photo(bot_token, chat_id, str(img_pronto), caption_pronto)
 
-    # 4. Poster 3: Affiliate Tuyển dụng đối tác
+    # 5. Poster 3: Affiliate Tuyển dụng đối tác
     img_aff = p_dir / "poster_affiliate_partner.png"
     if img_aff.exists():
         caption_aff = (
@@ -171,16 +227,16 @@ def main():
         )
         send_photo(bot_token, chat_id, str(img_aff), caption_aff)
 
-    # 5. Tin nhắn kết thúc xin phê duyệt
+    # 6. Tin nhắn kết thúc xin phê duyệt
     msg_confirm = (
         "<b>📌 XIN Ý KIẾN CHỈ ĐẠO CỦA SẾP:</b>\n\n"
-        "Em kính trình toàn bộ Kế hoạch nội dung tuần và 3 bản Poster thiết kế mẫu ở trên.\n"
+        "Em kính trình toàn bộ Kế hoạch nội dung tuần (trong file <code>KE_HOACH_NOI_DUNG_TUAN.md</code> ở trên) và 3 bản Poster thiết kế Pro.\n"
         "Sếp xem qua và nếu đồng ý, xin Sếp chỉ đạo <b>'OK'</b> hoặc <b>'DUYỆT'</b> ngay tại đây ạ!\n\n"
         "Sau khi Sếp duyệt, team Marketing sẽ tự động kích hoạt tiến trình đăng bài mỗi ngày lên đúng mạng lưới Fanpage theo đúng kế hoạch. Kính chúc Sếp ngày làm việc tràn đầy năng lượng ạ! 🙏"
     )
     send_message(bot_token, chat_id, msg_confirm)
 
-    print("[SUCCESS] Đã gửi trọn bộ báo cáo kế hoạch và 3 poster qua Telegram cho Sếp thành công!")
+    print("[SUCCESS] Đã gửi trọn bộ báo cáo kế hoạch (dạng file .md online) và 3 poster qua Telegram cho Sếp thành công!")
 
 
 if __name__ == "__main__":
