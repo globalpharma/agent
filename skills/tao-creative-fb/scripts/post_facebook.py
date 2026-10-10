@@ -156,8 +156,13 @@ def post_to_facebook_multiple(image_path: str, caption: str, pages_config: list,
 
 
 def detect_product(caption: str) -> str:
-    """Tự động nhận diện dòng sản phẩm dựa trên nội dung caption"""
+    """Tự động nhận diện dòng sản phẩm hoặc chủ đề bài viết dựa trên caption"""
     text = caption.lower()
+    affiliate_keywords = [
+        "affiliate", "tiếp thị liên kết", "kinh doanh một người", "solopreneur",
+        "dược sĩ", "personal trainer", "pt", "thu nhập", "mô hình kinh doanh",
+        "cộng tác viên", "kiếm thêm thu nhập", "tự do tài chính", "hoa hồng", "đối tác"
+    ]
     nutricomp_keywords = [
         "nutricomp", "drink plus", "renal", "dinh dưỡng", "sữa dinh dưỡng",
         "suy thận", "thận mạn", "lọc máu", "suy kiệt", "hồi phục năng lượng",
@@ -169,13 +174,18 @@ def detect_product(caption: str) -> str:
         "rửa vết thương", "hoại tử", "bỏng", "chăm sóc vết thương", "sát trùng"
     ]
 
+    affiliate_score = sum(1 for kw in affiliate_keywords if kw in text)
     nutricomp_score = sum(1 for kw in nutricomp_keywords if kw in text)
     prontosan_score = sum(1 for kw in prontosan_keywords if kw in text)
 
-    if nutricomp_score > prontosan_score:
+    if affiliate_score > nutricomp_score and affiliate_score > prontosan_score:
+        return "affiliate"
+    elif nutricomp_score > prontosan_score and nutricomp_score > affiliate_score:
         return "nutricomp"
-    elif prontosan_score > nutricomp_score:
+    elif prontosan_score > nutricomp_score and prontosan_score > affiliate_score:
         return "prontosan"
+    elif affiliate_score > 0:
+        return "affiliate"
     elif nutricomp_score > 0:
         return "nutricomp"
     elif prontosan_score > 0:
@@ -187,8 +197,8 @@ def main():
     parser = argparse.ArgumentParser(description="Đăng ảnh và bài viết lên một hoặc HÀNG LOẠT Fanpage GlobalPharma")
     parser.add_argument("--image", required=True, help="Đường dẫn file ảnh cần đăng")
     parser.add_argument("--caption", required=True, help="Nội dung bài viết hoặc file text chứa bài viết")
-    parser.add_argument("--product", choices=["nutricomp", "prontosan", "all", "auto"], default="auto",
-                        help="Dòng sản phẩm mục tiêu (nutricomp/prontosan/all/auto - mặc định tự nhận diện)")
+    parser.add_argument("--product", choices=["nutricomp", "prontosan", "affiliate", "all", "auto"], default="auto",
+                        help="Dòng sản phẩm mục tiêu (nutricomp/prontosan/affiliate/all/auto - mặc định tự nhận diện)")
     parser.add_argument("--pages-file", help="File JSON chứa danh sách 10+ Fanpage (id, name, token)")
     parser.add_argument("--page-id", help="ID của 1 Fanpage cụ thể (nếu chỉ đăng 1 page)")
     parser.add_argument("--token", help="Page Access Token (nếu chỉ đăng 1 page)")
@@ -239,14 +249,17 @@ def main():
     target_product = args.product.lower()
     if target_product == "auto":
         target_product = detect_product(caption_text)
-        print(f"\n🔍 [NHẬN DIỆN SẢN PHẨM TỰ ĐỘNG] Dòng sản phẩm nhận diện được: {target_product.upper()}")
+        print(f"\n🔍 [NHẬN DIỆN SẢN PHẨM TỰ ĐỘNG] Dòng sản phẩm / chủ đề nhận diện được: {target_product.upper()}")
     else:
-        print(f"\n🎯 [CHỈ ĐỊNH DÒNG SẢN PHẨM] Dòng sản phẩm: {target_product.upper()}")
+        print(f"\n🎯 [CHỈ ĐỊNH DÒNG SẢN PHẨM] Dòng sản phẩm / chủ đề: {target_product.upper()}")
 
     if target_product in ("nutricomp", "prontosan"):
         filtered_pages = []
         for p in pages_list:
-            pg = p.get("product_group", "all").lower()
+            pg = p.get("product_group", "general").lower()
+            # Tuyệt đối KHÔNG đăng bài sản phẩm vào page affiliate!
+            if pg == "affiliate":
+                continue
             # Đăng lên page chuyên biệt của dòng sản phẩm HOẶC page chung ("Sức Khỏe Cho Mọi Nhà" / "all")
             if pg == target_product or pg in ("all", "general", "both"):
                 filtered_pages.append(p)
@@ -254,6 +267,12 @@ def main():
         for fp in filtered_pages:
             badge = "★ (Page chung)" if fp.get("product_group") == "all" else "● (Page chuyên biệt)"
             print(f"   {badge} {fp.get('name')} (ID: {fp.get('id')})")
+        pages_list = filtered_pages
+    elif target_product == "affiliate":
+        filtered_pages = [p for p in pages_list if p.get("product_group") == "affiliate"]
+        print(f"📌 Đã phân luồng {len(filtered_pages)}/{len(pages_list)} Fanpage mục tiêu cho [AFFILIATE]:")
+        for fp in filtered_pages:
+            print(f"   🎯 [Page Tuyển dụng Affiliate riêng] {fp.get('name')} (ID: {fp.get('id')})")
         pages_list = filtered_pages
 
     post_to_facebook_multiple(
