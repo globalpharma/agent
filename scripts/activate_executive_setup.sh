@@ -241,18 +241,40 @@ echo "Setting up Marketing Skill (tao-creative-fb) and Python dependencies..."
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T goclaw pip install --break-system-packages requests python-dotenv || echo "Pip install warning, continuing..."
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T goclaw mkdir -p /app/data/skills /app/workspace/skills || true
 
+GOCLAW_CID=$(docker compose -f docker-compose.yml -f docker-compose.postgres.yml ps -q goclaw 2>/dev/null || echo "goclaw-goclaw-1")
+
 if [ -d "skills/tao-creative-fb" ]; then
-    echo "Copying skills/tao-creative-fb to container..."
-    docker cp skills/tao-creative-fb goclaw-goclaw-1:/app/data/skills/ || true
-    docker cp skills/tao-creative-fb goclaw-goclaw-1:/app/workspace/skills/ || true
+    echo "Copying skills/tao-creative-fb to container ($GOCLAW_CID)..."
+    docker cp skills/tao-creative-fb ${GOCLAW_CID}:/app/data/skills/ || true
+    docker cp skills/tao-creative-fb ${GOCLAW_CID}:/app/workspace/skills/ || true
 fi
 
 if [ -f "facebook_pages.csv" ]; then
-    docker cp facebook_pages.csv goclaw-goclaw-1:/app/workspace/ || true
+    docker cp facebook_pages.csv ${GOCLAW_CID}:/app/workspace/ || true
 fi
 
 echo "Verifying Facebook broadcasting capability (dry-run) inside container..."
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T goclaw python3 /app/workspace/skills/tao-creative-fb/scripts/post_facebook.py --image /app/workspace/skills/tao-creative-fb/output/test_image.png --caption "Test bài đăng hệ thống Marketing GlobalPharma" --dry-run || echo "Dry-run check completed with warning"
+
+echo "=== HOST & DOCKER DIAGNOSTICS ==="
+echo "All docker containers:"
+docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Ports}}"
+echo "Host processes matching goclaw or telego:"
+ps aux | grep -i -E "goclaw|telego" | grep -v grep || echo "No matching host processes"
+
+echo "=== CHECKING TELEGRAM BOT API & WEBHOOK STATUS ==="
+TG_TOKEN=$(docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -t -A -c "SELECT credentials->>'token' FROM channel_instances WHERE channel_type='telegram' LIMIT 1;" || true)
+if [ -n "$TG_TOKEN" ]; then
+    echo "Querying getMe..."
+    curl -s "https://api.telegram.org/bot${TG_TOKEN}/getMe" || true
+    echo ""
+    echo "Querying getWebhookInfo..."
+    curl -s "https://api.telegram.org/bot${TG_TOKEN}/getWebhookInfo" || true
+    echo ""
+    echo "Resetting webhook and dropping any stuck pending updates to avoid 409 Conflict..."
+    curl -s "https://api.telegram.org/bot${TG_TOKEN}/deleteWebhook?drop_pending_updates=true" || true
+    echo ""
+fi
 
 echo "=== CHECKING CHANNEL INSTANCES & TELEGRAM BOT CONFIG ==="
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -c "SELECT id, name, display_name, channel_type, agent_id, enabled, config FROM channel_instances;"
@@ -261,13 +283,18 @@ echo "=== CHECKING AGENTS & LLM PROVIDERS ==="
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -c "SELECT id, agent_key, display_name, provider, model FROM agents;" || true
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -c "SELECT id, name, display_name, provider_type, api_base, enabled FROM llm_providers;" || true
 
+echo "=== CHECKING RECENT SESSIONS & LATEST MESSAGES ==="
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -c "SELECT session_key, channel, updated_at, jsonb_array_length(messages) as msg_count FROM sessions ORDER BY updated_at DESC LIMIT 5;" || true
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -c "SELECT session_key, jsonb_pretty(jsonb_path_query_array(messages, '$[last-3 to last]')) FROM sessions WHERE channel = 'telegram' ORDER BY updated_at DESC LIMIT 1;" || true
+
 echo "=== CHECKING RECENT TELEGRAM CONVERSATION LOGS ==="
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml logs --tail=200 goclaw | grep -i -A 10 -B 3 "inbound: scheduling message" || echo "No scheduling logs"
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml logs --tail=100 goclaw | grep -i -A 10 -B 3 "inbound: scheduling message" || echo "No scheduling logs"
 
 echo "=== CHECKING GOCLAW ERROR / WARN LOGS ==="
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml logs --tail=200 goclaw | grep -i -E "level=WARN|level=ERROR|error|failed" || echo "No WARN/ERROR logs"
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml logs --tail=100 goclaw | grep -i -E "level=WARN|level=ERROR|error|failed" || echo "No WARN/ERROR logs"
 
 echo "Executive setup script executed successfully."
+
 
 
 
