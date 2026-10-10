@@ -29,7 +29,7 @@ def send_message(bot_token: str, chat_id: str, text: str):
     data = json.dumps(payload).encode("utf-8")
     req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"})
     try:
-        with urllib.request.urlopen(req) as resp:
+        with urllib.request.urlopen(req, timeout=25) as resp:
             return json.loads(resp.read().decode("utf-8"))
     except urllib.error.HTTPError as e:
         print(f"[ERROR] send_message HTTP {e.code}: {e.read().decode('utf-8')}")
@@ -83,7 +83,7 @@ def send_photo(bot_token: str, chat_id: str, photo_path: str, caption: str):
     })
 
     try:
-        with urllib.request.urlopen(req) as resp:
+        with urllib.request.urlopen(req, timeout=30) as resp:
             return json.loads(resp.read().decode("utf-8"))
     except urllib.error.HTTPError as e:
         print(f"[ERROR] send_photo HTTP {e.code}: {e.read().decode('utf-8')}")
