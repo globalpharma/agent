@@ -7,13 +7,15 @@ json_path = Path("skills/tao-creative-fb/pages.json")
 
 def classify_product_group(name: str) -> str:
     name_lower = name.lower()
-    if "sức khỏe cho mọi nhà" in name_lower or "affiliate" in name_lower:
+    if "affiliate" in name_lower:
+        return "affiliate"
+    elif "sức khỏe cho mọi nhà" in name_lower:
         return "all"
     elif "nutricomp" in name_lower or "dinh dưỡng" in name_lower:
         return "nutricomp"
     elif "prontosan" in name_lower or "vết thương" in name_lower:
         return "prontosan"
-    return "all"
+    return "general"
 
 pages = []
 with open(csv_path, encoding="utf-8") as f:

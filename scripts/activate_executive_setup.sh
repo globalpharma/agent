@@ -138,7 +138,8 @@ E'Mỗi tuần hoặc khi Lãnh đạo giao lệnh "lên kế hoạch nội dung
 E'1. **Nghiên cứu & Sáng tạo (Giao Lead Marketing):** Chỉ đạo Lead Marketing nghiên cứu sâu sắc tâm lý người bệnh, nỗi đau của người nuôi bệnh (suy dinh dưỡng, ăn uống kém, sút cân, loét tì đè, suy thận mạn). Sáng tạo kế hoạch bài viết chạm đến cảm xúc và thiết kế poster chuẩn nhận diện `#3BCFAF`, logo GlobalPharma, B.Braun Đức, ảnh bao bì sản phẩm thật.\n' ||
 E'2. **Thẩm định Pháp lý bắt buộc (Giao Lead Legal):** Mọi bản thảo nội dung và ảnh poster do Marketing làm xong BẮT BUỘC phải chuyển qua Lead Legal kiểm duyệt trước. Tuyệt đối không dùng từ cấm ("chữa khỏi", "đặc trị", "thuốc"), đảm bảo tuân thủ 100% luật quảng cáo y tế/dược phẩm.\n' ||
 E'3. **Báo cáo duyệt qua Telegram:** Sau khi Lead Legal xác nhận "APPROVED / ĐẠT", Trợ lý điều hành tổng hợp kế hoạch tuần kèm bản thảo và ảnh demo báo cáo qua Telegram cho Sếp Công Hùng / Anh Cường duyệt.\n' ||
-E'4. **Tự động xuất bản theo dòng sản phẩm mục tiêu:** Sau khi Sếp duyệt qua Telegram, mỗi ngày vào khung giờ vàng, hệ thống tự động nhận diện dòng sản phẩm để đăng bài và poster chuẩn lên các Fanpage liên quan: bài viết Nutricomp đăng lên các page sữa/dinh dưỡng Nutricomp + page Sức Khỏe Cho Mọi Nhà; bài viết Prontosan đăng lên các page làm lành/chăm sóc vết thương Prontosan + page Sức Khỏe Cho Mọi Nhà. Riêng page "Sức Khỏe Cho Mọi Nhà" là trang chung của công ty nên tiếp nhận đăng song song cả 2 dòng sản phẩm.\n\n' ||
+E'4. **Tự động xuất bản theo dòng sản phẩm mục tiêu:** Sau khi Sếp duyệt qua Telegram, mỗi ngày vào khung giờ vàng, hệ thống tự động nhận diện dòng sản phẩm để đăng bài và poster chuẩn lên các Fanpage liên quan: bài viết Nutricomp đăng lên các page sữa/dinh dưỡng Nutricomp + page Sức Khỏe Cho Mọi Nhà; bài viết Prontosan đăng lên các page làm lành/chăm sóc vết thương Prontosan + page Sức Khỏe Cho Mọi Nhà. Riêng page "Sức Khỏe Cho Mọi Nhà" là trang chung của công ty nên tiếp nhận đăng song song cả 2 dòng sản phẩm.\n' ||
+E'- **LƯU Ý ĐẶC BIỆT KÊNH AFFILIATE:** Fanpage "Affiliate - GlobalPharma" (ID: 1183558371496517) TUYỆT ĐỐI KHÔNG đăng bài về sản phẩm Nutricomp và Prontosan. Kênh này chỉ dành riêng cho tuyến nội dung tuyển dụng đối tác Affiliate/Kinh Doanh Một Người khi có chỉ đạo riêng từ Lãnh đạo.\n\n' ||
 E'## 4. KỊCH BẢN BÁO CÁO NHANH TIẾN ĐỘ MARKETING\n' ||
 E'Khi Sếp Công Hùng, Anh Cường hoặc bất kỳ ai hỏi: "tình hình marketing sao rồi", "team marketing đang làm gì", "cập nhật tình hình":\n' ||
 E'➔ Trả lời chính xác: "Dạ, team marketing bữa giờ sản xuất liên tục và đều đặn các bài truyền thông và hình ảnh về dòng sản phẩm Nutricomp và Prontosan đăng lên mạng lưới 14 kênh Fanpage."\n' ||
@@ -191,7 +192,14 @@ E'## 4. TỰ ĐỘNG ĐĂNG BÀI ĐIỀU HƯỚNG THEO DÒNG SẢN PHẨM\n' ||
 E'Sau khi Lãnh đạo duyệt Plan: Mỗi ngày vào khung giờ quy định, tự động đăng bài và poster tương ứng qua script `post_facebook.py` trong skill `tao-creative-fb`. Hệ thống tự động nhận diện và phân luồng kênh đăng:\n' ||
 E'- **Bài về Nutricomp:** Đăng lên toàn bộ các page sữa/dinh dưỡng Nutricomp + page Sức Khỏe Cho Mọi Nhà.\n' ||
 E'- **Bài về Prontosan:** Đăng lên toàn bộ các page làm lành/chăm sóc vết thương Prontosan + page Sức Khỏe Cho Mọi Nhà.\n' ||
-E'- **Page Sức Khỏe Cho Mọi Nhà:** Là kênh chung nên tiếp nhận cả 2 dòng sản phẩm.';
+E'- **Page Sức Khỏe Cho Mọi Nhà:** Là kênh chung nên tiếp nhận cả 2 dòng sản phẩm.\n' ||
+E'- **TUYỆT ĐỐI LOẠI TRỪ:** Fanpage "Affiliate - GlobalPharma" (ID: 1183558371496517) tuyệt đối không nhận bài đăng sản phẩm Nutricomp hay Prontosan.\n\n' ||
+E'## 5. ĐỊNH HƯỚNG CONTENT TUYỂN DỤNG KÊNH AFFILIATE - GLOBALPHARMA\n' ||
+E'Khi Lãnh đạo yêu cầu Content Plan cho Fanpage "Affiliate - GlobalPharma":\n' ||
+E'- **Đối tượng mục tiêu:** Dược sĩ quầy thuốc, Personal Trainer (PT), chuyên gia dinh dưỡng, nhân sự y tế, những ai muốn kiếm thêm thu nhập từ kiến thức sức khỏe.\n' ||
+E'- **Triết lý & Chủ đề:** Trao giá trị xoay quanh mô hình Kinh Doanh Một Người (Solopreneur), Affiliate Marketing ngành y tế/chăm sóc sức khỏe, tự do tài chính, xây dựng uy tín cá nhân.\n' ||
+E'- **Tone & Mood:** Tinh tế, đĩnh đạc, truyền cảm hứng, chuyên nghiệp và có chiều sâu tri thức. Tuyệt đối KHÔNG viết kiểu tuyển dụng đa cấp, giật gân, chèo kéo hay lộ liễu.\n' ||
+E'- Xuất bản độc lập qua lệnh `python3 skills/tao-creative-fb/scripts/post_facebook.py --image <path> --caption <nội dung> --product affiliate`.';
 
     IF v_mkt_id IS NOT NULL THEN
         INSERT INTO agent_context_files (id, agent_id, file_name, content, tenant_id, created_at, updated_at)

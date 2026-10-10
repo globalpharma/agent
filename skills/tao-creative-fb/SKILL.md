@@ -124,3 +124,19 @@ Khi chạy độc lập ngoài dòng lệnh không qua Agent:
   # Đăng Facebook:
   python scripts/post_facebook.py --image "output/sample.png" --caption "..."
   ```
+
+---
+
+## 5. Chiến Lược Nội Dung Riêng Kênh Affiliate - GlobalPharma (ID: 1183558371496517)
+
+Fanpage **Affiliate - GlobalPharma** là kênh chiến lược chuyên biệt, vận hành theo quy tắc riêng biệt:
+1. **NGUYÊN TẮC CÁCH LY:** Tuyệt đối KHÔNG đăng các bài giới thiệu sản phẩm sữa Nutricomp và gel/dung dịch Prontosan lên kênh này.
+2. **ĐỊNH HƯỚNG NỘI DUNG (KHI ĐƯỢC YÊU CẦU CONTENT PLAN CHO KÊNH AFFILIATE):**
+   - **Đối tượng mục tiêu:** Dược sĩ đứng quầy, Personal Trainer (PT), chuyên gia dinh dưỡng, nhân sự y tế, huấn luyện viên sức khỏe, và những người quan tâm đến việc gia tăng thu nhập từ kiến thức sức khỏe.
+   - **Triết lý cốt lõi:** **Trao giá trị - Mô hình Kinh Doanh Một Người (Solopreneur) & Affiliate Marketing ngành y tế.**
+   - **Chủ đề trụ cột:**
+     - Tận dụng chuyên môn y dược / sức khỏe để xây dựng uy tín cá nhân và tạo dòng tiền thứ 2.
+     - Mô hình phân phối sản phẩm chính ngạch Châu Âu không ôm hàng, không rủi ro vốn.
+     - Đạo đức kinh doanh và nâng tầm giá trị tư vấn sức khỏe cho cộng đồng.
+   - **Tone & Mood:** Tinh tế, trí tuệ, truyền cảm hứng, phong thái chuyên nghiệp. **Tuyệt đối KHÔNG** viết dạng tuyển dụng lộ liễu, đa cấp, chèo kéo hay giật gân.
+
