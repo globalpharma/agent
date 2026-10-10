@@ -395,6 +395,11 @@ ps aux | grep -i -E "goclaw|openclaw|telego" | grep -v grep || echo "No matching
 echo "Active outgoing connections to Telegram API (port 443):"
 ss -tpn state established '( dport = :443 )' 2>/dev/null | grep -E "149.154|91.108" || echo "No direct Telegram IP socket detected in ss"
 
+echo "=== COPYING RENDERED POSTERS FROM CONTAINER TO HOST ==="
+mkdir -p skills/tao-creative-fb/output
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml cp goclaw:/app/workspace/output/. skills/tao-creative-fb/output/ || true
+ls -la skills/tao-creative-fb/output/
+
 echo "=== CHECKING TELEGRAM BOT API & WEBHOOK STATUS ==="
 RAW_CREDS=$(docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -t -A -c "SELECT convert_from(credentials, 'UTF8') FROM channel_instances WHERE channel_type='telegram' LIMIT 1;" || true)
 if [ -n "$RAW_CREDS" ] && [ -f "scripts/manage_telegram_webhook.py" ]; then
@@ -418,9 +423,25 @@ echo "=== CHECKING AGENTS & LLM PROVIDERS ==="
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -c "SELECT id, agent_key, display_name, provider, model FROM agents;" || true
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -c "SELECT id, name, display_name, provider_type, api_base, enabled FROM llm_providers;" || true
 
-echo "=== CHECKING RECENT SESSIONS & LATEST MESSAGES ==="
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -c "SELECT session_key, channel, updated_at, jsonb_array_length(messages) as msg_count FROM sessions ORDER BY updated_at DESC LIMIT 5;" || true
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -c "SELECT session_key, (messages->-1)->>'role' as last_role, SUBSTRING((messages->-1)->>'content' FROM 1 FOR 300) as last_content FROM sessions WHERE channel = 'telegram' ORDER BY updated_at DESC LIMIT 1;" || true
+echo "=== ALL TELEGRAM SESSIONS IN DB ==="
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -c "SELECT id, session_key, channel, user_id, updated_at, jsonb_array_length(messages) as msg_count FROM sessions WHERE channel = 'telegram' OR session_key ILIKE '%telegram%' ORDER BY updated_at DESC;" || true
+
+echo "=== LAST 10 MESSAGES OF SẾP TELEGRAM SESSION ==="
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -c "
+SELECT (elem->>'timestamp')::text as ts, (elem->>'role')::text as role, SUBSTRING((elem->>'content')::text FROM 1 FOR 250) as content 
+FROM sessions, jsonb_array_elements(messages) as elem 
+WHERE session_key = 'agent:dev:telegram:direct:5781808621' 
+ORDER BY elem->>'timestamp' DESC LIMIT 10;
+" || true
+
+echo "=== ALL CRON JOBS IN POSTGRESQL (TÁC VỤ ĐỊNH KỲ) ==="
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -c "SELECT id, name, enabled, schedule_kind, cron_expression, interval_ms, next_run_at, last_run_at, last_status, last_error FROM cron_jobs ORDER BY created_at DESC;" || true
+
+echo "=== RECENT CRON RUN LOGS ==="
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -c "SELECT id, job_id, status, error, ran_at, duration_ms FROM cron_run_logs ORDER BY ran_at DESC LIMIT 10;" || true
+
+echo "=== HOST CRONTAB ==="
+crontab -l 2>/dev/null || echo "No host crontab configured"
 
 echo "Restarting goclaw container to acquire sole connection to Telegram..."
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml restart goclaw || true
