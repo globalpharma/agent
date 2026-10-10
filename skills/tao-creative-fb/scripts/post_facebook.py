@@ -155,10 +155,40 @@ def post_to_facebook_multiple(image_path: str, caption: str, pages_config: list,
     return results
 
 
+def detect_product(caption: str) -> str:
+    """Tự động nhận diện dòng sản phẩm dựa trên nội dung caption"""
+    text = caption.lower()
+    nutricomp_keywords = [
+        "nutricomp", "drink plus", "renal", "dinh dưỡng", "sữa dinh dưỡng",
+        "suy thận", "thận mạn", "lọc máu", "suy kiệt", "hồi phục năng lượng",
+        "năng lượng cao", "300 kcal", "đạm", "calo", "uống liền"
+    ]
+    prontosan_keywords = [
+        "prontosan", "vết thương", "loét", "tì đè", "biofilm",
+        "lành vết thương", "nhiễm trùng", "spray", "wound gel",
+        "rửa vết thương", "hoại tử", "bỏng", "chăm sóc vết thương", "sát trùng"
+    ]
+
+    nutricomp_score = sum(1 for kw in nutricomp_keywords if kw in text)
+    prontosan_score = sum(1 for kw in prontosan_keywords if kw in text)
+
+    if nutricomp_score > prontosan_score:
+        return "nutricomp"
+    elif prontosan_score > nutricomp_score:
+        return "prontosan"
+    elif nutricomp_score > 0:
+        return "nutricomp"
+    elif prontosan_score > 0:
+        return "prontosan"
+    return "all"
+
+
 def main():
     parser = argparse.ArgumentParser(description="Đăng ảnh và bài viết lên một hoặc HÀNG LOẠT Fanpage GlobalPharma")
     parser.add_argument("--image", required=True, help="Đường dẫn file ảnh cần đăng")
     parser.add_argument("--caption", required=True, help="Nội dung bài viết hoặc file text chứa bài viết")
+    parser.add_argument("--product", choices=["nutricomp", "prontosan", "all", "auto"], default="auto",
+                        help="Dòng sản phẩm mục tiêu (nutricomp/prontosan/all/auto - mặc định tự nhận diện)")
     parser.add_argument("--pages-file", help="File JSON chứa danh sách 10+ Fanpage (id, name, token)")
     parser.add_argument("--page-id", help="ID của 1 Fanpage cụ thể (nếu chỉ đăng 1 page)")
     parser.add_argument("--token", help="Page Access Token (nếu chỉ đăng 1 page)")
@@ -180,7 +210,7 @@ def main():
 
     # Xác định danh sách pages
     pages_list = []
-    
+
     # Ưu tiên 1: File danh sách JSON
     target_pages_file = args.pages_file
     if not target_pages_file:
@@ -191,19 +221,40 @@ def main():
     if target_pages_file and Path(target_pages_file).exists():
         with open(target_pages_file, "r", encoding="utf-8") as f:
             pages_list = json.load(f)
-    elif args.page-id and args.token:
+    elif getattr(args, "page_id", None) and getattr(args, "token", None):
         # Ưu tiên 2: Tham số dòng lệnh 1 page
-        pages_list = [{"id": args.page_id, "token": args.token, "name": "Fanpage chỉ định", "enabled": True}]
+        pages_list = [{"id": args.page_id, "token": args.token, "name": "Fanpage chỉ định", "product_group": "all", "enabled": True}]
     else:
         # Ưu tiên 3: Biến môi trường .env (1 page đơn lẻ)
         env_page_id = os.getenv("FB_PAGE_ID", "").strip()
         env_token = os.getenv("FB_PAGE_TOKEN", "").strip()
         if env_page_id:
-            pages_list = [{"id": env_page_id, "token": env_token, "name": "GlobalPharma Official Page", "enabled": True}]
+            pages_list = [{"id": env_page_id, "token": env_token, "name": "GlobalPharma Official Page", "product_group": "all", "enabled": True}]
 
     if not pages_list:
         print("[ERROR] Không tìm thấy thông tin Fanpage nào! Vui lòng cung cấp --pages-file hoặc --page-id & --token.")
         sys.exit(1)
+
+    # Nhận diện dòng sản phẩm và điều hướng Fanpage phù hợp
+    target_product = args.product.lower()
+    if target_product == "auto":
+        target_product = detect_product(caption_text)
+        print(f"\n🔍 [NHẬN DIỆN SẢN PHẨM TỰ ĐỘNG] Dòng sản phẩm nhận diện được: {target_product.upper()}")
+    else:
+        print(f"\n🎯 [CHỈ ĐỊNH DÒNG SẢN PHẨM] Dòng sản phẩm: {target_product.upper()}")
+
+    if target_product in ("nutricomp", "prontosan"):
+        filtered_pages = []
+        for p in pages_list:
+            pg = p.get("product_group", "all").lower()
+            # Đăng lên page chuyên biệt của dòng sản phẩm HOẶC page chung ("Sức Khỏe Cho Mọi Nhà" / "all")
+            if pg == target_product or pg in ("all", "general", "both"):
+                filtered_pages.append(p)
+        print(f"📌 Đã phân luồng {len(filtered_pages)}/{len(pages_list)} Fanpage mục tiêu cho [{target_product.upper()}]:")
+        for fp in filtered_pages:
+            badge = "★ (Page chung)" if fp.get("product_group") == "all" else "● (Page chuyên biệt)"
+            print(f"   {badge} {fp.get('name')} (ID: {fp.get('id')})")
+        pages_list = filtered_pages
 
     post_to_facebook_multiple(
         image_path=args.image,

@@ -42,12 +42,15 @@ Mục tiêu: Cung cấp kiến thức chăm sóc sức khỏe, nuôi dưỡng t�
    - **1 Caption (80–150 từ):** Gồm [Hook y khoa / thấu cảm] + [Kiến thức dinh dưỡng / cơ chế sản phẩm] + [Soft CTA tư vấn hoặc chia sẻ].
    - **1 Hình ảnh (1024x1024):** Phong cách nhiếp ảnh y khoa ấm áp, đời thực, màu sắc chuẩn nhận diện B.Braun (xanh y tế, trắng tinh khiết, ánh sáng tự nhiên).
 4. **Xem trước (Preview):** Hiển thị đầy đủ hình ảnh và caption để người dùng kiểm duyệt.
-5. **Đăng bài HÀNG LOẠT lên 10+ Fanpage (Multi-Page Broadcasting):**
-   - Danh sách các Fanpage (Page ID, Page Token, Tên Page) được lưu trong file `skills/tao-creative-fb/pages.json`.
-   - Sau khi người dùng xác nhận ("Đồng ý", "Đăng bài"), hệ thống gọi script `scripts/post_facebook.py` để đăng bài đồng loạt lên toàn bộ 10+ Fanpage trong 1 lần.
+5. **Đăng bài THÔNG MINH theo dòng sản phẩm (Product-Aware Broadcasting):**
+   - Danh sách Fanpage được phân loại theo `product_group` (`nutricomp`, `prontosan`, hoặc `all`) trong `skills/tao-creative-fb/pages.json`.
+   - **Tự động nhận diện dòng sản phẩm:** Script `scripts/post_facebook.py` tự động phân tích caption hoặc cờ `--product [nutricomp|prontosan|all|auto]`:
+     - **Bài viết Nutricomp:** Tự động điều hướng đăng lên toàn bộ các Page chuyên biệt về sữa/dinh dưỡng Nutricomp + Page chung **Sức Khỏe Cho Mọi Nhà**.
+     - **Bài viết Prontosan:** Tự động điều hướng đăng lên toàn bộ các Page chuyên biệt về chăm sóc/làm lành vết thương Prontosan + Page chung **Sức Khỏe Cho Mọi Nhà**.
+     - **Page "Sức Khỏe Cho Mọi Nhà":** Là trang sức khỏe cộng đồng chung của GlobalPharma, tiếp nhận đăng song song cả bài viết Nutricomp lẫn Prontosan.
    - **Cơ chế chống Spam:** Tự động giãn cách 2 giây giữa mỗi Page để bảo vệ tài khoản khỏi thuật toán chống spam của Facebook.
    - **Tính chịu lỗi:** Nếu 1 trang bị lỗi (hết hạn token), script vẫn tiếp tục đăng bình thường cho các trang còn lại và xuất bảng báo cáo chi tiết từng page.
-   - Hỗ trợ biến môi trường `DRY_RUN=true` để kiểm thử toàn diện danh sách page mà không post thật.
+   - Hỗ trợ cờ `--dry-run` để kiểm thử toàn diện danh sách page mà không post thật.
 
 ---
 
