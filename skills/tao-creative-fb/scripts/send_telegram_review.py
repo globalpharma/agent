@@ -127,7 +127,7 @@ def main():
         "⛔ <b>Tuyệt đối loại trừ:</b> Fanpage <i>Affiliate - GlobalPharma</i> (để dành tuyến bài tuyển dụng đối tác riêng).\n\n"
         "<b>3. Xác nhận Pháp lý:</b>\n"
         "Lead Legal xác nhận: <code>APPROVED</code> — 100% đúng định vị dinh dưỡng y tế &amp; thiết bị chăm sóc vết thương B.Braun Đức, không có từ cấm 'đặc trị' hay 'thuốc chữa bệnh'.\n\n"
-        "Dưới đây là <b>3 DEMO POSTER &amp; BÀI VIẾT TIÊU BIỂU</b> do Designer vừa hoàn thiện, kính mời Sếp xem qua ạ 👇"
+        "Dưới đây là <b>3 BẢN VISUAL &amp; BÀI VIẾT THIẾT KẾ TỰ NHIÊN MỚI</b> do <b>Agent Design (mô hình GPT-5.6)</b> vừa hoàn thiện, đảm bảo ảnh sản phẩm thực tế sắc nét và logo chuẩn GlobalPharma &amp; B.Braun, kính mời Sếp xem qua ạ 👇"
     )
     send_message(bot_token, chat_id, msg_plan)
 
@@ -135,11 +135,11 @@ def main():
     img_nutri = p_dir / "poster_nutricomp_drink_plus.png"
     if img_nutri.exists():
         caption_nutri = (
-            "<b>🥛 DEMO 1: POSTER &amp; BÀI VIẾT NUTRICOMP® DRINK PLUS</b>\n\n"
+            "<b>🥛 DEMO 1: VISUAL &amp; BÀI VIẾT NUTRICOMP® (THIẾT KẾ TỰ NHIÊN BỞI GPT-5.6)</b>\n\n"
             "<b>Tiêu đề:</b> PHỤC HỒI THỂ TRẠNG VƯỢT TRỘI VỚI 300 KCAL TỪ B.BRAUN CHLB ĐỨC\n\n"
             "<b>Nội dung trích đoạn:</b>\n"
-            "Chăm sóc người thân sau phẫu thuật hay người già suy kiệt, nỗi sợ lớn nhất là người bệnh chán ăn, sút cân nhanh chóng. Mỗi chai Nutricomp Drink Plus 200ml cung cấp trọn vẹn 300 kcal cùng đạm sinh học và khoáng chất y khoa chuẩn Châu Âu, giúp người bệnh lấy lại sức sống chỉ sau vài ngày.\n\n"
-            "✔ <b>Thiết kế:</b> Thiết kế chuẩn theo bộ 4 tham chiếu của Sếp (Gradient Ngọc lục bảo #013D29, Hộp 12 chai Nutricomp Drink Renal mở nắp, splash sữa 400 kcal, Nút Đặt mua ngay 3D, Cờ Đức &amp; Bộ 3 cam kết quốc tế, Disclaimer FSMP). Do Agent Design (GPT-5.6-sol) phụ trách.\n"
+            "Chăm sóc người thân sau phẫu thuật hay người già suy kiệt, nỗi sợ lớn nhất là người bệnh chán ăn, sút cân nhanh chóng. Mỗi chai Nutricomp 200ml cung cấp trọn vẹn năng lượng cao cùng đạm sinh học và khoáng chất y khoa chuẩn Châu Âu, giúp người bệnh lấy lại sức sống chỉ sau vài ngày.\n\n"
+            "✔ <b>Thiết kế:</b> Thiết kế tự nhiên bằng mô hình GPT-5.6, sử dụng hình ảnh sản phẩm thực tế sắc nét của B.Braun Đức và Logo GlobalPharma chuẩn nhận diện, bố cục thoáng đãng và sang trọng.\n"
             "✔ <b>Kênh xuất bản dự kiến:</b> 6 Fanpage Nutricomp + Fanpage Sức Khỏe Cho Mọi Nhà."
         )
         send_photo(bot_token, chat_id, str(img_nutri), caption_nutri)
@@ -148,11 +148,11 @@ def main():
     img_pronto = p_dir / "poster_prontosan_wound_spray.png"
     if img_pronto.exists():
         caption_pronto = (
-            "<b>🛡️ DEMO 2: POSTER &amp; BÀI VIẾT PRONTOSAN® WOUND CARE</b>\n\n"
+            "<b>🛡️ DEMO 2: VISUAL &amp; BÀI VIẾT PRONTOSAN® WOUND CARE (THIẾT KẾ TỰ NHIÊN BỞI GPT-5.6)</b>\n\n"
             "<b>Tiêu đề:</b> PHÁ VỠ MÀNG BIOFILM - BẢO VỆ TOÀN DIỆN VẾT LOÉT TÌ ĐÈ &amp; VẾT THƯƠNG MẠN TÍNH\n\n"
             "<b>Nội dung trích đoạn:</b>\n"
             "Tại sao vết loét tì đè ở người nằm lâu hay vết thương tiểu đường lại lâu lành và tái phát nhiễm trùng? Thủ phạm là màng Biofilm bảo vệ vi khuẩn. Prontosan của B.Braun Đức với phức hợp Betaine và Polihexanide giúp phá vỡ màng Biofilm tận gốc, làm sạch dịu nhẹ không đau xót, kích thích tạo mô hạt nhanh chóng.\n\n"
-            "✔ <b>Thiết kế:</b> Tone màu xanh ngọc y tế #3BCFAF sạch sẽ, thông tin rõ ràng cho người chăm bệnh.\n"
+            "✔ <b>Thiết kế:</b> Thiết kế y tế tự nhiên, tinh tế, gắn Logo GlobalPharma chính thức sắc nét, thông tin khoa học rõ ràng, không vẽ khung thô.\n"
             "✔ <b>Kênh xuất bản dự kiến:</b> 6 Fanpage Prontosan + Fanpage Sức Khỏe Cho Mọi Nhà."
         )
         send_photo(bot_token, chat_id, str(img_pronto), caption_pronto)
@@ -161,11 +161,11 @@ def main():
     img_aff = p_dir / "poster_affiliate_partner.png"
     if img_aff.exists():
         caption_aff = (
-            "<b>💼 DEMO 3: POSTER TUYỂN DỤNG ĐỐI TÁC (FANPAGE AFFILIATE - GLOBALPHARMA)</b>\n\n"
+            "<b>💼 DEMO 3: VISUAL TUYỂN DỤNG ĐỐI TÁC (FANPAGE AFFILIATE - GLOBALPHARMA)</b>\n\n"
             "<b>Tiêu đề:</b> MÔ HÌNH KINH DOANH MỘT NGƯỜI (SOLOPRENEUR) DÀNH CHO DƯỢC SĨ &amp; CHUYÊN GIA SỨC KHỎE\n\n"
             "<b>Nội dung trích đoạn:</b>\n"
             "Bạn có kiến thức y dược và mong muốn gia tăng nguồn thu nhập thứ hai bền vững? GlobalPharma mở ra mạng lưới Affiliate đồng hành cùng các Dược sĩ, Huấn luyện viên thể hình (PT), Chuyên gia dinh dưỡng. Trao giá trị sức khỏe với các sản phẩm chính ngạch B.Braun Đức, không ôm hàng, không rủi ro vận hành.\n\n"
-            "✔ <b>Định hướng:</b> Tinh tế, trao giá trị, không đa cấp hay chèo kéo.\n"
+            "✔ <b>Thiết kế:</b> Phong cách Doanh nhân Sức khỏe (Solopreneur) tự nhiên, sang trọng, đẳng cấp với Logo GlobalPharma chính thức.\n"
             "✔ <b>Kênh xuất bản dự kiến:</b> Kênh riêng Fanpage Affiliate - GlobalPharma (ID: 1183558371496517)."
         )
         send_photo(bot_token, chat_id, str(img_aff), caption_aff)
