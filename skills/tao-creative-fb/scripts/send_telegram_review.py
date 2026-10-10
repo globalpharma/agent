@@ -127,19 +127,19 @@ def main():
         "⛔ <b>Tuyệt đối loại trừ:</b> Fanpage <i>Affiliate - GlobalPharma</i> (để dành tuyến bài tuyển dụng đối tác riêng).\n\n"
         "<b>3. Xác nhận Pháp lý:</b>\n"
         "Lead Legal xác nhận: <code>APPROVED</code> — 100% đúng định vị dinh dưỡng y tế &amp; thiết bị chăm sóc vết thương B.Braun Đức, không có từ cấm 'đặc trị' hay 'thuốc chữa bệnh'.\n\n"
-        "Dưới đây là <b>3 BẢN VISUAL ĐỘT PHÁ MỚI</b> do <b>Agent Design (mô hình GPT-5.6)</b> vừa ứng dụng trực tiếp kỹ năng <b>ads-image-architect</b> thiết kế (chuẩn sáng tạo Meta Ads: hand-drawn callouts, ảnh sản phẩm thực tế và logo GlobalPharma sắc nét, loại bỏ hoàn toàn nút CTA thô cứng), kính mời Sếp xem qua ạ 👇"
+        "Dưới đây là <b>3 BẢN VISUAL ĐỘT PHÁ MỚI</b> do <b>Agent Design</b> sử dụng <b>100% ẢNH SẢN PHẨM THẬT &amp; LOGO CHÍNH THỨC từ Kho Tri Thức Dữ Liệu Công Ty</b>, thiết kế theo chuẩn <b>ads-image-architect</b> (không nút CTA thô, bố cục y tế cao cấp), kính mời Sếp xem qua ạ 👇"
     )
     send_message(bot_token, chat_id, msg_plan)
 
-    # 2. Poster 1: Nutricomp Drink Plus
+    # 2. Poster 1: Nutricomp Drink Renal Combo 12 Chai
     img_nutri = p_dir / "poster_nutricomp_drink_plus.png"
     if img_nutri.exists():
         caption_nutri = (
-            "<b>🥛 DEMO 1: VISUAL &amp; BÀI VIẾT NUTRICOMP® (THIẾT KẾ TỰ NHIÊN BỞI GPT-5.6)</b>\n\n"
-            "<b>Tiêu đề:</b> PHỤC HỒI THỂ TRẠNG VƯỢT TRỘI VỚI 300 KCAL TỪ B.BRAUN CHLB ĐỨC\n\n"
+            "<b>🥛 DEMO 1: COMBO 12 CHAI NUTRICOMP® DRINK RENAL VANILLA (100% ẢNH THẬT TỪ KHO DỮ LIỆU CÔNG TY)</b>\n\n"
+            "<b>Tiêu đề:</b> GIẢI PHÁP DINH DƯỠNG Y HỌC CHUYÊN BIỆT CHO NGƯỜI BỆNH THẬN\n\n"
             "<b>Nội dung trích đoạn:</b>\n"
-            "Chăm sóc người thân sau phẫu thuật hay người già suy kiệt, nỗi sợ lớn nhất là người bệnh chán ăn, sút cân nhanh chóng. Mỗi chai Nutricomp 200ml cung cấp trọn vẹn năng lượng cao cùng đạm sinh học và khoáng chất y khoa chuẩn Châu Âu, giúp người bệnh lấy lại sức sống chỉ sau vài ngày.\n\n"
-            "✔ <b>Thiết kế:</b> Thiết kế tự nhiên bằng mô hình GPT-5.6, sử dụng hình ảnh sản phẩm thực tế sắc nét của B.Braun Đức và Logo GlobalPharma chuẩn nhận diện, bố cục thoáng đãng và sang trọng.\n"
+            "Hộp quà cao cấp 12 chai Nutricomp® Drink Renal Vanilla nhập khẩu nguyên hộp từ CHLB Đức. Mỗi chai 200ml cung cấp năng lượng cao 400 kcal (2.0 kcal/ml), 14g đạm sinh học, kiểm soát nghiêm ngặt Natri - Kali - Phospho và giàu Omega-3, FOS giúp phục hồi thể trạng tối ưu cho người bệnh lọc máu/chạy thận.\n\n"
+            "✔ <b>Ảnh &amp; Logo:</b> 100% ảnh chụp thật studio combo 12 chai và Logo GlobalPharma chính thức có dấu ® từ kho tri thức công ty.\n"
             "✔ <b>Kênh xuất bản dự kiến:</b> 6 Fanpage Nutricomp + Fanpage Sức Khỏe Cho Mọi Nhà."
         )
         send_photo(bot_token, chat_id, str(img_nutri), caption_nutri)
@@ -148,11 +148,11 @@ def main():
     img_pronto = p_dir / "poster_prontosan_wound_spray.png"
     if img_pronto.exists():
         caption_pronto = (
-            "<b>🛡️ DEMO 2: VISUAL &amp; BÀI VIẾT PRONTOSAN® WOUND CARE (THIẾT KẾ TỰ NHIÊN BỞI GPT-5.6)</b>\n\n"
+            "<b>🛡️ DEMO 2: PRONTOSAN® WOUND SPRAY 75ML (100% ẢNH THẬT B.BRAUN TỪ KHO DỮ LIỆU CÔNG TY)</b>\n\n"
             "<b>Tiêu đề:</b> PHÁ VỠ MÀNG BIOFILM - BẢO VỆ TOÀN DIỆN VẾT LOÉT TÌ ĐÈ &amp; VẾT THƯƠNG MẠN TÍNH\n\n"
             "<b>Nội dung trích đoạn:</b>\n"
-            "Tại sao vết loét tì đè ở người nằm lâu hay vết thương tiểu đường lại lâu lành và tái phát nhiễm trùng? Thủ phạm là màng Biofilm bảo vệ vi khuẩn. Prontosan của B.Braun Đức với phức hợp Betaine và Polihexanide giúp phá vỡ màng Biofilm tận gốc, làm sạch dịu nhẹ không đau xót, kích thích tạo mô hạt nhanh chóng.\n\n"
-            "✔ <b>Thiết kế:</b> Thiết kế y tế tự nhiên, tinh tế, gắn Logo GlobalPharma chính thức sắc nét, thông tin khoa học rõ ràng, không vẽ khung thô.\n"
+            "Tại sao vết loét tì đè ở người nằm lâu hay vết thương tiểu đường lại lâu lành và tái phát nhiễm trùng? Thủ phạm là màng Biofilm bảo vệ vi khuẩn. Prontosan của B.Braun Đức với phức hợp Betaine 0.1% và Polyhexanide (PHMB) 0.1% giúp phá vỡ màng Biofilm tận gốc, làm sạch dịu nhẹ 0% đau rát, an toàn mô hạt và đạt chuẩn ISO 13485.\n\n"
+            "✔ <b>Ảnh &amp; Logo:</b> 100% ảnh chụp chai xịt 75ml thật và ảnh ứng dụng lâm sàng thực tế của B.Braun Medical AG cùng Logo GlobalPharma chính thức.\n"
             "✔ <b>Kênh xuất bản dự kiến:</b> 6 Fanpage Prontosan + Fanpage Sức Khỏe Cho Mọi Nhà."
         )
         send_photo(bot_token, chat_id, str(img_pronto), caption_pronto)
