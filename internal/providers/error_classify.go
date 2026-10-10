@@ -221,6 +221,10 @@ func RegisterOpenAIPatterns(c *DefaultClassifier) {
 		{Contains: "model_is_deactivated", Reason: FailoverModelNotFound},
 		{Contains: "model not found", Reason: FailoverModelNotFound},
 		{Contains: "does not exist", Reason: FailoverModelNotFound},
+		{Contains: "no route-eligible chatgpt_oauth providers", Reason: FailoverRateLimit},
+		{Contains: "no authenticated chatgpt_oauth providers", Reason: FailoverAuth},
+		{Contains: "all members exhausted", Reason: FailoverRateLimit},
+		{Contains: "exhausted", Reason: FailoverRateLimit},
 	})
 }
 

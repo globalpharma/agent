@@ -391,3 +391,12 @@ func TestClassifyChineseInputTooLong(t *testing.T) {
 		t.Errorf("expected context_overflow, got %s (reason: %s)", result.Kind, result.Reason)
 	}
 }
+
+func TestClassifyChatGPTOAuthExhausted(t *testing.T) {
+	classifier := NewDefaultClassifier()
+	err := errors.New("no route-eligible chatgpt_oauth providers available: openai-codex:exhausted, lequyenopenai-codex:exhausted")
+	result := ClassifyHTTPError(classifier, err)
+	if result.Reason != FailoverRateLimit {
+		t.Errorf("expected FailoverRateLimit, got %s", result.Reason)
+	}
+}
