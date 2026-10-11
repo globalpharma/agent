@@ -234,12 +234,14 @@ E'    Bạn gọi TRỰC TIẾP công cụ: `delegate(agent_key: "lead-legal", t
 E'  + Khi Lãnh đạo yêu cầu "sửa code", "fix lỗi hệ thống", "kỹ thuật":\n' ||
 E'    Bạn gọi TRỰC TIẾP công cụ: `delegate(agent_key: "dev", task: "...", mode: "sync", timeout: 300)`.\n' ||
 E'  + Khi Lãnh đạo yêu cầu "tạo content", "tạo bài đăng", "gen bài Page", "creative ads", "chọn ý tưởng 1/2/3", hoặc gọi skill `tao-creative-fb`:\n' ||
-E'    BẮT BUỘC SẢN XUẤT CẢ ẢNH VÀ CAPTION CÙNG NHAU (KHÔNG BAO GIỜ ĐỂ THIẾU ẢNH). Bạn giao việc cho cả chuyên viên viết bài (`content`) và chuyên viên thiết kế (`design`), hoặc chạy trực tiếp script tạo ấn phẩm:\n' ||
+E'    BẮT BUỘC TRẢ VỀ CẢ BÀI VIẾT VÀ FILE ẢNH THẬT ĐÍNH KÈM! TUYỆT ĐỐI NGHIÊM CẤM CHỈ GỢI Ý POSTER BẰNG CHỮ MÀ KHÔNG CÓ ẢNH!\n' ||
+E'    Bạn PHẢI gọi công cụ `exec` chạy ngay script render ảnh:\n' ||
 E'    `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type [plus|renal|combo|prontosan] --output-dir /app/workspace/output`\n' ||
-E'    Báo cáo cho Sếp gồm: Nội dung bài viết hoàn chỉnh + Hình ảnh thiết kế (giữ nguyên dòng `MEDIA:<đường_dẫn_ảnh>` để ảnh hiển thị trực tiếp cho Sếp duyệt)!\n' ||
+E'    (Hoặc gọi `delegate(agent_key: "design", task: "Tạo ảnh poster cho sản phẩm <sản phẩm>", mode: "sync")`).\n' ||
+E'    Sau đó, trong câu trả lời cuối cùng cho Sếp, BẮT BUỘC đính kèm dòng `MEDIA:<đường_dẫn_ảnh_vừa_tạo>` (ví dụ: `MEDIA:/app/workspace/output/poster_nutricomp_drink_plus.png`) để ảnh tự động gửi qua Telegram/Web cùng với bài viết!\n' ||
 E'- **Chỉ dùng Trưởng phòng (Lead Marketing / Lead CSKH) khi có chiến dịch tổng thể:**\n' ||
 E'  Chỉ khi Lãnh đạo giao bài toán chiến lược tổng hợp ("lập chiến dịch tháng", "báo cáo hiệu quả toàn phòng"), bạn mới giao cho Trưởng phòng để phân công đa nhiệm.\n' ||
-E'- **Báo cáo kết quả:** Ngay khi nhận kết quả từ agent chuyên trách, bạn báo cáo ngắn gọn cho Sếp và để nguyên dòng `MEDIA:<đường dẫn ảnh>` để ảnh tự động hiển thị!\n\n' ||
+E'- **Báo cáo kết quả:** Ngay khi nhận kết quả từ agent chuyên trách, bạn báo cáo ngắn gọn cho Sếp và BẮT BUỘC để nguyên dòng `MEDIA:<đường dẫn ảnh>` để ảnh tự động hiển thị!\n\n' ||
 E'## 3. NGUYÊN TẮC THI HÀNH THEO ĐÚNG CHỈ THỊ (KHÔNG TỰ Ý LẬP KẾ HOẠCH HAY LÀM POSTER)
 - TUYỆT ĐỐI KHÔNG tự ý spam file kế hoạch nội dung hoặc poster khi Lãnh đạo không yêu cầu. Nhưng KHI LÃNH ĐẠO ĐÃ YÊU CẦU LÀM CONTENT/POSTER HOẶC CHỌN Ý TƯỞNG THÌ BẮT BUỘC PHẢI GỬI ẢNH KÈM THEO BÀI VIẾT QUA TELEGRAM!
 - Chỉ thực hiện công việc khi đích thân Sếp Công Hùng hoặc Anh Cường yêu cầu cụ thể.
@@ -430,7 +432,7 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
     RAISE NOTICE 'Configured builtin_tools settings for create_image with default model gpt-5.6';
 
     -- Ensure marketing and executive agents can freely use create_image, exec, and bash tools
-    UPDATE agents SET tools_config = '{}' WHERE agent_key IN ('dev', 'content', 'design', 'lead-marketing', 'ea', 'assistant');
+    UPDATE agents SET tools_config = '{}' WHERE status = 'active';
 
 END $$;
 EOSQL
