@@ -121,10 +121,32 @@ def draw_pill(draw, x, y, text, font, bg_color, text_color, padding=(18, 10), bo
 def draw_card(draw, box, fill_color, border_color=None, radius=16):
     draw.rounded_rectangle(box, radius=radius, fill=fill_color, outline=border_color, width=1 if border_color else 0)
 
+def wrap_text(text: str, font, max_width: int):
+    """Chia dòng thông minh để vừa vặn chiều rộng đồ họa"""
+    words = text.split()
+    if not words:
+        return []
+    lines = []
+    current_line = []
+    for word in words:
+        test_line = " ".join(current_line + [word])
+        bbox = font.getbbox(test_line)
+        if (bbox[2] - bbox[0]) <= max_width:
+            current_line.append(word)
+        else:
+            if current_line:
+                lines.append(" ".join(current_line))
+                current_line = [word]
+            else:
+                lines.append(word)
+    if current_line:
+        lines.append(" ".join(current_line))
+    return lines
+
 # ==============================================================================
 # 1. NUTRICOMP DRINK PLUS (1 CHAI LẺ 200ML, CAO NĂNG LƯỢNG, PHỤC HỒI THỂ TRẠNG)
 # ==============================================================================
-def render_pro_nutricomp_plus():
+def render_pro_nutricomp_plus(headline: str = None, subline: str = None, output_path: Path = None):
     w, h = 1080, 1080
     bg_candidates = [
         REFS_DIR / "bg_lifestyle_dining.jpg",
@@ -198,17 +220,41 @@ def render_pro_nutricomp_plus():
     draw_german_flag(draw, badge_x + 14, 62, 26, 18)
     draw.text((badge_x + 48, 62), "CHLB ĐỨC • B.BRAUN", fill="#F8FAFC", font=get_font(14, bold=True))
 
-    # PRODUCT HEADLINE & CLINICAL HOOK
-    draw_text_with_shadow(draw, (50, 135), "DINH DƯỠNG Y HỌC CAO NĂNG LƯỢNG", "#FBBF24", get_font(18, bold=True), shadow_color=(0, 0, 0, 220))
-    draw_text_with_shadow(draw, (50, 170), "NUTRICOMP® PLUS", "#FFFFFF", get_font(52, bold=True), shadow_color=(0, 0, 0, 240))
-    draw_text_with_shadow(draw, (50, 240), "1.5 KCAL / ML • 300 KCAL / CHAI", "#F59E0B", get_font(30, bold=True), shadow_color=(0, 0, 0, 220))
-    draw_text_with_shadow(draw, (50, 285), "PHỤC HỒI THỂ TRẠNG SUY KIỆT • SAU PHẪU THUẬT", "#F1F5F9", get_font(21, bold=True), shadow_color=(0, 0, 0, 200))
+    # DYNAMIC OR DEFAULT PRODUCT HEADLINE & CLINICAL HOOK
+    draw_text_with_shadow(draw, (50, 130), "DINH DƯỠNG Y HỌC CAO NĂNG LƯỢNG", "#FBBF24", get_font(17, bold=True), shadow_color=(0, 0, 0, 220))
+    
+    cur_y = 160
+    if headline and headline.strip():
+        hl_clean = headline.strip().upper()
+        # Choose appropriate font size based on length
+        font_size = 46 if len(hl_clean) <= 30 else (38 if len(hl_clean) <= 50 else 32)
+        hl_font = get_font(font_size, bold=True)
+        hl_lines = wrap_text(hl_clean, hl_font, max_width=520)
+        for line in hl_lines[:3]:
+            draw_text_with_shadow(draw, (50, cur_y), line, "#FFFFFF", hl_font, shadow_color=(0, 0, 0, 240))
+            cur_y += font_size + 10
+    else:
+        draw_text_with_shadow(draw, (50, cur_y), "NUTRICOMP® PLUS", "#FFFFFF", get_font(52, bold=True), shadow_color=(0, 0, 0, 240))
+        cur_y += 62
 
-    # Sub-hook (thấu cảm y khoa)
-    draw_text_with_shadow(draw, (50, 325), "Chuyên biệt cho người sau mổ, xạ trị, hóa trị & người suy mòn dinh dưỡng", "#CBD5E1", get_font(16, bold=False), shadow_color=(0, 0, 0, 200))
+    # Brand badge & spec
+    draw_text_with_shadow(draw, (50, cur_y), "1.5 KCAL / ML • 300 KCAL / CHAI 200ML", "#F59E0B", get_font(26, bold=True), shadow_color=(0, 0, 0, 220))
+    cur_y += 38
+
+    # Sub-hook (thấu cảm y khoa hoặc subline động)
+    if subline and subline.strip():
+        sl_font = get_font(16, bold=False)
+        sl_lines = wrap_text(subline.strip(), sl_font, max_width=520)
+        for line in sl_lines[:2]:
+            draw_text_with_shadow(draw, (50, cur_y), line, "#E2E8F0", sl_font, shadow_color=(0, 0, 0, 200))
+            cur_y += 24
+    else:
+        draw_text_with_shadow(draw, (50, cur_y), "PHỤC HỒI THỂ TRẠNG SUY KIỆT • SAU PHẪU THUẬT", "#F1F5F9", get_font(20, bold=True), shadow_color=(0, 0, 0, 200))
+        cur_y += 30
+        draw_text_with_shadow(draw, (50, cur_y), "Chuyên biệt cho người sau mổ, xạ trị, hóa trị & người suy mòn dinh dưỡng", "#CBD5E1", get_font(15, bold=False), shadow_color=(0, 0, 0, 200))
 
     # CLINICAL BENEFIT CARDS (3 Điểm tựa y khoa)
-    card_y = 380
+    card_y = max(cur_y + 16, 385)
     benefits = [
         ("● ĐẠM CHẤT LƯỢNG CAO 12G", "Whey & Casein thủy phân hấp thu nhanh, tái tạo mô cơ"),
         ("● GIÀU EPA & DHA TỪ DẦU CÁ", "Chống viêm tế bào, cải thiện miễn dịch, kích thích ngon miệng"),
@@ -227,7 +273,8 @@ def render_pro_nutricomp_plus():
     # Bottom commitment pill
     draw_text_with_shadow(draw, (50, h - 55), "Chai 200ml tiệt trùng • Nhập khẩu chính ngạch B.Braun CHLB Đức", "#94A3B8", get_font(14, bold=False))
 
-    out_file = OUTPUT_DIR / "poster_nutricomp_drink_plus.png"
+    out_file = output_path if output_path else (OUTPUT_DIR / "poster_nutricomp_drink_plus.png")
+    out_file.parent.mkdir(parents=True, exist_ok=True)
     canvas.convert("RGB").save(out_file, "PNG", quality=95)
     print(f"MEDIA:{os.path.abspath(out_file)}")
     return out_file
@@ -235,7 +282,7 @@ def render_pro_nutricomp_plus():
 # ==============================================================================
 # 2. NUTRICOMP DRINK RENAL (1 CHAI LẺ 200ML, KIỂM SOÁT ĐIỆN GIẢI CHO BỆNH THẬN)
 # ==============================================================================
-def render_pro_nutricomp_renal():
+def render_pro_nutricomp_renal(headline: str = None, subline: str = None, output_path: Path = None):
     w, h = 1080, 1080
     bg_candidates = [
         REFS_DIR / "bg_luxury_teal_podium.jpg",
@@ -305,17 +352,40 @@ def render_pro_nutricomp_renal():
     draw_german_flag(draw, badge_x + 14, 62, 26, 18)
     draw.text((badge_x + 48, 62), "CHLB ĐỨC • B.BRAUN", fill="#F8FAFC", font=get_font(14, bold=True))
 
-    # PRODUCT HEADLINE & CLINICAL HOOK
-    draw_text_with_shadow(draw, (50, 135), "DINH DƯỠNG LÂM SÀNG CHUYÊN BIỆT CHO BỆNH THẬN", "#38BDF8", get_font(18, bold=True), shadow_color=(0, 0, 0, 220))
-    draw_text_with_shadow(draw, (50, 170), "NUTRICOMP® RENAL", "#FFFFFF", get_font(52, bold=True), shadow_color=(0, 0, 0, 240))
-    draw_text_with_shadow(draw, (50, 240), "2.0 KCAL / ML • 400 KCAL / CHAI", "#2DD4BF", get_font(30, bold=True), shadow_color=(0, 0, 0, 220))
-    draw_text_with_shadow(draw, (50, 285), "BẢO VỆ CHỨC NĂNG THẬN • KIỂM SOÁT ĐIỆN GIẢI", "#F1F5F9", get_font(21, bold=True), shadow_color=(0, 0, 0, 200))
+    # DYNAMIC OR DEFAULT PRODUCT HEADLINE & CLINICAL HOOK
+    draw_text_with_shadow(draw, (50, 130), "DINH DƯỠNG LÂM SÀNG CHUYÊN BIỆT CHO BỆNH THẬN", "#38BDF8", get_font(17, bold=True), shadow_color=(0, 0, 0, 220))
 
-    # Sub-hook (y khoa chuẩn xác)
-    draw_text_with_shadow(draw, (50, 325), "Chuyên biệt cho bệnh nhân suy thận mạn & lọc máu chu kỳ theo chuẩn FSMP", "#94A3B8", get_font(16, bold=False), shadow_color=(0, 0, 0, 200))
+    cur_y = 160
+    if headline and headline.strip():
+        hl_clean = headline.strip().upper()
+        font_size = 46 if len(hl_clean) <= 30 else (38 if len(hl_clean) <= 50 else 32)
+        hl_font = get_font(font_size, bold=True)
+        hl_lines = wrap_text(hl_clean, hl_font, max_width=520)
+        for line in hl_lines[:3]:
+            draw_text_with_shadow(draw, (50, cur_y), line, "#FFFFFF", hl_font, shadow_color=(0, 0, 0, 240))
+            cur_y += font_size + 10
+    else:
+        draw_text_with_shadow(draw, (50, cur_y), "NUTRICOMP® RENAL", "#FFFFFF", get_font(52, bold=True), shadow_color=(0, 0, 0, 240))
+        cur_y += 62
+
+    # Brand badge & spec
+    draw_text_with_shadow(draw, (50, cur_y), "2.0 KCAL / ML • 400 KCAL / CHAI 200ML", "#2DD4BF", get_font(26, bold=True), shadow_color=(0, 0, 0, 220))
+    cur_y += 38
+
+    # Sub-hook (thấu cảm y khoa hoặc subline động)
+    if subline and subline.strip():
+        sl_font = get_font(16, bold=False)
+        sl_lines = wrap_text(subline.strip(), sl_font, max_width=520)
+        for line in sl_lines[:2]:
+            draw_text_with_shadow(draw, (50, cur_y), line, "#E2E8F0", sl_font, shadow_color=(0, 0, 0, 200))
+            cur_y += 24
+    else:
+        draw_text_with_shadow(draw, (50, cur_y), "BẢO VỆ CHỨC NĂNG THẬN • KIỂM SOÁT ĐIỆN GIẢI", "#F1F5F9", get_font(20, bold=True), shadow_color=(0, 0, 0, 200))
+        cur_y += 30
+        draw_text_with_shadow(draw, (50, cur_y), "Chuyên biệt cho bệnh nhân suy thận mạn & lọc máu chu kỳ theo chuẩn FSMP", "#94A3B8", get_font(15, bold=False), shadow_color=(0, 0, 0, 200))
 
     # CLINICAL BENEFIT CARDS (3 Điểm tựa y khoa)
-    card_y = 380
+    card_y = max(cur_y + 16, 385)
     benefits = [
         ("● KIỂM SOÁT NGHIÊM NGẶT ĐIỆN GIẢI", "Tối ưu hóa Kali, Natri, Phospho giúp giảm gánh nặng lọc cho thận"),
         ("● ĐẠM SINH HỌC CAO 14G / CHAI", "Bù đắp protein mất qua lọc máu, ngăn ngừa teo cơ và suy kiệt"),
@@ -333,7 +403,8 @@ def render_pro_nutricomp_renal():
 
     draw_text_with_shadow(draw, (50, h - 55), "Chai 200ml tiệt trùng • Phân phối chính thức bởi GlobalPharma", "#64748B", get_font(14, bold=False))
 
-    out_file = OUTPUT_DIR / "poster_nutricomp_renal.png"
+    out_file = output_path if output_path else (OUTPUT_DIR / "poster_nutricomp_renal.png")
+    out_file.parent.mkdir(parents=True, exist_ok=True)
     canvas.convert("RGB").save(out_file, "PNG", quality=95)
     print(f"MEDIA:{os.path.abspath(out_file)}")
     return out_file
@@ -423,7 +494,7 @@ def render_pro_nutricomp_combo():
 # ==============================================================================
 # 4. PRONTOSAN WOUND SPRAY (LÀM SẠCH VÀ CHĂM SÓC VẾT THƯƠNG CHÂU ÂU)
 # ==============================================================================
-def render_pro_prontosan():
+def render_pro_prontosan(headline: str = None, subline: str = None, output_path: Path = None):
     w, h = 1080, 1080
     bg_candidates = [
         REFS_DIR / "bg_prontosan_clinical.jpg",
@@ -506,18 +577,40 @@ def render_pro_prontosan():
     draw_german_flag(draw, badge_x + 14, 62, 26, 18)
     draw.text((badge_x + 48, 62), "TIÊU CHUẨN ISO 13485", fill="#FFFFFF", font=get_font(13, bold=True))
 
-    # BIG BOLD HOOK
+    # DYNAMIC OR DEFAULT BIG BOLD HOOK
     draw.text((50, 125), "TIÊU CHUẨN CHĂM SÓC VẾT THƯƠNG CHÂU ÂU", fill="#0369A1", font=get_font(17, bold=True))
-    draw.text((50, 155), "PHÁ VỠ MÀNG BIOFILM", fill="#0F172A", font=get_font(48, bold=True))
-    draw.text((50, 220), "0% ĐAU RÁT • NHANH LÀNH GẤP 2 LẦN", fill="#0284C7", font=get_font(28, bold=True))
-    draw.text((50, 268), "Dung dịch xịt 75ml vô trùng • Kháng khuẩn vượt trội Betaine & Polyhexanide", fill="#475569", font=get_font(16, bold=False))
+    
+    cur_y = 155
+    if headline and headline.strip():
+        hl_clean = headline.strip().upper()
+        font_size = 46 if len(hl_clean) <= 30 else (38 if len(hl_clean) <= 50 else 32)
+        hl_font = get_font(font_size, bold=True)
+        hl_lines = wrap_text(hl_clean, hl_font, max_width=980)
+        for line in hl_lines[:2]:
+            draw.text((50, cur_y), line, fill="#0F172A", font=hl_font)
+            cur_y += font_size + 10
+    else:
+        draw.text((50, cur_y), "PHÁ VỠ MÀNG BIOFILM", fill="#0F172A", font=get_font(48, bold=True))
+        cur_y += 58
+
+    if subline and subline.strip():
+        sl_font = get_font(24, bold=True)
+        sl_lines = wrap_text(subline.strip(), sl_font, max_width=980)
+        for line in sl_lines[:2]:
+            draw.text((50, cur_y), line, fill="#0284C7", font=sl_font)
+            cur_y += 30
+    else:
+        draw.text((50, cur_y), "0% ĐAU RÁT • NHANH LÀNH GẤP 2 LẦN", fill="#0284C7", font=get_font(28, bold=True))
+        cur_y += 38
+        draw.text((50, cur_y), "Dung dịch xịt 75ml vô trùng • Kháng khuẩn vượt trội Betaine & Polyhexanide", fill="#475569", font=get_font(16, bold=False))
 
     # 2 Sleek Value Pills at Bottom
     pill1_x = 50
     pill2_x = draw_pill(draw, pill1_x, h - 90, "● Betaine 0.1% + PHMB 0.1%", get_font(15, bold=True), "#0F172A", "#FFFFFF", padding=(20, 10))
     draw_pill(draw, pill2_x + 10, h - 90, "● Không Độc Hại Mô Hạt Lành", get_font(15, bold=True), "#FFFFFF", "#0284C7", padding=(20, 10), border_color="#0284C7")
 
-    out_file = OUTPUT_DIR / "poster_prontosan_wound_spray.png"
+    out_file = output_path if output_path else (OUTPUT_DIR / "poster_prontosan_wound_spray.png")
+    out_file.parent.mkdir(parents=True, exist_ok=True)
     canvas.convert("RGB").save(out_file, "PNG", quality=95)
     print(f"MEDIA:{os.path.abspath(out_file)}")
     return out_file
@@ -528,6 +621,9 @@ def main():
 
     parser = argparse.ArgumentParser(description="Render Pro Meta Creatives - GlobalPharma")
     parser.add_argument("--type", choices=["plus", "nutricomp-plus", "renal", "nutricomp-renal", "combo", "nutricomp-combo", "nutricomp", "prontosan", "all"], default="all", help="Product creative type")
+    parser.add_argument("--headline", default=None, help="Dynamic headline text from content")
+    parser.add_argument("--subline", default=None, help="Dynamic subline / subtitle text from content")
+    parser.add_argument("--output", default=None, help="Exact output file path")
     parser.add_argument("--output-dir", default=None, help="Output directory")
     args, _ = parser.parse_known_args()
 
@@ -535,27 +631,29 @@ def main():
         OUTPUT_DIR = Path(args.output_dir)
         OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
+    out_p = Path(args.output) if args.output else None
+
     t = args.type.lower()
     print(f"=== GLOBALPHARMA PRO CREATIVE ENGINE (TYPE: {t.upper()}) ===")
     results = []
 
     if t in ("plus", "nutricomp-plus"):
-        results.append(render_pro_nutricomp_plus())
+        results.append(render_pro_nutricomp_plus(headline=args.headline, subline=args.subline, output_path=out_p))
     elif t in ("renal", "nutricomp-renal"):
-        results.append(render_pro_nutricomp_renal())
+        results.append(render_pro_nutricomp_renal(headline=args.headline, subline=args.subline, output_path=out_p))
     elif t in ("combo", "nutricomp-combo"):
         results.append(render_pro_nutricomp_combo())
     elif t in ("nutricomp",):
         # Default nutricomp: render both Plus and Renal
-        results.append(render_pro_nutricomp_plus())
-        results.append(render_pro_nutricomp_renal())
+        results.append(render_pro_nutricomp_plus(headline=args.headline, subline=args.subline, output_path=out_p))
+        results.append(render_pro_nutricomp_renal(headline=args.headline, subline=args.subline, output_path=out_p))
     elif t == "prontosan":
-        results.append(render_pro_prontosan())
+        results.append(render_pro_prontosan(headline=args.headline, subline=args.subline, output_path=out_p))
     elif t == "all":
-        results.append(render_pro_nutricomp_plus())
-        results.append(render_pro_nutricomp_renal())
+        results.append(render_pro_nutricomp_plus(headline=args.headline, subline=args.subline, output_path=out_p))
+        results.append(render_pro_nutricomp_renal(headline=args.headline, subline=args.subline, output_path=out_p))
         results.append(render_pro_nutricomp_combo())
-        results.append(render_pro_prontosan())
+        results.append(render_pro_prontosan(headline=args.headline, subline=args.subline, output_path=out_p))
 
     # Sync to standard paths
     sync_targets = [Path("/app/workspace/output"), Path("/app/data/skills/tao-creative-fb/output")]

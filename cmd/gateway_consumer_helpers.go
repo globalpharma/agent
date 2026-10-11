@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"mime"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/google/uuid"
 
@@ -413,11 +415,13 @@ func autoAttachCreativeMedia(outMsg *bus.OutboundMessage) {
 		}
 	}
 
+	var targetType string
 	var productCandidates []string
 	maxScore := 0
 
 	if plusScore > maxScore {
 		maxScore = plusScore
+		targetType = "plus"
 		productCandidates = []string{
 			"poster_nutricomp_drink_plus.png",
 			"poster_nutricomp_plus_placement.png",
@@ -426,6 +430,7 @@ func autoAttachCreativeMedia(outMsg *bus.OutboundMessage) {
 	}
 	if renalScore > maxScore {
 		maxScore = renalScore
+		targetType = "renal"
 		productCandidates = []string{
 			"poster_nutricomp_renal.png",
 			"poster_nutricomp_renal_placement.png",
@@ -434,6 +439,7 @@ func autoAttachCreativeMedia(outMsg *bus.OutboundMessage) {
 	}
 	if prontosanScore > maxScore {
 		maxScore = prontosanScore
+		targetType = "prontosan"
 		productCandidates = []string{
 			"poster_prontosan_wound_spray.png",
 			"poster_prontosan_clinical.jpg",
@@ -441,6 +447,7 @@ func autoAttachCreativeMedia(outMsg *bus.OutboundMessage) {
 	}
 	if comboScore > maxScore {
 		maxScore = comboScore
+		targetType = "combo"
 		productCandidates = []string{
 			"poster_nutricomp_combo12.png",
 		}
@@ -450,17 +457,99 @@ func autoAttachCreativeMedia(outMsg *bus.OutboundMessage) {
 		return
 	}
 
-	var foundPath string
-	for _, dir := range searchDirs {
-		for _, name := range productCandidates {
-			cand := filepath.Join(dir, name)
-			if info, err := os.Stat(cand); err == nil && !info.IsDir() && info.Size() > 0 {
-				foundPath = cand
+	// 1. Check if the message contains explicit Headline / Subline markers.
+	// If so, dynamically generate a tailor-made poster with the exact text!
+	var headline, subline string
+	lines := strings.Split(outMsg.Content, "\n")
+	for _, l := range lines {
+		trimmed := strings.TrimSpace(l)
+		lower := strings.ToLower(trimmed)
+		if strings.HasPrefix(lower, "• headline:") || strings.HasPrefix(lower, "headline:") || strings.HasPrefix(lower, "- headline:") || strings.HasPrefix(lower, "* headline:") {
+			parts := strings.SplitN(trimmed, ":", 2)
+			if len(parts) == 2 {
+				headline = strings.TrimSpace(parts[1])
+			}
+		} else if strings.HasPrefix(lower, "• subline:") || strings.HasPrefix(lower, "subline:") || strings.HasPrefix(lower, "- subline:") || strings.HasPrefix(lower, "* subline:") {
+			parts := strings.SplitN(trimmed, ":", 2)
+			if len(parts) == 2 {
+				subline = strings.TrimSpace(parts[1])
+			}
+		}
+	}
+
+	// Also check if first non-empty line after Caption: is a bold headline or hook
+	if headline == "" {
+		for i, l := range lines {
+			trimmed := strings.TrimSpace(l)
+			if strings.EqualFold(trimmed, "caption:") || strings.EqualFold(trimmed, "caption đề xuất:") {
+				for j := i + 1; j < len(lines); j++ {
+					candidate := strings.TrimSpace(lines[j])
+					if candidate != "" && len(candidate) < 100 && !strings.HasPrefix(candidate, "*") {
+						headline = candidate
+						break
+					}
+				}
 				break
 			}
 		}
-		if foundPath != "" {
-			break
+	}
+
+	var foundPath string
+
+	// If we have a detected product and a headline, invoke render_poster.py dynamically
+	if targetType != "" && headline != "" {
+		renderScriptCandidates := []string{
+			"/app/data/skills/tao-creative-fb/scripts/render_poster.py",
+			"/app/workspace/skills/tao-creative-fb/scripts/render_poster.py",
+			"skills/tao-creative-fb/scripts/render_poster.py",
+		}
+		var scriptPath string
+		for _, sp := range renderScriptCandidates {
+			if info, err := os.Stat(sp); err == nil && !info.IsDir() {
+				scriptPath = sp
+				break
+			}
+		}
+
+		if scriptPath != "" {
+			outDir := "/app/workspace/output"
+			if info, err := os.Stat(outDir); err != nil || !info.IsDir() {
+				outDir = "skills/tao-creative-fb/output"
+			}
+			customOutName := fmt.Sprintf("creative_tailored_%s_%d.png", targetType, time.Now().UnixNano()%100000)
+			customOutPath := filepath.Join(outDir, customOutName)
+
+			cmdArgs := []string{scriptPath, "--type", targetType, "--headline", headline, "--output", customOutPath}
+			if subline != "" {
+				cmdArgs = append(cmdArgs, "--subline", subline)
+			}
+
+			// Try running with python3 or python
+			pyCmd := exec.Command("python3", cmdArgs...)
+			if err := pyCmd.Run(); err != nil {
+				pyCmd = exec.Command("python", cmdArgs...)
+				_ = pyCmd.Run()
+			}
+
+			if info, err := os.Stat(customOutPath); err == nil && !info.IsDir() && info.Size() > 0 {
+				foundPath = customOutPath
+			}
+		}
+	}
+
+	// 2. Fallback to existing pre-rendered master posters if dynamic rendering wasn't triggered
+	if foundPath == "" {
+		for _, dir := range searchDirs {
+			for _, name := range productCandidates {
+				cand := filepath.Join(dir, name)
+				if info, err := os.Stat(cand); err == nil && !info.IsDir() && info.Size() > 0 {
+					foundPath = cand
+					break
+				}
+			}
+			if foundPath != "" {
+				break
+			}
 		}
 	}
 
