@@ -51,7 +51,7 @@ Skill cấp 3 chuyên trách sản xuất toàn diện nội dung Facebook (Hìn
 Ảnh tham chiếu (`style_nutricomp_renal_master.jpg`) là **chuẩn mực về uy tín & nhận diện thương hiệu**, nhưng Agent Design **CẦN LINH HOẠT THAY ĐỔI LAYOUT BỐ CỤC VÀ MÀU SẮC CHO HÀI HÒA, TUYỆT ĐỐI KHÔNG CỐ ĐỊNH RẬP KHUÔN 1 KIỂU DUY NHẤT**:
 
 * **Nguyên tắc nhận diện cốt lõi (Bắt buộc giữ chuẩn):**
-  1. *Header:* Logo GlobalPharma chính thức nét căng (`real_logo_globalpharma_master.png`) + Huy hiệu cờ Đức "NHẬP KHẨU CHÍNH HÃNG TỪ ĐỨC".
+  1. *Header:* Logo GlobalPharma chính thức nét căng (`brand_header_master.png`) + Huy hiệu cờ Đức "NHẬP KHẨU CHÍNH HÃNG TỪ ĐỨC" trên nền thẻ frosted pill sang trọng.
   2. *Headline & Đối tượng:* Tên sản phẩm rõ ràng + Phân loại dinh dưỡng chuyên biệt + Pill Badge chỉ định nhóm bệnh nhân (Thận hoặc Phục hồi sau mổ).
   3. *Hero Product:* Đúng phôi sản phẩm thật (1 chai Renal hoặc 1 chai Plus).
   4. *Thông số lâm sàng:* 3–4 icon badges tóm tắt chỉ số nổi bật nhất + Card giá trị dinh dưỡng.
