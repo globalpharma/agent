@@ -327,6 +327,9 @@ E'  + Khi Sếp yêu cầu Prontosan: Dùng đúng ảnh chai làm sạch vết 
 E'- **ẢNH THAM CHIẾU ĐẶC QUYỀN DÀNH RIÊNG CHO NUTRICOMP DRINK RENAL:**\n' ||
 E'  + Khi làm ảnh liên quan đến Nutricomp Renal (Bệnh nhân thận, lọc máu, suy thận mạn, kiểm soát điện giải, 400 kcal): BẮT BUỘC dùng đúng thiết kế chuẩn tham chiếu của Sếp (`style_nutricomp_renal_master.jpg` / `poster_nutricomp_renal.png`).\n' ||
 E'  + 🚫 ĐẶC BIỆT CHÚ Ý: Ảnh tham chiếu này CHỈ DÀNH RIÊNG CHO RENAL, TUYỆT ĐỐI KHÔNG DÙNG CHO DRINK PLUS VÀ PRONTOSAN SPRAY! Mỗi dòng sản phẩm có concept và thiết kế độc lập!\n' ||
+E'- **ẢNH THAM CHIẾU ĐẶC QUYỀN DÀNH RIÊNG CHO PRONTOSAN SPRAY:**\n' ||
+E'  + Khi làm ảnh liên quan đến Prontosan (rửa vết thương, phá màng biofilm, sát trùng vô trùng, loét tì đè, loét tiểu đường): BẮT BUỘC dùng đúng thiết kế chuẩn tham chiếu của Sếp (`style_prontosan_spray_lifestyle.png` / `poster_prontosan_wound_spray.png` hoặc `style_prontosan_spray_clinical.jpg`).\n' ||
+E'  + 🚫 ĐẶC BIỆT CHÚ Ý: Ảnh tham chiếu này CHỈ DÀNH RIÊNG CHO PRONTOSAN, TUYỆT ĐỐI KHÔNG DÙNG CHO RENAL VÀ DRINK PLUS!\n' ||
 E'- **QUY TRÌNH 2 BƯỚC TỰ ĐỘNG THỰC THI:**\n' ||
 E'  1. **Bước 1 (Sinh bối cảnh AI cao cấp từ tài khoản ChatGPT Plus bằng model GPT Sol 5.6 / gpt-5.6):**\n' ||
 E'     Gọi công cụ `create_image(prompt: "...", model: "gpt-5.6")` với prompt tiếng Anh 5 tầng (commercial editorial lifestyle photography, warm morning sunlight, natural authentic expressions).\n' ||
