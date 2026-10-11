@@ -39,36 +39,30 @@ Skill cấp 3 chuyên trách sản xuất toàn diện nội dung Facebook (Hìn
 
 ## 1.1 Quy Định Bắt Buộc Về Hình Ảnh Sản Phẩm & Phong Cách Thiết Kế (Chỉ Đạo Của Sếp)
 
-### 📌 1. Quy tắc chọn phôi sản phẩm (1 Chai vs Combo 12 Chai)
-- **MẶC ĐỊNH DÙNG ẢNH 1 CHAI SỮA 200ML:**  
-  Khi Sếp yêu cầu *"sản phẩm Nutricomp Renal"*, *"Nutricomp Plus"*, hoặc *"làm ảnh Nutricomp"*: **BẮT BUỘC DÙNG ẢNH 1 CHAI SỮA LẺ 200ML** (`cut_nutricomp_single_bottle.png`).
+### 📌 1. Quy tắc chọn phôi sản phẩm chính xác (Renal vs Plus vs Combo)
+- **KHI YÊU CẦU NUTRICOMP RENAL:**  
+  BẮT BUỘC dùng đúng ảnh **1 chai lẻ Nutricomp® Drink Renal 200ml** (`cut_nutricomp_single_bottle.png`, nắp tím). Định vị cho bệnh nhân suy thận mạn/lọc máu, kiểm soát điện giải (kali, natri, phospho thấp), 2.0 kcal/ml (400 kcal/chai).
+- **KHI YÊU CẦU NUTRICOMP PLUS:**  
+  BẮT BUỘC dùng đúng ảnh **1 chai lẻ Nutricomp® Drink Plus 200ml** (`cut_nutricomp_plus_bottle.png`, nắp vàng/cam). Định vị phục hồi thể trạng sau phẫu thuật, suy kiệt, ung thư, cao năng lượng 1.5 kcal/ml (300 kcal/chai), giàu protein tái tạo tế bào.
 - **CHỈ DÙNG ẢNH HỘP COMBO KHI CÓ YÊU CẦU CỤ THỂ:**  
-  CHỈ KHI NÀO Sếp nói rõ từ **"combo"**, **"hộp quà"**, **"thùng 12 chai"**: Mới được sử dụng ảnh hộp Combo 12 chai (`cut_nutricomp_box.png`). Tuyệt đối không tự ý dùng ảnh hộp combo khi Sếp chỉ yêu cầu sản phẩm chai.
+  CHỈ KHI NÀO Sếp nói rõ từ **"combo"**, **"hộp quà"**, **"thùng 12 chai"**: Mới được sử dụng ảnh hộp Combo 12 chai (`cut_nutricomp_box.png`).
 
-### 🎨 2. Master Style Chuẩn Thiết Kế Poster (Master Reference: `style_nutricomp_renal_master.jpg`)
-Mọi poster quảng cáo y khoa thương mại của GlobalPharma BẮT BUỘC thiết kế theo cấu trúc Master Style chuẩn đã được Sếp duyệt:
-1. **Header (Đầu trang):**  
-   - Góc trái: Logo GlobalPharma chính thức nét căng (`real_logo_globalpharma_master.png`).  
-   - Kế bên: Huy hiệu tròn Quốc kỳ Đức kèm chữ "NHẬP KHẨU CHÍNH HÃNG TỪ ĐỨC".
-2. **Tiêu đề & Định vị y khoa (Headline):**  
-   - Tên dòng sản phẩm: **NUTRICOMP RENAL** (Font Sans-serif in hoa, màu xanh y tế B.Braun).  
-   - Subtitle: **DINH DƯỠNG CHUYÊN BIỆT** (kèm đường line thanh lịch hai bên).  
-   - Pill Badge bo góc nền xanh ngọc đậm: **DÀNH CHO NGƯỜI BỆNH THẬN**.
-3. **Bối cảnh đời thực giàu cảm xúc (Upper-Right):**  
-   - Bức ảnh chụp thật ấm áp: Người lớn tuổi khỏe mạnh, vui vẻ bên người thân chăm sóc hiếu thảo, ánh sáng ban mai dịu nhẹ trong không gian gia đình hiện đại.
-4. **Hero Product (Sản phẩm chủ đạo - Lower-Right):**  
-   - Đặt nổi bật **1 chai sữa Nutricomp® Drink Renal 200ml** thật, nắp tím, nhãn mác B.Braun sắc nét, kèm splash sữa vani thanh nhẹ và hoa vani vàng tươi.
-5. **Cột thông số y khoa lâm sàng (Left Column):**  
-   - **4 Huy hiệu tròn:**  
-     1. 🫘 *KIỂM SOÁT ĐIỆN GIẢI* (Kali, Phospho, Natri thấp)  
-     2. 💪 *14g PROTEIN CHẤT LƯỢNG CAO* (Whey & Casein)  
-     3. ⚡ *400 kcal NĂNG LƯỢNG CAO* (200ml/chai)  
-     4. 🛡️ *HỖ TRỢ PHỤC HỒI* (Nâng cao sức khỏe, chất lượng cuộc sống)  
-   - **Card giá trị nổi bật:** Khung bo tròn viền xanh: *"CUNG CẤP ĐẦY ĐỦ DINH DƯỠNG TRONG THỂ TÍCH NHỎ - Phù hợp người cần hạn chế lượng nước nạp vào cơ thể"*.  
-   - **Nút CTA nổi bật:** Nút bo tròn màu xanh ngọc có icon điện thoại: *"ĐỂ LẠI SỐ ĐIỆN THOẠI ĐỂ ĐƯỢC TƯ VẤN >"*.
-6. **Footer (Chân trang):**  
-   - 3 Huy hiệu cam kết: *Sản phẩm chuẩn y học* | *Dinh dưỡng chuyên biệt* | *Chất lượng chuẩn Đức*.  
-   - Dòng khuyến cáo y tế FSMP theo quy định pháp lý.
+### 🎨 2. Master Style Chuẩn Thiết Kế & Nguyên Tắc Linh Hoạt (Chỉ Đạo Của Sếp)
+Ảnh tham chiếu (`style_nutricomp_renal_master.jpg`) là **chuẩn mực về uy tín & nhận diện thương hiệu**, nhưng Agent Design **CẦN LINH HOẠT THAY ĐỔI LAYOUT BỐ CỤC VÀ MÀU SẮC CHO HÀI HÒA, TUYỆT ĐỐI KHÔNG CỐ ĐỊNH RẬP KHUÔN 1 KIỂU DUY NHẤT**:
+
+* **Nguyên tắc nhận diện cốt lõi (Bắt buộc giữ chuẩn):**
+  1. *Header:* Logo GlobalPharma chính thức nét căng (`real_logo_globalpharma_master.png`) + Huy hiệu cờ Đức "NHẬP KHẨU CHÍNH HÃNG TỪ ĐỨC".
+  2. *Headline & Đối tượng:* Tên sản phẩm rõ ràng + Phân loại dinh dưỡng chuyên biệt + Pill Badge chỉ định nhóm bệnh nhân (Thận hoặc Phục hồi sau mổ).
+  3. *Hero Product:* Đúng phôi sản phẩm thật (1 chai Renal hoặc 1 chai Plus).
+  4. *Thông số lâm sàng:* 3–4 icon badges tóm tắt chỉ số nổi bật nhất + Card giá trị dinh dưỡng.
+  5. *CTA & Footer:* Nút kêu gọi hành động tư vấn + 3 Cam kết chuẩn y học Đức và khuyến cáo FSMP.
+
+* **Nguyên tắc linh hoạt sáng tạo (Không rập khuôn cứng nhắc):**
+  - **Linh hoạt Layout & Góc nhìn:** Có thể bố trí chai sản phẩm ở góc dưới phải, góc dưới trái hoặc ở trung tâm; các icon badge có thể xếp dọc, xếp ngang hoặc dạng card nổi; bối cảnh gia đình có thể ở góc trên, nửa bên hoặc background toàn cảnh mờ nhẹ (bokeh) phía sau.
+  - **Linh hoạt Màu sắc hài hòa theo dòng sản phẩm:**
+    + *Nutricomp Renal:* Tông màu chủ đạo xanh ngọc y tế mát dịu (Teal `#008080`, `#009688`, `#3BCFAF`) phối tím nắp chai, mang lại cảm giác an tâm, nhẹ nhàng cho bệnh nhân thận.
+    + *Nutricomp Plus:* Tông màu chủ đạo vàng cam ấm áp giàu năng lượng (Amber `#F59E0B`, `#E65100`) phối xanh y tế B.Braun, toát lên sức sống, phục hồi và bồi bổ thể trạng.
+    + *Prontosan:* Tông màu xanh cyan/trắng vô trùng lâm sàng hiện đại.
 
 ---
 

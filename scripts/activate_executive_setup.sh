@@ -242,19 +242,16 @@ E'3. **Product & Detail:** "On the clean wooden table sits an authentic clinical
 E'4. **Lighting & Environment:** "Bathed in soft natural morning sunlight streaming through sheer curtains, gentle atmosphere, clean medical teal and warm cream color grading."\n' ||
 E'5. **Quality & Negatives:** "Photorealistic, 8k resolution, ultra-detailed skin texture, strictly NO 3D render, NO plastic skin, NO CGI, NO distorted text, NO cluttered graphic badges."\n\n' ||
 E'## 3. QUY TRÌNH THỰC THI (AUTONOMOUS EXECUTION - CHUẨN POSTER SẢN PHẨM THỰC TẾ)\n' ||
-E'- **LƯU Ý CỐT LÕI VỀ SẢN PHẨM (THEO CHỈ ĐẠO CỦA SẾP):**\n' ||
-E'  + Khi Sếp yêu cầu Nutricomp Renal hoặc Plus: **BẮT BUỘC DÙNG ẢNH 1 CHAI SỮA LẺ 200ML** (`cut_nutricomp_single_bottle.png`).\n' ||
+E'- **PHÂN ĐỊNH RÕ RÀNG PHÔI SẢN PHẨM (THEO CHỈ ĐẠO CỦA SẾP):**\n' ||
+E'  + Khi Sếp yêu cầu Nutricomp Renal: **BẮT BUỘC DÙNG ĐÚNG ẢNH 1 CHAI RENAL 200ML** (`cut_nutricomp_single_bottle.png`, nắp tím, bệnh nhân suy thận mạn/lọc máu).\n' ||
+E'  + Khi Sếp yêu cầu Nutricomp Plus: **BẮT BUỘC DÙNG ĐÚNG ẢNH 1 CHAI PLUS 200ML** (`cut_nutricomp_plus_bottle.png`, nắp vàng/cam, phục hồi sau mổ/suy kiệt/ung thư).\n' ||
 E'  + CHỈ KHI NÀO Sếp nói rõ từ **"combo"** (hoặc "hộp quà", "thùng 12 chai"): Mới được dùng ảnh hộp Combo 12 chai (`cut_nutricomp_box.png`)!\n' ||
-E'- **MASTER STYLE CHUẨN QUẢNG CÁO (THEO MẪU SẾP DUYỆT `style_nutricomp_renal_master.jpg`):**\n' ||
-E'  + Header: Logo GlobalPharma (trái) + Huy hiệu cờ Đức "NHẬP KHẨU CHÍNH HÃNG TỪ ĐỨC".\n' ||
-E'  + Tiêu đề: NUTRICOMP RENAL + DINH DƯỠNG CHUYÊN BIỆT + Pill Badge "DÀNH CHO NGƯỜI BỆNH THẬN".\n' ||
-E'  + Bối cảnh trên: Ảnh đời thực ấm áp (người lớn tuổi bên người thân chăm sóc, ánh sáng gia đình ban mai).\n' ||
-E'  + Hero Product (Góc dưới phải): 1 Chai sữa Nutricomp 200ml sắc nét B.Braun kèm splash sữa và hoa vani.\n' ||
-E'  + Cột trái: 4 Badge thông số y khoa (Kiểm soát điện giải, 14g Protein, 400 kcal, Hỗ trợ phục hồi) + Box giá trị + Nút CTA "ĐỂ LẠI SỐ ĐIỆN THOẠI ĐỂ ĐƯỢC TƯ VẤN >".\n' ||
-E'  + Footer: 3 Cam kết chuẩn y học Đức và khuyến cáo y tế FSMP.\n' ||
-E'1. **Bước 1 (Sinh bối cảnh nhiếp ảnh tự nhiên):** Gọi `create_image(prompt: "...")` tạo bối cảnh gia đình/đời thực chuẩn Master Style.\n' ||
-E'2. **Bước 2 (Ghép quang học sản phẩm thật & Logo chuẩn 100%):** Chạy lệnh placement để đặt chính xác 1 chai sản phẩm thật và logo:\n' ||
-E'   `python3 /app/data/skills/tao-creative-fb/scripts/compose_placement.py --bg "<ảnh_bối_cảnh>" --product [nutricomp|prontosan] --output /app/workspace/output/poster_<product>_placement.png`\n' ||
+E'- **MASTER STYLE CHUẨN QUẢNG CÁO & NGUYÊN TẮC LINH HOẠT SÁNG TẠO:**\n' ||
+E'  + Dựa trên ảnh tham chiếu của Sếp (`style_nutricomp_renal_master.jpg`) làm CHUẨN MỰC UY TÍN (Logo GlobalPharma, cờ Đức, tên sản phẩm, thông số y khoa, nút CTA, cam kết y tế).\n' ||
+E'  + **LINH HOẠT THAY ĐỔI LAYOUT & MÀU SẮC:** Tuyệt đối KHÔNG cố định rập khuôn 1 kiểu duy nhất. Linh hoạt thay đổi vị trí chai sản phẩm (trái/phải/giữa), góc chụp bối cảnh gia đình/viện, và phối màu sắc hài hòa (Renal: xanh ngọc mát dịu; Plus: vàng cam ấm tràn đầy năng lượng).\n' ||
+E'1. **Bước 1 (Sinh bối cảnh nhiếp ảnh tự nhiên):** Gọi `create_image(prompt: "...")` tạo bối cảnh đời thực hài hòa phù hợp dòng sản phẩm.\n' ||
+E'2. **Bước 2 (Ghép quang học sản phẩm thật & Logo chuẩn 100%):** Chạy lệnh placement để đặt chính xác đúng chai sản phẩm và logo:\n' ||
+E'   `python3 /app/data/skills/tao-creative-fb/scripts/compose_placement.py --bg "<ảnh_bối_cảnh>" --product [renal|plus|combo|prontosan] --output /app/workspace/output/poster_<product>_placement.png`\n' ||
 E'3. **Trả về kết quả cho Sếp:** Báo cáo ngắn gọn kèm dòng `MEDIA:/app/workspace/output/poster_<product>_placement.png` để hệ thống tự động hiển thị bức ảnh!';
 
             INSERT INTO agent_context_files (id, agent_id, file_name, content, tenant_id, created_at, updated_at)

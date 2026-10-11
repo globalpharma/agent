@@ -21,17 +21,30 @@ def create_placement(
     canvas_w, canvas_h = bg.size
 
     # 1. Select Product Reference
-    if product_type == "prontosan":
+    p_lower = str(product_type).lower()
+    if p_lower == "prontosan":
         prod_file = os.path.join(ref_dir, "cut_prontosan_bottle.png")
         prod_w = int(canvas_w * 0.28)
         pos_x = int(canvas_w * 0.55)
         pos_y = int(canvas_h * 0.42)
-    elif product_type in ("nutricomp_combo", "combo"):
+    elif "combo" in p_lower:
         prod_file = os.path.join(ref_dir, "cut_nutricomp_box.png")
         prod_w = int(canvas_w * 0.45)
         pos_x = int(canvas_w * 0.45)
         pos_y = int(canvas_h * 0.49)
-    else:  # default: single bottle 200ml
+    elif "plus" in p_lower:
+        plus_bottle = os.path.join(ref_dir, "cut_nutricomp_plus_bottle.png")
+        if os.path.exists(plus_bottle):
+            prod_file = plus_bottle
+            prod_w = int(canvas_w * 0.36)
+            pos_x = int(canvas_w * 0.55)
+            pos_y = int(canvas_h * 0.38)
+        else:
+            prod_file = os.path.join(ref_dir, "real_nutricomp_drink_plus_vanilla.jpg")
+            prod_w = int(canvas_w * 0.36)
+            pos_x = int(canvas_w * 0.55)
+            pos_y = int(canvas_h * 0.38)
+    else:  # default: Nutricomp Renal 200ml single bottle
         single_bottle = os.path.join(ref_dir, "cut_nutricomp_single_bottle.png")
         if os.path.exists(single_bottle):
             prod_file = single_bottle
@@ -115,7 +128,7 @@ def create_placement(
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Compose real product placement onto AI background")
     parser.add_argument("--bg", required=True, help="Path to lifestyle background image")
-    parser.add_argument("--product", default="nutricomp", choices=["nutricomp", "prontosan"])
+    parser.add_argument("--product", default="renal", choices=["renal", "nutricomp", "plus", "combo", "prontosan"])
     parser.add_argument("--output", default="skills/tao-creative-fb/output/poster_nutricomp_renal_placement.png")
     parser.add_argument("--ref-dir", default="skills/tao-creative-fb/assets/references")
     args = parser.parse_args()
