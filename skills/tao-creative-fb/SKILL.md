@@ -53,6 +53,14 @@ Skill cấp 3 chuyên trách sản xuất toàn diện nội dung Facebook (Hìn
 - Mỗi khi sản xuất nội dung/ảnh liên quan đến Renal (Dinh dưỡng cho người bệnh thận, lọc máu, suy thận mạn, kiểm soát điện giải, 400 kcal): **BẮT BUỘC dùng đúng thiết kế chuẩn tham chiếu này (`poster_nutricomp_renal.png`)!**
 - 🚫 **LƯU Ý QUAN TRỌNG:** Ảnh tham chiếu này **CHỈ DÀNH RIÊNG CHO RENAL**, TUYỆT ĐỐI KHÔNG dùng cho **Prontosan Spray** hay **Nutricomp Drink Plus**. Mỗi sản phẩm có bộ nhận diện và concept riêng biệt.
 
+⚠️ **QUY ĐỊNH ĐẶC QUYỀN DÀNH RIÊNG CHO PRONTOSAN SPRAY:**
+- Ảnh tham chiếu (`style_prontosan_spray_lifestyle.png` và `style_prontosan_spray_clinical.jpg`) là **chuẩn mực tuyệt đối về thiết kế dành riêng cho Prontosan Wound Spray B.Braun**.
+- Hai phong cách chuẩn mực đã được Sếp trực tiếp phê duyệt:
+  1. *Phong cách 1 (Giáo dục / Vết thương sinh hoạt):* "VẾT THƯƠNG NHỎ, NHƯNG BẠN ĐÃ LÀM SẠCH ĐÚNG CÁCH? - Làm sạch • Rửa • Dưỡng ẩm" (`style_prontosan_spray_lifestyle.png` / `poster_prontosan_wound_spray.png`). Nhiếp ảnh đời thực người dùng xịt nhẹ lên vết xước ở tay, chai xịt Prontosan đặt trên bàn đá cẩm thạch trắng vô trùng.
+  2. *Phong cách 2 (Key Visual / Định vị B.Braun Đức):* "GIẢI PHÁP CHĂM SÓC VẾT THƯƠNG NHANH LÀNH VÀ BỀN VỮNG" (`style_prontosan_spray_clinical.jpg`). Logo GlobalPharma & B|BRAUN chuẩn mực, biểu tượng khiên vàng hợp tác y khoa, chuyên viên y tế đeo găng xịt vết thương.
+- Mỗi khi sản xuất nội dung/ảnh liên quan đến Prontosan (rửa vết thương, màng biofilm, sát trùng vô trùng, loét tì đè, loét tiểu đường): **BẮT BUỘC dùng đúng thiết kế chuẩn tham chiếu này (`poster_prontosan_wound_spray.png`)!**
+- 🚫 **LƯU Ý:** Ảnh tham chiếu này **CHỈ DÀNH RIÊNG CHO PRONTOSAN**, TUYỆT ĐỐI KHÔNG dùng cho Renal hay Drink Plus.
+
 Ảnh tham chiếu (`style_nutricomp_renal_master.jpg`) là **chuẩn mực về uy tín & nhận diện thương hiệu của Renal**, nhưng Agent Design **CẦN LINH HOẠT THAY ĐỔI LAYOUT BỐ CỤC VÀ MÀU SẮC CHO HÀI HÒA, TUYỆT ĐỐI KHÔNG CỐ ĐỊNH RẬP KHUÔN 1 KIỂU DUY NHẤT**:
 
 * **Nguyên tắc nhận diện cốt lõi (Bắt buộc giữ chuẩn):**
