@@ -112,15 +112,17 @@ Mục tiêu: Cung cấp kiến thức chăm sóc sức khỏe, nuôi dưỡng t�
        👉 **SẢN PHẨM BẮT BUỘC LÀ COMBO 12 CHAI (`--type combo`).**
    - **BẮT BUỘC TẠO CẢ CAPTION LẪN HÌNH ẢNH TRONG CÙNG LƯỢT TRẢ LỜI:**
      + **Viết Caption (80–150 từ):** Đúng chuẩn y khoa theo sản phẩm và góc nhìn của ý tưởng đã chọn từ `assets/caption-templates.md`. Gồm [Hook thấu cảm y khoa] + [Body giải pháp y học B.Braun] + [Soft CTA tư vấn].
-     + **TẠO VÀ XUẤT ẢNH THẬT ĐÍNH KÈM (KHÔNG ĐƯỢC CHỈ VIẾT GỢI Ý CHỮ):**
-       * **Cách 1 (Sinh ảnh AI bằng create_image model gpt-5.6):** Gọi công cụ `create_image(prompt: "...", model: "gpt-5.6")` với prompt nhiếp ảnh đời thực mô tả chi tiết người bệnh/gia đình Việt Nam ấm áp và sản phẩm tương ứng. GoClaw sẽ tự động ghép chai sản phẩm chính hãng và logo GlobalPharma lên ảnh sinh được.
-       * **Cách 2 (Render poster chuẩn từ script hoặc lấy poster tham chiếu đã duyệt):** Chạy `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type [plus|renal|combo|prontosan] --output-dir /app/workspace/output` hoặc dùng trực tiếp file poster chuẩn:
-         - Plus: `/app/workspace/output/poster_nutricomp_drink_plus.png`
-         - Renal: `/app/workspace/output/poster_nutricomp_renal.png`
-         - Prontosan: `/app/workspace/output/poster_prontosan_wound_spray.png`
-         - Combo: `/app/workspace/output/poster_nutricomp_combo12.png`
+     + **BẮT BUỘC THIẾT KẾ ẢNH MỚI THEO STYLE THAM CHIẾU (KHÔNG ĐƯỢC GỬI LẠI ẢNH CŨ VÀ KHÔNG CHỈ GỢI Ý CHỮ):**
+       * **BẮT BUỘC gọi công cụ `create_image(prompt: "...", model: "gpt-5.6")` để thiết kế ảnh mới độc bản:**
+         Prompt tiếng Anh 5 tầng mô tả bối cảnh nhiếp ảnh đời thực chuyên nghiệp dựa trên phong cách của ảnh tham chiếu đã duyệt:
+         - **Nutricomp Drink Plus:** Bối cảnh bàn ăn gia đình ấm cúng, người bệnh sau mổ/suy kiệt đang hồi phục thể trạng khỏe khoắn, ánh sáng ban mai dịu qua rèm, tone màu ấm áp vàng cam hổ phách (amber) phối xanh y tế B.Braun, chai Nutricomp Drink Plus 200ml nắp cam trên bàn.
+         - **Nutricomp Drink Renal:** Bối cảnh gia đình người cao tuổi an tâm, nụ cười nhẹ nhõm, tone màu xanh ngọc y tế (teal) thanh lịch, chai Nutricomp Drink Renal 200ml nắp tím trên bàn.
+         - **Prontosan Spray:** Bối cảnh đời thường sạch sẽ vô trùng, người dùng xịt dung dịch chăm sóc vết xước nhẹ nhàng ở tay, chai xịt Prontosan trên bàn đá cẩm thạch trắng.
+         👉 GoClaw sẽ tự động ghép quang học chai sản phẩm chính hãng và logo GlobalPharma lên bức ảnh sinh được.
+       * *Dự phòng (Chỉ dùng khi create_image gặp lỗi mạng/API):* Chạy script `python3 /app/data/skills/tao-creative-fb/scripts/compose_placement.py --product [plus|renal|combo|prontosan] --output /app/workspace/output/poster_<product>_placement.png`.
+       * 🚫 **TUYỆT ĐỐI CẤM:** Không được gửi lại file ảnh tham chiếu cũ! Mỗi bài viết phải là một sản phẩm hình ảnh mới được thiết kế riêng!
      + ⚠️ **NGHIÊM CẤM:** TUYỆT ĐỐI KHÔNG chỉ trả về mỗi bài text caption mà không có ảnh! Output BẮT BUỘC phải chứa ảnh thành phẩm kèm cú pháp `MEDIA:<đường_dẫn_ảnh>` ở cuối tin nhắn để giao diện hiển thị ảnh ngay lập tức cùng với caption.
-     + 🚫 **TUYỆT ĐỐI KHÔNG VIẾT CHỮ "Gợi ý poster: • Headline ... • Visual ...":** Bạn KHÔNG phải là người gợi ý ý tưởng ảnh trên giấy. BẠN PHẢI XUẤT RA FILE ẢNH THẬT ĐÍNH KÈM! Khi người dùng duyệt, họ duyệt ảnh thật hiển thị trên màn hình cùng với caption. Nếu viết mô tả poster bằng text thay vì gửi ảnh thật là vi phạm quy định!
+     + 🚫 **TUYỆT ĐỐI KHÔNG VIẾT CHỮ "Gợi ý poster: • Headline ... • Visual ...":** Bạn KHÔNG phải là người gợi ý ý tưởng ảnh trên giấy. BẠN PHẢI THIẾT KẾ RA FILE ẢNH MỚI ĐÍNH KÈM! Nếu viết mô tả poster bằng text thay vì gửi ảnh thiết kế mới là vi phạm quy định!
 4. **Xem trước (Preview):** Hiển thị đầy đủ cả bài viết Caption và bức ảnh vừa sinh (kèm cú pháp `MEDIA:<đường dẫn ảnh>`) để người dùng xem trước trọn vẹn cả bài lẫn ảnh.
 5. **Đăng bài THÔNG MINH theo dòng sản phẩm (Product-Aware Broadcasting):**
    - Danh sách Fanpage được phân loại theo `product_group` (`nutricomp`, `prontosan`, hoặc `all`) trong `skills/tao-creative-fb/pages.json`.

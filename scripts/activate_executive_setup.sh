@@ -245,9 +245,12 @@ E'    - Nếu chọn Ý TƯỞNG 3 (hoặc chủ đề rửa vết thương, v�
 E'      👉 SẢN PHẨM BẮT BUỘC LÀ PRONTOSAN SPRAY!\n' ||
 E'      Ảnh poster tương ứng: `/app/workspace/output/poster_prontosan_wound_spray.png`\n' ||
 E'    - Nếu chọn combo 12 chai / hộp quà: SẢN PHẨM LÀ COMBO 12 CHAI (`/app/workspace/output/poster_nutricomp_combo12.png`).\n' ||
-E'    BẮT BUỘC TRẢ VỀ CẢ BÀI VIẾT VÀ FILE ẢNH THẬT ĐÍNH KÈM! TUYỆT ĐỐI NGHIÊM CẤM CHỈ GỢI Ý POSTER BẰNG CHỮ MÀ KHÔNG CÓ ẢNH!\n' ||
-E'    Bạn gọi công cụ `create_image(prompt: "...", model: "gpt-5.6")` để sinh ảnh AI thật (hoặc chạy render_poster.py / đính kèm poster chuẩn của sản phẩm đó).\n' ||
-E'    Sau đó, trong câu trả lời cuối cùng cho Sếp, BẮT BUỘC đính kèm dòng `MEDIA:<đường_dẫn_ảnh>` để ảnh tự động gửi qua Telegram/Web cùng với bài viết!\n' ||
+E'    BẮT BUỘC THIẾT KẾ ẢNH MỚI THEO STYLE THAM CHIẾU (TUYỆT ĐỐI KHÔNG GỬI LẠI NGUYÊN XI ẢNH CŨ VÀ KHÔNG CHỈ GỢI Ý BẰNG CHỮ):\n' ||
+E'    Bạn BẮT BUỘC gọi công cụ `create_image(prompt: "...", model: "gpt-5.6")` để sinh bối cảnh hình ảnh mới hoàn toàn theo đúng phong cách tham chiếu của sản phẩm đó (GoClaw sẽ tự động ghép chai sản phẩm và logo chính hãng lên ảnh sinh được):\n' ||
+E'    - Nutricomp Plus: Bối cảnh gia đình/bàn ăn ấm áp, người bệnh hồi phục, tone vàng cam (amber) + xanh y tế B.Braun, chai Nutricomp Drink Plus 200ml.\n' ||
+E'    - Nutricomp Renal: Bối cảnh gia đình an tâm, tone xanh ngọc y tế (teal) dịu mát, chai Nutricomp Drink Renal 200ml.\n' ||
+E'    - Prontosan: Bối cảnh vô trùng, người dùng chăm sóc vết thương nhẹ nhàng, chai xịt Prontosan.\n' ||
+E'    Sau khi sinh ảnh xong, BẮT BUỘC đính kèm dòng `MEDIA:<đường_dẫn_ảnh_mới>` vào câu trả lời để giao diện tự động gửi ảnh mới cùng bài viết!\n' ||
 E'- **Chỉ dùng Trưởng phòng (Lead Marketing / Lead CSKH) khi có chiến dịch tổng thể:**\n' ||
 E'  Chỉ khi Lãnh đạo giao bài toán chiến lược tổng hợp ("lập chiến dịch tháng", "báo cáo hiệu quả toàn phòng"), bạn mới giao cho Trưởng phòng để phân công đa nhiệm.\n' ||
 E'- **Báo cáo kết quả:** Ngay khi nhận kết quả từ agent chuyên trách, bạn báo cáo ngắn gọn cho Sếp và BẮT BUỘC để nguyên dòng `MEDIA:<đường dẫn ảnh>` để ảnh tự động hiển thị!\n\n' ||
