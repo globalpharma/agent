@@ -74,14 +74,19 @@ Mục tiêu: Cung cấp kiến thức chăm sóc sức khỏe, nuôi dưỡng t�
 **Quy trình 5 bước:**
 1. **Đọc Brain & Đề xuất ý tưởng:** Đọc file `assets/knowledge_globalpharma_products_campaign.md` để nắm chuẩn y khoa. Đề xuất 3 chủ đề giáo dục sức khỏe/dinh dưỡng (tiêu đề + góc tiếp cận) dựa trên sản phẩm được yêu cầu.
 2. **Người dùng chọn:** Chờ người dùng chọn 1 trong 3 ý tưởng.
-3. **Sinh nội dung (BẮT BUỘC TẠO CẢ CAPTION LẪN HÌNH ẢNH TRONG CÙNG LƯỢT):**
-   Ngay khi người dùng chọn 1 ý tưởng, bạn BẮT BUỘC thực hiện ĐỒNG THỜI cả hai việc trong cùng lượt trả lời này:
-   - **Viết Caption (80–150 từ):** Dựa trên `assets/caption-templates.md` và `assets/knowledge_globalpharma_products_campaign.md`. Gồm [Hook y khoa / thấu cảm] + [Kiến thức dinh dưỡng / cơ chế sản phẩm B.Braun] + [Soft CTA tư vấn hoặc chia sẻ].
-   - **BẮT BUỘC TẠO ẢNH BẰNG ENGINE CHUYÊN NGHIỆP:**
-     Bạn gọi ngay công cụ `exec` để chạy lệnh tạo poster/ảnh thành phẩm:
-     `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type [plus|renal|combo|prontosan] --output-dir /app/workspace/output`
-     (hoặc `python3 /app/data/skills/tao-creative-fb/scripts/compose_placement.py --product [plus|renal|combo|prontosan] --output /app/workspace/output/poster_<product>_placement.png`).
-     ⚠️ **CẢNH BÁO QUAN TRỌNG:** TUYỆT ĐỐI KHÔNG chỉ mô tả ý tưởng ảnh bằng lời văn hay chỉ trả về mỗi bài caption. BẮT BUỘC PHẢI CHẠY LỆNH XUẤT FILE ẢNH VÀ TRẢ VỀ DÒNG `MEDIA:...`! Tuyệt đối không để bị dừng lại bởi lỗi tài khoản tạo ảnh Codex/ChatGPT.
+3. **Sinh nội dung (BẮT BUỘC BÁM ĐÚNG Ý TƯỞNG ĐÃ CHỌN + XUẤT CẢ ẢNH VÀ CAPTION CÙNG LÚC):**
+   Khi người dùng chọn ý tưởng (ví dụ: "chọn 2", "làm ý 2", hoặc chỉ định sản phẩm):
+   - **XÁC ĐỊNH ĐÚNG 100% SẢN PHẨM CỦA Ý TƯỞNG ĐÃ CHỌN:**
+     + Ý tưởng 1 về Thận (Nutricomp Renal) ➔ BẮT BUỘC sản phẩm là **Nutricomp® Drink Renal** (`--type renal`). TUYỆT ĐỐI KHÔNG làm nhầm sang sản phẩm khác.
+     + Ý tưởng 2 về Phục hồi sau phẫu thuật / suy kiệt (Nutricomp Plus) ➔ BẮT BUỘC sản phẩm là **Nutricomp® Drink Plus** (`--type plus`). TUYỆT ĐỐI KHÔNG làm nhầm sang Prontosan hay Renal.
+     + Ý tưởng 3 về Vết thương mạn tính / Biofilm (Prontosan) ➔ BẮT BUỘC sản phẩm là **Prontosan** (`--type prontosan`).
+   - **BẮT BUỘC TẠO CẢ CAPTION LẪN HÌNH ẢNH TRONG CÙNG LƯỢT TRẢ LỜI:**
+     + **Viết Caption (80–150 từ):** Đúng chuẩn y khoa theo sản phẩm đã chọn từ `assets/caption-templates.md`. Gồm [Hook thấu cảm] + [Body giải pháp y học B.Braun] + [Soft CTA tư vấn].
+     + **XUẤT ẢNH NGAY BẰNG ENGINE CHUYÊN NGHIỆP:**
+       Gọi công cụ `exec` để chạy lệnh render poster chuẩn của sản phẩm đã chọn:
+       `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type [plus|renal|combo|prontosan] --output-dir /app/workspace/output`
+       (hoặc `python3 /app/data/skills/tao-creative-fb/scripts/compose_placement.py --product [plus|renal|combo|prontosan] --output /app/workspace/output/poster_<product>_placement.png`).
+     + ⚠️ **NGHIÊM CẤM:** TUYỆT ĐỐI KHÔNG chỉ trả về mỗi bài text caption mà không có ảnh! Output BẮT BUỘC phải chứa ảnh thành phẩm kèm cú pháp `MEDIA:<đường_dẫn_ảnh>` để giao diện hiển thị ảnh ngay lập tức cùng với caption.
 4. **Xem trước (Preview):** Hiển thị đầy đủ cả bài viết Caption và bức ảnh vừa sinh (kèm cú pháp `MEDIA:<đường dẫn ảnh>`) để người dùng xem trước trọn vẹn cả bài lẫn ảnh.
 5. **Đăng bài THÔNG MINH theo dòng sản phẩm (Product-Aware Broadcasting):**
    - Danh sách Fanpage được phân loại theo `product_group` (`nutricomp`, `prontosan`, hoặc `all`) trong `skills/tao-creative-fb/pages.json`.
