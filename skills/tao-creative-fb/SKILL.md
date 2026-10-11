@@ -47,8 +47,13 @@ Skill cấp 3 chuyên trách sản xuất toàn diện nội dung Facebook (Hìn
 - **CHỈ DÙNG ẢNH HỘP COMBO KHI CÓ YÊU CẦU CỤ THỂ:**  
   CHỈ KHI NÀO Sếp nói rõ từ **"combo"**, **"hộp quà"**, **"thùng 12 chai"**: Mới được sử dụng ảnh hộp Combo 12 chai (`cut_nutricomp_box.png`).
 
-### 🎨 2. Master Style Chuẩn Thiết Kế & Nguyên Tắc Linh Hoạt (Chỉ Đạo Của Sếp)
-Ảnh tham chiếu (`style_nutricomp_renal_master.jpg`) là **chuẩn mực về uy tín & nhận diện thương hiệu**, nhưng Agent Design **CẦN LINH HOẠT THAY ĐỔI LAYOUT BỐ CỤC VÀ MÀU SẮC CHO HÀI HÒA, TUYỆT ĐỐI KHÔNG CỐ ĐỊNH RẬP KHUÔN 1 KIỂU DUY NHẤT**:
+### 🎨 2. Master Style Chuẩn Thiết Kế Riêng Biệt Theo Từng Sản Phẩm (Chỉ Đạo Của Sếp)
+⚠️ **QUY ĐỊNH ĐẶC QUYỀN DÀNH RIÊNG CHO NUTRICOMP DRINK RENAL:**
+- Ảnh tham chiếu (`style_nutricomp_renal_master.jpg` / `poster_nutricomp_renal.png`) là **chuẩn mực tuyệt đối về thiết kế dành riêng cho Nutricomp Drink Renal**.
+- Mỗi khi sản xuất nội dung/ảnh liên quan đến Renal (Dinh dưỡng cho người bệnh thận, lọc máu, suy thận mạn, kiểm soát điện giải, 400 kcal): **BẮT BUỘC dùng đúng thiết kế chuẩn tham chiếu này (`poster_nutricomp_renal.png`)!**
+- 🚫 **LƯU Ý QUAN TRỌNG:** Ảnh tham chiếu này **CHỈ DÀNH RIÊNG CHO RENAL**, TUYỆT ĐỐI KHÔNG dùng cho **Prontosan Spray** hay **Nutricomp Drink Plus**. Mỗi sản phẩm có bộ nhận diện và concept riêng biệt.
+
+Ảnh tham chiếu (`style_nutricomp_renal_master.jpg`) là **chuẩn mực về uy tín & nhận diện thương hiệu của Renal**, nhưng Agent Design **CẦN LINH HOẠT THAY ĐỔI LAYOUT BỐ CỤC VÀ MÀU SẮC CHO HÀI HÒA, TUYỆT ĐỐI KHÔNG CỐ ĐỊNH RẬP KHUÔN 1 KIỂU DUY NHẤT**:
 
 * **Nguyên tắc nhận diện cốt lõi (Bắt buộc giữ chuẩn):**
   1. *Header:* Logo GlobalPharma chính thức nét căng (`brand_header_master.png`) + Huy hiệu cờ Đức "NHẬP KHẨU CHÍNH HÃNG TỪ ĐỨC" trên nền thẻ frosted pill sang trọng.
