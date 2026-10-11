@@ -137,6 +137,73 @@ BEGIN
             END IF;
         END LOOP;
     END IF;
+    -- ============================================================
+    -- ENSURE TEAM MEMBERSHIP IN agent_team_members
+    -- ============================================================
+    DECLARE
+        v_mkt_team UUID;
+        v_cskh_team UUID;
+        v_legal_team UUID;
+        v_it_team UUID;
+        r_tm RECORD;
+    BEGIN
+        SELECT id INTO v_mkt_team FROM agent_teams WHERE lead_agent_id = v_mkt_id OR name ILIKE '%Marketing%' LIMIT 1;
+        IF v_mkt_team IS NOT NULL THEN
+            IF v_mkt_id IS NOT NULL THEN
+                INSERT INTO agent_team_members (team_id, agent_id, role, joined_at, tenant_id)
+                VALUES (v_mkt_team, v_mkt_id, 'lead', NOW(), v_ea_tenant)
+                ON CONFLICT (team_id, agent_id) DO UPDATE SET role = 'lead';
+            END IF;
+            FOR r_tm IN (SELECT id, agent_key FROM agents WHERE agent_key IN ('design', 'content', 'planer', 'ads')) LOOP
+                INSERT INTO agent_team_members (team_id, agent_id, role, joined_at, tenant_id)
+                VALUES (v_mkt_team, r_tm.id, 'member', NOW(), v_ea_tenant)
+                ON CONFLICT (team_id, agent_id) DO UPDATE SET role = 'member';
+                RAISE NOTICE 'Added % to Marketing team %', r_tm.agent_key, v_mkt_team;
+            END LOOP;
+        END IF;
+
+        SELECT id INTO v_cskh_team FROM agent_teams WHERE lead_agent_id = v_cskh_id OR name ILIKE '%CSKH%' LIMIT 1;
+        IF v_cskh_team IS NOT NULL THEN
+            IF v_cskh_id IS NOT NULL THEN
+                INSERT INTO agent_team_members (team_id, agent_id, role, joined_at, tenant_id)
+                VALUES (v_cskh_team, v_cskh_id, 'lead', NOW(), v_ea_tenant)
+                ON CONFLICT (team_id, agent_id) DO UPDATE SET role = 'lead';
+            END IF;
+            FOR r_tm IN (SELECT id, agent_key FROM agents WHERE agent_key IN ('cskh')) LOOP
+                INSERT INTO agent_team_members (team_id, agent_id, role, joined_at, tenant_id)
+                VALUES (v_cskh_team, r_tm.id, 'member', NOW(), v_ea_tenant)
+                ON CONFLICT (team_id, agent_id) DO UPDATE SET role = 'member';
+            END LOOP;
+        END IF;
+
+        SELECT id INTO v_legal_team FROM agent_teams WHERE lead_agent_id = v_legal_id OR name ILIKE '%Legal%' OR name ILIKE '%Pháp Lý%' LIMIT 1;
+        IF v_legal_team IS NOT NULL THEN
+            IF v_legal_id IS NOT NULL THEN
+                INSERT INTO agent_team_members (team_id, agent_id, role, joined_at, tenant_id)
+                VALUES (v_legal_team, v_legal_id, 'lead', NOW(), v_ea_tenant)
+                ON CONFLICT (team_id, agent_id) DO UPDATE SET role = 'lead';
+            END IF;
+            FOR r_tm IN (SELECT id, agent_key FROM agents WHERE agent_key IN ('legal')) LOOP
+                INSERT INTO agent_team_members (team_id, agent_id, role, joined_at, tenant_id)
+                VALUES (v_legal_team, r_tm.id, 'member', NOW(), v_ea_tenant)
+                ON CONFLICT (team_id, agent_id) DO UPDATE SET role = 'member';
+            END LOOP;
+        END IF;
+
+        SELECT id INTO v_it_team FROM agent_teams WHERE lead_agent_id = v_it_id OR name ILIKE '%IT%' LIMIT 1;
+        IF v_it_team IS NOT NULL THEN
+            IF v_it_id IS NOT NULL THEN
+                INSERT INTO agent_team_members (team_id, agent_id, role, joined_at, tenant_id)
+                VALUES (v_it_team, v_it_id, 'lead', NOW(), v_ea_tenant)
+                ON CONFLICT (team_id, agent_id) DO UPDATE SET role = 'lead';
+            END IF;
+            FOR r_tm IN (SELECT id, agent_key FROM agents WHERE agent_key IN ('it', 'system')) LOOP
+                INSERT INTO agent_team_members (team_id, agent_id, role, joined_at, tenant_id)
+                VALUES (v_it_team, r_tm.id, 'member', NOW(), v_ea_tenant)
+                ON CONFLICT (team_id, agent_id) DO UPDATE SET role = 'member';
+            END LOOP;
+        END IF;
+    END;
 
     -- ============================================================
     -- SOUL.MD FOR GP - TRỢ LÝ ĐIỀU HÀNH
