@@ -123,20 +123,23 @@ BEGIN
     END IF;
 
     -- Internal Marketing Links: Lead Marketing <-> Planner, Content, Design, Ads
-    -- Also link EA <-> Planner, Content, Design, Ads, Dev for direct fast-path delegation
+    -- Also link EA <-> Planner, Content, Design, Ads for direct fast-path delegation
     IF v_mkt_id IS NOT NULL THEN
-        FOR r_sub IN (SELECT id, agent_key FROM agents WHERE agent_key IN ('design', 'content', 'planer', 'ads', 'dev')) LOOP
-            INSERT INTO agent_links (id, source_agent_id, target_agent_id, direction, description, status, created_by, tenant_id, created_at, updated_at)
-            VALUES (gen_random_uuid(), v_mkt_id, r_sub.id, 'bidirectional', 'Phân công nội bộ Marketing', 'active', COALESCE(v_ea_owner, 'admin'), v_ea_tenant, NOW(), NOW())
-            ON CONFLICT (source_agent_id, target_agent_id) 
-            DO UPDATE SET status = 'active', direction = 'bidirectional', description = EXCLUDED.description, updated_at = NOW();
-            RAISE NOTICE 'Linked Lead Marketing <-> %', r_sub.agent_key;
+        FOR r_sub IN (SELECT id, agent_key FROM agents WHERE agent_key IN ('design', 'content', 'planer', 'ads')) LOOP
+            IF v_mkt_id != r_sub.id THEN
+                INSERT INTO agent_links (id, source_agent_id, target_agent_id, direction, description, status, created_by, tenant_id, created_at, updated_at)
+                VALUES (gen_random_uuid(), v_mkt_id, r_sub.id, 'bidirectional', 'Phân công nội bộ Marketing', 'active', COALESCE(v_ea_owner, 'admin'), v_ea_tenant, NOW(), NOW())
+                ON CONFLICT (source_agent_id, target_agent_id) 
+                DO UPDATE SET status = 'active', direction = 'bidirectional', description = EXCLUDED.description, updated_at = NOW();
+                RAISE NOTICE 'Linked Lead Marketing <-> %', r_sub.agent_key;
+            END IF;
 
-            IF v_ea_id IS NOT NULL THEN
+            IF v_ea_id IS NOT NULL AND v_ea_id != r_sub.id THEN
                 INSERT INTO agent_links (id, source_agent_id, target_agent_id, direction, description, status, created_by, tenant_id, created_at, updated_at)
                 VALUES (gen_random_uuid(), v_ea_id, r_sub.id, 'bidirectional', 'Chỉ đạo trực tiếp Fast-Path EA <-> ' || r_sub.agent_key, 'active', COALESCE(v_ea_owner, 'admin'), v_ea_tenant, NOW(), NOW())
                 ON CONFLICT (source_agent_id, target_agent_id) 
                 DO UPDATE SET status = 'active', direction = 'bidirectional', description = EXCLUDED.description, updated_at = NOW();
+                RAISE NOTICE 'Linked EA <-> %', r_sub.agent_key;
             END IF;
         END LOOP;
     END IF;
