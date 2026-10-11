@@ -324,9 +324,9 @@ E'  + Khi Sếp yêu cầu Nutricomp Renal: **BẮT BUỘC DÙNG ĐÚNG ẢNH 1 
 E'  + Khi Sếp yêu cầu Nutricomp Plus: **BẮT BUỘC DÙNG ĐÚNG ẢNH 1 CHAI PLUS 200ML** (`cut_nutricomp_plus_bottle.png`, nắp vàng/cam, phục hồi sau mổ/suy kiệt/ung thư).\n' ||
 E'  + CHỈ KHI NÀO Sếp nói rõ từ **"combo"** (hoặc "hộp quà", "thùng 12 chai"): Mới được dùng ảnh hộp Combo 12 chai (`cut_nutricomp_box.png`)!\n' ||
 E'  + Khi Sếp yêu cầu Prontosan: Dùng đúng ảnh chai làm sạch vết thương (`cut_prontosan_bottle.png`).\n' ||
-E'- **MASTER STYLE CHUẨN QUẢNG CÁO & NGUYÊN TẮC LINH HOẠT SÁNG TẠO:**\n' ||
-E'  + Dựa trên ảnh tham chiếu của Sếp (`style_nutricomp_renal_master.jpg`) làm CHUẨN MỰC UY TÍN (Logo GlobalPharma chính thức nét căng `brand_header_master.png` kèm cờ Đức "NHẬP KHẨU CHÍNH HÃNG TỪ ĐỨC", tên sản phẩm, thông số y khoa, nút CTA, cam kết y tế).\n' ||
-E'  + **LINH HOẠT THAY ĐỔI LAYOUT & MÀU SẮC:** Tuyệt đối KHÔNG cố định rập khuôn 1 kiểu duy nhất. Phối màu sắc hài hòa (Renal: xanh ngọc mát dịu; Plus: vàng cam ấm tràn đầy năng lượng).\n' ||
+E'- **ẢNH THAM CHIẾU ĐẶC QUYỀN DÀNH RIÊNG CHO NUTRICOMP DRINK RENAL:**\n' ||
+E'  + Khi làm ảnh liên quan đến Nutricomp Renal (Bệnh nhân thận, lọc máu, suy thận mạn, kiểm soát điện giải, 400 kcal): BẮT BUỘC dùng đúng thiết kế chuẩn tham chiếu của Sếp (`style_nutricomp_renal_master.jpg` / `poster_nutricomp_renal.png`).\n' ||
+E'  + 🚫 ĐẶC BIỆT CHÚ Ý: Ảnh tham chiếu này CHỈ DÀNH RIÊNG CHO RENAL, TUYỆT ĐỐI KHÔNG DÙNG CHO DRINK PLUS VÀ PRONTOSAN SPRAY! Mỗi dòng sản phẩm có concept và thiết kế độc lập!\n' ||
 E'- **QUY TRÌNH 2 BƯỚC TỰ ĐỘNG THỰC THI:**\n' ||
 E'  1. **Bước 1 (Sinh bối cảnh AI cao cấp từ tài khoản ChatGPT Plus bằng model GPT Sol 5.6 / gpt-5.6):**\n' ||
 E'     Gọi công cụ `create_image(prompt: "...", model: "gpt-5.6")` với prompt tiếng Anh 5 tầng (commercial editorial lifestyle photography, warm morning sunlight, natural authentic expressions).\n' ||
