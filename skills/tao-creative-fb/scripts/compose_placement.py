@@ -2,27 +2,51 @@
 """
 Commercial Product Placement Script - GlobalPharma
 Places real official B.Braun product packaging and GlobalPharma logo onto
-photorealistic AI lifestyle/studio backgrounds with realistic contact shadows.
+photorealistic lifestyle/studio backgrounds with realistic contact and cast shadows.
 """
 
 import os
 import argparse
+from pathlib import Path
 from PIL import Image, ImageFilter, ImageEnhance, ImageDraw
 
 def create_placement(
-    bg_path: str,
-    product_type: str = "nutricomp",
+    bg_path: str = None,
+    product_type: str = "renal",
     output_path: str = "skills/tao-creative-fb/output/poster_nutricomp_renal_placement.png",
     ref_dir: str = "skills/tao-creative-fb/assets/references"
 ):
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    
-    bg = Image.open(bg_path).convert('RGBA')
+    p_lower = str(product_type).lower()
+
+    # Automatic background resolution if not supplied or missing
+    if not bg_path or bg_path == "auto" or not os.path.exists(bg_path):
+        candidate_bgs = []
+        if "prontosan" in p_lower:
+            candidate_bgs = [os.path.join(ref_dir, "bg_prontosan_clinical.jpg")]
+        elif "plus" in p_lower:
+            candidate_bgs = [os.path.join(ref_dir, "bg_lifestyle_dining.jpg"), os.path.join(ref_dir, "bg_luxury_teal_podium.jpg")]
+        else:
+            candidate_bgs = [os.path.join(ref_dir, "bg_luxury_teal_podium.jpg"), os.path.join(ref_dir, "bg_lifestyle_dining.jpg")]
+
+        bg_path = None
+        for b in candidate_bgs:
+            if os.path.exists(b):
+                bg_path = b
+                break
+
+        if not bg_path:
+            # Create high quality solid medical canvas
+            bg = Image.new('RGBA', (1080, 1080), (15, 30, 40, 255))
+        else:
+            bg = Image.open(bg_path).convert('RGBA')
+    else:
+        bg = Image.open(bg_path).convert('RGBA')
+
     canvas_w, canvas_h = bg.size
 
     # 1. Select Product Reference
-    p_lower = str(product_type).lower()
-    if p_lower == "prontosan":
+    if "prontosan" in p_lower:
         prod_file = os.path.join(ref_dir, "cut_prontosan_bottle.png")
         prod_w = int(canvas_w * 0.28)
         pos_x = int(canvas_w * 0.55)
@@ -62,7 +86,9 @@ def create_placement(
 
     prod = Image.open(prod_file).convert('RGBA')
     logo_file = os.path.join(ref_dir, "real_logo_globalpharma_master.png")
-    logo = Image.open(logo_file).convert('RGBA')
+    if not os.path.exists(logo_file):
+        logo_file = os.path.join(ref_dir, "real_logo_globalpharma_banner.png")
+    logo = Image.open(logo_file).convert('RGBA') if os.path.exists(logo_file) else None
 
     # Scale product
     prod_h = int(prod.height * (prod_w / prod.width))
@@ -72,11 +98,8 @@ def create_placement(
     r, g, b, a = prod_scaled.split()
     rgb = Image.merge('RGB', (r, g, b))
     enhancer_b = ImageEnhance.Brightness(rgb)
-    rgb = enhancer_b.enhance(1.03)
+    rgb = enhancer_b.enhance(1.02)
     r2, g2, b2 = rgb.split()
-    r2 = r2.point(lambda i: min(255, int(i * 1.03)))
-    g2 = g2.point(lambda i: min(255, int(i * 1.01)))
-    b2 = b2.point(lambda i: int(i * 0.97))
     prod_warm = Image.merge('RGBA', (r2, g2, b2, a))
 
     # Realistic Shadows (Cast + Contact)
@@ -108,26 +131,27 @@ def create_placement(
     composed.paste(prod_warm, (pos_x, pos_y), prod_warm)
 
     # Logo Placement (Top Left, elegant subtle white glow)
-    logo_w = int(canvas_w * 0.15)
-    logo_h = int(logo.height * (logo_w / logo.width))
-    logo_scaled = logo.resize((logo_w, logo_h), Image.Resampling.LANCZOS)
-    logo_alpha = logo_scaled.split()[-1]
-    logo_glow = Image.new('RGBA', logo_scaled.size, (255, 255, 255, 130))
-    logo_glow.putalpha(logo_alpha)
-    logo_glow = logo_glow.filter(ImageFilter.GaussianBlur(3))
+    if logo:
+        logo_w = int(canvas_w * 0.16)
+        logo_h = int(logo.height * (logo_w / logo.width))
+        logo_scaled = logo.resize((logo_w, logo_h), Image.Resampling.LANCZOS)
+        logo_alpha = logo_scaled.split()[-1]
+        logo_glow = Image.new('RGBA', logo_scaled.size, (255, 255, 255, 130))
+        logo_glow.putalpha(logo_alpha)
+        logo_glow = logo_glow.filter(ImageFilter.GaussianBlur(3))
 
-    logo_pos_x = int(canvas_w * 0.05)
-    logo_pos_y = int(canvas_h * 0.045)
-    composed.paste(logo_glow, (logo_pos_x, logo_pos_y), logo_glow)
-    composed.paste(logo_scaled, (logo_pos_x, logo_pos_y), logo_scaled)
+        logo_pos_x = int(canvas_w * 0.05)
+        logo_pos_y = int(canvas_h * 0.045)
+        composed.paste(logo_glow, (logo_pos_x, logo_pos_y), logo_glow)
+        composed.paste(logo_scaled, (logo_pos_x, logo_pos_y), logo_scaled)
 
     composed.convert('RGB').save(output_path, quality=95)
     print(f"MEDIA:{os.path.abspath(output_path)}")
     return output_path
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Compose real product placement onto AI background")
-    parser.add_argument("--bg", required=True, help="Path to lifestyle background image")
+    parser = argparse.ArgumentParser(description="Compose real product placement onto lifestyle/studio background")
+    parser.add_argument("--bg", default="auto", help="Path to lifestyle background image (default: auto)")
     parser.add_argument("--product", default="renal", choices=["renal", "nutricomp", "plus", "combo", "prontosan"])
     parser.add_argument("--output", default="skills/tao-creative-fb/output/poster_nutricomp_renal_placement.png")
     parser.add_argument("--ref-dir", default="skills/tao-creative-fb/assets/references")

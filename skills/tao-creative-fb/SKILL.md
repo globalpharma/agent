@@ -77,9 +77,11 @@ Mục tiêu: Cung cấp kiến thức chăm sóc sức khỏe, nuôi dưỡng t�
 3. **Sinh nội dung (BẮT BUỘC TẠO CẢ CAPTION LẪN HÌNH ẢNH TRONG CÙNG LƯỢT):**
    Ngay khi người dùng chọn 1 ý tưởng, bạn BẮT BUỘC thực hiện ĐỒNG THỜI cả hai việc trong cùng lượt trả lời này:
    - **Viết Caption (80–150 từ):** Dựa trên `assets/caption-templates.md` và `assets/knowledge_globalpharma_products_campaign.md`. Gồm [Hook y khoa / thấu cảm] + [Kiến thức dinh dưỡng / cơ chế sản phẩm B.Braun] + [Soft CTA tư vấn hoặc chia sẻ].
-   - **BẮT BUỘC GỌI TOOL `create_image` ĐỂ TẠO ẢNH:**
-     Bạn PHẢI gọi công cụ `create_image(prompt: "...")` với prompt chi tiết mô tả hình ảnh y khoa chân thực, ấm áp, ánh sáng studio y tế, sản phẩm B.Braun chính hãng.
-     ⚠️ **CẢNH BÁO QUAN TRỌNG:** TUYỆT ĐỐI KHÔNG được chỉ mô tả ý tưởng ảnh bằng lời văn hay chỉ trả về mỗi bài caption. BẮT BUỘC PHẢI GỌI TOOL `create_image` để tạo ra file ảnh thực tế!
+   - **BẮT BUỘC TẠO ẢNH BẰNG ENGINE CHUYÊN NGHIỆP:**
+     Bạn gọi ngay công cụ `exec` để chạy lệnh tạo poster/ảnh thành phẩm:
+     `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type [plus|renal|combo|prontosan] --output-dir /app/workspace/output`
+     (hoặc `python3 /app/data/skills/tao-creative-fb/scripts/compose_placement.py --product [plus|renal|combo|prontosan] --output /app/workspace/output/poster_<product>_placement.png`).
+     ⚠️ **CẢNH BÁO QUAN TRỌNG:** TUYỆT ĐỐI KHÔNG chỉ mô tả ý tưởng ảnh bằng lời văn hay chỉ trả về mỗi bài caption. BẮT BUỘC PHẢI CHẠY LỆNH XUẤT FILE ẢNH VÀ TRẢ VỀ DÒNG `MEDIA:...`! Tuyệt đối không để bị dừng lại bởi lỗi tài khoản tạo ảnh Codex/ChatGPT.
 4. **Xem trước (Preview):** Hiển thị đầy đủ cả bài viết Caption và bức ảnh vừa sinh (kèm cú pháp `MEDIA:<đường dẫn ảnh>`) để người dùng xem trước trọn vẹn cả bài lẫn ảnh.
 5. **Đăng bài THÔNG MINH theo dòng sản phẩm (Product-Aware Broadcasting):**
    - Danh sách Fanpage được phân loại theo `product_group` (`nutricomp`, `prontosan`, hoặc `all`) trong `skills/tao-creative-fb/pages.json`.
