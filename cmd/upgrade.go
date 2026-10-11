@@ -227,7 +227,8 @@ func checkSchemaOrAutoUpgrade(dsn string) error {
 	}
 
 	if s.CurrentVersion > s.RequiredVersion {
-		return errors.New(upgrade.FormatError(s))
+		slog.Warn("database schema version is ahead of binary, proceeding", "current", s.CurrentVersion, "required", s.RequiredVersion)
+		return nil
 	}
 
 	// Schema is outdated — check if auto-upgrade is enabled.
