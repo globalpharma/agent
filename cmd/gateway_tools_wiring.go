@@ -98,29 +98,40 @@ func wireExtraTools(
 	}
 	slog.Info("tool aliases registered", "count", len(toolsReg.Aliases()))
 
-	// Allow read_file and list_files to access skills directories and CLI workspaces.
+	// Allow read_file, list_files, and other file tools to access skills directories, brain directories, and CLI workspaces.
 	homeDir, _ := os.UserHomeDir()
-	skillsAllowPaths := []string{globalSkillsDir, builtinSkillsDir, filepath.Join(dataDir, "tenants")}
+	skillsAllowPaths := []string{
+		globalSkillsDir,
+		builtinSkillsDir,
+		filepath.Join(dataDir, "tenants"),
+		filepath.Join(workspace, "my-brain"),
+		filepath.Join(workspace, "skills"),
+		filepath.Join(workspace, "output"),
+		filepath.Join(dataDir, "my-brain"),
+		filepath.Join(dataDir, "skills"),
+		"/app/my-brain",
+		"/app/workspace/my-brain",
+		"/app/data/my-brain",
+		"/app/skills",
+		"/app/workspace/skills",
+		"/app/data/skills",
+		"/app/workspace/output",
+	}
 	if homeDir != "" {
 		skillsAllowPaths = append(skillsAllowPaths, filepath.Join(homeDir, ".agents", "skills"))
+		skillsAllowPaths = append(skillsAllowPaths, filepath.Join(homeDir, ".goclaw", "my-brain"))
 	}
 	if pgStores.Skills != nil {
 		skillsAllowPaths = append(skillsAllowPaths, pgStores.Skills.Dirs()...)
 	}
-	if readTool, ok := toolsReg.Get("read_file"); ok {
-		if pa, ok := readTool.(tools.PathAllowable); ok {
-			pa.AllowPaths(skillsAllowPaths...)
-			pa.AllowPaths(filepath.Join(dataDir, "cli-workspaces"))
-		}
-	}
-	if listTool, ok := toolsReg.Get("list_files"); ok {
-		if pa, ok := listTool.(tools.PathAllowable); ok {
-			pa.AllowPaths(skillsAllowPaths...)
-		}
-	}
-	if sendFileTool, ok := toolsReg.Get("send_file"); ok {
-		if pa, ok := sendFileTool.(tools.PathAllowable); ok {
-			pa.AllowPaths(skillsAllowPaths...)
+	for _, toolName := range []string{"read_file", "list_files", "send_file", "write_file", "edit"} {
+		if t, ok := toolsReg.Get(toolName); ok {
+			if pa, ok := t.(tools.PathAllowable); ok {
+				pa.AllowPaths(skillsAllowPaths...)
+				if toolName == "read_file" {
+					pa.AllowPaths(filepath.Join(dataDir, "cli-workspaces"))
+				}
+			}
 		}
 	}
 

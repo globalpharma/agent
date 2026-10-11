@@ -396,43 +396,96 @@ func buildAllowedPrefixes(ctx context.Context, base []string, includeTeamRoot bo
 func resolvePathWithAllowed(path, workspace string, restrict bool, allowedPrefixes []string) (string, error) {
 	resolved, err := resolvePath(path, workspace, restrict)
 	if err == nil {
+		// When path is relative, resolved points to workspace/path.
+		// If that target does not exist on disk, check whether it exists under any of the allowedPrefixes
+		// (e.g. skills directory, my-brain directory, etc.).
+		if !filepath.IsAbs(path) && len(allowedPrefixes) > 0 {
+			if _, statErr := os.Stat(resolved); statErr != nil {
+				for _, prefix := range allowedPrefixes {
+					candidates := []string{
+						filepath.Join(prefix, path),
+					}
+					if strings.HasPrefix(path, "skills/") && (strings.HasSuffix(prefix, "skills") || strings.HasSuffix(prefix, "skills/")) {
+						candidates = append(candidates, filepath.Join(prefix, strings.TrimPrefix(path, "skills/")))
+					}
+					if strings.HasPrefix(path, "my-brain/") && (strings.HasSuffix(prefix, "my-brain") || strings.HasSuffix(prefix, "my-brain/")) {
+						candidates = append(candidates, filepath.Join(prefix, strings.TrimPrefix(path, "my-brain/")))
+					}
+					for _, cand := range candidates {
+						if _, candErr := os.Stat(cand); candErr == nil {
+							absPrefix, _ := filepath.Abs(prefix)
+							prefixReal, pErr := filepath.EvalSymlinks(absPrefix)
+							if pErr != nil {
+								prefixReal = absPrefix
+							}
+							absCand, _ := filepath.Abs(cand)
+							candReal, cErr := filepath.EvalSymlinks(absCand)
+							if cErr != nil {
+								candReal = absCand
+							}
+							if isPathInside(candReal, prefixReal) {
+								if hasMutableSymlinkParent(candReal) {
+									continue
+								}
+								if hErr := checkHardlink(candReal); hErr != nil {
+									continue
+								}
+								slog.Debug("file resolved via allowedPrefix fallback", "path", path, "resolved", candReal)
+								return candReal, nil
+							}
+						}
+					}
+				}
+			}
+		}
 		return resolved, nil
 	}
+
 	// If restricted and denied, check if path falls under an allowed prefix.
-	// Resolve symlinks in the candidate path for safe comparison.
-	cleaned := filepath.Clean(path)
-	absPath, _ := filepath.Abs(cleaned)
-	real, evalErr := filepath.EvalSymlinks(absPath)
-	if evalErr != nil {
-		// Try resolving parent for non-existent files
-		parentReal, parentErr := filepath.EvalSymlinks(filepath.Dir(absPath))
-		if parentErr != nil {
-			return "", err
-		}
-		real = filepath.Join(parentReal, filepath.Base(absPath))
-	}
-	for _, prefix := range allowedPrefixes {
-		absPrefix, _ := filepath.Abs(prefix)
-		prefixReal, prefixErr := filepath.EvalSymlinks(absPrefix)
-		if prefixErr != nil {
-			prefixReal = absPrefix
-		}
-		if isPathInside(real, prefixReal) {
-			// Preserve the same filesystem hardening as resolvePath. Allowed
-			// prefixes widen the containment boundary only; they must not
-			// weaken symlink or hardlink protections.
-			if hasMutableSymlinkParent(real) {
-				slog.Warn("security.mutable_symlink_parent", "path", path, "resolved", real)
-				return "", fmt.Errorf("access denied: path contains mutable symlink component")
-			}
-			if err := checkHardlink(real); err != nil {
-				return "", err
-			}
-			slog.Debug("read_file: allowed by prefix", "path", real, "prefix", prefixReal)
-			return real, nil
+	// Check candidates: absolute path, relative to workspace, and relative to process cwd.
+	candidatePaths := []string{}
+	if filepath.IsAbs(path) {
+		candidatePaths = append(candidatePaths, filepath.Clean(path))
+	} else {
+		candidatePaths = append(candidatePaths, filepath.Clean(filepath.Join(workspace, path)))
+		if cwdAbs, cErr := filepath.Abs(filepath.Clean(path)); cErr == nil {
+			candidatePaths = append(candidatePaths, cwdAbs)
 		}
 	}
-	slog.Warn("read_file: access denied", "path", cleaned, "workspace", workspace, "allowedPrefixes", allowedPrefixes)
+
+	for _, candPath := range candidatePaths {
+		real, evalErr := filepath.EvalSymlinks(candPath)
+		if evalErr != nil {
+			// Try resolving parent for non-existent files
+			parentReal, parentErr := filepath.EvalSymlinks(filepath.Dir(candPath))
+			if parentErr != nil {
+				continue
+			}
+			real = filepath.Join(parentReal, filepath.Base(candPath))
+		}
+		for _, prefix := range allowedPrefixes {
+			absPrefix, _ := filepath.Abs(prefix)
+			prefixReal, prefixErr := filepath.EvalSymlinks(absPrefix)
+			if prefixErr != nil {
+				prefixReal = absPrefix
+			}
+			if isPathInside(real, prefixReal) {
+				// Preserve the same filesystem hardening as resolvePath. Allowed
+				// prefixes widen the containment boundary only; they must not
+				// weaken symlink or hardlink protections.
+				if hasMutableSymlinkParent(real) {
+					slog.Warn("security.mutable_symlink_parent", "path", path, "resolved", real)
+					return "", fmt.Errorf("access denied: path contains mutable symlink component")
+				}
+				if err := checkHardlink(real); err != nil {
+					return "", err
+				}
+				slog.Debug("read_file: allowed by prefix", "path", real, "prefix", prefixReal)
+				return real, nil
+			}
+		}
+	}
+	slog.Warn("read_file: access denied", "path", filepath.Clean(path), "workspace", workspace, "allowedPrefixes", allowedPrefixes)
 	return "", err
 }
 
