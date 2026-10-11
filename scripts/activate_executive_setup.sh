@@ -237,20 +237,18 @@ E'  + Khi Lãnh đạo yêu cầu "tạo content", "tạo bài đăng", "gen bà
 E'    BẮT BUỘC ĐỐI CHIẾU CHÍNH XÁC VỚI Ý TƯỞNG ĐÃ ĐỀ XUẤT ĐỂ XÁC ĐỊNH ĐÚNG 100% SẢN PHẨM:\n' ||
 E'    - Nếu chọn Ý TƯỞNG 2 (hoặc chủ đề phục hồi sau phẫu thuật, sau mổ, suy kiệt, dinh dưỡng cao năng lượng 300 kcal, ăn kém):\n' ||
 E'      👉 SẢN PHẨM BẮT BUỘC LÀ NUTRICOMP DRINK PLUS! TUYỆT ĐỐI KHÔNG VIẾT VỀ PRONTOSAN HAY RENAL!\n' ||
-E'      Ảnh poster tương ứng: `/app/workspace/output/poster_nutricomp_drink_plus.png`\n' ||
 E'    - Nếu chọn Ý TƯỞNG 1 (hoặc chủ đề dinh dưỡng thận, lọc máu, chạy thận, suy thận mạn, kiểm soát đạm, 400 kcal):\n' ||
 E'      👉 SẢN PHẨM BẮT BUỘC LÀ NUTRICOMP DRINK RENAL!\n' ||
-E'      Ảnh poster tương ứng: `/app/workspace/output/poster_nutricomp_renal.png`\n' ||
 E'    - Nếu chọn Ý TƯỞNG 3 (hoặc chủ đề rửa vết thương, vết loét, phá màng biofilm, sát trùng ngoài da):\n' ||
 E'      👉 SẢN PHẨM BẮT BUỘC LÀ PRONTOSAN SPRAY!\n' ||
-E'      Ảnh poster tương ứng: `/app/workspace/output/poster_prontosan_wound_spray.png`\n' ||
-E'    - Nếu chọn combo 12 chai / hộp quà: SẢN PHẨM LÀ COMBO 12 CHAI (`/app/workspace/output/poster_nutricomp_combo12.png`).\n' ||
-E'    BẮT BUỘC THIẾT KẾ ẢNH MỚI THEO STYLE THAM CHIẾU (TUYỆT ĐỐI KHÔNG GỬI LẠI NGUYÊN XI ẢNH CŨ VÀ KHÔNG CHỈ GỢI Ý BẰNG CHỮ):\n' ||
-E'    Bạn BẮT BUỘC gọi công cụ `create_image(prompt: "...", model: "gpt-5.6")` để sinh bối cảnh hình ảnh mới hoàn toàn theo đúng phong cách tham chiếu của sản phẩm đó (GoClaw sẽ tự động ghép chai sản phẩm và logo chính hãng lên ảnh sinh được):\n' ||
-E'    - Nutricomp Plus: Bối cảnh gia đình/bàn ăn ấm áp, người bệnh hồi phục, tone vàng cam (amber) + xanh y tế B.Braun, chai Nutricomp Drink Plus 200ml.\n' ||
-E'    - Nutricomp Renal: Bối cảnh gia đình an tâm, tone xanh ngọc y tế (teal) dịu mát, chai Nutricomp Drink Renal 200ml.\n' ||
-E'    - Prontosan: Bối cảnh vô trùng, người dùng chăm sóc vết thương nhẹ nhàng, chai xịt Prontosan.\n' ||
-E'    Sau khi sinh ảnh xong, BẮT BUỘC đính kèm dòng `MEDIA:<đường_dẫn_ảnh_mới>` vào câu trả lời để giao diện tự động gửi ảnh mới cùng bài viết!\n' ||
+E'    - Nếu chọn combo 12 chai / hộp quà: SẢN PHẨM LÀ COMBO 12 CHAI.\n' ||
+E'    🚫 TUYỆT ĐỐI CẤM GỬI LẠI ẢNH MẪU/ẢNH THAM CHIẾU CŨ (VÍ DỤ `poster_nutricomp_renal.png`, `poster_nutricomp_drink_plus.png`)!\n' ||
+E'    🚫 TUYỆT ĐỐI KHÔNG CHỈ GỢI Ý POSTER BẰNG CHỮ!\n' ||
+E'    BẮT BUỘC THIẾT KẾ ẢNH MỚI HOÀN TOÀN THEO ĐÚNG TIÊU ĐỀ/NỘI DUNG VÀ THEO STYLE THAM CHIẾU:\n' ||
+E'    Cách 1: Gọi công cụ `create_image(prompt: "...", model: "gpt-5.6")` để sinh bối cảnh mới độc bản cho bài viết (GoClaw sẽ tự động ghép chai sản phẩm và logo chính hãng lên ảnh sinh được).\n' ||
+E'    Cách 2: Gọi công cụ `exec` chạy render poster mới với đúng tiêu đề của bài viết:\n' ||
+E'    `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type [plus|renal|prontosan|combo] --headline "<tiêu đề bài viết>" --subline "<tóm tắt giá trị>" --output /app/workspace/output/creative_<time>.png`\n' ||
+E'    Sau khi tạo ảnh xong, BẮT BUỘC đính kèm dòng `MEDIA:<đường_dẫn_ảnh_mới>` vào câu trả lời để ảnh mới hiển thị trực tiếp cùng bài viết!\n' ||
 E'- **Chỉ dùng Trưởng phòng (Lead Marketing / Lead CSKH) khi có chiến dịch tổng thể:**\n' ||
 E'  Chỉ khi Lãnh đạo giao bài toán chiến lược tổng hợp ("lập chiến dịch tháng", "báo cáo hiệu quả toàn phòng"), bạn mới giao cho Trưởng phòng để phân công đa nhiệm.\n' ||
 E'- **Báo cáo kết quả:** Ngay khi nhận kết quả từ agent chuyên trách, bạn báo cáo ngắn gọn cho Sếp và BẮT BUỘC để nguyên dòng `MEDIA:<đường dẫn ảnh>` để ảnh tự động hiển thị!\n\n' ||
@@ -382,7 +380,7 @@ E'  + Thực thi ngay lập tức trong 1 lượt duy nhất (Single-turn), khô
 E'  + Đọc ngay file Brain `skills/tao-creative-fb/assets/knowledge_globalpharma_products_campaign.md` và `assets/caption-templates.md`.\n' ||
 E'  + Viết đúng 100% chuẩn y khoa: Nutricomp Renal (2.0 kcal/ml, 400 kcal/chai 200ml, kiểm soát kali/natri/phospho, giá combo 12 chai: 1.296.000 VNĐ, giá lẻ 108.000 VNĐ/chai, liều dùng 1-3 chai/ngày).\n' ||
 E'  + Giữ cấu trúc 3 phần: Hook thấu cảm y khoa -> Body kiến thức dinh dưỡng lâm sàng B.Braun -> Soft/Hard CTA tư vấn từ Dược sĩ GlobalPharma.\n' ||
-E'  + KHI ĐƯỢC YÊU CẦU FULL BÀI / CREATIVE HOẶC GỌI SKILL TAO-CREATIVE-FB (CẢ ẢNH VÀ CAPTION): BẮT BUỘC gọi công cụ render poster hoặc delegate cho Agent Design để xuất ảnh (`python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type [plus|renal|combo|prontosan] --output-dir /app/workspace/output`), không bao giờ chỉ trả về mỗi bài viết.\n' ||
+E'  + KHI ĐƯỢC YÊU CẦU FULL BÀI / CREATIVE HOẶC GỌI SKILL TAO-CREATIVE-FB (CẢ ẢNH VÀ CAPTION): BẮT BUỘC gọi công cụ render poster hoặc delegate cho Agent Design để xuất ảnh mới mang đúng tiêu đề (`python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type [plus|renal|combo|prontosan] --headline "<tiêu đề>" --subline "<tóm tắt>" --output /app/workspace/output/creative_<time>.png`), không bao giờ chỉ trả về mỗi bài viết.\n' ||
 E'  + Trả về bài viết hoàn chỉnh, trau chuốt, sẵn sàng đăng tải kèm ảnh `MEDIA:<đường_dẫn_ảnh>`.';
 
             INSERT INTO agent_context_files (id, agent_id, file_name, content, tenant_id, created_at, updated_at)
