@@ -495,7 +495,7 @@ UPDATE cron_jobs
 SET deliver = true,
     deliver_channel = 'telegram',
     deliver_to = '5781808621'
-WHERE deliver = false OR deliver_channel = '' OR deliver_to = '';
+WHERE deliver = false OR deliver_channel = '' OR deliver_to = '' OR deliver_to = 'striverle' OR deliver_to = '@striverle';
 EOSQL
 
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw chmod -R 777 /app/workspace /app/data /app/skills /app/my-brain || true
