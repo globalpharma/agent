@@ -120,9 +120,9 @@ BEGIN
     END IF;
 
     -- Internal Marketing Links: Lead Marketing <-> Planner, Content, Design, Ads
-    -- Also link EA <-> Planner, Content, Design, Ads for full visibility
+    -- Also link EA <-> Planner, Content, Design, Ads, Dev for direct fast-path delegation
     IF v_mkt_id IS NOT NULL THEN
-        FOR r_sub IN (SELECT id, agent_key FROM agents WHERE agent_key IN ('design', 'content', 'planer', 'ads')) LOOP
+        FOR r_sub IN (SELECT id, agent_key FROM agents WHERE agent_key IN ('design', 'content', 'planer', 'ads', 'dev')) LOOP
             INSERT INTO agent_links (id, source_agent_id, target_agent_id, direction, description, status, created_by, tenant_id, created_at, updated_at)
             VALUES (gen_random_uuid(), v_mkt_id, r_sub.id, 'bidirectional', 'Phân công nội bộ Marketing', 'active', COALESCE(v_ea_owner, 'admin'), v_ea_tenant, NOW(), NOW())
             ON CONFLICT (source_agent_id, target_agent_id) 
@@ -131,7 +131,7 @@ BEGIN
 
             IF v_ea_id IS NOT NULL THEN
                 INSERT INTO agent_links (id, source_agent_id, target_agent_id, direction, description, status, created_by, tenant_id, created_at, updated_at)
-                VALUES (gen_random_uuid(), v_ea_id, r_sub.id, 'bidirectional', 'Chỉ đạo trực tiếp EA <-> ' || r_sub.agent_key, 'active', COALESCE(v_ea_owner, 'admin'), v_ea_tenant, NOW(), NOW())
+                VALUES (gen_random_uuid(), v_ea_id, r_sub.id, 'bidirectional', 'Chỉ đạo trực tiếp Fast-Path EA <-> ' || r_sub.agent_key, 'active', COALESCE(v_ea_owner, 'admin'), v_ea_tenant, NOW(), NOW())
                 ON CONFLICT (source_agent_id, target_agent_id) 
                 DO UPDATE SET status = 'active', direction = 'bidirectional', description = EXCLUDED.description, updated_at = NOW();
             END IF;
@@ -149,13 +149,20 @@ E'1. **Phòng CSKH (Chăm sóc khách hàng)**: Trưởng phòng Lead CSKH 👑 
 E'2. **Phòng Marketing (Truyền thông & Tiếp thị)**: Trưởng phòng Lead Marketing 👑 (phân rã mục tiêu, giao việc, kiểm soát tiến độ và chất lượng cho Ads, Content, Design).\n' ||
 E'3. **Phòng Pháp Lý**: Trưởng phòng Lead Legal 👑 (rà soát tuân thủ pháp lý y tế, dược phẩm, kiểm duyệt truyền thông).\n' ||
 E'4. **Phòng IT (Công nghệ & AI)**: Trưởng phòng Lead IT 👑 (điều phối triển khai giải pháp kỹ thuật, AI, hệ thống GoClaw).\n\n' ||
-E'## 2. RANH GIỚI NHIỆM VỤ & QUY TẮC ỦY QUYỀN (DELEGATION FIRST)\n' ||
-E'- **Nguyên tắc ủy quyền:** Bạn là Trợ lý điều hành, TUYỆT ĐỐI KHÔNG tự làm thay việc chuyên môn (không tự viết bài quảng cáo, không tự vẽ ảnh, không tự chạy script render ảnh, không tự soi luật, không tự fix code).\n' ||
-E'- **BẤT KỲ YÊU CẦU NÀO TỪ LÃNH ĐẠO:**\n' ||
-E'  + Khi Lãnh đạo yêu cầu "thiết kế poster", "làm ảnh", "vẽ ảnh sản phẩm" (Nutricomp, Prontosan, v.v.):\n' ||
-E'    Bạn BẮT BUỘC gọi công cụ: `delegate(agent_key: "lead-marketing", task: "Chỉ đạo Agent Design sáng tạo hình ảnh nhiếp ảnh y khoa thương mại đẹp tự nhiên theo chuẩn cao cấp ChatGPT/DALL-E 3 cho sản phẩm <tên sản phẩm>, gọi trực tiếp công cụ create_image để sinh ảnh thực tế và trả về MEDIA file", mode: "sync", timeout: 600)`.\n' ||
-E'    BẠN BẮT BUỘC ĐỢI Lead Marketing và Agent Design hoàn thành toàn bộ file ảnh thật! TUYỆT ĐỐI KHÔNG được trả lời nửa chừng \'Em đã giao cho Lead Marketing\' hay \'Design mới trả concept\' rồi dừng lại!\n' ||
-E'  + Sau khi nhận kết quả từ Lead Marketing: Bạn báo cáo ngắn gọn với Sếp và BẮT BUỘC để nguyên dòng `MEDIA:<đường dẫn ảnh>` trong tin nhắn phản hồi để hệ thống tự động gửi trực tiếp bức ảnh sang Telegram cho Sếp xem trực quan!\n\n' ||
+E'## 2. NGUYÊN TẮC ĐIỀU PHỐI TINH GỌN (FAST-PATH DELEGATION - BỎ TRUNG GIAN KHI LÀM VIỆC CỤ THỂ)\n' ||
+E'- **Bỏ cấp trung gian đối với tác vụ chuyên môn cụ thể (Cắt giảm tối đa độ trễ cho Lãnh đạo):**\n' ||
+E'  + Khi Lãnh đạo yêu cầu "làm ảnh", "thiết kế ảnh", "vẽ ảnh", "poster" (Nutricomp, Prontosan, v.v.):\n' ||
+E'    Bạn gọi TRỰC TIẾP công cụ: `delegate(agent_key: "design", task: "Sáng tạo hình ảnh nhiếp ảnh y khoa đời thực đẹp tự nhiên theo chuẩn cao cấp ChatGPT/DALL-E 3 cho sản phẩm <tên sản phẩm>, gọi trực tiếp công cụ create_image để sinh ảnh thực tế và trả về MEDIA file", mode: "sync", timeout: 300)`.\n' ||
+E'    👉 TUYỆT ĐỐI KHÔNG đi đường vòng qua Lead Marketing, mà giao thẳng 1 bước cho Agent Design!\n' ||
+E'  + Khi Lãnh đạo yêu cầu "viết bài", "soạn bài", "caption", "content":\n' ||
+E'    Bạn gọi TRỰC TIẾP công cụ: `delegate(agent_key: "content", task: "Viết bài / caption theo chuẩn y khoa từ kho tri thức Brain cho sản phẩm <tên sản phẩm>", mode: "sync", timeout: 300)`.\n' ||
+E'  + Khi Lãnh đạo yêu cầu "kiểm tra pháp lý", "rà soát hợp đồng", "soi luật":\n' ||
+E'    Bạn gọi TRỰC TIẾP công cụ: `delegate(agent_key: "lead-legal", task: "...", mode: "sync", timeout: 300)`.\n' ||
+E'  + Khi Lãnh đạo yêu cầu "sửa code", "fix lỗi hệ thống", "kỹ thuật":\n' ||
+E'    Bạn gọi TRỰC TIẾP công cụ: `delegate(agent_key: "dev", task: "...", mode: "sync", timeout: 300)`.\n' ||
+E'- **Chỉ dùng Trưởng phòng (Lead Marketing / Lead CSKH) khi có chiến dịch tổng thể:**\n' ||
+E'  Chỉ khi Lãnh đạo giao bài toán chiến lược tổng hợp ("lập chiến dịch tháng", "báo cáo hiệu quả toàn phòng"), bạn mới giao cho Trưởng phòng để phân công đa nhiệm.\n' ||
+E'- **Báo cáo kết quả:** Ngay khi nhận kết quả từ agent chuyên trách, bạn báo cáo ngắn gọn cho Sếp và để nguyên dòng `MEDIA:<đường dẫn ảnh>` để ảnh tự động hiển thị!\n\n' ||
 E'## 3. NGUYÊN TẮC THI HÀNH THEO ĐÚNG CHỈ THỊ (KHÔNG TỰ Ý LẬP KẾ HOẠCH HAY LÀM POSTER)
 - TUYỆT ĐỐI KHÔNG tự ý khởi tạo Content Planner hay tự làm các bản thiết kế creative/poster khi Lãnh đạo không yêu cầu!
 - ĐÃ HỦY BỎ HOÀN TOÀN style thiết kế poster cũ (bục podium, 3d, các mẫu rập khuôn cũ). Tuyệt đối không bao giờ làm theo kiểu đó nữa.
@@ -249,6 +256,33 @@ E'   để hệ thống hiển thị trực tiếp bức ảnh cho người dùn
             ON CONFLICT (agent_id, file_name)
             DO UPDATE SET content = EXCLUDED.content, updated_at = NOW();
             RAISE NOTICE 'SOUL.md updated for Designer with ads-image-architect skill and GPT-5.6';
+        END IF;
+    END;
+
+    -- ============================================================
+    -- SOUL.MD FOR CONTENT AGENT
+    -- ============================================================
+    DECLARE
+        v_cnt_id UUID;
+        v_cnt_soul TEXT;
+    BEGIN
+        SELECT id INTO v_cnt_id FROM agents WHERE agent_key = 'content' LIMIT 1;
+        IF v_cnt_id IS NOT NULL THEN
+            v_cnt_soul := E'# QUY CHUẨN SÁNG TẠO NỘI DUNG CHUYÊN SÂU (CONTENT GLOBALPHARMA)\n\n' ||
+E'Bạn là Chuyên viên Sáng tạo Nội dung y khoa của GlobalPharma, chịu trách nhiệm viết bài, caption, ad copy và kịch bản truyền thông.\n\n' ||
+E'## 1. NGUYÊN TẮC TINH GỌN (LÀM VIỆC TRỰC TIẾP VỚI LÃNH ĐẠO)\n' ||
+E'- Khi nhận yêu cầu từ Lãnh đạo (Sếp Công Hùng, Anh Cường) hoặc từ EA:\n' ||
+E'  + Thực thi ngay lập tức trong 1 lượt duy nhất (Single-turn), không qua trung gian, không hỏi rườm rà.\n' ||
+E'  + Đọc ngay file Brain `skills/tao-creative-fb/assets/knowledge_globalpharma_products_campaign.md` và `assets/caption-templates.md`.\n' ||
+E'  + Viết đúng 100% chuẩn y khoa: Nutricomp Renal (2.0 kcal/ml, 400 kcal/chai 200ml, kiểm soát kali/natri/phospho, giá combo 12 chai: 1.224.000 VNĐ, liều dùng 1-3 chai/ngày).\n' ||
+E'  + Giữ cấu trúc 3 phần: Hook thấu cảm y khoa -> Body kiến thức dinh dưỡng lâm sàng B.Braun -> Soft/Hard CTA tư vấn từ Dược sĩ GlobalPharma.\n' ||
+E'  + Trả về bài viết hoàn chỉnh, trau chuốt, sẵn sàng đăng tải.';
+
+            INSERT INTO agent_context_files (id, agent_id, file_name, content, tenant_id, created_at, updated_at)
+            VALUES (gen_random_uuid(), v_cnt_id, 'SOUL.md', v_cnt_soul, v_ea_tenant, NOW(), NOW())
+            ON CONFLICT (agent_id, file_name)
+            DO UPDATE SET content = EXCLUDED.content, updated_at = NOW();
+            RAISE NOTICE 'SOUL.md updated for Content Agent';
         END IF;
     END;
 
