@@ -241,7 +241,7 @@ E'2. **Subject:** "An authentic Vietnamese elderly patient and caring daughter i
 E'3. **Product & Detail:** "On the clean wooden table sits an authentic clinical nutrition bottle labeled \'Nutricomp Drink Renal\', alongside a fresh glass of light vanilla clinical nutrition drink."\n' ||
 E'4. **Lighting & Environment:** "Bathed in soft natural morning sunlight streaming through sheer curtains, gentle atmosphere, clean medical teal and warm cream color grading."\n' ||
 E'5. **Quality & Negatives:** "Photorealistic, 8k resolution, ultra-detailed skin texture, strictly NO 3D render, NO plastic skin, NO CGI, NO distorted text, NO cluttered graphic badges."\n\n' ||
-E'## 3. QUY TRÌNH THỰC THI CHUẨN XUẤT SẮC (AUTONOMOUS EXECUTION - 100% CÓ FILE BÀN GIAO)\n' ||
+E'## 3. QUY TRÌNH THỰC THI SÁNG TẠO CAO CẤP (AUTONOMOUS EXECUTION - 100% HOÀN THÀNH)\n' ||
 E'- **PHÂN ĐỊNH RÕ RÀNG PHÔI SẢN PHẨM (THEO CHỈ ĐẠO CỦA SẾP):**\n' ||
 E'  + Khi Sếp yêu cầu Nutricomp Renal: **BẮT BUỘC DÙNG ĐÚNG ẢNH 1 CHAI RENAL 200ML** (`cut_nutricomp_single_bottle.png`, nắp tím, bệnh nhân suy thận mạn/lọc máu).\n' ||
 E'  + Khi Sếp yêu cầu Nutricomp Plus: **BẮT BUỘC DÙNG ĐÚNG ẢNH 1 CHAI PLUS 200ML** (`cut_nutricomp_plus_bottle.png`, nắp vàng/cam, phục hồi sau mổ/suy kiệt/ung thư).\n' ||
@@ -250,14 +250,16 @@ E'  + Khi Sếp yêu cầu Prontosan: Dùng đúng ảnh chai làm sạch vết 
 E'- **MASTER STYLE CHUẨN QUẢNG CÁO & NGUYÊN TẮC LINH HOẠT SÁNG TẠO:**\n' ||
 E'  + Dựa trên ảnh tham chiếu của Sếp (`style_nutricomp_renal_master.jpg`) làm CHUẨN MỰC UY TÍN (Logo GlobalPharma, cờ Đức, tên sản phẩm, thông số y khoa, nút CTA, cam kết y tế).\n' ||
 E'  + **LINH HOẠT THAY ĐỔI LAYOUT & MÀU SẮC:** Tuyệt đối KHÔNG cố định rập khuôn 1 kiểu duy nhất. Phối màu sắc hài hòa (Renal: xanh ngọc mát dịu; Plus: vàng cam ấm tràn đầy năng lượng).\n' ||
-E'- **QUY TRÌNH XUẤT ẢNH BẰNG TOOL EXEC (KHÔNG ĐỂ BỊ CHẶN BỞI LỖI TÀI KHOẢN TẠO ẢNH):**\n' ||
-E'  Tài khoản ChatGPT trong môi trường Codex không hỗ trợ API sinh ảnh bên thứ ba (báo lỗi gpt-image-1.5). Vì vậy, bạn **BẮT BUỘC DÙNG TOOL EXEC** chạy ngay engine tạo poster chuyên nghiệp:\n' ||
-E'  + Cho Nutricomp Plus: `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type plus --output-dir /app/workspace/output`\n' ||
-E'  + Cho Nutricomp Renal: `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type renal --output-dir /app/workspace/output`\n' ||
-E'  + Cho Nutricomp Combo: `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type combo --output-dir /app/workspace/output`\n' ||
-E'  + Cho Prontosan: `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type prontosan --output-dir /app/workspace/output`\n' ||
-E'  + Hoặc chạy placement lên ảnh bối cảnh:\n' ||
-E'    `python3 /app/data/skills/tao-creative-fb/scripts/compose_placement.py --product [plus|renal|combo|prontosan] --output /app/workspace/output/poster_<product>_placement.png`\n' ||
+E'- **QUY TRÌNH 2 BƯỚC TỰ ĐỘNG THỰC THI:**\n' ||
+E'  1. **Bước 1 (Sinh bối cảnh AI cao cấp từ tài khoản ChatGPT Plus):**\n' ||
+E'     Gọi công cụ `create_image(prompt: "...")` với prompt tiếng Anh 5 tầng (commercial editorial lifestyle photography, warm morning sunlight, natural authentic expressions).\n' ||
+E'  2. **Bước 2 (Ghép quang học sản phẩm thật & Logo chính hãng 100%):**\n' ||
+E'     Gọi công cụ `exec` chạy script placement:\n' ||
+E'     `python3 /app/data/skills/tao-creative-fb/scripts/compose_placement.py --bg "<đường_dẫn_ảnh_sinh>" --product [plus|renal|combo|prontosan] --output /app/workspace/output/poster_<product>_placement.png`\n' ||
+E'  3. **Nguyên tắc không bao giờ dừng task:**\n' ||
+E'     Nếu bước 1 gặp lỗi nhà cung cấp, lập tức chạy ngay script với bối cảnh chuẩn:\n' ||
+E'     `python3 /app/data/skills/tao-creative-fb/scripts/compose_placement.py --product [plus|renal|combo|prontosan] --output /app/workspace/output/poster_<product>_placement.png`\n' ||
+E'     hoặc `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type [plus|renal|combo|prontosan] --output-dir /app/workspace/output`\n' ||
 E'- **TRẢ VỀ KẾT QUẢ CHO SẾP:** Báo cáo ngắn gọn ý nghĩa thiết kế và BẮT BUỘC giữ nguyên dòng `MEDIA:<đường_dẫn_ảnh>` để giao diện hiển thị trực tiếp!';
 
             INSERT INTO agent_context_files (id, agent_id, file_name, content, tenant_id, created_at, updated_at)
@@ -331,7 +333,7 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
         RAISE NOTICE 'Configured background.provider and background.model for tenant %', v_ea_tenant;
     END IF;
 
-    -- Configure create_image builtin tool to route via studioaigg (gemini-2.5-flash-image)
+    -- Configure create_image builtin tool to route via openai-codex (gpt-image-2.5-flare) and studioaigg
     INSERT INTO builtin_tools (name, display_name, description, category, enabled, settings, requires, metadata, created_at, updated_at)
     VALUES (
         'create_image',
@@ -339,7 +341,7 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
         'Generate images from text descriptions using AI',
         'media',
         true,
-        '{"providers":[{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
+        '{"providers":[{"provider":"openai-codex","model":"gpt-image-2.5-flare","enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
         '{}'::text[],
         '{}'::jsonb,
         NOW(),
@@ -347,7 +349,7 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
     )
     ON CONFLICT (name) DO UPDATE SET 
         enabled = true,
-        settings = '{"providers":[{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
+        settings = '{"providers":[{"provider":"openai-codex","model":"gpt-image-2.5-flare","enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
         updated_at = NOW();
     RAISE NOTICE 'Configured builtin_tools settings for create_image';
 
