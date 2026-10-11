@@ -74,16 +74,20 @@ Mục tiêu: Cung cấp kiến thức chăm sóc sức khỏe, nuôi dưỡng t�
 **Quy trình 5 bước:**
 1. **Đọc Brain & Đề xuất ý tưởng:** Đọc file `assets/knowledge_globalpharma_products_campaign.md` để nắm chuẩn y khoa. Đề xuất 3 chủ đề giáo dục sức khỏe/dinh dưỡng (tiêu đề + góc tiếp cận) dựa trên sản phẩm được yêu cầu.
 2. **Người dùng chọn:** Chờ người dùng chọn 1 trong 3 ý tưởng.
-3. **Sinh nội dung (BẮT BUỘC BÁM ĐÚNG Ý TƯỞNG ĐÃ CHỌN + XUẤT CẢ ẢNH VÀ CAPTION CÙNG LÚC):**
-   Khi người dùng chọn ý tưởng (ví dụ: "chọn 2", "làm ý 2", hoặc chỉ định sản phẩm):
-   - **XÁC ĐỊNH ĐÚNG 100% SẢN PHẨM CỦA Ý TƯỞNG ĐÃ CHỌN:**
-     + Ý tưởng 1 về Thận (Nutricomp Renal) ➔ BẮT BUỘC sản phẩm là **Nutricomp® Drink Renal** (`--type renal`). TUYỆT ĐỐI KHÔNG làm nhầm sang sản phẩm khác.
-     + Ý tưởng 2 về Phục hồi sau phẫu thuật / suy kiệt (Nutricomp Plus) ➔ BẮT BUỘC sản phẩm là **Nutricomp® Drink Plus** (`--type plus`). TUYỆT ĐỐI KHÔNG làm nhầm sang Prontosan hay Renal.
-     + Ý tưởng 3 về Vết thương mạn tính / Biofilm (Prontosan) ➔ BẮT BUỘC sản phẩm là **Prontosan** (`--type prontosan`).
+3. **Sinh nội dung (BÁM ĐÚNG VÀO Ý TƯỞNG ĐƯỢC CHỌN + XUẤT CẢ ẢNH VÀ CAPTION CÙNG LÚC):**
+   Khi người dùng phản hồi chọn một ý tưởng (ví dụ: "chọn 1", "chọn 2", "chọn 3", "làm ý số 2", hoặc nói về chủ đề cụ thể):
+   - **XÁC ĐỊNH SẢN PHẨM & CHỦ ĐỀ ĐỘNG THEO ĐÚNG Ý TƯỞNG ĐÃ ĐỀ XUẤT (LINH HOẠT THEO HỘI THOẠI):**
+     + Đọc lại chính xác nội dung của ý tưởng mà bạn vừa đề xuất cho người dùng ở lượt trước. Người dùng chọn ý tưởng nào thì làm đúng sản phẩm, tiêu đề và angle của ý tưởng đó!
+     + **Tự động nhận diện sản phẩm tương ứng:**
+       * Nếu ý tưởng được chọn nói về dinh dưỡng thận, lọc máu, suy thận mạn: Dùng sản phẩm **Nutricomp® Drink Renal** (`--type renal`).
+       * Nếu ý tưởng được chọn nói về phục hồi sau phẫu thuật, suy kiệt, cao năng lượng, bồi bổ: Dùng sản phẩm **Nutricomp® Drink Plus** (`--type plus`).
+       * Nếu ý tưởng được chọn nói về chăm sóc vết thương, vết loét, biofilm, sát khuẩn chuẩn vô trùng: Dùng sản phẩm **Prontosan** (`--type prontosan`).
+       * Nếu ý tưởng được chọn nói về trọn bộ liệu trình / hộp quà / combo 12 chai: Dùng sản phẩm **Combo 12 chai** (`--type combo`).
+     + Tuyệt đối không nhầm lẫn giữa các sản phẩm; người dùng chọn ý tưởng nào thì bám sát 100% nội dung y khoa và sản phẩm của ý tưởng đó.
    - **BẮT BUỘC TẠO CẢ CAPTION LẪN HÌNH ẢNH TRONG CÙNG LƯỢT TRẢ LỜI:**
-     + **Viết Caption (80–150 từ):** Đúng chuẩn y khoa theo sản phẩm đã chọn từ `assets/caption-templates.md`. Gồm [Hook thấu cảm] + [Body giải pháp y học B.Braun] + [Soft CTA tư vấn].
+     + **Viết Caption (80–150 từ):** Đúng chuẩn y khoa theo sản phẩm và góc nhìn của ý tưởng đã chọn từ `assets/caption-templates.md`. Gồm [Hook thấu cảm y khoa] + [Body giải pháp y học B.Braun] + [Soft CTA tư vấn].
      + **XUẤT ẢNH NGAY BẰNG ENGINE CHUYÊN NGHIỆP:**
-       Gọi công cụ `exec` để chạy lệnh render poster chuẩn của sản phẩm đã chọn:
+       Gọi công cụ `exec` để chạy lệnh render poster chuẩn của sản phẩm tương ứng với ý tưởng đã chọn:
        `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type [plus|renal|combo|prontosan] --output-dir /app/workspace/output`
        (hoặc `python3 /app/data/skills/tao-creative-fb/scripts/compose_placement.py --product [plus|renal|combo|prontosan] --output /app/workspace/output/poster_<product>_placement.png`).
      + ⚠️ **NGHIÊM CẤM:** TUYỆT ĐỐI KHÔNG chỉ trả về mỗi bài text caption mà không có ảnh! Output BẮT BUỘC phải chứa ảnh thành phẩm kèm cú pháp `MEDIA:<đường_dẫn_ảnh>` để giao diện hiển thị ảnh ngay lập tức cùng với caption.
