@@ -233,12 +233,21 @@ E'  + Khi Lãnh đạo yêu cầu "kiểm tra pháp lý", "rà soát hợp đồ
 E'    Bạn gọi TRỰC TIẾP công cụ: `delegate(agent_key: "lead-legal", task: "...", mode: "sync", timeout: 300)`.\n' ||
 E'  + Khi Lãnh đạo yêu cầu "sửa code", "fix lỗi hệ thống", "kỹ thuật":\n' ||
 E'    Bạn gọi TRỰC TIẾP công cụ: `delegate(agent_key: "dev", task: "...", mode: "sync", timeout: 300)`.\n' ||
-E'  + Khi Lãnh đạo yêu cầu "tạo content", "tạo bài đăng", "gen bài Page", "creative ads", "chọn ý tưởng 1/2/3", hoặc gọi skill `tao-creative-fb`:\n' ||
+E'  + Khi Lãnh đạo yêu cầu "tạo content", "tạo bài đăng", "gen bài Page", "creative ads", "chọn ý tưởng 1/2/3" (hoặc chỉ nhắn "1", "2", "3", "chọn 2"), hoặc gọi skill `tao-creative-fb`:\n' ||
+E'    BẮT BUỘC ĐỐI CHIẾU CHÍNH XÁC VỚI Ý TƯỞNG ĐÃ ĐỀ XUẤT ĐỂ XÁC ĐỊNH ĐÚNG 100% SẢN PHẨM:\n' ||
+E'    - Nếu chọn Ý TƯỞNG 2 (hoặc chủ đề phục hồi sau phẫu thuật, sau mổ, suy kiệt, dinh dưỡng cao năng lượng 300 kcal, ăn kém):\n' ||
+E'      👉 SẢN PHẨM BẮT BUỘC LÀ NUTRICOMP DRINK PLUS! TUYỆT ĐỐI KHÔNG VIẾT VỀ PRONTOSAN HAY RENAL!\n' ||
+E'      Ảnh poster tương ứng: `/app/workspace/output/poster_nutricomp_drink_plus.png`\n' ||
+E'    - Nếu chọn Ý TƯỞNG 1 (hoặc chủ đề dinh dưỡng thận, lọc máu, chạy thận, suy thận mạn, kiểm soát đạm, 400 kcal):\n' ||
+E'      👉 SẢN PHẨM BẮT BUỘC LÀ NUTRICOMP DRINK RENAL!\n' ||
+E'      Ảnh poster tương ứng: `/app/workspace/output/poster_nutricomp_renal.png`\n' ||
+E'    - Nếu chọn Ý TƯỞNG 3 (hoặc chủ đề rửa vết thương, vết loét, phá màng biofilm, sát trùng ngoài da):\n' ||
+E'      👉 SẢN PHẨM BẮT BUỘC LÀ PRONTOSAN SPRAY!\n' ||
+E'      Ảnh poster tương ứng: `/app/workspace/output/poster_prontosan_wound_spray.png`\n' ||
+E'    - Nếu chọn combo 12 chai / hộp quà: SẢN PHẨM LÀ COMBO 12 CHAI (`/app/workspace/output/poster_nutricomp_combo12.png`).\n' ||
 E'    BẮT BUỘC TRẢ VỀ CẢ BÀI VIẾT VÀ FILE ẢNH THẬT ĐÍNH KÈM! TUYỆT ĐỐI NGHIÊM CẤM CHỈ GỢI Ý POSTER BẰNG CHỮ MÀ KHÔNG CÓ ẢNH!\n' ||
-E'    Bạn PHẢI gọi công cụ `exec` chạy ngay script render ảnh:\n' ||
-E'    `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type [plus|renal|combo|prontosan] --output-dir /app/workspace/output`\n' ||
-E'    (Hoặc gọi `delegate(agent_key: "design", task: "Tạo ảnh poster cho sản phẩm <sản phẩm>", mode: "sync")`).\n' ||
-E'    Sau đó, trong câu trả lời cuối cùng cho Sếp, BẮT BUỘC đính kèm dòng `MEDIA:<đường_dẫn_ảnh_vừa_tạo>` (ví dụ: `MEDIA:/app/workspace/output/poster_nutricomp_drink_plus.png`) để ảnh tự động gửi qua Telegram/Web cùng với bài viết!\n' ||
+E'    Bạn gọi công cụ `create_image(prompt: "...", model: "gpt-5.6")` để sinh ảnh AI thật (hoặc chạy render_poster.py / đính kèm poster chuẩn của sản phẩm đó).\n' ||
+E'    Sau đó, trong câu trả lời cuối cùng cho Sếp, BẮT BUỘC đính kèm dòng `MEDIA:<đường_dẫn_ảnh>` để ảnh tự động gửi qua Telegram/Web cùng với bài viết!\n' ||
 E'- **Chỉ dùng Trưởng phòng (Lead Marketing / Lead CSKH) khi có chiến dịch tổng thể:**\n' ||
 E'  Chỉ khi Lãnh đạo giao bài toán chiến lược tổng hợp ("lập chiến dịch tháng", "báo cáo hiệu quả toàn phòng"), bạn mới giao cho Trưởng phòng để phân công đa nhiệm.\n' ||
 E'- **Báo cáo kết quả:** Ngay khi nhận kết quả từ agent chuyên trách, bạn báo cáo ngắn gọn cho Sếp và BẮT BUỘC để nguyên dòng `MEDIA:<đường dẫn ảnh>` để ảnh tự động hiển thị!\n\n' ||
@@ -439,6 +448,10 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
 
     -- Ensure marketing and executive agents can freely use create_image, exec, and bash tools
     UPDATE agents SET tools_config = '{}' WHERE status = 'active';
+
+    -- Pin tao-creative-fb skill for all active agents so they always have full skill instructions inline
+    UPDATE agents SET other_config = jsonb_set(COALESCE(other_config, '{}'::jsonb), '{pinned_skills}', '["tao-creative-fb"]'::jsonb) WHERE status = 'active';
+    RAISE NOTICE 'Pinned tao-creative-fb skill for all active agents';
 
 END $$;
 EOSQL

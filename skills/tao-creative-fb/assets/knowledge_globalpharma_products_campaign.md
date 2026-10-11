@@ -145,7 +145,8 @@ Nếu cần phân biệt chính xác SKU như dung dịch, gel, Gel X hoặc Xpr
 - Nhóm: chăm sóc vết thương.
 - Thành phần được nêu trong tài liệu: Betaine 0,1%, Polyhexanide/PHMB 0,1%, nước tinh khiết.
 - Công dụng mô tả trong tài liệu: làm sạch, rửa, làm ẩm và hỗ trợ khử trùng cho vết thương cấp tính, mạn tính, viêm nhiễm da và bỏng độ 1-2 theo hướng dẫn sử dụng.
-- Tình trạng/vết thương được nhắc đến: loét tỳ đè, loét bàn chân đái tháo đường, loét tĩnh mạch, vết thương nhiễm trùng, bỏng độ 1-2, vết thương sau xạ trị, lỗ rò, dẫn lưu, vết thương sau phẫu thuật.
+- Tình trạng/vết thương được nhắc đến: loét tỳ đè, loét bàn chân đái tháo đường, loét tĩnh mạch, vết thương nhiễm trùng, bỏng độ 1-2, vết thương sau xạ trị, lỗ rò, dẫn lưu, rửa vết mổ/vết khâu hở ngoài da.
+- ⚠️ PHÂN BIỆT RÕ RÀNG VỚI NUTRICOMP DRINK PLUS: Prontosan CHỈ DÙNG NGOÀI DA để rửa vết thương. Mọi nội dung liên quan đến "phục hồi thể trạng sau phẫu thuật", "bổ sung năng lượng sau mổ", "300 kcal", "dinh dưỡng người bệnh ăn kém" 100% THUỘC VỀ NUTRICOMP DRINK PLUS, TUYỆT ĐỐI KHÔNG DÙNG CHO PRONTOSAN!
 - Công nghệ/chuẩn trong tài liệu: bottelpack® Aseptic, ISO 13485.
 
 ### Cảnh báo quan trọng phải lưu và tuân thủ

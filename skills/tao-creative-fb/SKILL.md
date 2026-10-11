@@ -93,26 +93,34 @@ Skill cấp 3 chuyên trách sản xuất toàn diện nội dung Facebook (Hìn
 Mục tiêu: Cung cấp kiến thức chăm sóc sức khỏe, nuôi dưỡng tệp người theo dõi trang fanpage GlobalPharma.
 
 **Quy trình 5 bước:**
-1. **Đọc Brain & Đề xuất ý tưởng:** Đọc file `assets/knowledge_globalpharma_products_campaign.md` để nắm chuẩn y khoa. Đề xuất 3 chủ đề giáo dục sức khỏe/dinh dưỡng (tiêu đề + góc tiếp cận) dựa trên sản phẩm được yêu cầu.
-2. **Người dùng chọn:** Chờ người dùng chọn 1 trong 3 ý tưởng.
+1. **Đọc Brain & Đề xuất ý tưởng:** Đọc file `assets/knowledge_globalpharma_products_campaign.md` để nắm chuẩn y khoa. Đề xuất 3 chủ đề giáo dục sức khỏe/dinh dưỡng (tiêu đề + góc tiếp cận) dựa trên sản phẩm được yêu cầu. **BẮT BUỘC ghi rõ mã sản phẩm trong ngoặc vuông đầu mỗi ý tưởng** để cả bạn và người dùng không bao giờ nhầm lẫn, ví dụ:
+   - 1. [Nutricomp Drink Renal] “Khi người bệnh thận ăn rất ít, điều đáng lo không chỉ là sụt cân” (Angle: ...)
+   - 2. [Nutricomp Drink Plus] “Sau phẫu thuật: cơ thể cần năng lượng để hồi phục, không chỉ cần nghỉ ngơi” (Angle: ...)
+   - 3. [Prontosan Spray] “Vết thương nhỏ nhưng chăm sai cách có thể kéo dài thời gian hồi phục” (Angle: ...)
+2. **Người dùng chọn:** Chờ người dùng chọn 1 trong 3 ý tưởng (ví dụ: "chọn 1", "chọn 2", "chọn 3", "2", "làm ý 2").
 3. **Sinh nội dung (BÁM ĐÚNG VÀO Ý TƯỞNG ĐƯỢC CHỌN + XUẤT CẢ ẢNH VÀ CAPTION CÙNG LÚC):**
-   Khi người dùng phản hồi chọn một ý tưởng (ví dụ: "chọn 1", "chọn 2", "chọn 3", "làm ý số 2", hoặc nói về chủ đề cụ thể):
-   - **XÁC ĐỊNH SẢN PHẨM & CHỦ ĐỀ ĐỘNG THEO ĐÚNG Ý TƯỞNG ĐÃ ĐỀ XUẤT (LINH HOẠT THEO HỘI THOẠI):**
-     + Đọc lại chính xác nội dung của ý tưởng mà bạn vừa đề xuất cho người dùng ở lượt trước. Người dùng chọn ý tưởng nào thì làm đúng sản phẩm, tiêu đề và angle của ý tưởng đó!
-     + **Tự động nhận diện sản phẩm tương ứng:**
-       * Nếu ý tưởng được chọn nói về dinh dưỡng thận, lọc máu, suy thận mạn: Dùng sản phẩm **Nutricomp® Drink Renal** (`--type renal`).
-       * Nếu ý tưởng được chọn nói về phục hồi sau phẫu thuật, suy kiệt, cao năng lượng, bồi bổ: Dùng sản phẩm **Nutricomp® Drink Plus** (`--type plus`).
-       * Nếu ý tưởng được chọn nói về chăm sóc vết thương, vết loét, biofilm, sát khuẩn chuẩn vô trùng: Dùng sản phẩm **Prontosan** (`--type prontosan`).
-       * Nếu ý tưởng được chọn nói về trọn bộ liệu trình / hộp quà / combo 12 chai: Dùng sản phẩm **Combo 12 chai** (`--type combo`).
-     + Tuyệt đối không nhầm lẫn giữa các sản phẩm; người dùng chọn ý tưởng nào thì bám sát 100% nội dung y khoa và sản phẩm của ý tưởng đó.
+   Khi người dùng phản hồi chọn một ý tưởng:
+   - **ĐỐI CHIẾU CHÍNH XÁC VỚI Ý TƯỞNG ĐÃ ĐỀ XUẤT (TUYỆT ĐỐI KHÔNG NHẦM LẪN SẢN PHẨM):**
+     + **NẾU CHỌN Ý TƯỞNG 2 (hoặc ý tưởng về phục hồi sau phẫu thuật, sau mổ, suy kiệt, bồi bổ năng lượng, 300 kcal, ăn kém):**
+       👉 **SẢN PHẨM BẮT BUỘC LÀ NUTRICOMP DRINK PLUS (`--type plus` / `--product plus`)!**
+       🚫 **TUYỆT ĐỐI KHÔNG ĐƯỢC VIẾT VỀ PRONTOSAN HAY RENAL!** Phục hồi sau phẫu thuật ở đây là dinh dưỡng cao năng lượng uống để bù đắp calo (Nutricomp Plus 300 kcal, 1.5 kcal/ml), hoàn toàn KHÔNG PHẢI là xịt rửa vết thương Prontosan.
+     + **NẾU CHỌN Ý TƯỞNG 1 (hoặc ý tưởng về dinh dưỡng thận, lọc máu, chạy thận, suy thận mạn, kiểm soát đạm, 400 kcal):**
+       👉 **SẢN PHẨM BẮT BUỘC LÀ NUTRICOMP DRINK RENAL (`--type renal` / `--product renal`)!**
+     + **NẾU CHỌN Ý TƯỞNG 3 (hoặc ý tưởng về chăm sóc vết thương, vết loét, biofilm, rửa sát trùng ngoài da):**
+       👉 **SẢN PHẨM BẮT BUỘC LÀ PRONTOSAN SPRAY (`--type prontosan` / `--product prontosan`)!**
+     + **NẾU CHỌN HỘP QUÀ / COMBO 12 CHAI:**
+       👉 **SẢN PHẨM BẮT BUỘC LÀ COMBO 12 CHAI (`--type combo`).**
    - **BẮT BUỘC TẠO CẢ CAPTION LẪN HÌNH ẢNH TRONG CÙNG LƯỢT TRẢ LỜI:**
      + **Viết Caption (80–150 từ):** Đúng chuẩn y khoa theo sản phẩm và góc nhìn của ý tưởng đã chọn từ `assets/caption-templates.md`. Gồm [Hook thấu cảm y khoa] + [Body giải pháp y học B.Braun] + [Soft CTA tư vấn].
-     + **XUẤT ẢNH NGAY BẰNG ENGINE CHUYÊN NGHIỆP:**
-       Gọi công cụ `exec` để chạy lệnh render poster chuẩn của sản phẩm tương ứng với ý tưởng đã chọn:
-       `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type [plus|renal|combo|prontosan] --output-dir /app/workspace/output`
-       (hoặc `python3 /app/data/skills/tao-creative-fb/scripts/compose_placement.py --product [plus|renal|combo|prontosan] --output /app/workspace/output/poster_<product>_placement.png`).
-     + ⚠️ **NGHIÊM CẤM:** TUYỆT ĐỐI KHÔNG chỉ trả về mỗi bài text caption mà không có ảnh! Output BẮT BUỘC phải chứa ảnh thành phẩm kèm cú pháp `MEDIA:<đường_dẫn_ảnh>` để giao diện hiển thị ảnh ngay lập tức cùng với caption.
-      + 🚫 **TUYỆT ĐỐI KHÔNG VIẾT CHỮ "Gợi ý poster: • Headline ... • Visual ...":** Bạn KHÔNG phải là người gợi ý ý tưởng ảnh trên giấy. BẠN PHẢI XUẤT RA FILE ẢNH THẬT ĐÍNH KÈM! Khi người dùng duyệt, họ duyệt ảnh thật hiển thị trên màn hình cùng với caption. Nếu viết mô tả poster bằng text thay vì gửi ảnh thật là vi phạm quy định!
+     + **TẠO VÀ XUẤT ẢNH THẬT ĐÍNH KÈM (KHÔNG ĐƯỢC CHỈ VIẾT GỢI Ý CHỮ):**
+       * **Cách 1 (Sinh ảnh AI bằng create_image model gpt-5.6):** Gọi công cụ `create_image(prompt: "...", model: "gpt-5.6")` với prompt nhiếp ảnh đời thực mô tả chi tiết người bệnh/gia đình Việt Nam ấm áp và sản phẩm tương ứng. GoClaw sẽ tự động ghép chai sản phẩm chính hãng và logo GlobalPharma lên ảnh sinh được.
+       * **Cách 2 (Render poster chuẩn từ script hoặc lấy poster tham chiếu đã duyệt):** Chạy `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type [plus|renal|combo|prontosan] --output-dir /app/workspace/output` hoặc dùng trực tiếp file poster chuẩn:
+         - Plus: `/app/workspace/output/poster_nutricomp_drink_plus.png`
+         - Renal: `/app/workspace/output/poster_nutricomp_renal.png`
+         - Prontosan: `/app/workspace/output/poster_prontosan_wound_spray.png`
+         - Combo: `/app/workspace/output/poster_nutricomp_combo12.png`
+     + ⚠️ **NGHIÊM CẤM:** TUYỆT ĐỐI KHÔNG chỉ trả về mỗi bài text caption mà không có ảnh! Output BẮT BUỘC phải chứa ảnh thành phẩm kèm cú pháp `MEDIA:<đường_dẫn_ảnh>` ở cuối tin nhắn để giao diện hiển thị ảnh ngay lập tức cùng với caption.
+     + 🚫 **TUYỆT ĐỐI KHÔNG VIẾT CHỮ "Gợi ý poster: • Headline ... • Visual ...":** Bạn KHÔNG phải là người gợi ý ý tưởng ảnh trên giấy. BẠN PHẢI XUẤT RA FILE ẢNH THẬT ĐÍNH KÈM! Khi người dùng duyệt, họ duyệt ảnh thật hiển thị trên màn hình cùng với caption. Nếu viết mô tả poster bằng text thay vì gửi ảnh thật là vi phạm quy định!
 4. **Xem trước (Preview):** Hiển thị đầy đủ cả bài viết Caption và bức ảnh vừa sinh (kèm cú pháp `MEDIA:<đường dẫn ảnh>`) để người dùng xem trước trọn vẹn cả bài lẫn ảnh.
 5. **Đăng bài THÔNG MINH theo dòng sản phẩm (Product-Aware Broadcasting):**
    - Danh sách Fanpage được phân loại theo `product_group` (`nutricomp`, `prontosan`, hoặc `all`) trong `skills/tao-creative-fb/pages.json`.
