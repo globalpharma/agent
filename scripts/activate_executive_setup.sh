@@ -529,9 +529,34 @@ pkill -9 -f "hermes" 2>/dev/null || true
 pkill -9 -f "openclaw" 2>/dev/null || true
 sleep 2
 
-echo "=== CLEANING UP OLD UNWANTED POSTERS AND REVIEWS ==="
-rm -rf skills/tao-creative-fb/output/poster_*.png skills/tao-creative-fb/output/KE_HOACH_NOI_DUNG_TUAN.md 2>/dev/null || true
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw rm -rf /app/workspace/output/poster_*.png /app/workspace/output/KE_HOACH_NOI_DUNG_TUAN.md /app/data/skills/tao-creative-fb/output/poster_*.png 2>/dev/null || true
+echo "=== ENSURING OFFICIAL GLOBALPHARMA POSTERS EXIST AND ARE SYNCED ==="
+rm -f skills/tao-creative-fb/output/KE_HOACH_NOI_DUNG_TUAN.md 2>/dev/null || true
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw rm -f /app/workspace/output/KE_HOACH_NOI_DUNG_TUAN.md 2>/dev/null || true
+
+# Copy pre-rendered official posters to container
+if [ -d "skills/tao-creative-fb/output" ]; then
+    echo "Syncing official posters to container ($GOCLAW_CID)..."
+    docker cp skills/tao-creative-fb/output/. ${GOCLAW_CID}:/app/workspace/output/ || true
+    docker cp skills/tao-creative-fb/output/. ${GOCLAW_CID}:/app/data/skills/tao-creative-fb/output/ || true
+fi
+
+# Pre-render any missing posters in container
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 1000 goclaw sh -c '
+    mkdir -p /app/workspace/output /app/data/skills/tao-creative-fb/output
+    if [ ! -f /app/workspace/output/poster_nutricomp_drink_plus.png ]; then
+        python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type plus --output-dir /app/workspace/output || true
+    fi
+    if [ ! -f /app/workspace/output/poster_nutricomp_renal.png ]; then
+        python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type renal --output-dir /app/workspace/output || true
+    fi
+    if [ ! -f /app/workspace/output/poster_prontosan_wound_spray.png ]; then
+        python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type prontosan --output-dir /app/workspace/output || true
+    fi
+    if [ ! -f /app/workspace/output/poster_nutricomp_combo12.png ]; then
+        python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type combo --output-dir /app/workspace/output || true
+    fi
+    cp -r /app/workspace/output/* /app/data/skills/tao-creative-fb/output/ 2>/dev/null || true
+' || true
 
 echo "=== HOST & DOCKER DIAGNOSTICS ==="
 echo "All docker containers:"

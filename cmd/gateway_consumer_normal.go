@@ -638,6 +638,8 @@ func processNormalMessage(
 		}
 
 		appendMediaToOutbound(&outMsg, outcome.Result.Media)
+		autoAttachCreativeMedia(&outMsg)
+		replyContent = outMsg.Content
 
 		parts := []string{replyContent}
 		if !streaming && len(outMsg.Media) == 0 {
