@@ -37,6 +37,41 @@ Skill cấp 3 chuyên trách sản xuất toàn diện nội dung Facebook (Hìn
 
 ---
 
+## 1.1 Quy Định Bắt Buộc Về Hình Ảnh Sản Phẩm & Phong Cách Thiết Kế (Chỉ Đạo Của Sếp)
+
+### 📌 1. Quy tắc chọn phôi sản phẩm (1 Chai vs Combo 12 Chai)
+- **MẶC ĐỊNH DÙNG ẢNH 1 CHAI SỮA 200ML:**  
+  Khi Sếp yêu cầu *"sản phẩm Nutricomp Renal"*, *"Nutricomp Plus"*, hoặc *"làm ảnh Nutricomp"*: **BẮT BUỘC DÙNG ẢNH 1 CHAI SỮA LẺ 200ML** (`cut_nutricomp_single_bottle.png`).
+- **CHỈ DÙNG ẢNH HỘP COMBO KHI CÓ YÊU CẦU CỤ THỂ:**  
+  CHỈ KHI NÀO Sếp nói rõ từ **"combo"**, **"hộp quà"**, **"thùng 12 chai"**: Mới được sử dụng ảnh hộp Combo 12 chai (`cut_nutricomp_box.png`). Tuyệt đối không tự ý dùng ảnh hộp combo khi Sếp chỉ yêu cầu sản phẩm chai.
+
+### 🎨 2. Master Style Chuẩn Thiết Kế Poster (Master Reference: `style_nutricomp_renal_master.jpg`)
+Mọi poster quảng cáo y khoa thương mại của GlobalPharma BẮT BUỘC thiết kế theo cấu trúc Master Style chuẩn đã được Sếp duyệt:
+1. **Header (Đầu trang):**  
+   - Góc trái: Logo GlobalPharma chính thức nét căng (`real_logo_globalpharma_master.png`).  
+   - Kế bên: Huy hiệu tròn Quốc kỳ Đức kèm chữ "NHẬP KHẨU CHÍNH HÃNG TỪ ĐỨC".
+2. **Tiêu đề & Định vị y khoa (Headline):**  
+   - Tên dòng sản phẩm: **NUTRICOMP RENAL** (Font Sans-serif in hoa, màu xanh y tế B.Braun).  
+   - Subtitle: **DINH DƯỠNG CHUYÊN BIỆT** (kèm đường line thanh lịch hai bên).  
+   - Pill Badge bo góc nền xanh ngọc đậm: **DÀNH CHO NGƯỜI BỆNH THẬN**.
+3. **Bối cảnh đời thực giàu cảm xúc (Upper-Right):**  
+   - Bức ảnh chụp thật ấm áp: Người lớn tuổi khỏe mạnh, vui vẻ bên người thân chăm sóc hiếu thảo, ánh sáng ban mai dịu nhẹ trong không gian gia đình hiện đại.
+4. **Hero Product (Sản phẩm chủ đạo - Lower-Right):**  
+   - Đặt nổi bật **1 chai sữa Nutricomp® Drink Renal 200ml** thật, nắp tím, nhãn mác B.Braun sắc nét, kèm splash sữa vani thanh nhẹ và hoa vani vàng tươi.
+5. **Cột thông số y khoa lâm sàng (Left Column):**  
+   - **4 Huy hiệu tròn:**  
+     1. 🫘 *KIỂM SOÁT ĐIỆN GIẢI* (Kali, Phospho, Natri thấp)  
+     2. 💪 *14g PROTEIN CHẤT LƯỢNG CAO* (Whey & Casein)  
+     3. ⚡ *400 kcal NĂNG LƯỢNG CAO* (200ml/chai)  
+     4. 🛡️ *HỖ TRỢ PHỤC HỒI* (Nâng cao sức khỏe, chất lượng cuộc sống)  
+   - **Card giá trị nổi bật:** Khung bo tròn viền xanh: *"CUNG CẤP ĐẦY ĐỦ DINH DƯỠNG TRONG THỂ TÍCH NHỎ - Phù hợp người cần hạn chế lượng nước nạp vào cơ thể"*.  
+   - **Nút CTA nổi bật:** Nút bo tròn màu xanh ngọc có icon điện thoại: *"ĐỂ LẠI SỐ ĐIỆN THOẠI ĐỂ ĐƯỢC TƯ VẤN >"*.
+6. **Footer (Chân trang):**  
+   - 3 Huy hiệu cam kết: *Sản phẩm chuẩn y học* | *Dinh dưỡng chuyên biệt* | *Chất lượng chuẩn Đức*.  
+   - Dòng khuyến cáo y tế FSMP theo quy định pháp lý.
+
+---
+
 ## 2. Hai Chế Độ Vận Hành
 
 ### 🌿 Chế độ 1: Content Free / Organic (Bài đăng thường nhật)

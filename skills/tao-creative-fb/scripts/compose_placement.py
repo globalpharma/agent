@@ -26,11 +26,23 @@ def create_placement(
         prod_w = int(canvas_w * 0.28)
         pos_x = int(canvas_w * 0.55)
         pos_y = int(canvas_h * 0.42)
-    else:  # nutricomp default (box/bottles)
+    elif product_type in ("nutricomp_combo", "combo"):
         prod_file = os.path.join(ref_dir, "cut_nutricomp_box.png")
         prod_w = int(canvas_w * 0.45)
         pos_x = int(canvas_w * 0.45)
         pos_y = int(canvas_h * 0.49)
+    else:  # default: single bottle 200ml
+        single_bottle = os.path.join(ref_dir, "cut_nutricomp_single_bottle.png")
+        if os.path.exists(single_bottle):
+            prod_file = single_bottle
+            prod_w = int(canvas_w * 0.38)
+            pos_x = int(canvas_w * 0.55)
+            pos_y = int(canvas_h * 0.38)
+        else:
+            prod_file = os.path.join(ref_dir, "cut_nutricomp_box.png")
+            prod_w = int(canvas_w * 0.45)
+            pos_x = int(canvas_w * 0.45)
+            pos_y = int(canvas_h * 0.49)
 
     if not os.path.exists(prod_file):
         raise FileNotFoundError(f"Product reference not found: {prod_file}")
