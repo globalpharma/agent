@@ -46,6 +46,7 @@ Dinh dưỡng đúng phác đồ là nền tảng giúp người bệnh duy trì
 > • Cung cấp 400 kcal đậm đặc chỉ trong 200ml, không gây quá tải dịch.  
 > • Kiểm soát tối ưu Kali, Phốt pho, Natri và hàm lượng đạm phù hợp giai đoạn bệnh.  
 > • Dạng chai mở nắp uống liền, thơm ngậy hương vani dễ uống.  
+> • Giá niêm yết combo 12 chai: 1.296.000 VNĐ (chỉ 108.000 VNĐ/chai).  
 > **CTA:** 👉 Bấm **Gửi tin nhắn** ngay để nhận tư vấn chế độ dinh dưỡng tối ưu từ Chuyên gia GlobalPharma!
 
 #### Angle 2: Solution (Giải pháp dinh dưỡng y học chuẩn B.Braun CHLB Đức)
@@ -53,6 +54,7 @@ Dinh dưỡng đúng phác đồ là nền tảng giúp người bệnh duy trì
 > **USP:** Nutricomp® Drink Renal Vanilla là nguồn dinh dưỡng y học công thức lâm sàng từ Tập đoàn B.Braun (Đức) với hơn 180 năm uy tín:  
 > • Tối ưu hóa đạm sinh học cao, hạn chế tích tụ ure huyết.  
 > • Bổ sung đầy đủ vitamin, khoáng chất thiết yếu theo khuyến nghị ESPEN.  
+> • Tiết kiệm với liệu trình combo 12 chai: 1.296.000 VNĐ (108.000 VNĐ/chai).  
 > • 1 chai 200ml = giải pháp dinh dưỡng trọn vẹn, không mất công chế biến cầu kỳ.  
 > **CTA:** 👉 Nhắn tin cho GlobalPharma hôm nay để được hướng dẫn bổ sung đúng phác đồ y khoa!
 

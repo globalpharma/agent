@@ -1,6 +1,6 @@
 ---
 name: tao-creative-fb
-description: Tạo nội dung toàn diện (hình ảnh chuẩn y khoa + caption/ad copy) cho Facebook Fanpage và Facebook Ads của GlobalPharma. Hỗ trợ 2 chế độ: Chế độ 1 (Content Organic đăng tự động qua Graph API với DRY_RUN) và Chế độ 2 (Creative Ads 3 cặp Pain Point, Solution, Social Proof chuẩn bị cho Trình quản lý quảng cáo).
+description: Sản xuất full content đồng thời gồm CẢ ẢNH VÀ VĂN BẢN (ảnh 1024x1024 + caption/ad copy) cho Facebook của GlobalPharma. Dùng khi: (1) Mode 1 - Content Free (tạo content cho ngày mai, gen bài Page, content free, content organic) đề xuất 3 ý tưởng, gen ảnh + caption theo brand voice và auto-post qua Graph API (/photos); (2) Mode 2 - Creative Ads (tạo creative ads, gen ads, cần creative cho chiến dịch) gen 3 bộ creative ghép cặp ảnh ads + ad copy theo 3 angle pain point, solution, social proof. QUAN TRỌNG: Mỗi output BẮT BUỘC gồm cả ảnh và bài viết hoàn chỉnh đi cùng nhau.
 license: MIT
 metadata:
   author: GlobalPharma AI Team
@@ -30,7 +30,7 @@ Skill cấp 3 chuyên trách sản xuất toàn diện nội dung Facebook (Hìn
   - KHÔNG cam kết "chữa khỏi suy thận", "thuốc điều trị thận", hay "làm lành vết thương tức thì".
   - Định vị sản phẩm là: **Dinh dưỡng y học lâm sàng** bổ sung chuyên biệt theo từng bệnh lý, giúp bảo tồn chức năng thận, phục hồi thể trạng, hoặc dung dịch rửa vết thương chuẩn vô trùng.
 - **Giá bán & Liều dùng chuẩn y khoa (từ Brain):**
-  - Nutricomp® Drink Renal: Giá chính thức combo 12 chai: **1.224.000 VNĐ** (tương đương 102.000 VNĐ/chai). Liều dùng khuyến nghị: 1-3 chai/ngày theo chỉ định chuyên môn. Năng lượng: 2.0 kcal/ml (400 kcal/chai 200ml).
+  - Nutricomp® Drink Renal: Giá chính thức combo 12 chai: **1.296.000 VNĐ** (tương đương **108.000 VNĐ/chai**, giá lẻ 1 chai: 108.000 VNĐ). Liều dùng khuyến nghị: 1-3 chai/ngày theo chỉ định chuyên môn. Năng lượng: 2.0 kcal/ml (400 kcal/chai 200ml).
   - Nutricomp® Drink Plus: Năng lượng: 1.5 kcal/ml (300 kcal/chai 200ml). Phục hồi thể trạng sau phẫu thuật, suy kiệt.
   - Prontosan: Phá màng Biofilm, ngăn nhiễm trùng vết thương hở, vết loét tì đè, loét tiểu đường.
 - **Tone & Mood:** Đĩnh đạc, thấu hiểu, khoa học, tin cậy, ấm áp và hướng đến sức khỏe bền vững của người bệnh.

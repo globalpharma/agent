@@ -406,9 +406,9 @@ def render_pro_nutricomp_combo():
 
     # HOOK & VALUE PROPOSITION
     draw_text_with_shadow(draw, (50, 130), "COMBO 12 CHAI TIỆT TRÙNG NGUYÊN SEAL", "#38BDF8", get_font(18, bold=True), shadow_color=(0, 0, 0, 200))
-    draw_text_with_shadow(draw, (50, 160), "1.224.000 VNĐ / HỘP", "#FFFFFF", get_font(52, bold=True), shadow_color=(0, 0, 0, 240))
+    draw_text_with_shadow(draw, (50, 160), "1.296.000 VNĐ / HỘP", "#FFFFFF", get_font(52, bold=True), shadow_color=(0, 0, 0, 240))
     draw_text_with_shadow(draw, (50, 230), "GIẢI PHÁP DINH DƯỠNG TIẾT KIỆM CHO LIỆU TRÌNH", "#F1F5F9", get_font(30, bold=True), shadow_color=(0, 0, 0, 220))
-    draw_text_with_shadow(draw, (50, 280), "Giá chỉ 102.000 VNĐ/chai • Liều dùng khuyến nghị 1-3 chai/ngày", "#94A3B8", get_font(17, bold=False), shadow_color=(0, 0, 0, 200))
+    draw_text_with_shadow(draw, (50, 280), "Giá chỉ 108.000 VNĐ/chai • Liều dùng khuyến nghị 1-3 chai/ngày", "#94A3B8", get_font(17, bold=False), shadow_color=(0, 0, 0, 200))
 
     # 2 Feature Pills at bottom
     pill1_x = 50
