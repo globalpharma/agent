@@ -26,9 +26,11 @@ jobs:
             git fetch origin main || (sleep 2 && git fetch origin main)
             git reset --hard origin/main
             git clean -fd || true
-            echo "Updating and starting containers..."
-            docker compose -f docker-compose.yml -f docker-compose.postgres.yml pull
-            docker compose -f docker-compose.yml -f docker-compose.postgres.yml up -d
+            echo "Inspecting last 100 lines of goclaw logs before update..."
+            docker compose -f docker-compose.yml -f docker-compose.postgres.yml logs --tail 100 goclaw || true
+            echo "Updating and building goclaw container from source..."
+            docker compose -f docker-compose.yml -f docker-compose.postgres.yml build goclaw
+            docker compose -f docker-compose.yml -f docker-compose.postgres.yml up -d --force-recreate goclaw
             echo "Applying executive agent configuration to PostgreSQL..."
             chmod +x scripts/activate_executive_setup.sh || true
             bash scripts/activate_executive_setup.sh || echo "Warning executing setup script, continuing..."
