@@ -333,7 +333,7 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
         RAISE NOTICE 'Configured background.provider and background.model for tenant %', v_ea_tenant;
     END IF;
 
-    -- Configure create_image builtin tool to route via openai-codex (gpt-image-2.5-flare) and studioaigg
+    -- Configure create_image builtin tool to route via openai-codex (gpt-5.5 + gpt-image-2.5-flare) and studioaigg
     INSERT INTO builtin_tools (name, display_name, description, category, enabled, settings, requires, metadata, created_at, updated_at)
     VALUES (
         'create_image',
@@ -341,7 +341,7 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
         'Generate images from text descriptions using AI',
         'media',
         true,
-        '{"providers":[{"provider":"openai-codex","model":"gpt-image-2.5-flare","enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
+        '{"providers":[{"provider":"openai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
         '{}'::text[],
         '{}'::jsonb,
         NOW(),
@@ -349,7 +349,7 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
     )
     ON CONFLICT (name) DO UPDATE SET 
         enabled = true,
-        settings = '{"providers":[{"provider":"openai-codex","model":"gpt-image-2.5-flare","enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
+        settings = '{"providers":[{"provider":"openai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
         updated_at = NOW();
     RAISE NOTICE 'Configured builtin_tools settings for create_image';
 

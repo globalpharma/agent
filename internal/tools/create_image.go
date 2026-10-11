@@ -42,7 +42,7 @@ var imageGenProviderPriority = []string{"studioaigg", "gemini", "openai-codex", 
 var imageGenModelDefaults = map[string]string{
 	"studioaigg":   "gemini-2.5-flash-image",
 	"gemini":       "gemini-2.5-flash-image",
-	"openai-codex": "gpt-image-2.5-flare",
+	"openai-codex": "gpt-5.5",
 	"openai":       "gpt-image-2.5-flare",
 	"openrouter":   "google/gemini-2.5-flash-image",
 	"minimax":      "image-01",

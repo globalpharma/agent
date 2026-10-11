@@ -119,6 +119,17 @@ func parseChainSettings(raw []byte, defaultModels map[string]string) []MediaProv
 		if e.Model == "" {
 			e.Model = defaultModels[e.Provider]
 		}
+		// If an operator configured openai-codex with an image model as entry.Model,
+		// normalize it so the outer Responses API model is gpt-5.5 and the image model is in params["image_model"].
+		if e.Provider == "openai-codex" && strings.HasPrefix(e.Model, "gpt-image") {
+			if e.Params == nil {
+				e.Params = make(map[string]any)
+			}
+			if _, ok := e.Params["image_model"]; !ok {
+				e.Params["image_model"] = e.Model
+			}
+			e.Model = "gpt-5.5"
+		}
 		e.applyDefaults()
 		result = append(result, e)
 	}
