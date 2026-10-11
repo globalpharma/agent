@@ -98,6 +98,36 @@ func makeCronJobHandler(sched *scheduler.Scheduler, msgBus *bus.MessageBus, cfg 
 		}
 
 		// Build cron context so the agent knows delivery target and requester.
+		// If delivery is not explicitly set, auto-fallback for marketing/content/posting jobs
+		// or when TELEGRAM_DEFAULT_CHAT_ID / default operator chat is available.
+		if !job.Deliver || job.DeliverChannel == "" || job.DeliverTo == "" {
+			defaultChat := os.Getenv("TELEGRAM_DEFAULT_CHAT_ID")
+			if defaultChat == "" {
+				defaultChat = os.Getenv("TELEGRAM_ADMIN_CHAT_ID")
+			}
+			if defaultChat == "" {
+				defaultChat = "5781808621" // GlobalPharma default operator chat ID
+			}
+			nameLower := strings.ToLower(job.Name)
+			isMarketingJob := strings.Contains(nameLower, "đăng") ||
+				strings.Contains(nameLower, "bài") ||
+				strings.Contains(nameLower, "post") ||
+				strings.Contains(nameLower, "content") ||
+				strings.Contains(nameLower, "creative") ||
+				strings.Contains(nameLower, "marketing") ||
+				job.Deliver
+
+			if isMarketingJob && defaultChat != "" {
+				job.Deliver = true
+				if job.DeliverChannel == "" {
+					job.DeliverChannel = "telegram"
+				}
+				if job.DeliverTo == "" {
+					job.DeliverTo = defaultChat
+				}
+			}
+		}
+
 		var extraPrompt string
 		if job.Deliver && job.DeliverChannel != "" && job.DeliverTo != "" {
 			extraPrompt = fmt.Sprintf(
@@ -222,32 +252,65 @@ func makeCronJobHandler(sched *scheduler.Scheduler, msgBus *bus.MessageBus, cfg 
 // channel, honoring the NO_REPLY sentinel. Shared by the agent-turn and the
 // deterministic command-payload paths.
 func deliverCronOutput(msgBus *bus.MessageBus, job *store.CronJob, content string, media []agent.MediaResult, peerKind string) {
-	if job.Deliver && job.DeliverChannel != "" && job.DeliverTo != "" {
+	deliver := job.Deliver
+	channel := job.DeliverChannel
+	to := job.DeliverTo
+
+	if !deliver || channel == "" || to == "" {
+		defaultChat := os.Getenv("TELEGRAM_DEFAULT_CHAT_ID")
+		if defaultChat == "" {
+			defaultChat = os.Getenv("TELEGRAM_ADMIN_CHAT_ID")
+		}
+		if defaultChat == "" {
+			defaultChat = "5781808621" // GlobalPharma default operator chat ID
+		}
+		nameLower := strings.ToLower(job.Name)
+		isMarketingJob := strings.Contains(nameLower, "đăng") ||
+			strings.Contains(nameLower, "bài") ||
+			strings.Contains(nameLower, "post") ||
+			strings.Contains(nameLower, "content") ||
+			strings.Contains(nameLower, "creative") ||
+			strings.Contains(nameLower, "marketing") ||
+			deliver
+
+		if isMarketingJob && defaultChat != "" {
+			deliver = true
+			if channel == "" {
+				channel = "telegram"
+			}
+			if to == "" {
+				to = defaultChat
+			}
+		}
+	}
+
+	if deliver && channel != "" && to != "" {
 		if cronOutputContainsNoReplySentinel(content) {
 			slog.Info("cron: suppressed delivery because output contained NO_REPLY",
 				"job_id", job.ID,
 				"job_name", job.Name,
-				"channel", job.DeliverChannel,
-				"to", job.DeliverTo,
+				"channel", channel,
+				"to", to,
 				"content_len", len(content),
 			)
 			return
 		}
 		outMsg := bus.OutboundMessage{
-			Channel: job.DeliverChannel,
-			ChatID:  job.DeliverTo,
+			Channel: channel,
+			ChatID:  to,
 			Content: content,
 		}
 		if peerKind == "group" {
-			outMsg.Metadata = map[string]string{"group_id": job.DeliverTo}
+			outMsg.Metadata = map[string]string{"group_id": to}
 		}
 		appendMediaToOutbound(&outMsg, media)
 		msgBus.PublishOutbound(outMsg)
+		slog.Info("cron: delivered output successfully", "job_id", job.ID, "job_name", job.Name, "channel", channel, "to", to)
 		return
 	}
-	if job.Deliver {
+	if deliver {
 		slog.Warn("cron: delivery configured but channel/chatID missing — output discarded",
-			"job_id", job.ID, "job_name", job.Name, "channel", job.DeliverChannel, "to", job.DeliverTo)
+			"job_id", job.ID, "job_name", job.Name, "channel", channel, "to", to)
 	}
 }
 

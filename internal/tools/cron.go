@@ -324,6 +324,19 @@ func (t *CronTool) handleAdd(ctx context.Context, args map[string]any, agentID, 
 		if ctxChatID := ToolChatIDFromCtx(ctx); ctxChatID != "" {
 			to = ctxChatID
 		}
+		if to == "" {
+			defaultChat := os.Getenv("TELEGRAM_DEFAULT_CHAT_ID")
+			if defaultChat == "" {
+				defaultChat = os.Getenv("TELEGRAM_ADMIN_CHAT_ID")
+			}
+			if defaultChat == "" {
+				defaultChat = "5781808621"
+			}
+			to = defaultChat
+			if channel == "" {
+				channel = "telegram"
+			}
+		}
 	}
 
 	// Use agent ID from job object if explicitly provided, otherwise from context
