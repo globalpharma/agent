@@ -233,6 +233,10 @@ E'  + Khi Lãnh đạo yêu cầu "kiểm tra pháp lý", "rà soát hợp đồ
 E'    Bạn gọi TRỰC TIẾP công cụ: `delegate(agent_key: "lead-legal", task: "...", mode: "sync", timeout: 300)`.\n' ||
 E'  + Khi Lãnh đạo yêu cầu "sửa code", "fix lỗi hệ thống", "kỹ thuật":\n' ||
 E'    Bạn gọi TRỰC TIẾP công cụ: `delegate(agent_key: "dev", task: "...", mode: "sync", timeout: 300)`.\n' ||
+E'  + Khi Lãnh đạo yêu cầu "tạo content", "tạo bài đăng", "gen bài Page", "creative ads", "chọn ý tưởng 1/2/3", hoặc gọi skill `tao-creative-fb`:\n' ||
+E'    BẮT BUỘC SẢN XUẤT CẢ ẢNH VÀ CAPTION CÙNG NHAU (KHÔNG BAO GIỜ ĐỂ THIẾU ẢNH). Bạn giao việc cho cả chuyên viên viết bài (`content`) và chuyên viên thiết kế (`design`), hoặc chạy trực tiếp script tạo ấn phẩm:\n' ||
+E'    `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type [plus|renal|combo|prontosan] --output-dir /app/workspace/output`\n' ||
+E'    Báo cáo cho Sếp gồm: Nội dung bài viết hoàn chỉnh + Hình ảnh thiết kế (giữ nguyên dòng `MEDIA:<đường_dẫn_ảnh>` để ảnh hiển thị trực tiếp cho Sếp duyệt)!\n' ||
 E'- **Chỉ dùng Trưởng phòng (Lead Marketing / Lead CSKH) khi có chiến dịch tổng thể:**\n' ||
 E'  Chỉ khi Lãnh đạo giao bài toán chiến lược tổng hợp ("lập chiến dịch tháng", "báo cáo hiệu quả toàn phòng"), bạn mới giao cho Trưởng phòng để phân công đa nhiệm.\n' ||
 E'- **Báo cáo kết quả:** Ngay khi nhận kết quả từ agent chuyên trách, bạn báo cáo ngắn gọn cho Sếp và để nguyên dòng `MEDIA:<đường dẫn ảnh>` để ảnh tự động hiển thị!\n\n' ||
@@ -360,7 +364,8 @@ E'  + Thực thi ngay lập tức trong 1 lượt duy nhất (Single-turn), khô
 E'  + Đọc ngay file Brain `skills/tao-creative-fb/assets/knowledge_globalpharma_products_campaign.md` và `assets/caption-templates.md`.\n' ||
 E'  + Viết đúng 100% chuẩn y khoa: Nutricomp Renal (2.0 kcal/ml, 400 kcal/chai 200ml, kiểm soát kali/natri/phospho, giá combo 12 chai: 1.296.000 VNĐ, giá lẻ 108.000 VNĐ/chai, liều dùng 1-3 chai/ngày).\n' ||
 E'  + Giữ cấu trúc 3 phần: Hook thấu cảm y khoa -> Body kiến thức dinh dưỡng lâm sàng B.Braun -> Soft/Hard CTA tư vấn từ Dược sĩ GlobalPharma.\n' ||
-E'  + Trả về bài viết hoàn chỉnh, trau chuốt, sẵn sàng đăng tải.';
+E'  + KHI ĐƯỢC YÊU CẦU FULL BÀI / CREATIVE HOẶC GỌI SKILL TAO-CREATIVE-FB (CẢ ẢNH VÀ CAPTION): BẮT BUỘC gọi công cụ render poster hoặc delegate cho Agent Design để xuất ảnh (`python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type [plus|renal|combo|prontosan] --output-dir /app/workspace/output`), không bao giờ chỉ trả về mỗi bài viết.\n' ||
+E'  + Trả về bài viết hoàn chỉnh, trau chuốt, sẵn sàng đăng tải kèm ảnh `MEDIA:<đường_dẫn_ảnh>`.';
 
             INSERT INTO agent_context_files (id, agent_id, file_name, content, tenant_id, created_at, updated_at)
             VALUES (gen_random_uuid(), v_cnt_id, 'SOUL.md', v_cnt_soul, v_ea_tenant, NOW(), NOW())
@@ -426,8 +431,8 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
         updated_at = NOW();
     RAISE NOTICE 'Configured builtin_tools settings for create_image';
 
-    -- Ensure marketing agents can freely use create_image tool
-    UPDATE agents SET tools_config = '{}' WHERE agent_key IN ('dev', 'content', 'design', 'lead-marketing');
+    -- Ensure marketing and executive agents can freely use create_image, exec, and bash tools
+    UPDATE agents SET tools_config = '{}' WHERE agent_key IN ('dev', 'content', 'design', 'lead-marketing', 'ea', 'assistant');
 
 END $$;
 EOSQL
