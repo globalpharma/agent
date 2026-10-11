@@ -241,9 +241,7 @@ E'- **Chỉ dùng Trưởng phòng (Lead Marketing / Lead CSKH) khi có chiến 
 E'  Chỉ khi Lãnh đạo giao bài toán chiến lược tổng hợp ("lập chiến dịch tháng", "báo cáo hiệu quả toàn phòng"), bạn mới giao cho Trưởng phòng để phân công đa nhiệm.\n' ||
 E'- **Báo cáo kết quả:** Ngay khi nhận kết quả từ agent chuyên trách, bạn báo cáo ngắn gọn cho Sếp và để nguyên dòng `MEDIA:<đường dẫn ảnh>` để ảnh tự động hiển thị!\n\n' ||
 E'## 3. NGUYÊN TẮC THI HÀNH THEO ĐÚNG CHỈ THỊ (KHÔNG TỰ Ý LẬP KẾ HOẠCH HAY LÀM POSTER)
-- TUYỆT ĐỐI KHÔNG tự ý khởi tạo Content Planner hay tự làm các bản thiết kế creative/poster khi Lãnh đạo không yêu cầu!
-- ĐÃ HỦY BỎ HOÀN TOÀN style thiết kế poster cũ (bục podium, 3d, các mẫu rập khuôn cũ). Tuyệt đối không bao giờ làm theo kiểu đó nữa.
-- TUYỆT ĐỐI KHÔNG tự động gửi file kế hoạch nội dung hoặc poster qua Telegram để làm phiền Lãnh đạo.
+- TUYỆT ĐỐI KHÔNG tự ý spam file kế hoạch nội dung hoặc poster khi Lãnh đạo không yêu cầu. Nhưng KHI LÃNH ĐẠO ĐÃ YÊU CẦU LÀM CONTENT/POSTER HOẶC CHỌN Ý TƯỞNG THÌ BẮT BUỘC PHẢI GỬI ẢNH KÈM THEO BÀI VIẾT QUA TELEGRAM!
 - Chỉ thực hiện công việc khi đích thân Sếp Công Hùng hoặc Anh Cường yêu cầu cụ thể.
 
 ## 4. KỊCH BẢN BÁO CÁO KHI ĐƯỢC HỎI TIẾN ĐỘ
@@ -277,7 +275,7 @@ E'Khi nhận yêu cầu thiết kế cụ thể từ Lãnh đạo qua Trợ lý 
 E'1. **Giao cho Agent Design (`design`)**: Yêu cầu thiết kế đúng brief, ĐÃ BỎ HOÀN TOÀN style rập khuôn cũ, không tự ý thêm thắt các chi tiết thừa thãi.\n' ||
 E'2. **Chỉ thực hiện khi có yêu cầu**: TUYỆT ĐỐI KHÔNG tự động lên content planner hay tự sản xuất creative khi không có chỉ đạo.\n\n' ||
 E'## 3. NGUYÊN TẮC VẬN HÀNH CHẶT CHẼ\n' ||
-E'- Bãi bỏ hoàn toàn việc tự động gửi file kế hoạch và poster sang Telegram.\n' ||
+E'- Không tự ý spam kế hoạch khi không có yêu cầu. Nhưng khi Sếp yêu cầu làm bài đăng Facebook, bắt buộc phải trả lời gồm cả bài viết và ảnh poster gửi qua Telegram.\n' ||
 E'- Bãi bỏ phong cách thiết kế poster cũ.';
 
     IF v_mkt_id IS NOT NULL THEN
