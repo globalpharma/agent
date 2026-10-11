@@ -11,6 +11,7 @@ import (
 	"mime/multipart"
 	"net/http"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -307,6 +308,9 @@ func (t *CreateImageTool) Execute(ctx context.Context, args map[string]any) *Res
 		slog.Info("create_image: file saved", "path", imagePath, "size", fi.Size(), "data_len", len(imageData))
 	}
 
+	// Automatically apply authentic product packaging and official brand header if this is a known product poster
+	maybePostProcessProductPlacement(ctx, imagePath, prompt, filenameHint)
+
 	result := &Result{ForLLM: fmt.Sprintf("MEDIA:%s\nUse the EXACT filename when referencing: %s", imagePath, filepath.Base(imagePath))}
 	result.Media = []bus.MediaFile{{Path: imagePath, MimeType: "image/png", Filename: filepath.Base(imagePath)}}
 	result.MediaPrompts = map[int]string{0: prompt}
@@ -320,6 +324,65 @@ func (t *CreateImageTool) Execute(ctx context.Context, args map[string]any) *Res
 		result.Usage = chainResult.Usage
 	}
 	return result
+}
+
+// maybePostProcessProductPlacement checks if the generated image is for a known GlobalPharma product
+// (Nutricomp Renal, Plus, Combo, Prontosan) and automatically composites authentic packaging & company logo.
+func maybePostProcessProductPlacement(ctx context.Context, imagePath, prompt, filenameHint string) {
+	pLower := strings.ToLower(prompt + " " + filenameHint)
+
+	var productType string
+	if strings.Contains(pLower, "prontosan") {
+		productType = "prontosan"
+	} else if strings.Contains(pLower, "combo") || strings.Contains(pLower, "12 chai") || strings.Contains(pLower, "thùng") || strings.Contains(pLower, "hộp") {
+		productType = "combo"
+	} else if strings.Contains(pLower, "plus") {
+		productType = "plus"
+	} else if strings.Contains(pLower, "renal") {
+		productType = "renal"
+	} else if strings.Contains(pLower, "nutricomp") || strings.Contains(pLower, "globalpharma") {
+		productType = "renal"
+	} else {
+		return // Not a product poster, keep original AI image unchanged
+	}
+
+	workspace := ToolWorkspaceFromCtx(ctx)
+	candidates := []string{
+		"/app/data/skills/tao-creative-fb/scripts/compose_placement.py",
+		"/app/workspace/skills/tao-creative-fb/scripts/compose_placement.py",
+		filepath.Join(workspace, "skills/tao-creative-fb/scripts/compose_placement.py"),
+		filepath.Join(workspace, "../../skills/tao-creative-fb/scripts/compose_placement.py"),
+		"skills/tao-creative-fb/scripts/compose_placement.py",
+	}
+	var scriptPath string
+	for _, c := range candidates {
+		if fi, err := os.Stat(c); err == nil && !fi.IsDir() {
+			scriptPath = c
+			break
+		}
+	}
+	if scriptPath == "" {
+		return
+	}
+
+	pyExe := "python3"
+	if _, err := exec.LookPath("python3"); err != nil {
+		if _, err2 := exec.LookPath("python"); err2 == nil {
+			pyExe = "python"
+		} else {
+			return
+		}
+	}
+
+	cmdCtx, cancel := context.WithTimeout(ctx, 15*time.Second)
+	defer cancel()
+
+	cmd := exec.CommandContext(cmdCtx, pyExe, scriptPath, "--bg", imagePath, "--product", productType, "--output", imagePath)
+	if out, err := cmd.CombinedOutput(); err != nil {
+		slog.Warn("create_image: postProcessProductPlacement failed", "error", err, "output", string(out))
+	} else {
+		slog.Info("create_image: postProcessProductPlacement applied authentic product and logo", "product", productType, "path", imagePath)
+	}
 }
 
 // embedPromptIntoPNG wraps agent.EmbedPNGPrompt for the tools package.

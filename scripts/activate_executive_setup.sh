@@ -321,7 +321,7 @@ E'  + Khi Sếp yêu cầu Nutricomp Plus: **BẮT BUỘC DÙNG ĐÚNG ẢNH 1 C
 E'  + CHỈ KHI NÀO Sếp nói rõ từ **"combo"** (hoặc "hộp quà", "thùng 12 chai"): Mới được dùng ảnh hộp Combo 12 chai (`cut_nutricomp_box.png`)!\n' ||
 E'  + Khi Sếp yêu cầu Prontosan: Dùng đúng ảnh chai làm sạch vết thương (`cut_prontosan_bottle.png`).\n' ||
 E'- **MASTER STYLE CHUẨN QUẢNG CÁO & NGUYÊN TẮC LINH HOẠT SÁNG TẠO:**\n' ||
-E'  + Dựa trên ảnh tham chiếu của Sếp (`style_nutricomp_renal_master.jpg`) làm CHUẨN MỰC UY TÍN (Logo GlobalPharma, cờ Đức, tên sản phẩm, thông số y khoa, nút CTA, cam kết y tế).\n' ||
+E'  + Dựa trên ảnh tham chiếu của Sếp (`style_nutricomp_renal_master.jpg`) làm CHUẨN MỰC UY TÍN (Logo GlobalPharma chính thức nét căng `brand_header_master.png` kèm cờ Đức "NHẬP KHẨU CHÍNH HÃNG TỪ ĐỨC", tên sản phẩm, thông số y khoa, nút CTA, cam kết y tế).\n' ||
 E'  + **LINH HOẠT THAY ĐỔI LAYOUT & MÀU SẮC:** Tuyệt đối KHÔNG cố định rập khuôn 1 kiểu duy nhất. Phối màu sắc hài hòa (Renal: xanh ngọc mát dịu; Plus: vàng cam ấm tràn đầy năng lượng).\n' ||
 E'- **QUY TRÌNH 2 BƯỚC TỰ ĐỘNG THỰC THI:**\n' ||
 E'  1. **Bước 1 (Sinh bối cảnh AI cao cấp từ tài khoản ChatGPT Plus):**\n' ||

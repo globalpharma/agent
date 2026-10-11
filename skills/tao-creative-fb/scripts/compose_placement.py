@@ -1,22 +1,40 @@
 #!/usr/bin/env python3
 """
 Commercial Product Placement Script - GlobalPharma
-Places real official B.Braun product packaging and GlobalPharma logo onto
+Places real official B.Braun product packaging and GlobalPharma brand header onto
 photorealistic lifestyle/studio backgrounds with realistic contact and cast shadows.
 """
 
 import os
+import sys
 import argparse
 from pathlib import Path
 from PIL import Image, ImageFilter, ImageEnhance, ImageDraw
+
+def find_ref_dir(given_dir: str = None) -> str:
+    candidates = []
+    if given_dir:
+        candidates.append(given_dir)
+    script_dir = Path(__file__).resolve().parent
+    candidates.extend([
+        str(script_dir.parent / "assets" / "references"),
+        "/app/data/skills/tao-creative-fb/assets/references",
+        "/app/workspace/skills/tao-creative-fb/assets/references",
+        "skills/tao-creative-fb/assets/references",
+    ])
+    for c in candidates:
+        if os.path.exists(c) and os.path.isdir(c):
+            return c
+    return given_dir or "skills/tao-creative-fb/assets/references"
 
 def create_placement(
     bg_path: str = None,
     product_type: str = "renal",
     output_path: str = "skills/tao-creative-fb/output/poster_nutricomp_renal_placement.png",
-    ref_dir: str = "skills/tao-creative-fb/assets/references"
+    ref_dir: str = None
 ):
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    ref_dir = find_ref_dir(ref_dir)
+    os.makedirs(os.path.dirname(os.path.abspath(output_path)), exist_ok=True)
     p_lower = str(product_type).lower()
 
     # Automatic background resolution if not supplied or missing
@@ -27,7 +45,7 @@ def create_placement(
         elif "plus" in p_lower:
             candidate_bgs = [os.path.join(ref_dir, "bg_lifestyle_dining.jpg"), os.path.join(ref_dir, "bg_luxury_teal_podium.jpg")]
         else:
-            candidate_bgs = [os.path.join(ref_dir, "bg_luxury_teal_podium.jpg"), os.path.join(ref_dir, "bg_lifestyle_dining.jpg")]
+            candidate_bgs = [os.path.join(ref_dir, "bg_lifestyle_dining.jpg"), os.path.join(ref_dir, "bg_luxury_teal_podium.jpg")]
 
         bg_path = None
         for b in candidate_bgs:
@@ -36,8 +54,7 @@ def create_placement(
                 break
 
         if not bg_path:
-            # Create high quality solid medical canvas
-            bg = Image.new('RGBA', (1080, 1080), (15, 30, 40, 255))
+            bg = Image.new('RGBA', (1024, 1024), (245, 243, 238, 255))
         else:
             bg = Image.open(bg_path).convert('RGBA')
     else:
@@ -48,102 +65,114 @@ def create_placement(
     # 1. Select Product Reference
     if "prontosan" in p_lower:
         prod_file = os.path.join(ref_dir, "cut_prontosan_bottle.png")
-        prod_w = int(canvas_w * 0.28)
-        pos_x = int(canvas_w * 0.55)
-        pos_y = int(canvas_h * 0.42)
-    elif "combo" in p_lower:
+        prod_h = int(canvas_h * 0.44)
+        prod_w = int(prod_h * 0.58)
+        pos_x = int(canvas_w * 0.54)
+        pos_y = int(canvas_h * 0.44)
+    elif "combo" in p_lower or "box" in p_lower:
         prod_file = os.path.join(ref_dir, "cut_nutricomp_box.png")
-        prod_w = int(canvas_w * 0.45)
-        pos_x = int(canvas_w * 0.45)
-        pos_y = int(canvas_h * 0.49)
+        prod_w = int(canvas_w * 0.48)
+        prod = Image.open(prod_file).convert('RGBA')
+        prod_h = int(prod.height * (prod_w / prod.width))
+        pos_x = int(canvas_w * 0.46)
+        pos_y = int(canvas_h * 0.48)
     elif "plus" in p_lower:
         plus_bottle = os.path.join(ref_dir, "cut_nutricomp_plus_bottle.png")
-        if os.path.exists(plus_bottle):
-            prod_file = plus_bottle
-            prod_w = int(canvas_w * 0.36)
-            pos_x = int(canvas_w * 0.55)
-            pos_y = int(canvas_h * 0.38)
-        else:
-            prod_file = os.path.join(ref_dir, "real_nutricomp_drink_plus_vanilla.jpg")
-            prod_w = int(canvas_w * 0.36)
-            pos_x = int(canvas_w * 0.55)
-            pos_y = int(canvas_h * 0.38)
+        prod_file = plus_bottle if os.path.exists(plus_bottle) else os.path.join(ref_dir, "real_nutricomp_drink_plus_strawberry.jpg")
+        prod = Image.open(prod_file).convert('RGBA')
+        prod_h = int(canvas_h * 0.46)
+        prod_w = int(prod.width * (prod_h / prod.height))
+        pos_x = int(canvas_w * 0.52)
+        pos_y = int(canvas_h * 0.42)
     else:  # default: Nutricomp Renal 200ml single bottle
-        single_bottle = os.path.join(ref_dir, "cut_nutricomp_single_bottle.png")
-        if os.path.exists(single_bottle):
-            prod_file = single_bottle
-            prod_w = int(canvas_w * 0.38)
-            pos_x = int(canvas_w * 0.55)
-            pos_y = int(canvas_h * 0.38)
-        else:
-            prod_file = os.path.join(ref_dir, "cut_nutricomp_box.png")
-            prod_w = int(canvas_w * 0.45)
-            pos_x = int(canvas_w * 0.45)
-            pos_y = int(canvas_h * 0.49)
+        renal_bottle = os.path.join(ref_dir, "cut_nutricomp_renal_bottle.png")
+        if not os.path.exists(renal_bottle):
+            renal_bottle = os.path.join(ref_dir, "cut_nutricomp_single_bottle.png")
+        prod_file = renal_bottle
+        prod = Image.open(prod_file).convert('RGBA')
+        prod_h = int(canvas_h * 0.46)
+        prod_w = int(prod.width * (prod_h / prod.height))
+        pos_x = int(canvas_w * 0.52)
+        pos_y = int(canvas_h * 0.42)
 
     if not os.path.exists(prod_file):
         raise FileNotFoundError(f"Product reference not found: {prod_file}")
 
-    prod = Image.open(prod_file).convert('RGBA')
-    logo_file = os.path.join(ref_dir, "real_logo_globalpharma_master.png")
-    if not os.path.exists(logo_file):
-        logo_file = os.path.join(ref_dir, "real_logo_globalpharma_banner.png")
-    logo = Image.open(logo_file).convert('RGBA') if os.path.exists(logo_file) else None
+    if 'prod' not in locals():
+        prod = Image.open(prod_file).convert('RGBA')
 
-    # Scale product
-    prod_h = int(prod.height * (prod_w / prod.width))
     prod_scaled = prod.resize((prod_w, prod_h), Image.Resampling.LANCZOS)
 
-    # Warmth & Lighting Adjustment
+    # Warmth & Lighting Matching
     r, g, b, a = prod_scaled.split()
     rgb = Image.merge('RGB', (r, g, b))
-    enhancer_b = ImageEnhance.Brightness(rgb)
-    rgb = enhancer_b.enhance(1.02)
+    rgb = ImageEnhance.Color(rgb).enhance(1.04)
+    rgb = ImageEnhance.Brightness(rgb).enhance(1.01)
     r2, g2, b2 = rgb.split()
     prod_warm = Image.merge('RGBA', (r2, g2, b2, a))
 
-    # Realistic Shadows (Cast + Contact)
+    # Realistic 3-Layer Shadow Architecture
     shadow_layer = Image.new('RGBA', (canvas_w, canvas_h), (0, 0, 0, 0))
 
-    # Cast shadow
-    alpha_mask = prod_scaled.split()[-1]
-    shadow_shape = Image.new('RGBA', prod_scaled.size, (45, 30, 18, 90))
-    shadow_shape.putalpha(alpha_mask)
-    cast_w = int(prod_w * 1.02)
-    cast_h = int(prod_h * 0.30)
-    cast_shadow = shadow_shape.resize((cast_w, cast_h), Image.Resampling.BILINEAR)
-    cast_shadow = cast_shadow.filter(ImageFilter.GaussianBlur(16))
-    shadow_layer.paste(cast_shadow, (pos_x + 20, pos_y + prod_h - 38), cast_shadow)
+    # Layer 1: Soft directional table shadow (window light from left-front casting to right)
+    cast_w = int(prod_w * 1.3)
+    cast_h = int(prod_h * 0.22)
+    cast_layer = Image.new('RGBA', (cast_w, cast_h), (0, 0, 0, 0))
+    cdraw = ImageDraw.Draw(cast_layer)
+    cdraw.ellipse([0, 0, cast_w, cast_h], fill=(45, 28, 16, 70))
+    cast_layer = cast_layer.filter(ImageFilter.GaussianBlur(14))
+    shadow_layer.paste(cast_layer, (pos_x + int(prod_w * 0.15), pos_y + prod_h - int(cast_h * 0.65)), cast_layer)
 
-    # Tight Contact shadow
-    contact_w = int(prod_w * 0.88)
-    contact_h = 16
-    contact_shadow = Image.new('RGBA', (contact_w, contact_h), (35, 22, 12, 150))
-    contact_mask = Image.new('L', (contact_w, contact_h), 0)
-    draw = ImageDraw.Draw(contact_mask)
-    draw.ellipse([0, 0, contact_w, contact_h], fill=190)
-    contact_shadow.putalpha(contact_mask)
-    contact_shadow = contact_shadow.filter(ImageFilter.GaussianBlur(5))
-    shadow_layer.paste(contact_shadow, (pos_x + 28, pos_y + prod_h - 10), contact_shadow)
+    # Layer 2: Medium ambient occlusion shadow under the base
+    mid_w = int(prod_w * 0.88)
+    mid_h = int(prod_h * 0.08)
+    mid_layer = Image.new('RGBA', (mid_w, mid_h), (0, 0, 0, 0))
+    mdraw = ImageDraw.Draw(mid_layer)
+    mdraw.ellipse([0, 0, mid_w, mid_h], fill=(35, 20, 10, 140))
+    mid_layer = mid_layer.filter(ImageFilter.GaussianBlur(6))
+    shadow_layer.paste(mid_layer, (pos_x + int(prod_w * 0.08), pos_y + prod_h - int(mid_h * 0.70)), mid_layer)
 
-    # Composite layers
+    # Layer 3: Direct contact crease line (grounding the bottle firmly on the wood)
+    con_w = int(prod_w * 0.76)
+    con_h = int(prod_h * 0.04)
+    con_layer = Image.new('RGBA', (con_w, con_h), (0, 0, 0, 0))
+    ImageDraw.Draw(con_layer).ellipse([0, 0, con_w, con_h], fill=(25, 12, 6, 210))
+    con_layer = con_layer.filter(ImageFilter.GaussianBlur(2))
+    shadow_layer.paste(con_layer, (pos_x + int(prod_w * 0.13), pos_y + prod_h - int(con_h * 0.75)), con_layer)
+
+    # Composite product onto background
     composed = Image.alpha_composite(bg, shadow_layer)
     composed.paste(prod_warm, (pos_x, pos_y), prod_warm)
 
-    # Logo Placement (Top Left, elegant subtle white glow)
-    if logo:
-        logo_w = int(canvas_w * 0.16)
-        logo_h = int(logo.height * (logo_w / logo.width))
-        logo_scaled = logo.resize((logo_w, logo_h), Image.Resampling.LANCZOS)
-        logo_alpha = logo_scaled.split()[-1]
-        logo_glow = Image.new('RGBA', logo_scaled.size, (255, 255, 255, 130))
-        logo_glow.putalpha(logo_alpha)
-        logo_glow = logo_glow.filter(ImageFilter.GaussianBlur(3))
+    # 2. Official Brand Header Badge (GlobalPharma + German Flag Roundel)
+    header_file = os.path.join(ref_dir, "brand_header_master.png")
+    if os.path.exists(header_file):
+        header = Image.open(header_file).convert('RGBA')
+        hdr_w = int(canvas_w * 0.36)
+        hdr_h = int(header.height * (hdr_w / header.width))
+        header_scaled = header.resize((hdr_w, hdr_h), Image.Resampling.LANCZOS)
 
-        logo_pos_x = int(canvas_w * 0.05)
-        logo_pos_y = int(canvas_h * 0.045)
-        composed.paste(logo_glow, (logo_pos_x, logo_pos_y), logo_glow)
-        composed.paste(logo_scaled, (logo_pos_x, logo_pos_y), logo_scaled)
+        pad_x = 16
+        pad_y = 10
+        pill_w = hdr_w + pad_x * 2
+        pill_h = hdr_h + pad_y * 2
+        pill_x = int(canvas_w * 0.04)
+        pill_y = int(canvas_h * 0.04)
+
+        # Frosted glass card with clean rounded border
+        pill = Image.new('RGBA', (pill_w, pill_h), (0, 0, 0, 0))
+        pdraw = ImageDraw.Draw(pill)
+        pdraw.rounded_rectangle([0, 0, pill_w, pill_h], radius=16, fill=(255, 255, 255, 240), outline=(230, 238, 242, 220), width=1)
+
+        # Subtle card shadow
+        pill_shadow = Image.new('RGBA', (canvas_w, canvas_h), (0, 0, 0, 0))
+        sdraw = ImageDraw.Draw(pill_shadow)
+        sdraw.rounded_rectangle([pill_x + 2, pill_y + 4, pill_x + pill_w + 2, pill_y + pill_h + 4], radius=16, fill=(0, 0, 0, 40))
+        pill_shadow = pill_shadow.filter(ImageFilter.GaussianBlur(8))
+
+        composed = Image.alpha_composite(composed, pill_shadow)
+        composed.paste(pill, (pill_x, pill_y), pill)
+        composed.paste(header_scaled, (pill_x + pad_x, pill_y + pad_y), header_scaled)
 
     composed.convert('RGB').save(output_path, quality=95)
     print(f"MEDIA:{os.path.abspath(output_path)}")
@@ -154,7 +183,7 @@ if __name__ == "__main__":
     parser.add_argument("--bg", default="auto", help="Path to lifestyle background image (default: auto)")
     parser.add_argument("--product", default="renal", choices=["renal", "nutricomp", "plus", "combo", "prontosan"])
     parser.add_argument("--output", default="skills/tao-creative-fb/output/poster_nutricomp_renal_placement.png")
-    parser.add_argument("--ref-dir", default="skills/tao-creative-fb/assets/references")
+    parser.add_argument("--ref-dir", default=None)
     args = parser.parse_args()
 
     create_placement(args.bg, args.product, args.output, args.ref_dir)
