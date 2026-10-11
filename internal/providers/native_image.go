@@ -42,8 +42,14 @@ var allowedImageModelList = []string{
 
 // ValidateImageModel returns the model to use, or an error if the caller
 // supplied an unsupported value. Empty input returns DefaultImageModel.
+// If an outer LLM parent model (e.g. "gpt-5.6", "gpt-5.5", "gpt-4o", or containing "sol")
+// was passed instead of an image tool model, it safely maps to DefaultImageModel.
 func ValidateImageModel(model string) (string, error) {
 	if model == "" {
+		return DefaultImageModel, nil
+	}
+	mLower := strings.ToLower(model)
+	if strings.HasPrefix(mLower, "gpt-5") || strings.HasPrefix(mLower, "gpt-4") || strings.Contains(mLower, "sol") {
 		return DefaultImageModel, nil
 	}
 	if !allowedImageModels[model] {

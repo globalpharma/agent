@@ -245,7 +245,7 @@ E'    - Nếu chọn combo 12 chai / hộp quà: SẢN PHẨM LÀ COMBO 12 CHAI.
 E'    🚫 TUYỆT ĐỐI CẤM GỬI LẠI ẢNH MẪU/ẢNH THAM CHIẾU CŨ (VÍ DỤ `poster_nutricomp_renal.png`, `poster_nutricomp_drink_plus.png`)!\n' ||
 E'    🚫 TUYỆT ĐỐI KHÔNG CHỈ GỢI Ý POSTER BẰNG CHỮ!\n' ||
 E'    BẮT BUỘC THIẾT KẾ ẢNH MỚI HOÀN TOÀN THEO ĐÚNG TIÊU ĐỀ/NỘI DUNG VÀ THEO STYLE THAM CHIẾU:\n' ||
-E'    Cách 1: Gọi công cụ `create_image(prompt: "...", model: "gpt-5.6")` để sinh bối cảnh mới độc bản cho bài viết (GoClaw sẽ tự động ghép chai sản phẩm và logo chính hãng lên ảnh sinh được).\n' ||
+E'    Cách 1: Gọi công cụ `create_image(prompt: "...", model: "gpt-5.6", provider: "openai-codex")` để sinh bối cảnh mới độc bản cho bài viết (GoClaw sẽ tự động ghép chai sản phẩm và logo chính hãng lên ảnh sinh được).\n' ||
 E'    Cách 2: Gọi công cụ `exec` chạy render poster mới với đúng tiêu đề của bài viết:\n' ||
 E'    `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type [plus|renal|prontosan|combo] --headline "<tiêu đề bài viết>" --subline "<tóm tắt giá trị>" --output /app/workspace/output/creative_<time>.png`\n' ||
 E'    Sau khi tạo ảnh xong, BẮT BUỘC đính kèm dòng `MEDIA:<đường_dẫn_ảnh_mới>` vào câu trả lời để ảnh mới hiển thị trực tiếp cùng bài viết!\n' ||
@@ -345,7 +345,7 @@ E'  + Khi làm ảnh liên quan đến Nutricomp Plus (phục hồi sau phẫu t
 E'  + 🚫 ĐẶC BIỆT CHÚ Ý: Ảnh tham chiếu này CHỈ DÀNH RIÊNG CHO DRINK PLUS, TUYỆT ĐỐI KHÔNG DÙNG CHO RENAL VÀ PRONTOSAN!\n' ||
 E'- **QUY TRÌNH 2 BƯỚC TỰ ĐỘNG THỰC THI:**\n' ||
 E'  1. **Bước 1 (Sinh bối cảnh AI cao cấp từ tài khoản ChatGPT Plus bằng model GPT Sol 5.6 / gpt-5.6):**\n' ||
-E'     Gọi công cụ `create_image(prompt: "...", model: "gpt-5.6")` với prompt tiếng Anh 5 tầng (commercial editorial lifestyle photography, warm morning sunlight, natural authentic expressions).\n' ||
+E'     Gọi công cụ `create_image(prompt: "...", model: "gpt-5.6", provider: "openai-codex")` với prompt tiếng Anh 5 tầng (commercial editorial lifestyle photography, warm morning sunlight, natural authentic expressions).\n' ||
 E'  2. **Bước 2 (Ghép quang học sản phẩm thật & Logo chính hãng 100%):**\n' ||
 E'     Gọi công cụ `exec` chạy script placement:\n' ||
 E'     `python3 /app/data/skills/tao-creative-fb/scripts/compose_placement.py --bg "<đường_dẫn_ảnh_sinh>" --product [plus|renal|combo|prontosan] --output /app/workspace/output/poster_<product>_placement.png`\n' ||
@@ -435,7 +435,7 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
         'Generate images from text descriptions using AI',
         'media',
         true,
-        '{"providers":[{"provider":"openai-codex","model":"gpt-5.6","params":{"image_model":"gpt-5.6"},"enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
+        '{"providers":[{"provider":"openai-codex","model":"gpt-5.6","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
         '{}'::text[],
         '{}'::jsonb,
         NOW(),
@@ -443,9 +443,13 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
     )
     ON CONFLICT (name) DO UPDATE SET 
         enabled = true,
-        settings = '{"providers":[{"provider":"openai-codex","model":"gpt-5.6","params":{"image_model":"gpt-5.6"},"enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
+        settings = '{"providers":[{"provider":"openai-codex","model":"gpt-5.6","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
         updated_at = NOW();
-    RAISE NOTICE 'Configured builtin_tools settings for create_image with default model gpt-5.6';
+
+    UPDATE builtin_tools 
+    SET settings = '{"providers":[{"provider":"openai-codex","model":"gpt-5.6","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb
+    WHERE name = 'create_image';
+    RAISE NOTICE 'Configured builtin_tools settings for create_image with default model gpt-5.6 and gpt-image-2.5-flare';
 
     -- Ensure marketing and executive agents can freely use create_image, exec, and bash tools
     UPDATE agents SET tools_config = '{}' WHERE status = 'active';
