@@ -14,6 +14,9 @@ PG_USER="${POSTGRES_USER:-goclaw}"
 PG_DB="${POSTGRES_DB:-goclaw}"
 PG_PASS="${POSTGRES_PASSWORD:-goclaw}"
 
+# Repair schema_migrations version if it was set ahead of binary migrations
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -c "UPDATE schema_migrations SET version = 97, dirty = false WHERE version > 97;" || true
+
 # Execute SQL via docker compose
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" << 'EOSQL'
 DO $$
@@ -538,6 +541,9 @@ sleep 6
 echo "=== VERIFYING ACTIVE TELEGRAM CONNECTIONS (MUST ONLY BE GOCLAW) ==="
 ss -tpn state established '( dport = :443 )' 2>/dev/null | grep -E "149.154|91.108" || echo "No direct Telegram IP socket detected in ss"
 
+echo "=== GOCLAW CONTAINER LOGS (LAST 30 LINES) ==="
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml logs --tail 30 goclaw || true
+
 echo "=== GOCLAW INDEX SCRIPT TAGS (from container localhost:18790) ==="
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T goclaw wget -qO- http://localhost:18790/ | grep -E "src=|href=" | grep "assets" | head -n 15 || true
 
@@ -546,23 +552,31 @@ ls -la /root/.caddy/data/goclaw-assets/ 2>/dev/null || true
 ls -la /root/.caddy/data/goclaw-assets/assets 2>/dev/null | head -n 20 || true
 
 echo "=== UPDATING CADDYFILE TO REVERSE PROXY ALL TO GOCLAW ==="
+GOCLAW_HOST_PORT=$(docker compose -f docker-compose.yml -f docker-compose.postgres.yml port goclaw 18790 2>/dev/null | awk -F: '{print $NF}' | head -n 1)
+if [ -z "$GOCLAW_HOST_PORT" ]; then
+    GOCLAW_HOST_PORT=18790
+fi
+echo "GoClaw host port detected: $GOCLAW_HOST_PORT"
+export GOCLAW_HOST_PORT
 if [ -f /root/.caddy/Caddyfile ]; then
     python3 -c '
-import re
+import os, re
+
+target_port = os.environ.get("GOCLAW_HOST_PORT", "18790")
 
 with open("/root/.caddy/Caddyfile", "r") as f:
     content = f.read()
 
-new_block = """# BEGIN GoClaw - agent.globalpharma.vn
-agent.globalpharma.vn {
+new_block = f"""# BEGIN GoClaw - agent.globalpharma.vn
+agent.globalpharma.vn {{
 \tencode zstd gzip
 
-\treverse_proxy 127.0.0.1:18795 {
-\t\theader_up Host {host}
-\t\theader_up X-Real-IP {remote_host}
+\treverse_proxy 127.0.0.1:{target_port} {{
+\t\theader_up Host {{host}}
+\t\theader_up X-Real-IP {{remote_host}}
 \t\theader_up X-Forwarded-Proto https
-\t}
-}
+\t}}
+}}
 # END GoClaw - agent.globalpharma.vn"""
 
 pattern = r"# BEGIN GoClaw - agent\.globalpharma\.vn.*?# END GoClaw - agent\.globalpharma\.vn"
@@ -570,7 +584,7 @@ if re.search(pattern, content, flags=re.DOTALL):
     content = re.sub(pattern, new_block, content, flags=re.DOTALL)
     with open("/root/.caddy/Caddyfile", "w") as f:
         f.write(content)
-    print("Replaced GoClaw Caddyfile block successfully")
+    print(f"Replaced GoClaw Caddyfile block successfully with port {target_port}")
 else:
     print("GoClaw block pattern not found in Caddyfile")
 '
