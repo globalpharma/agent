@@ -299,41 +299,155 @@ func autoAttachCreativeMedia(outMsg *bus.OutboundMessage) {
 		"output",
 	}
 
+	// Calculate weighted scores for each product to prevent false positives
+	// (e.g. Vietnamese "cẩn thận" or "thận trọng" falsely triggering Renal).
+	var plusScore, renalScore, prontosanScore, comboScore int
+
+	// Contextual idea selection boost: When user selects Idea 2 ("chọn 2", "ý tưởng 2"), it corresponds to Nutricomp Drink Plus.
+	if strings.Contains(contentLower, "ý tưởng 2") || strings.Contains(contentLower, "ý số 2") || strings.Contains(contentLower, "chọn 2") {
+		plusScore += 20
+	} else if strings.Contains(contentLower, "ý tưởng 1") || strings.Contains(contentLower, "ý số 1") || strings.Contains(contentLower, "chọn 1") {
+		renalScore += 20
+	} else if strings.Contains(contentLower, "ý tưởng 3") || strings.Contains(contentLower, "ý số 3") || strings.Contains(contentLower, "chọn 3") {
+		prontosanScore += 20
+	}
+
+	// Nutricomp Drink Plus keywords
+	plusKeywords := []struct {
+		kw     string
+		weight int
+	}{
+		{"nutricomp plus", 15},
+		{"drink plus", 15},
+		{"nutricomp® drink plus", 15},
+		{"plus", 8},
+		{"sau phẫu thuật", 10},
+		{"sau mổ", 10},
+		{"suy kiệt", 10},
+		{"300 kcal", 10},
+		{"1.5 kcal", 10},
+		{"bồi bổ", 6},
+		{"hồi phục thể trạng", 8},
+		{"cao năng lượng", 8},
+		{"ăn kém", 6},
+		{"nhanh no", 6},
+	}
+	for _, pk := range plusKeywords {
+		if strings.Contains(contentLower, pk.kw) {
+			plusScore += pk.weight
+		}
+	}
+
+	// Prontosan keywords
+	prontosanKeywords := []struct {
+		kw     string
+		weight int
+	}{
+		{"prontosan", 15},
+		{"vết thương", 10},
+		{"biofilm", 12},
+		{"loét", 8},
+		{"vết trầy", 8},
+		{"vết xước", 8},
+		{"màng sinh học", 10},
+		{"làm sạch vết thương", 12},
+		{"rửa vết thương", 12},
+		{"chai xịt", 8},
+		{"xịt vết thương", 10},
+		{"vô trùng", 6},
+		{"lành thương", 8},
+	}
+	for _, pk := range prontosanKeywords {
+		if strings.Contains(contentLower, pk.kw) {
+			prontosanScore += pk.weight
+		}
+	}
+
+	// Nutricomp Drink Renal keywords (strip "cẩn thận" and "thận trọng" to prevent false triggers)
+	cleanRenalContent := strings.ReplaceAll(contentLower, "cẩn thận", "")
+	cleanRenalContent = strings.ReplaceAll(cleanRenalContent, "thận trọng", "")
+	renalKeywords := []struct {
+		kw     string
+		weight int
+	}{
+		{"nutricomp renal", 15},
+		{"drink renal", 15},
+		{"nutricomp® drink renal", 15},
+		{"renal", 10},
+		{"suy thận", 12},
+		{"chạy thận", 12},
+		{"lọc máu", 12},
+		{"bệnh thận", 10},
+		{"bệnh nhân thận", 10},
+		{"chức năng thận", 10},
+		{"cầu thận", 10},
+		{"400 kcal", 10},
+		{"2.0 kcal", 10},
+		{"urê huyết", 8},
+		{"kali", 6},
+		{"phospho", 6},
+		{"thận", 4},
+	}
+	for _, rk := range renalKeywords {
+		if strings.Contains(cleanRenalContent, rk.kw) {
+			renalScore += rk.weight
+		}
+	}
+
+	// Combo keywords
+	comboKeywords := []struct {
+		kw     string
+		weight int
+	}{
+		{"combo 12", 15},
+		{"1.296.000", 15},
+		{"108.000", 10},
+		{"thùng 12 chai", 12},
+		{"12 chai", 10},
+		{"hộp quà", 8},
+		{"combo", 6},
+	}
+	for _, ck := range comboKeywords {
+		if strings.Contains(contentLower, ck.kw) {
+			comboScore += ck.weight
+		}
+	}
+
 	var productCandidates []string
-	if strings.Contains(contentLower, "plus") ||
-		strings.Contains(contentLower, "sau phẫu thuật") ||
-		strings.Contains(contentLower, "sau mổ") ||
-		strings.Contains(contentLower, "suy kiệt") ||
-		strings.Contains(contentLower, "300 kcal") ||
-		strings.Contains(contentLower, "1.5 kcal") {
+	maxScore := 0
+
+	if plusScore > maxScore {
+		maxScore = plusScore
 		productCandidates = []string{
 			"poster_nutricomp_drink_plus.png",
 			"poster_nutricomp_plus_placement.png",
 			"poster_plus_auto.png",
 		}
-	} else if strings.Contains(contentLower, "renal") ||
-		strings.Contains(contentLower, "thận") ||
-		strings.Contains(contentLower, "lọc máu") ||
-		strings.Contains(contentLower, "400 kcal") ||
-		strings.Contains(contentLower, "2.0 kcal") {
+	}
+	if renalScore > maxScore {
+		maxScore = renalScore
 		productCandidates = []string{
 			"poster_nutricomp_renal.png",
 			"poster_nutricomp_renal_placement.png",
 			"organic_post_renal.png",
 		}
-	} else if strings.Contains(contentLower, "prontosan") ||
-		strings.Contains(contentLower, "vết thương") ||
-		strings.Contains(contentLower, "biofilm") ||
-		strings.Contains(contentLower, "loét") {
+	}
+	if prontosanScore > maxScore {
+		maxScore = prontosanScore
 		productCandidates = []string{
 			"poster_prontosan_wound_spray.png",
+			"poster_prontosan_clinical.jpg",
 		}
-	} else if strings.Contains(contentLower, "combo") ||
-		strings.Contains(contentLower, "1.296.000") ||
-		strings.Contains(contentLower, "12 chai") {
+	}
+	if comboScore > maxScore {
+		maxScore = comboScore
 		productCandidates = []string{
 			"poster_nutricomp_combo12.png",
 		}
+	}
+
+	if len(productCandidates) == 0 {
+		return
 	}
 
 	var foundPath string

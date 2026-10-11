@@ -332,13 +332,13 @@ func maybePostProcessProductPlacement(ctx context.Context, imagePath, prompt, fi
 	pLower := strings.ToLower(prompt + " " + filenameHint)
 
 	var productType string
-	if strings.Contains(pLower, "prontosan") {
+	if strings.Contains(pLower, "prontosan") || strings.Contains(pLower, "vết thương") || strings.Contains(pLower, "biofilm") || strings.Contains(pLower, "loét") {
 		productType = "prontosan"
 	} else if strings.Contains(pLower, "combo") || strings.Contains(pLower, "12 chai") || strings.Contains(pLower, "thùng") || strings.Contains(pLower, "hộp") {
 		productType = "combo"
-	} else if strings.Contains(pLower, "plus") {
+	} else if strings.Contains(pLower, "plus") || strings.Contains(pLower, "sau phẫu thuật") || strings.Contains(pLower, "sau mổ") || strings.Contains(pLower, "suy kiệt") || strings.Contains(pLower, "300 kcal") || strings.Contains(pLower, "1.5 kcal") {
 		productType = "plus"
-	} else if strings.Contains(pLower, "renal") {
+	} else if strings.Contains(pLower, "renal") || strings.Contains(pLower, "suy thận") || strings.Contains(pLower, "lọc máu") || strings.Contains(pLower, "chạy thận") || strings.Contains(pLower, "400 kcal") {
 		productType = "renal"
 	} else if strings.Contains(pLower, "nutricomp") || strings.Contains(pLower, "globalpharma") {
 		productType = "renal"
