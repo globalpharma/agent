@@ -21,11 +21,18 @@ Skill cấp 3 chuyên trách sản xuất toàn diện nội dung Facebook (Hìn
 
 ## 1. Nguyên Tắc Cốt Lõi Về Brand Voice & Y Khoa
 
+- **Kho Tri Thức Chuẩn (Brain):** Toàn bộ thông tin y khoa, hồ sơ công ty, thông số kỹ thuật sản phẩm, liều dùng, giá niêm yết combo và quy chuẩn B.Braun Đức được quy định tại file Brain chính thức:
+  👉 `skills/tao-creative-fb/assets/knowledge_globalpharma_products_campaign.md`
+  Agent **BẮT BUỘC** đọc kỹ file Brain này trước khi đề xuất ý tưởng, viết caption hoặc tạo creative ads để đảm bảo thông tin chuẩn xác 100%.
 - **Doanh nghiệp:** Công Ty Cổ Phần Global Pharma (thành lập từ 2014, phân phối chính ngạch B.Braun CHLB Đức). Người sáng lập: **Anh Công Hùng**.
 - **Chuẩn mực y khoa:** Thông tin y khoa chính xác, khách quan, dựa trên chứng cứ lâm sàng Châu Âu (ESPEN, B.Braun).
 - **Đạo đức ngành y:** 
   - KHÔNG cam kết "chữa khỏi suy thận", "thuốc điều trị thận", hay "làm lành vết thương tức thì".
   - Định vị sản phẩm là: **Dinh dưỡng y học lâm sàng** bổ sung chuyên biệt theo từng bệnh lý, giúp bảo tồn chức năng thận, phục hồi thể trạng, hoặc dung dịch rửa vết thương chuẩn vô trùng.
+- **Giá bán & Liều dùng chuẩn y khoa (từ Brain):**
+  - Nutricomp® Drink Renal: Giá chính thức combo 12 chai: **1.224.000 VNĐ** (tương đương 102.000 VNĐ/chai). Liều dùng khuyến nghị: 1-3 chai/ngày theo chỉ định chuyên môn. Năng lượng: 2.0 kcal/ml (400 kcal/chai 200ml).
+  - Nutricomp® Drink Plus: Năng lượng: 1.5 kcal/ml (300 kcal/chai 200ml). Phục hồi thể trạng sau phẫu thuật, suy kiệt.
+  - Prontosan: Phá màng Biofilm, ngăn nhiễm trùng vết thương hở, vết loét tì đè, loét tiểu đường.
 - **Tone & Mood:** Đĩnh đạc, thấu hiểu, khoa học, tin cậy, ấm áp và hướng đến sức khỏe bền vững của người bệnh.
 
 ---
@@ -36,11 +43,11 @@ Skill cấp 3 chuyên trách sản xuất toàn diện nội dung Facebook (Hìn
 Mục tiêu: Cung cấp kiến thức chăm sóc sức khỏe, nuôi dưỡng tệp người theo dõi trang fanpage GlobalPharma.
 
 **Quy trình 5 bước:**
-1. **Đề xuất ý tưởng:** Đề xuất 3 chủ đề giáo dục sức khỏe/dinh dưỡng (tiêu đề + góc tiếp cận) dựa trên sản phẩm được yêu cầu.
+1. **Đọc Brain & Đề xuất ý tưởng:** Đọc file `assets/knowledge_globalpharma_products_campaign.md` để nắm chuẩn y khoa. Đề xuất 3 chủ đề giáo dục sức khỏe/dinh dưỡng (tiêu đề + góc tiếp cận) dựa trên sản phẩm được yêu cầu.
 2. **Người dùng chọn:** Chờ người dùng chọn 1 trong 3 ý tưởng.
 3. **Sinh nội dung (BẮT BUỘC TẠO CẢ CAPTION LẪN HÌNH ẢNH TRONG CÙNG LƯỢT):**
    Ngay khi người dùng chọn 1 ý tưởng, bạn BẮT BUỘC thực hiện ĐỒNG THỜI cả hai việc trong cùng lượt trả lời này:
-   - **Viết Caption (80–150 từ):** Gồm [Hook y khoa / thấu cảm] + [Kiến thức dinh dưỡng / cơ chế sản phẩm B.Braun] + [Soft CTA tư vấn hoặc chia sẻ].
+   - **Viết Caption (80–150 từ):** Dựa trên `assets/caption-templates.md` và `assets/knowledge_globalpharma_products_campaign.md`. Gồm [Hook y khoa / thấu cảm] + [Kiến thức dinh dưỡng / cơ chế sản phẩm B.Braun] + [Soft CTA tư vấn hoặc chia sẻ].
    - **BẮT BUỘC GỌI TOOL `create_image` ĐỂ TẠO ẢNH:**
      Bạn PHẢI gọi công cụ `create_image(prompt: "...")` với prompt chi tiết mô tả hình ảnh y khoa chân thực, ấm áp, ánh sáng studio y tế, sản phẩm B.Braun chính hãng.
      ⚠️ **CẢNH BÁO QUAN TRỌNG:** TUYỆT ĐỐI KHÔNG được chỉ mô tả ý tưởng ảnh bằng lời văn hay chỉ trả về mỗi bài caption. BẮT BUỘC PHẢI GỌI TOOL `create_image` để tạo ra file ảnh thực tế!
@@ -81,15 +88,18 @@ Toàn bộ 3 cặp được lưu vào thư mục `output/creative_ads/` và hi�
 
 ```
 skills/tao-creative-fb/
-├── SKILL.md                          # File hướng dẫn trung tâm
+├── SKILL.md                                        # File hướng dẫn trung tâm
 ├── assets/
-│   ├── image-prompt-templates.md     # Mẫu prompt chi tiết cho hình ảnh Organic & Ads
-│   └── caption-templates.md          # Mẫu cấu trúc copywriting chuẩn y khoa
+│   ├── knowledge_globalpharma_products_campaign.md # BRAIN: Tri thức y khoa & sản phẩm chiến dịch GlobalPharma
+│   ├── caption-templates.md                        # Mẫu cấu trúc copywriting chuẩn y khoa
+│   ├── image-prompt-templates.md                   # Mẫu prompt chi tiết cho hình ảnh Organic & Ads
+│   ├── pages.json                                  # Danh sách ID & Token fanpage theo nhóm sản phẩm
+│   └── references/                                 # Kho hình ảnh tư liệu thật, logo, ảnh phôi sản phẩm B.Braun
 └── scripts/
-    ├── env.example                   # File mẫu cấu hình API keys
-    ├── gen_image.py                  # Script gọi OpenAI DALL-E / gpt-image
-    ├── gen_caption.py                # Script sinh caption & ad copy theo góc tiếp cận
-    └── post_facebook.py              # Script đăng ảnh & caption qua Graph API (có DRY_RUN)
+    ├── env.example                                 # File mẫu cấu hình API keys
+    ├── gen_image.py                                # Script gọi OpenAI DALL-E / gpt-image
+    ├── gen_caption.py                              # Script sinh caption & ad copy theo góc tiếp cận
+    └── post_facebook.py                            # Script đăng ảnh & caption qua Graph API (có DRY_RUN)
 ```
 
 ---
