@@ -97,6 +97,7 @@ skills/tao-creative-fb/
 │   └── references/                                 # Kho hình ảnh tư liệu thật, logo, ảnh phôi sản phẩm B.Braun
 └── scripts/
     ├── env.example                                 # File mẫu cấu hình API keys
+    ├── compose_placement.py                        # Script ghép quang học phôi sản phẩm thật & logo lên nền AI
     ├── gen_image.py                                # Script gọi OpenAI DALL-E / gpt-image
     ├── gen_caption.py                              # Script sinh caption & ad copy theo góc tiếp cận
     └── post_facebook.py                            # Script đăng ảnh & caption qua Graph API (có DRY_RUN)

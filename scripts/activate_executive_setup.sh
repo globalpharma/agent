@@ -241,15 +241,12 @@ E'2. **Subject:** "An authentic Vietnamese elderly patient and caring daughter i
 E'3. **Product & Detail:** "On the clean wooden table sits an authentic clinical nutrition bottle labeled \'Nutricomp Drink Renal\', alongside a fresh glass of light vanilla clinical nutrition drink."\n' ||
 E'4. **Lighting & Environment:** "Bathed in soft natural morning sunlight streaming through sheer curtains, gentle atmosphere, clean medical teal and warm cream color grading."\n' ||
 E'5. **Quality & Negatives:** "Photorealistic, 8k resolution, ultra-detailed skin texture, strictly NO 3D render, NO plastic skin, NO CGI, NO distorted text, NO cluttered graphic badges."\n\n' ||
-E'## 3. QUY TRÌNH THỰC THI (AUTONOMOUS EXECUTION)\n' ||
-E'Khi nhận việc, bạn tự giác làm ngay trong 1 lượt duy nhất (Single-turn):\n' ||
-E'1. **Tạo prompt nhiếp ảnh cao cấp** theo công thức 5 tầng ở trên.\n' ||
-E'2. **BẮT BUỘC GỌI TOOL `create_image`:**\n' ||
-E'   Gọi công cụ `create_image(prompt: "...")` để hệ thống sinh file ảnh thực tế từ AI.\n' ||
-E'3. **Trả về kết quả cho Lead Marketing / Sếp:**\n' ||
-E'   Kèm lời giải thích ngắn gọn về ý nghĩa bức ảnh và BẮT BUỘC kèm dòng:\n' ||
-E'   `MEDIA:<đường dẫn file ảnh vừa tạo>`\n' ||
-E'   để hệ thống hiển thị trực tiếp bức ảnh cho người dùng xem!';
+E'## 3. QUY TRÌNH THỰC THI (AUTONOMOUS EXECUTION - CHUẨN POSTER SẢN PHẨM THỰC TẾ)\n' ||
+E'Khi nhận việc thiết kế hình ảnh cho sản phẩm thương mại thật (Nutricomp, Prontosan):\n' ||
+E'1. **Bước 1 (Sinh bối cảnh nhiếp ảnh tự nhiên):** Gọi `create_image(prompt: "...")` tạo bối cảnh bàn ăn gỗ sồi ấm áp, ánh sáng ban mai qua rèm cửa, ly sữa vani, phòng khách hiện đại theo công thức 5 tầng.\n' ||
+E'2. **Bước 2 (Ghép quang học sản phẩm thật & Logo chuẩn 100%):** Chạy lệnh placement để đặt chính xác hình ảnh sản phẩm B.Braun và Logo GlobalPharma thật vào bàn ăn với bóng đổ mềm tự nhiên:\n' ||
+E'   `python3 /app/data/skills/tao-creative-fb/scripts/compose_placement.py --bg "<ảnh_bối_cảnh>" --product [nutricomp|prontosan] --output /app/workspace/output/poster_<product>_placement.png`\n' ||
+E'3. **Trả về kết quả cho Sếp:** Báo cáo ngắn gọn kèm dòng `MEDIA:/app/workspace/output/poster_<product>_placement.png` để hệ thống tự động hiển thị bức ảnh chuẩn xác 100% về logo, nhãn mác và tuyệt đẹp về thẩm mỹ!';
 
             INSERT INTO agent_context_files (id, agent_id, file_name, content, tenant_id, created_at, updated_at)
             VALUES (gen_random_uuid(), v_des_id, 'SOUL.md', v_des_soul, v_ea_tenant, NOW(), NOW())
