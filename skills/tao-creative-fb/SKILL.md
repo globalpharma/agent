@@ -61,6 +61,14 @@ Skill cấp 3 chuyên trách sản xuất toàn diện nội dung Facebook (Hìn
 - Mỗi khi sản xuất nội dung/ảnh liên quan đến Prontosan (rửa vết thương, màng biofilm, sát trùng vô trùng, loét tì đè, loét tiểu đường): **BẮT BUỘC dùng đúng thiết kế chuẩn tham chiếu này (`poster_prontosan_wound_spray.png`)!**
 - 🚫 **LƯU Ý:** Ảnh tham chiếu này **CHỈ DÀNH RIÊNG CHO PRONTOSAN**, TUYỆT ĐỐI KHÔNG dùng cho Renal hay Drink Plus.
 
+⚠️ **QUY ĐỊNH ĐẶC QUYỀN DÀNH RIÊNG CHO NUTRICOMP DRINK PLUS:**
+- Ảnh tham chiếu (`style_nutricomp_plus_master_1.jpg` và `style_nutricomp_plus_master_2.jpg`) là **chuẩn mực tuyệt đối về thiết kế dành riêng cho Nutricomp Drink Plus B.Braun**.
+- Hai phong cách chuẩn mực đã được Sếp trực tiếp phê duyệt:
+  1. *Phong cách 1 (Phục hồi thể trạng / Ưu đãi):* "BÍ QUYẾT VỰC DẬY THỂ TRẠNG CHUẨN Y KHOA" (`style_nutricomp_plus_master_1.jpg` / `poster_plus_auto.png`). Sữa dinh dưỡng y học Đức Nutricomp 300Kcal/200ml, bục podium tròn, nhiệt kế thủy ngân & sổ tay y tế, combo lốc 4 chai + chai lẻ tặng kèm.
+  2. *Phong cách 2 (Insight tâm lý chăm sóc người bệnh):* "SỰ THẬT VỀ CHĂM NGƯỜI BỆNH - Càng ép ăn nhiều, bạn và người thân càng kiệt sức. Hãy làm ngược lại !" (`style_nutricomp_plus_master_2.jpg` / `poster_nutricomp_drink_plus.png`). Bục podium khối sang trọng, dải lụa xanh ngọc "200ML TRỌN VẸN 300KCAL", mua 1 lốc 4 chai tặng 1 chai lẻ, logo GlobalPharma & B|BRAUN.
+- Mỗi khi sản xuất nội dung/ảnh liên quan đến Nutricomp Plus (phục hồi sau phẫu thuật, sau mổ, suy kiệt, ung thư, cao năng lượng 1.5 kcal/ml, 300 kcal/chai): **BẮT BUỘC dùng đúng thiết kế chuẩn tham chiếu này (`poster_nutricomp_drink_plus.png`)!**
+- 🚫 **LƯU Ý:** Ảnh tham chiếu này **CHỈ DÀNH RIÊNG CHO NUTRICOMP PLUS**, TUYỆT ĐỐI KHÔNG dùng cho Renal hay Prontosan.
+
 Ảnh tham chiếu (`style_nutricomp_renal_master.jpg`) là **chuẩn mực về uy tín & nhận diện thương hiệu của Renal**, nhưng Agent Design **CẦN LINH HOẠT THAY ĐỔI LAYOUT BỐ CỤC VÀ MÀU SẮC CHO HÀI HÒA, TUYỆT ĐỐI KHÔNG CỐ ĐỊNH RẬP KHUÔN 1 KIỂU DUY NHẤT**:
 
 * **Nguyên tắc nhận diện cốt lõi (Bắt buộc giữ chuẩn):**
