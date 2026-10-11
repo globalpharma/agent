@@ -1,6 +1,8 @@
 name: Diagnose VPS GoClaw
 
 on:
+  push:
+    branches: [diagnose*]
   workflow_dispatch:
 
 jobs:
@@ -16,14 +18,21 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
             cd /opt/goclaw
-            echo "=== RECENT GOCLAW LOGS (LAST 120 LINES) ==="
-            docker compose -f docker-compose.yml -f docker-compose.postgres.yml logs --tail 120 goclaw
+            echo "=== RECENT GOCLAW LOGS (LAST 250 LINES) ==="
+            docker compose -f docker-compose.yml -f docker-compose.postgres.yml logs --tail 250 goclaw
+            
+            echo "=== RECENT CRON JOBS ==="
+            docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T postgres psql -U goclaw -d goclaw -c "SELECT id, name, enabled, schedule_kind, cron_expression, deliver, deliver_channel, deliver_to, last_status, SUBSTRING(last_error FROM 1 FOR 150) as last_error, updated_at FROM cron_jobs ORDER BY updated_at DESC LIMIT 10;" || true
+            
+            echo "=== RECENT CRON RUN LOGS ==="
+            docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T postgres psql -U goclaw -d goclaw -c "SELECT id, job_id, status, SUBSTRING(error FROM 1 FOR 150) as error, ran_at, duration_ms FROM cron_run_logs ORDER BY ran_at DESC LIMIT 10;" || true
+
+            echo "=== RECENT TEAM TASKS ==="
+            docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T postgres psql -U goclaw -d goclaw -c "SELECT id, team_id, task_number, subject, status, assigned_agent_id, SUBSTRING(result FROM 1 FOR 150) as result, updated_at FROM agent_team_tasks ORDER BY updated_at DESC LIMIT 10;" || true
             
             echo "=== RECENT POSTGRES SESSIONS ==="
-            docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T postgres psql -U postgres -d goclaw -c "SELECT session_key, channel, updated_at, jsonb_array_length(messages) as msg_count FROM sessions ORDER BY updated_at DESC LIMIT 6;"
+            docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T postgres psql -U goclaw -d goclaw -c "SELECT session_key, channel, updated_at, jsonb_array_length(messages) as msg_count FROM sessions ORDER BY updated_at DESC LIMIT 8;" || true
             
             echo "=== LATEST 5 MESSAGES IN TELEGRAM SESSION ==="
-            docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T postgres psql -U postgres -d goclaw -c "SELECT m->>'role' as role, SUBSTRING(m->>'content' FROM 1 FOR 250) as content, m->>'timestamp' as ts FROM sessions, jsonb_array_elements(messages) as m WHERE session_key LIKE '%telegram:direct:5781808621' ORDER BY (m->>'timestamp')::text DESC LIMIT 5;"
-            
-            echo "=== CHECKING DELEGATE SESSIONS ==="
-            docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T postgres psql -U postgres -d goclaw -c "SELECT session_key, channel, updated_at, jsonb_array_length(messages) as msg_count FROM sessions WHERE session_key LIKE 'delegate:%' ORDER BY updated_at DESC LIMIT 5;"
+            docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T postgres psql -U goclaw -d goclaw -c "SELECT m->>'role' as role, SUBSTRING(m->>'content' FROM 1 FOR 250) as content, m->>'timestamp' as ts FROM sessions, jsonb_array_elements(messages) as m WHERE session_key LIKE '%telegram:direct:5781808621' ORDER BY (m->>'timestamp')::text DESC LIMIT 5;" || true
+
