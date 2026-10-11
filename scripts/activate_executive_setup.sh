@@ -433,9 +433,8 @@ END $$;
 EOSQL
 
 echo "Setting up Marketing Skill (tao-creative-fb), Brain (my-brain), and Python dependencies..."
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw pip install --break-system-packages pillow requests python-dotenv || echo "Pip install warning, continuing..."
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw mkdir -p /app/skills /app/data/skills /app/workspace/skills /app/my-brain /app/data/my-brain /app/workspace/my-brain /app/workspace/output /app/workspace/assets /app/data/skills/tao-creative-fb/assets/references || true
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw chmod -R 777 /app/workspace /app/data /app/skills /app/my-brain || true
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 1000 goclaw pip install --break-system-packages pillow requests python-dotenv || echo "Pip install warning, continuing..."
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 1000 goclaw mkdir -p /app/skills /app/data/skills /app/workspace/skills /app/my-brain /app/data/my-brain /app/workspace/my-brain /app/workspace/output /app/workspace/assets /app/data/skills/tao-creative-fb/assets/references || true
 
 GOCLAW_CID=$(docker compose -f docker-compose.yml -f docker-compose.postgres.yml ps -q goclaw 2>/dev/null || echo "goclaw-goclaw-1")
 
@@ -445,7 +444,7 @@ if [ -d "my-brain" ]; then
     docker cp my-brain/. ${GOCLAW_CID}:/app/data/my-brain/ || true
     docker cp my-brain/. ${GOCLAW_CID}:/app/workspace/my-brain/ || true
     # Sync my-brain into all team member workspaces and individual agent workspaces
-    docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw sh -c '
+    docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 1000 goclaw sh -c '
         for d in /app/workspace/teams/*/* /app/workspace/agents/*; do
             if [ -d "$d" ]; then
                 mkdir -p "$d/my-brain"
@@ -461,7 +460,7 @@ if [ -d "skills/tao-creative-fb" ]; then
     docker cp skills/tao-creative-fb ${GOCLAW_CID}:/app/data/skills/ || true
     docker cp skills/tao-creative-fb ${GOCLAW_CID}:/app/workspace/skills/ || true
     # Sync to all active agent team workspaces and individual agent workspaces
-    docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw sh -c '
+    docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 1000 goclaw sh -c '
         for d in /app/workspace/teams/*/* /app/workspace/agents/*; do
             if [ -d "$d" ]; then
                 mkdir -p "$d/skills"
@@ -476,7 +475,7 @@ if [ -d "skills/ads-image-architect" ]; then
     docker cp skills/ads-image-architect ${GOCLAW_CID}:/app/skills/ || true
     docker cp skills/ads-image-architect ${GOCLAW_CID}:/app/data/skills/ || true
     docker cp skills/ads-image-architect ${GOCLAW_CID}:/app/workspace/skills/ || true
-    docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw sh -c '
+    docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 1000 goclaw sh -c '
         for d in /app/workspace/teams/*/* /app/workspace/agents/*; do
             if [ -d "$d" ]; then
                 mkdir -p "$d/skills"

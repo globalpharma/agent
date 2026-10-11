@@ -131,6 +131,8 @@ COPY --from=builder /out/goclaw /app/goclaw
 COPY --from=builder /out/pkg-helper /app/pkg-helper
 COPY --from=builder /src/migrations/ /app/migrations/
 COPY --from=builder /src/skills/ /app/bundled-skills/
+COPY --from=builder /src/skills/ /app/skills/
+COPY --from=builder /src/my-brain/ /app/my-brain/
 COPY docker-entrypoint.sh /app/docker-entrypoint.sh
 
 # Fix Windows git clone issues:
@@ -157,10 +159,10 @@ RUN chmod +x /app/docker-entrypoint.sh && \
 # Symlink .claude → data volume so Claude CLI credentials persist across container recreates.
 RUN mkdir -p /app/workspace /app/data/.runtime/pip /app/data/.runtime/npm-global/lib \
         /app/data/.runtime/pip-cache /app/data/.runtime/bin /app/data/.claude /app/skills \
-        /app/tsnet-state /app/.goclaw \
+        /app/my-brain /app/tsnet-state /app/.goclaw \
     && ln -s /app/data/.claude /app/.claude \
     && touch /app/data/.runtime/apk-packages \
-    && chown -R goclaw:goclaw /app/workspace /app/skills /app/tsnet-state /app/.goclaw \
+    && chown -R goclaw:goclaw /app/workspace /app/skills /app/my-brain /app/tsnet-state /app/.goclaw \
     && chown goclaw:goclaw /app/bundled-skills /app/data \
     && chown root:goclaw /app/data/.runtime /app/data/.runtime/apk-packages \
     && chmod 0750 /app/data/.runtime \
