@@ -129,6 +129,11 @@ func makeCronJobHandler(sched *scheduler.Scheduler, msgBus *bus.MessageBus, cfg 
 			}
 		}
 
+		// Normalize username striverle to numeric chat ID if applicable
+		if strings.EqualFold(job.DeliverTo, "striverle") || strings.EqualFold(job.DeliverTo, "@striverle") {
+			job.DeliverTo = "5781808621"
+		}
+
 		var extraPrompt string
 		if job.Deliver && job.DeliverChannel != "" && job.DeliverTo != "" {
 			extraPrompt = fmt.Sprintf(
@@ -283,6 +288,10 @@ func deliverCronOutput(msgBus *bus.MessageBus, job *store.CronJob, content strin
 				to = defaultChat
 			}
 		}
+	}
+
+	if strings.EqualFold(to, "striverle") || strings.EqualFold(to, "@striverle") {
+		to = "5781808621"
 	}
 
 	if deliver && channel != "" && to != "" {

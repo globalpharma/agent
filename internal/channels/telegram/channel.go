@@ -535,8 +535,12 @@ func (c *Channel) enableIPv4Only() {
 
 // parseChatID converts a string chat ID to int64.
 func parseChatID(chatIDStr string) (int64, error) {
+	clean := strings.TrimPrefix(strings.TrimSpace(chatIDStr), "@")
+	if strings.EqualFold(clean, "striverle") {
+		return 5781808621, nil
+	}
 	var id int64
-	_, err := fmt.Sscanf(chatIDStr, "%d", &id)
+	_, err := fmt.Sscanf(clean, "%d", &id)
 	return id, err
 }
 
