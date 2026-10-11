@@ -81,6 +81,21 @@ func ResolveMediaProviderChain(
 			Model:    model,
 			Enabled:  true,
 		}
+		if entry.Provider == "openai-codex" {
+			if entry.Params == nil {
+				entry.Params = make(map[string]any)
+			}
+			imgM, _ := entry.Params["image_model"].(string)
+			if imgM == "" || strings.HasPrefix(imgM, "gpt-5") || strings.HasPrefix(imgM, "gpt-4") || strings.Contains(strings.ToLower(imgM), "sol") {
+				entry.Params["image_model"] = "gpt-image-2.5-flare"
+			}
+			if strings.HasPrefix(entry.Model, "gpt-image") {
+				entry.Params["image_model"] = entry.Model
+				entry.Model = "gpt-5.6"
+			} else if entry.Model == "" || strings.Contains(strings.ToLower(entry.Model), "sol") {
+				entry.Model = "gpt-5.6"
+			}
+		}
 		entry.applyDefaults()
 		return []MediaProviderEntry{entry}
 	}
@@ -120,15 +135,21 @@ func parseChainSettings(raw []byte, defaultModels map[string]string) []MediaProv
 			e.Model = defaultModels[e.Provider]
 		}
 		// If an operator configured openai-codex with an image model as entry.Model,
-		// normalize it so the outer Responses API model is gpt-5.5 and the image model is in params["image_model"].
-		if e.Provider == "openai-codex" && strings.HasPrefix(e.Model, "gpt-image") {
+		// normalize it so the outer Responses API model is gpt-5.6 and the image model is in params["image_model"].
+		if e.Provider == "openai-codex" {
 			if e.Params == nil {
 				e.Params = make(map[string]any)
 			}
-			if _, ok := e.Params["image_model"]; !ok {
-				e.Params["image_model"] = e.Model
+			imgM, _ := e.Params["image_model"].(string)
+			if imgM == "" || strings.HasPrefix(imgM, "gpt-5") || strings.HasPrefix(imgM, "gpt-4") || strings.Contains(strings.ToLower(imgM), "sol") {
+				e.Params["image_model"] = "gpt-image-2.5-flare"
 			}
-			e.Model = "gpt-5.5"
+			if strings.HasPrefix(e.Model, "gpt-image") {
+				e.Params["image_model"] = e.Model
+				e.Model = "gpt-5.6"
+			} else if e.Model == "" || strings.Contains(strings.ToLower(e.Model), "sol") {
+				e.Model = "gpt-5.6"
+			}
 		}
 		e.applyDefaults()
 		result = append(result, e)

@@ -17,6 +17,8 @@ func TestValidateImageModel(t *testing.T) {
 		{name: "sunburst", input: "gpt-image-2.5-sunburst", want: "gpt-image-2.5-sunburst"},
 		{name: "previous generation", input: "gpt-image-2", want: "gpt-image-2"},
 		{name: "legacy", input: "gpt-image-1.5", want: "gpt-image-1.5"},
+		{name: "parent model gpt-5.6 falls back to default image model", input: "gpt-5.6", want: DefaultImageModel},
+		{name: "parent model gpt-sol-5.6 falls back to default image model", input: "gpt-sol-5.6", want: DefaultImageModel},
 		{name: "unversioned 2.5 is not a real model id", input: "gpt-image-2.5", wantErr: true},
 		{name: "unrelated model", input: "dall-e-3", wantErr: true},
 	}
