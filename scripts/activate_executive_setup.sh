@@ -328,8 +328,8 @@ E'- **MASTER STYLE CHUẨN QUẢNG CÁO & NGUYÊN TẮC LINH HOẠT SÁNG TẠO:
 E'  + Dựa trên ảnh tham chiếu của Sếp (`style_nutricomp_renal_master.jpg`) làm CHUẨN MỰC UY TÍN (Logo GlobalPharma chính thức nét căng `brand_header_master.png` kèm cờ Đức "NHẬP KHẨU CHÍNH HÃNG TỪ ĐỨC", tên sản phẩm, thông số y khoa, nút CTA, cam kết y tế).\n' ||
 E'  + **LINH HOẠT THAY ĐỔI LAYOUT & MÀU SẮC:** Tuyệt đối KHÔNG cố định rập khuôn 1 kiểu duy nhất. Phối màu sắc hài hòa (Renal: xanh ngọc mát dịu; Plus: vàng cam ấm tràn đầy năng lượng).\n' ||
 E'- **QUY TRÌNH 2 BƯỚC TỰ ĐỘNG THỰC THI:**\n' ||
-E'  1. **Bước 1 (Sinh bối cảnh AI cao cấp từ tài khoản ChatGPT Plus):**\n' ||
-E'     Gọi công cụ `create_image(prompt: "...")` với prompt tiếng Anh 5 tầng (commercial editorial lifestyle photography, warm morning sunlight, natural authentic expressions).\n' ||
+E'  1. **Bước 1 (Sinh bối cảnh AI cao cấp từ tài khoản ChatGPT Plus bằng model GPT Sol 5.6 / gpt-5.6):**\n' ||
+E'     Gọi công cụ `create_image(prompt: "...", model: "gpt-5.6")` với prompt tiếng Anh 5 tầng (commercial editorial lifestyle photography, warm morning sunlight, natural authentic expressions).\n' ||
 E'  2. **Bước 2 (Ghép quang học sản phẩm thật & Logo chính hãng 100%):**\n' ||
 E'     Gọi công cụ `exec` chạy script placement:\n' ||
 E'     `python3 /app/data/skills/tao-creative-fb/scripts/compose_placement.py --bg "<đường_dẫn_ảnh_sinh>" --product [plus|renal|combo|prontosan] --output /app/workspace/output/poster_<product>_placement.png`\n' ||
@@ -406,12 +406,12 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
         ON CONFLICT (key, tenant_id) DO UPDATE SET value = EXCLUDED.value, updated_at = NOW();
 
         INSERT INTO system_configs (key, value, tenant_id, updated_at)
-        VALUES ('background.model', 'gpt-5.5', v_ea_tenant, NOW())
+        VALUES ('background.model', 'gpt-5.6', v_ea_tenant, NOW())
         ON CONFLICT (key, tenant_id) DO UPDATE SET value = EXCLUDED.value, updated_at = NOW();
-        RAISE NOTICE 'Configured background.provider and background.model for tenant %', v_ea_tenant;
+        RAISE NOTICE 'Configured background.provider and background.model (gpt-5.6) for tenant %', v_ea_tenant;
     END IF;
 
-    -- Configure create_image builtin tool to route via openai-codex (gpt-5.5 + gpt-image-2.5-flare) and studioaigg
+    -- Configure create_image builtin tool to route via openai-codex default gpt-5.6 (gpt sol 5.6)
     INSERT INTO builtin_tools (name, display_name, description, category, enabled, settings, requires, metadata, created_at, updated_at)
     VALUES (
         'create_image',
@@ -419,7 +419,7 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
         'Generate images from text descriptions using AI',
         'media',
         true,
-        '{"providers":[{"provider":"openai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
+        '{"providers":[{"provider":"openai-codex","model":"gpt-5.6","params":{"image_model":"gpt-5.6"},"enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
         '{}'::text[],
         '{}'::jsonb,
         NOW(),
@@ -427,9 +427,9 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
     )
     ON CONFLICT (name) DO UPDATE SET 
         enabled = true,
-        settings = '{"providers":[{"provider":"openai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
+        settings = '{"providers":[{"provider":"openai-codex","model":"gpt-5.6","params":{"image_model":"gpt-5.6"},"enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
         updated_at = NOW();
-    RAISE NOTICE 'Configured builtin_tools settings for create_image';
+    RAISE NOTICE 'Configured builtin_tools settings for create_image with default model gpt-5.6';
 
     -- Ensure marketing and executive agents can freely use create_image, exec, and bash tools
     UPDATE agents SET tools_config = '{}' WHERE agent_key IN ('dev', 'content', 'design', 'lead-marketing', 'ea', 'assistant');
