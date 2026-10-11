@@ -7,6 +7,7 @@ Tuân thủ nghiêm ngặt quy chuẩn y khoa, độ dài 80-150 từ, USP B.Bra
 import os
 import sys
 import json
+import sqlite3
 import argparse
 from pathlib import Path
 
@@ -17,6 +18,29 @@ if sys.platform == "win32":
         sys.stderr.reconfigure(encoding="utf-8")
     except Exception:
         pass
+
+def load_brain_knowledge():
+    candidates = [
+        Path.cwd() / "my-brain" / "brain.db",
+        Path(__file__).resolve().parents[2] / "my-brain" / "brain.db",
+        Path("/app/workspace/my-brain/brain.db"),
+        Path("/app/data/my-brain/brain.db")
+    ]
+    for p in candidates:
+        if p.exists():
+            try:
+                conn = sqlite3.connect(p)
+                cur = conn.cursor()
+                knowledge = {}
+                for row in cur.execute("SELECT product_code, name, pricing FROM product_knowledge"):
+                    knowledge[row[0]] = {"name": row[1], "pricing": row[2]}
+                conn.close()
+                return knowledge
+            except Exception:
+                pass
+    return {}
+
+BRAIN_KNOWLEDGE = load_brain_knowledge()
 
 # Thư viện nội dung y khoa được chuẩn hóa từ tài liệu lâm sàng GlobalPharma & B.Braun
 CONTENT_REPOSITORY = {
@@ -61,7 +85,8 @@ CONTENT_REPOSITORY = {
                     "Nutricomp® Drink Renal là giải pháp dinh dưỡng y học chuyên biệt từ Tập đoàn B.Braun (Đức):\n"
                     "• Cung cấp 400 kcal đậm đặc chỉ trong chai 200ml, không gây quá tải dịch.\n"
                     "• Kiểm soát tối ưu Natri, Kali, Phốt pho, hạn chế ứ đọng độc chất.\n"
-                    "• Mở nắp uống trực tiếp, thơm ngậy hương vani dễ tiêu hóa."
+                    "• Mở nắp uống trực tiếp, thơm ngậy hương vani dễ tiêu hóa.\n"
+                    "• Combo 12 chai chính thức: 1.296.000 VNĐ (chỉ 108.000 VNĐ/chai)."
                 ),
                 "cta": "👉 Bấm [Gửi tin nhắn] ngay để Dược sĩ lâm sàng GlobalPharma tư vấn chế độ ăn chuẩn cho người thân!"
             },
@@ -73,7 +98,7 @@ CONTENT_REPOSITORY = {
                     "Nutricomp® Drink Renal Vanilla là công thức dinh dưỡng lâm sàng từ B.Braun CHLB Đức với hơn 180 năm uy tín y khoa:\n"
                     "• Đạm sinh học cao chọn lọc, giảm tối đa tích tụ urê trong máu.\n"
                     "• Cung cấp đầy đủ vitamin & khoáng chất thiết yếu theo khuyến nghị lâm sàng ESPEN.\n"
-                    "• Tiện lợi 200ml sẵn sàng sử dụng mọi lúc, không mất công chuẩn bị."
+                    "• Liệu trình combo 12 chai: 1.296.000 VNĐ (108.000 VNĐ/chai), sẵn sàng sử dụng mọi lúc."
                 ),
                 "cta": "👉 Nhắn tin cho GlobalPharma hôm nay để nhận giải pháp dinh dưỡng bảo tồn chức năng thận tối ưu!"
             },

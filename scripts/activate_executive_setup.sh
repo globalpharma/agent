@@ -358,7 +358,7 @@ E'## 1. NGUYÊN TẮC TINH GỌN (LÀM VIỆC TRỰC TIẾP VỚI LÃNH ĐẠO)\
 E'- Khi nhận yêu cầu từ Lãnh đạo (Sếp Công Hùng, Anh Cường) hoặc từ EA:\n' ||
 E'  + Thực thi ngay lập tức trong 1 lượt duy nhất (Single-turn), không qua trung gian, không hỏi rườm rà.\n' ||
 E'  + Đọc ngay file Brain `skills/tao-creative-fb/assets/knowledge_globalpharma_products_campaign.md` và `assets/caption-templates.md`.\n' ||
-E'  + Viết đúng 100% chuẩn y khoa: Nutricomp Renal (2.0 kcal/ml, 400 kcal/chai 200ml, kiểm soát kali/natri/phospho, giá combo 12 chai: 1.224.000 VNĐ, liều dùng 1-3 chai/ngày).\n' ||
+E'  + Viết đúng 100% chuẩn y khoa: Nutricomp Renal (2.0 kcal/ml, 400 kcal/chai 200ml, kiểm soát kali/natri/phospho, giá combo 12 chai: 1.296.000 VNĐ, giá lẻ 108.000 VNĐ/chai, liều dùng 1-3 chai/ngày).\n' ||
 E'  + Giữ cấu trúc 3 phần: Hook thấu cảm y khoa -> Body kiến thức dinh dưỡng lâm sàng B.Braun -> Soft/Hard CTA tư vấn từ Dược sĩ GlobalPharma.\n' ||
 E'  + Trả về bài viết hoàn chỉnh, trau chuốt, sẵn sàng đăng tải.';
 

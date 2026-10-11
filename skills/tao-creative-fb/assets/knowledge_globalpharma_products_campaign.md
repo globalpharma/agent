@@ -88,8 +88,9 @@ Không dùng thông tin 2-3 chai/ngày trong sale page làm liều chuẩn.
 
 Chiến dịch chính thức: combo 12 chai Nutricomp® Drink Renal Vanilla.
 
-- Giá combo 12 chai chính thức: 1.224.000 VND.
-- Tương đương: 102.000 VND/chai.
+- Giá combo 12 chai chính thức: 1.296.000 VND.
+- Tương đương: 108.000 VND/chai.
+- Giá 1 chai lẻ Nutricomp® Drink Renal: 108.000 VND.
 
 Khi trả lời về giá, ưu tiên giá combo chính thức này. Nếu có bảng giá lẻ/thùng thay đổi theo thời điểm, cần hỏi lại người phụ trách hoặc xem bảng giá mới nhất.
 

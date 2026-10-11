@@ -58,7 +58,7 @@ def post_single_page(image_path: Path, caption: str, page_id: str, page_token: s
     try:
         with open(image_path, "rb") as f:
             files = {"source": (image_path.name, f, mime_type)}
-            data = {"message": caption, "access_token": page_token}
+            data = {"caption": caption, "message": caption, "access_token": page_token}
             response = requests.post(url, data=data, files=files, timeout=60)
             res_json = response.json()
 
