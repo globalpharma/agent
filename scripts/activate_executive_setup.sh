@@ -442,16 +442,17 @@ docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e P
 echo "=== BUILTIN TOOLS (CREATE_IMAGE SETTINGS) ==="
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -c "SELECT name, enabled, settings FROM builtin_tools WHERE name = 'create_image';" || true
 
-echo "=== LAST 8 MESSAGES OF SẾP TELEGRAM SESSION ==="
+echo "=== RECENT MESSAGES IN TELEGRAM AND DELEGATE SESSIONS ==="
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" -c "
-SELECT (m->>'role') as role, SUBSTRING((m->>'content') FROM 1 FOR 300) as content
+SELECT session_key, (m->>'role') as role, SUBSTRING((m->>'content') FROM 1 FOR 300) as content
 FROM (
-    SELECT jsonb_array_elements(messages) as m, row_number() over () as rn
+    SELECT session_key, jsonb_array_elements(messages) as m
     FROM sessions
-    WHERE session_key = 'agent:dev:telegram:direct:5781808621'
+    WHERE channel = 'telegram' OR session_key ILIKE '%5781808621%' OR session_key LIKE 'delegate:%'
+    ORDER BY updated_at DESC
+    LIMIT 3
 ) sub
-ORDER BY rn DESC
-LIMIT 8;
+LIMIT 12;
 " || true
 
 echo "=== ALL CRON JOBS IN POSTGRESQL (TÁC VỤ ĐỊNH KỲ) ==="
