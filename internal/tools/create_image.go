@@ -37,7 +37,7 @@ type credentialProvider interface {
 }
 
 // imageGenProviderPriority is the default order for image generation providers.
-var imageGenProviderPriority = []string{"studioaigg", "gemini", "openai-codex", "openai", "openrouter", "minimax", "dashscope", "byteplus"}
+var imageGenProviderPriority = []string{"openai-codex", "studioaigg", "gemini", "openai", "openrouter", "minimax", "dashscope", "byteplus"}
 
 // imageGenModelDefaults maps provider names to default image generation models.
 var imageGenModelDefaults = map[string]string{

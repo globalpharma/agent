@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"mime"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -265,4 +266,101 @@ func resolveSenderName(msg bus.InboundMessage) string {
 		}
 	}
 	return ""
+}
+
+// autoAttachCreativeMedia checks if an outbound message represents a creative/social post
+// without attached media. If so, it looks up corresponding product posters on disk
+// and automatically attaches them to the outbound message so the user receives both caption and image.
+func autoAttachCreativeMedia(outMsg *bus.OutboundMessage) {
+	if outMsg == nil || len(outMsg.Media) > 0 || outMsg.Content == "" {
+		return
+	}
+
+	contentLower := strings.ToLower(outMsg.Content)
+	isCreativeFlow := strings.Contains(contentLower, "caption") ||
+		strings.Contains(contentLower, "poster") ||
+		strings.Contains(contentLower, "bài viết") ||
+		strings.Contains(contentLower, "bài page") ||
+		strings.Contains(contentLower, "ý tưởng") ||
+		strings.Contains(contentLower, "nutricomp") ||
+		strings.Contains(contentLower, "prontosan") ||
+		strings.Contains(contentLower, "globalpharma")
+
+	if !isCreativeFlow {
+		return
+	}
+
+	// Candidate file search directories
+	searchDirs := []string{
+		"/app/workspace/output",
+		"/app/data/skills/tao-creative-fb/output",
+		"skills/tao-creative-fb/output",
+		"/app/skills/tao-creative-fb/output",
+		"output",
+	}
+
+	var productCandidates []string
+	if strings.Contains(contentLower, "plus") ||
+		strings.Contains(contentLower, "sau phẫu thuật") ||
+		strings.Contains(contentLower, "sau mổ") ||
+		strings.Contains(contentLower, "suy kiệt") ||
+		strings.Contains(contentLower, "300 kcal") ||
+		strings.Contains(contentLower, "1.5 kcal") {
+		productCandidates = []string{
+			"poster_nutricomp_drink_plus.png",
+			"poster_nutricomp_plus_placement.png",
+			"poster_plus_auto.png",
+		}
+	} else if strings.Contains(contentLower, "renal") ||
+		strings.Contains(contentLower, "thận") ||
+		strings.Contains(contentLower, "lọc máu") ||
+		strings.Contains(contentLower, "400 kcal") ||
+		strings.Contains(contentLower, "2.0 kcal") {
+		productCandidates = []string{
+			"poster_nutricomp_renal.png",
+			"poster_nutricomp_renal_placement.png",
+			"organic_post_renal.png",
+		}
+	} else if strings.Contains(contentLower, "prontosan") ||
+		strings.Contains(contentLower, "vết thương") ||
+		strings.Contains(contentLower, "biofilm") ||
+		strings.Contains(contentLower, "loét") {
+		productCandidates = []string{
+			"poster_prontosan_wound_spray.png",
+		}
+	} else if strings.Contains(contentLower, "combo") ||
+		strings.Contains(contentLower, "1.296.000") ||
+		strings.Contains(contentLower, "12 chai") {
+		productCandidates = []string{
+			"poster_nutricomp_combo12.png",
+		}
+	}
+
+	var foundPath string
+	for _, dir := range searchDirs {
+		for _, name := range productCandidates {
+			cand := filepath.Join(dir, name)
+			if info, err := os.Stat(cand); err == nil && !info.IsDir() && info.Size() > 0 {
+				foundPath = cand
+				break
+			}
+		}
+		if foundPath != "" {
+			break
+		}
+	}
+
+	if foundPath != "" {
+		outMsg.Media = append(outMsg.Media, bus.MediaAttachment{
+			URL:         foundPath,
+			ContentType: "image/png",
+		})
+		// Clean up textual "Gợi ý poster" bullet points from message content
+		// since real visual poster is now attached directly.
+		if idx := strings.Index(outMsg.Content, "Gợi ý poster:"); idx != -1 {
+			outMsg.Content = strings.TrimSpace(outMsg.Content[:idx])
+		} else if idx := strings.Index(outMsg.Content, "Gợi ý visual:"); idx != -1 {
+			outMsg.Content = strings.TrimSpace(outMsg.Content[:idx])
+		}
+	}
 }
