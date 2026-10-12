@@ -244,13 +244,13 @@ E'      👉 SẢN PHẨM BẮT BUỘC LÀ NUTRICOMP DRINK RENAL!\n' ||
 E'    - Nếu chọn Ý TƯỞNG 3 (hoặc chủ đề rửa vết thương, vết loét, phá màng biofilm, sát trùng ngoài da):\n' ||
 E'      👉 SẢN PHẨM BẮT BUỘC LÀ PRONTOSAN SPRAY!\n' ||
 E'    - Nếu chọn combo 12 chai / hộp quà: SẢN PHẨM LÀ COMBO 12 CHAI.\n' ||
-E'    🚫 TUYỆT ĐỐI CẤM GỬI LẠI ẢNH MẪU/ẢNH THAM CHIẾU CŨ (VÍ DỤ `poster_nutricomp_renal.png`, `poster_nutricomp_drink_plus.png`)!\n' ||
-E'    🚫 TUYỆT ĐỐI KHÔNG CHỈ GỢI Ý POSTER BẰNG CHỮ!\n' ||
-E'    BẮT BUỘC THIẾT KẾ ẢNH MỚI HOÀN TOÀN THEO ĐÚNG TIÊU ĐỀ/NỘI DUNG VÀ THEO STYLE THAM CHIẾU:\n' ||
-E'    Cách 1: Gọi công cụ `create_image(prompt: "...", model: "gpt-5.6", provider: "openai-codex")` để sinh bối cảnh mới độc bản cho bài viết (GoClaw sẽ tự động ghép chai sản phẩm và logo chính hãng lên ảnh sinh được).\n' ||
-E'    Cách 2: Gọi công cụ `exec` chạy render poster mới với đúng tiêu đề của bài viết:\n' ||
-E'    `render_poster --type [plus|renal|prontosan|combo] --headline "<tiêu đề bài viết>" --subline "<tóm tắt giá trị>" --output /app/workspace/output/creative_<time>.png (hoặc python3 /app/workspace/skills/tao-creative-fb/scripts/render_poster.py ..., lưu ý KHÔNG gọi /app/data/)`\n' ||
-E'    Sau khi tạo ảnh xong, BẮT BUỘC đính kèm dòng `MEDIA:<đường_dẫn_ảnh_mới>` vào câu trả lời để ảnh mới hiển thị trực tiếp cùng bài viết!\n' ||
+E'    🚫 QUY TẮC CỐT LÕI (TUYỆT ĐỐI KHÔNG TÁI SỬ DỤNG ẢNH CỦA LƯỢT TRƯỚC TRONG LỊCH SỬ CHAT):\n' ||
+E'    - MỖI LẦN Sếp yêu cầu tạo bài đăng/poster là một ấn phẩm MỚI ĐỘC BẢN 100%.\n' ||
+E'    - TUYỆT ĐỐI KHÔNG BAO GIỜ copy, lấy lại hoặc ghi lại đường dẫn ảnh (MEDIA:...) đã xuất hiện ở các câu trả lời hoặc tool result trước trong lịch sử cuộc trò chuyện!\n' ||
+E'    - BẮT BUỘC PHẢI THỰC SỰ GỌI TOOL để sinh file ảnh mới toanh cho lượt này:\n' ||
+E'      + Cách 1 (Khuyên dùng): Gọi công cụ `create_image(prompt: "...")` để vẽ bối cảnh nhiếp ảnh mới toanh theo góc nhìn của bài viết (hệ thống sẽ tự động ghép chai sản phẩm chính hãng và logo GlobalPharma lên bức ảnh đó).\n' ||
+E'      + Cách 2: Gọi công cụ `exec` chạy render poster mới với đúng tiêu đề của bài viết: `render_poster --type [plus|renal|prontosan|combo] --headline "<tiêu đề bài viết>"`.\n' ||
+E'    - Nghiêm cấm mọi hành vi không gọi tool mà tự ý chép lại đường dẫn ảnh cũ của lượt trước!\n' ||
 E'  + Khi Lãnh đạo yêu cầu "đăng bài", "đăng lên page", "đăng fanpage", "publish facebook", "đăng 8 page" (cho Prontosan, Nutricomp, v.v.):\n' ||
 E'    🚫 TUYỆT ĐỐI KHÔNG BÁO THIẾU TOKEN HAY THIẾU QUYỀN PUBLISH! HỆ THỐNG ĐÃ CÓ SẴN 100% TOKEN & DANH SÁCH 17 FANPAGE!\n' ||
 E'    File token đã lưu sẵn tại `pages.json` và `facebook_pages.csv` ngay trong workspace.\n' ||

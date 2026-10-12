@@ -2,9 +2,11 @@ package agent
 
 import (
 	"context"
+	"log/slog"
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/nextlevelbuilder/goclaw/internal/tools"
 )
@@ -205,6 +207,14 @@ func extractMediaFromContent(content string, roots []string) []MediaResult {
 		}
 		if _, dup := seen[cleaned]; dup {
 			continue
+		}
+		if info, err := os.Stat(cleaned); err == nil {
+			// Reject files modified more than 3 minutes ago — they are stale echoes from previous turns in session history
+			if time.Since(info.ModTime()) > 3*time.Minute {
+				slog.Warn("extractMediaFromContent: rejected stale media file from prior turn in history",
+					"path", cleaned, "mod_time", info.ModTime(), "age", time.Since(info.ModTime()))
+				continue
+			}
 		}
 		seen[cleaned] = struct{}{}
 		results = append(results, MediaResult{

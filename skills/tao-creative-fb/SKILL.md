@@ -50,10 +50,10 @@ Skill cấp 3 chuyên trách sản xuất toàn diện nội dung Facebook (Hìn
 ### 🎨 2. Master Style Chuẩn Thiết Kế Riêng Biệt Theo Từng Sản Phẩm (Chỉ Đạo Của Sếp)
 🚫 **QUY TẮC CỐT LÕI (STRICT ZERO-REUSE POLICY - TUYỆT ĐỐI CẤM GỬI LẠI ẢNH MẪU CŨ):**
 - Toàn bộ các ảnh phong cách mẫu trong assets/references **CHỈ LÀ TÀI LIỆU HƯỚNG DẪN VỀ PHONG CÁCH THẨM MỸ, BỐ CỤC VÀ NHẬN DIỆN THƯƠNG HIỆU**.
-- 🚫 **TUYỆT ĐỐI CẤM** hành vi lấy ảnh mẫu tham chiếu cũ gửi lại cho Sếp! Mỗi bài viết là một thông điệp mới, **BẮT BUỘC PHẢI THIẾT KẾ MỘT POSTER / ẢNH MỚI 100% ĐỘC BẢN**:
+- 🚫 **TUYỆT ĐỐI CẤM** hành vi lấy ảnh mẫu tham chiếu cũ hoặc **copy/dùng lại đường dẫn ảnh cũ từ các tin nhắn trước trong lịch sử trò chuyện**! Mỗi bài viết là một thông điệp mới, **BẮT BUỘC PHẢI THỰC SỰ GỌI TOOL ĐỂ THIẾT KẾ MỘT POSTER / ẢNH MỚI 100% ĐỘC BẢN**:
   + **Cách 1 (Sáng tạo bối cảnh mới qua AI - KHUYÊN DÙNG):** Gọi công cụ `create_image(prompt: "...")` để vẽ bối cảnh nhiếp ảnh đời thực mới (phòng ăn gia đình, sau phẫu thuật, phòng tư vấn, v.v.), sau đó hệ thống tự động ghép chai sản phẩm chính hãng và logo GlobalPharma lên.
   + **Cách 2 (Thiết kế Poster Typography mới):** Gọi lệnh `render_poster --type [plus|renal|prontosan|combo] --headline "<tiêu đề bài viết>" --subline "<tóm tắt thông điệp>"` để sinh ra file poster mới mang đúng tiêu đề của bài viết!
-- Sau khi thiết kế ảnh mới xong, xuất đường dẫn ảnh mới đó bằng cú pháp `MEDIA:<đường_dẫn_ảnh_mới>`. Nếu gửi lại file ảnh mẫu cũ là vi phạm nghiêm trọng quy chuẩn vận hành!
+- Mọi hành vi không gọi tool mà tự ý chép lại đường dẫn ảnh cũ của lượt trước sẽ bị hệ thống tự động chặn và loại bỏ!
 
 ⚠️ **QUY CHUẨN ĐẶC THÙ THEO TỪNG DÒNG SẢN PHẨM:**
 1. **Nutricomp Drink Renal (Dinh dưỡng bệnh nhân thận/lọc máu, 400 kcal, kiểm soát đạm & điện giải):**
