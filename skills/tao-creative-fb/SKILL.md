@@ -48,26 +48,26 @@ Skill cấp 3 chuyên trách sản xuất toàn diện nội dung Facebook (Hìn
   CHỈ KHI NÀO Sếp nói rõ từ **"combo"**, **"hộp quà"**, **"thùng 12 chai"**: Mới được sử dụng ảnh hộp Combo 12 chai (`cut_nutricomp_box.png`).
 
 ### 🎨 2. Master Style Chuẩn Thiết Kế Riêng Biệt Theo Từng Sản Phẩm (Chỉ Đạo Của Sếp)
-⚠️ **QUY ĐỊNH ĐẶC QUYỀN DÀNH RIÊNG CHO NUTRICOMP DRINK RENAL:**
-- Ảnh tham chiếu (`style_nutricomp_renal_master.jpg` / `poster_nutricomp_renal.png`) là **chuẩn mực tuyệt đối về thiết kế dành riêng cho Nutricomp Drink Renal**.
-- Mỗi khi sản xuất nội dung/ảnh liên quan đến Renal (Dinh dưỡng cho người bệnh thận, lọc máu, suy thận mạn, kiểm soát điện giải, 400 kcal): **BẮT BUỘC dùng đúng thiết kế chuẩn tham chiếu này (`poster_nutricomp_renal.png`)!**
-- 🚫 **LƯU Ý QUAN TRỌNG:** Ảnh tham chiếu này **CHỈ DÀNH RIÊNG CHO RENAL**, TUYỆT ĐỐI KHÔNG dùng cho **Prontosan Spray** hay **Nutricomp Drink Plus**. Mỗi sản phẩm có bộ nhận diện và concept riêng biệt.
+🚫 **QUY TẮC CỐT LÕI (STRICT ZERO-REUSE POLICY - TUYỆT ĐỐI CẤM GỬI LẠI ẢNH MẪU CŨ):**
+- Toàn bộ các ảnh tham chiếu (`style_nutricomp_renal_master.jpg`, `poster_nutricomp_renal.png`, `poster_nutricomp_drink_plus.png`, `poster_prontosan_wound_spray.png`, `master_poster_*.png`) **CHỈ LÀ TÀI LIỆU HƯỚNG DẪN VỀ PHONG CÁCH THẨM MỸ, BỐ CỤC VÀ NHẬN DIỆN THƯƠNG HIỆU**.
+- 🚫 **TUYỆT ĐỐI CẤM** hành vi lười biếng lấy file ảnh tham chiếu cũ có sẵn trong máy gửi lại cho Sếp! Mỗi bài viết là một thông điệp mới, **BẮT BUỘC PHẢI THIẾT KẾ MỘT POSTER / ẢNH MỚI 100% ĐỘC BẢN**:
+  + **Cách 1 (Sáng tạo bối cảnh mới qua AI):** Gọi công cụ `create_image(prompt: "...")` để vẽ bối cảnh nhiếp ảnh đời thực mới (phòng ăn gia đình, sau phẫu thuật, phòng tư vấn, v.v.), sau đó hệ thống tự động ghép chai sản phẩm chính hãng và logo GlobalPharma lên.
+  + **Cách 2 (Thiết kế Poster Typography mới):** Gọi lệnh `render_poster --type [plus|renal|prontosan|combo] --headline "<tiêu đề bài viết>" --subline "<tóm tắt thông điệp>" --output /app/workspace/output/creative_<timestamp>.png` để sinh ra file poster mới mang đúng tiêu đề của bài viết!
+- Sau khi thiết kế ảnh mới xong, xuất đường dẫn ảnh mới đó bằng cú pháp `MEDIA:<đường_dẫn_ảnh_mới>`. Nếu gửi lại file ảnh mẫu cũ là vi phạm nghiêm trọng quy chuẩn vận hành!
 
-⚠️ **QUY ĐỊNH ĐẶC QUYỀN DÀNH RIÊNG CHO PRONTOSAN SPRAY:**
-- Ảnh tham chiếu (`style_prontosan_spray_lifestyle.png` và `style_prontosan_spray_clinical.jpg`) là **chuẩn mực tuyệt đối về thiết kế dành riêng cho Prontosan Wound Spray B.Braun**.
-- Hai phong cách chuẩn mực đã được Sếp trực tiếp phê duyệt:
-  1. *Phong cách 1 (Giáo dục / Vết thương sinh hoạt):* "VẾT THƯƠNG NHỎ, NHƯNG BẠN ĐÃ LÀM SẠCH ĐÚNG CÁCH? - Làm sạch • Rửa • Dưỡng ẩm" (`style_prontosan_spray_lifestyle.png` / `poster_prontosan_wound_spray.png`). Nhiếp ảnh đời thực người dùng xịt nhẹ lên vết xước ở tay, chai xịt Prontosan đặt trên bàn đá cẩm thạch trắng vô trùng.
-  2. *Phong cách 2 (Key Visual / Định vị B.Braun Đức):* "GIẢI PHÁP CHĂM SÓC VẾT THƯƠNG NHANH LÀNH VÀ BỀN VỮNG" (`style_prontosan_spray_clinical.jpg`). Logo GlobalPharma & B|BRAUN chuẩn mực, biểu tượng khiên vàng hợp tác y khoa, chuyên viên y tế đeo găng xịt vết thương.
-- Mỗi khi sản xuất nội dung/ảnh liên quan đến Prontosan (rửa vết thương, màng biofilm, sát trùng vô trùng, loét tì đè, loét tiểu đường): **BẮT BUỘC dùng đúng thiết kế chuẩn tham chiếu này (`poster_prontosan_wound_spray.png`)!**
-- 🚫 **LƯU Ý:** Ảnh tham chiếu này **CHỈ DÀNH RIÊNG CHO PRONTOSAN**, TUYỆT ĐỐI KHÔNG dùng cho Renal hay Drink Plus.
-
-⚠️ **QUY ĐỊNH ĐẶC QUYỀN DÀNH RIÊNG CHO NUTRICOMP DRINK PLUS:**
-- Ảnh tham chiếu (`style_nutricomp_plus_master_1.jpg` và `style_nutricomp_plus_master_2.jpg`) là **chuẩn mực tuyệt đối về thiết kế dành riêng cho Nutricomp Drink Plus B.Braun**.
-- Hai phong cách chuẩn mực đã được Sếp trực tiếp phê duyệt:
-  1. *Phong cách 1 (Phục hồi thể trạng / Ưu đãi):* "BÍ QUYẾT VỰC DẬY THỂ TRẠNG CHUẨN Y KHOA" (`style_nutricomp_plus_master_1.jpg` / `poster_plus_auto.png`). Sữa dinh dưỡng y học Đức Nutricomp 300Kcal/200ml, bục podium tròn, nhiệt kế thủy ngân & sổ tay y tế, combo lốc 4 chai + chai lẻ tặng kèm.
-  2. *Phong cách 2 (Insight tâm lý chăm sóc người bệnh):* "SỰ THẬT VỀ CHĂM NGƯỜI BỆNH - Càng ép ăn nhiều, bạn và người thân càng kiệt sức. Hãy làm ngược lại !" (`style_nutricomp_plus_master_2.jpg` / `poster_nutricomp_drink_plus.png`). Bục podium khối sang trọng, dải lụa xanh ngọc "200ML TRỌN VẸN 300KCAL", mua 1 lốc 4 chai tặng 1 chai lẻ, logo GlobalPharma & B|BRAUN.
-- Mỗi khi sản xuất nội dung/ảnh liên quan đến Nutricomp Plus (phục hồi sau phẫu thuật, sau mổ, suy kiệt, ung thư, cao năng lượng 1.5 kcal/ml, 300 kcal/chai): **BẮT BUỘC dùng đúng thiết kế chuẩn tham chiếu này (`poster_nutricomp_drink_plus.png`)!**
-- 🚫 **LƯU Ý:** Ảnh tham chiếu này **CHỈ DÀNH RIÊNG CHO NUTRICOMP PLUS**, TUYỆT ĐỐI KHÔNG dùng cho Renal hay Prontosan.
+⚠️ **QUY CHUẨN ĐẶC THÙ THEO TỪNG DÒNG SẢN PHẨM:**
+1. **Nutricomp Drink Renal (Dinh dưỡng bệnh nhân thận/lọc máu, 400 kcal, kiểm soát đạm & điện giải):**
+   - Phôi sản phẩm: Đúng 1 chai Renal nắp tím (`cut_nutricomp_single_bottle.png`).
+   - Tone màu: Xanh ngọc y tế (Teal `#008080`) phối trắng ngà và tím nắp chai.
+   - Bối cảnh: Người lớn tuổi khỏe mạnh, an tâm, thư thái bên gia đình hoặc góc tư vấn y khoa.
+2. **Nutricomp Drink Plus (Dinh dưỡng cao năng lượng 300 kcal, phục hồi sau phẫu thuật/suy kiệt/ung thư):**
+   - Phôi sản phẩm: Đúng 1 chai Plus nắp cam (`cut_nutricomp_plus_bottle.png`).
+   - Tone màu: Vàng cam ấm áp (Amber `#F59E0B`) phối xanh y tế B.Braun, toát lên năng lượng hồi sinh.
+   - Bối cảnh: Bàn ăn gia đình buổi sáng ấm cúng, người thân chăm sóc bệnh nhân sau mổ đang dần bình phục.
+3. **Prontosan Wound Spray (Rửa vết thương, phá màng Biofilm, ngăn nhiễm trùng):**
+   - Phôi sản phẩm: Đúng chai xịt Prontosan (`cut_prontosan_bottle.png`).
+   - Tone màu: Xanh cyan/trắng vô trùng lâm sàng hiện đại.
+   - Bối cảnh: Đời thường sạch sẽ, xịt nhẹ nhàng lên vết trầy xước ở tay hoặc bối cảnh phòng chăm sóc y tế chuẩn vô trùng.
 
 Ảnh tham chiếu (`style_nutricomp_renal_master.jpg`) là **chuẩn mực về uy tín & nhận diện thương hiệu của Renal**, nhưng Agent Design **CẦN LINH HOẠT THAY ĐỔI LAYOUT BỐ CỤC VÀ MÀU SẮC CHO HÀI HÒA, TUYỆT ĐỐI KHÔNG CỐ ĐỊNH RẬP KHUÔN 1 KIỂU DUY NHẤT**:
 

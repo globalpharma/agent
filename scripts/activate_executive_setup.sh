@@ -346,22 +346,13 @@ E'  + Khi Sếp yêu cầu Nutricomp Renal: **BẮT BUỘC DÙNG ĐÚNG ẢNH 1 
 E'  + Khi Sếp yêu cầu Nutricomp Plus: **BẮT BUỘC DÙNG ĐÚNG ẢNH 1 CHAI PLUS 200ML** (`cut_nutricomp_plus_bottle.png`, nắp vàng/cam, phục hồi sau mổ/suy kiệt/ung thư).\n' ||
 E'  + CHỈ KHI NÀO Sếp nói rõ từ **"combo"** (hoặc "hộp quà", "thùng 12 chai"): Mới được dùng ảnh hộp Combo 12 chai (`cut_nutricomp_box.png`)!\n' ||
 E'  + Khi Sếp yêu cầu Prontosan: Dùng đúng ảnh chai làm sạch vết thương (`cut_prontosan_bottle.png`).\n' ||
-E'- **ẢNH THAM CHIẾU ĐẶC QUYỀN DÀNH RIÊNG CHO NUTRICOMP DRINK RENAL:**\n' ||
-E'  + Khi làm ảnh liên quan đến Nutricomp Renal (Bệnh nhân thận, lọc máu, suy thận mạn, kiểm soát điện giải, 400 kcal): BẮT BUỘC dùng đúng thiết kế chuẩn tham chiếu của Sếp (`style_nutricomp_renal_master.jpg` / `poster_nutricomp_renal.png`).\n' ||
-E'  + 🚫 ĐẶC BIỆT CHÚ Ý: Ảnh tham chiếu này CHỈ DÀNH RIÊNG CHO RENAL, TUYỆT ĐỐI KHÔNG DÙNG CHO DRINK PLUS VÀ PRONTOSAN SPRAY! Mỗi dòng sản phẩm có concept và thiết kế độc lập!\n' ||
-E'- **ẢNH THAM CHIẾU ĐẶC QUYỀN DÀNH RIÊNG CHO PRONTOSAN SPRAY:**\n' ||
-E'  + Khi làm ảnh liên quan đến Prontosan (rửa vết thương, phá màng biofilm, sát trùng vô trùng, loét tì đè, loét tiểu đường): BẮT BUỘC dùng đúng thiết kế chuẩn tham chiếu của Sếp (`style_prontosan_spray_lifestyle.png` / `poster_prontosan_wound_spray.png` hoặc `style_prontosan_spray_clinical.jpg`).\n' ||
-E'  + 🚫 ĐẶC BIỆT CHÚ Ý: Ảnh tham chiếu này CHỈ DÀNH RIÊNG CHO PRONTOSAN, TUYỆT ĐỐI KHÔNG DÙNG CHO RENAL VÀ DRINK PLUS!\n' ||
-E'- **ẢNH THAM CHIẾU ĐẶC QUYỀN DÀNH RIÊNG CHO NUTRICOMP DRINK PLUS:**\n' ||
-E'  + Khi làm ảnh liên quan đến Nutricomp Plus (phục hồi sau phẫu thuật, suy kiệt, ung thư, 300 kcal/chai, 1.5 kcal/ml): BẮT BUỘC dùng đúng thiết kế chuẩn tham chiếu của Sếp (`style_nutricomp_plus_master_1.jpg` / `poster_plus_auto.png` hoặc `style_nutricomp_plus_master_2.jpg` / `poster_nutricomp_drink_plus.png`).\n' ||
-E'  + 🚫 ĐẶC BIỆT CHÚ Ý: Ảnh tham chiếu này CHỈ DÀNH RIÊNG CHO DRINK PLUS, TUYỆT ĐỐI KHÔNG DÙNG CHO RENAL VÀ PRONTOSAN!\n' ||
-E'- **QUY TRÌNH KẾT XUẤT MASTER TEMPLATE CHUẨN 100% ẢNH THAM CHIẾU:**\n' ||
-E'  1. **Cách chuẩn ưu tiên số 1 (Master Template Engine - Bám sát 100% ảnh tham chiếu của Sếp + Kết xuất tiêu đề bài viết mới):**\n' ||
-E'     Gọi công cụ `exec` chạy ngay lệnh kết xuất từ phôi Master Template:\n' ||
-E'     `render_poster --type [renal|plus|prontosan|combo] --headline "<tiêu đề bài viết>" --subline "<tóm tắt thông điệp>" --output /app/workspace/output/poster_<type>_master.png (hoặc python3 /app/workspace/skills/tao-creative-fb/scripts/render_poster.py ..., lưu ý KHÔNG gọi /app/data/)`\n' ||
-E'  2. **Cách 2 (Sinh bối cảnh AI qua GPT Sol 5.6 + Tự động chuẩn hóa Master Template):**\n' ||
-E'     Gọi công cụ `create_image(prompt: "...", model: "gpt-5.6", provider: "openai-codex")` (hệ thống tự động hậu kỳ theo chuẩn Master Template).\n' ||
-E'- **TRẢ VỀ KẾT QUẢ CHO SẾP:** Báo cáo ngắn gọn ý nghĩa thiết kế và BẮT BUỘC giữ nguyên dòng `MEDIA:<đường_dẫn_ảnh>` để giao diện hiển thị trực tiếp!';
+E'- **NGUYÊN TẮC BẮT BUỘC: KHÔNG TÁI SỬ DỤNG ẢNH MẪU - LUÔN TẠO POSTER / ẢNH MỚI 100%:**\n' ||
+E'  + Toàn bộ các ảnh tham chiếu (`style_nutricomp_renal_master.jpg`, `poster_nutricomp_renal.png`, `poster_nutricomp_drink_plus.png`, `poster_prontosan_wound_spray.png`, `master_poster_*.png`) CHỈ LÀ TÀI LIỆU HƯỚNG DẪN VỀ BỐ CỤC VÀ STYLE THẨM MỸ!\n' ||
+E'  + 🚫 TUYỆT ĐỐI CẤM gửi lại các file ảnh mẫu tĩnh cũ! Mỗi bài viết BẮT BUỘC phải sinh một bức ảnh/poster mới hoàn toàn độc bản!\n' ||
+E'  + BẮT BUỘC dùng 1 trong 2 cách sau để xuất ảnh mới:\n' ||
+E'    * Cách 1 (Sáng tạo bối cảnh đời thực mới qua AI - KHUYÊN DÙNG): Gọi công cụ `create_image(prompt: "...")` để vẽ bối cảnh nhiếp ảnh mới toanh theo góc nhìn của bài viết (phòng ăn gia đình ấm cúng, người sau mổ phục hồi thể trạng, người cao tuổi an tâm, v.v.), hệ thống sẽ tự động ghép chai sản phẩm chính hãng và logo GlobalPharma lên bức ảnh đó.\n' ||
+E'    * Cách 2 (Render poster mới với tiêu đề bài viết): Gọi công cụ `exec` chạy: `render_poster --type [plus|renal|prontosan|combo] --headline "<tiêu đề bài viết>" --subline "<tóm tắt thông điệp>" --output /app/workspace/output/creative_<time>.png` để sinh ra file poster mới mang đúng tiêu đề của bài viết!\n' ||
+E'- **TRẢ VỀ KẾT QUẢ CHO SẾP:** Báo cáo ngắn gọn ý nghĩa thiết kế và BẮT BUỘC kết thúc bằng dòng `MEDIA:<đường_dẫn_ảnh_mới>` để giao diện hiển thị trực tiếp!';
 
             INSERT INTO agent_context_files (id, agent_id, file_name, content, tenant_id, created_at, updated_at)
             VALUES (gen_random_uuid(), v_des_id, 'SOUL.md', v_des_soul, v_ea_tenant, NOW(), NOW())
@@ -762,12 +753,11 @@ BEGIN
 1. Đọc kiến thức và tài liệu sản phẩm Nutricomp Drink Plus trong Brain / Skills.
 2. Chọn ngẫu nhiên 1 góc độ sáng tạo (angle) thật ấn tượng, khác biệt và sâu sắc về mặt lâm sàng/dinh dưỡng (ví dụ: phục hồi sau mổ, người suy kiệt, ung thư cần năng lượng cao 300 kcal/chai, bổ sung EPA chống suy mòn, tiện dụng dễ uống).
 3. Viết 1 bài đăng Facebook chuẩn y khoa và truyền cảm hứng (độ dài 80-150 từ, có hashtag #Nutricomp #NutricompDrinkPlus #Globalpharma #DinhDuongYHoc).
-4. BẮT BUỘC TẠO ẢNH POSTER ĐÍNH KÈM:
-   - Cách 1 (Khuyên dùng): Dùng công cụ exec chạy lệnh:
-     render_poster --type plus --headline "<tiêu đề ngắn bài viết>" --subline "Bổ sung dinh dưỡng cao năng lượng 300Kcal/200ml" --output /app/workspace/output/poster_plus_morning.png
-     (Lưu ý: Gọi trực tiếp lệnh 'render_poster', TUYỆT ĐỐI KHÔNG dùng tiền tố '/app/data/').
-   - Cách 2: Dùng công cụ create_image(prompt: "...", provider: "openai-codex").
-   - BẮT BUỘC kết thúc câu trả lời bằng dòng: MEDIA:/app/workspace/output/poster_plus_morning.png để hệ thống tự động tải và gửi ảnh poster trực tiếp vào Telegram cùng bài viết cho Sếp duyệt.
+4. BẮT BUỘC THỰC SỰ GỌI CÔNG CỤ TẠO ẢNH MỚI TRONG LƯỢT NÀY (TUYỆT ĐỐI KHÔNG BỊA ĐƯỜNG DẪN ẢNH VÀ KHÔNG GỬI LẠI ẢNH CŨ):
+   - Bạn BẮT BUỘC phải gọi công cụ trong lượt này để tạo ảnh thật:
+     + Cách 1 (Khuyên dùng): Dùng công cụ create_image(prompt: "...") để sinh ảnh bối cảnh mới độc bản cho bài viết.
+     + Cách 2: Dùng công cụ exec chạy: render_poster --type plus --headline "<tiêu đề ngắn bài viết>" --subline "Bổ sung dinh dưỡng cao năng lượng 300Kcal/200ml" --output /app/workspace/output/poster_plus_morning.png
+   - Sau khi công cụ hoàn tất và trả về file ảnh thành phẩm, bạn mới kết thúc bài trả lời bằng dòng: MEDIA:<đường_dẫn_ảnh_vừa_tạo> để hệ thống tự động gửi ảnh poster trực tiếp vào Telegram cùng bài viết cho Sếp duyệt.
 5. Gửi toàn bộ nội dung bài viết + ảnh poster vào Telegram này để Sếp duyệt. Nhắc rõ danh sách 8 Fanpage Nutricomp sẽ đăng khi Sếp bấm duyệt/xác nhận:
    - https://www.facebook.com/nutricomp.globalpharma/
    - https://www.facebook.com/suadinhduongyhocduc/
@@ -818,12 +808,11 @@ BEGIN
 1. Đọc kiến thức và tài liệu sản phẩm Nutricomp Drink Renal trong Brain / Skills.
 2. Chọn ngẫu nhiên 1 góc độ sáng tạo (angle) thật ấn tượng, khác biệt và chuyên sâu y khoa cho bệnh nhân suy thận (ví dụ: công thức giảm protein, kiểm soát nghiêm ngặt Kali - Natri - Photpho, bảo tồn chức năng thận, năng lượng chuẩn xác 2.0 kcal/ml, hương vani thơm ngon).
 3. Viết 1 bài đăng Facebook chuẩn y khoa, tận tâm (độ dài 80-150 từ, có hashtag #Nutricomp #NutricompDrinkRenal #DinhDuongBenhNhanThan #Globalpharma).
-4. BẮT BUỘC TẠO ẢNH POSTER ĐÍNH KÈM:
-   - Cách 1 (Khuyên dùng): Dùng công cụ exec chạy lệnh:
-     render_poster --type renal --headline "<tiêu đề ngắn bài viết>" --subline "Dinh dưỡng chuyên biệt kiểm soát điện giải" --output /app/workspace/output/poster_renal_morning.png
-     (Lưu ý: Gọi trực tiếp lệnh 'render_poster', TUYỆT ĐỐI KHÔNG dùng tiền tố '/app/data/').
-   - Cách 2: Dùng công cụ create_image(prompt: "...", provider: "openai-codex").
-   - BẮT BUỘC kết thúc câu trả lời bằng dòng: MEDIA:/app/workspace/output/poster_renal_morning.png để hệ thống tự động tải và gửi ảnh poster trực tiếp vào Telegram cùng bài viết cho Sếp duyệt.
+4. BẮT BUỘC THỰC SỰ GỌI CÔNG CỤ TẠO ẢNH MỚI TRONG LƯỢT NÀY (TUYỆT ĐỐI KHÔNG BỊA ĐƯỜNG DẪN ẢNH VÀ KHÔNG GỬI LẠI ẢNH CŨ):
+   - Bạn BẮT BUỘC phải gọi công cụ trong lượt này để tạo ảnh thật:
+     + Cách 1 (Khuyên dùng): Dùng công cụ create_image(prompt: "...") để sinh ảnh bối cảnh mới độc bản cho bài viết.
+     + Cách 2: Dùng công cụ exec chạy: render_poster --type renal --headline "<tiêu đề ngắn bài viết>" --subline "Dinh dưỡng chuyên biệt kiểm soát điện giải" --output /app/workspace/output/poster_renal_morning.png
+   - Sau khi công cụ hoàn tất và trả về file ảnh thành phẩm, bạn mới kết thúc bài trả lời bằng dòng: MEDIA:<đường_dẫn_ảnh_vừa_tạo> để hệ thống tự động gửi ảnh poster trực tiếp vào Telegram cùng bài viết cho Sếp duyệt.
 5. Gửi toàn bộ nội dung bài viết + ảnh poster vào Telegram này để Sếp duyệt. Nhắc rõ danh sách 8 Fanpage Nutricomp sẽ đăng khi Sếp bấm duyệt/xác nhận:
    - https://www.facebook.com/nutricomp.globalpharma/
    - https://www.facebook.com/suadinhduongyhocduc/
@@ -874,12 +863,11 @@ BEGIN
 1. Đọc kiến thức và tài liệu giải pháp Prontosan (B. Braun / Đức) trong Brain / Skills.
 2. Chọn ngẫu nhiên 1 góc độ sáng tạo (angle) thật ấn tượng, khác biệt và thuyết phục về chăm sóc vết thương (ví dụ: phá vỡ màng Biofilm cứng đầu, ngăn ngừa nhiễm trùng tái phát, làm sạch vết thương không đau xót, bộ đôi dung dịch rửa + gel kháng khuẩn, vết loét tiểu đường/tì đè).
 3. Viết 1 bài đăng Facebook chuẩn chuyên môn y tế (độ dài 80-150 từ, có hashtag #Prontosan #BBraun #PhaVoBiofilm #ChamSocVetThuong #Globalpharma).
-4. BẮT BUỘC TẠO ẢNH POSTER ĐÍNH KÈM:
-   - Cách 1 (Khuyên dùng): Dùng công cụ exec chạy lệnh:
-     render_poster --type prontosan --headline "<tiêu đề ngắn bài viết>" --subline "Làm sạch  •  Rửa  •  Dưỡng ẩm" --output /app/workspace/output/poster_prontosan_morning.png
-     (Lưu ý: Gọi trực tiếp lệnh 'render_poster', TUYỆT ĐỐI KHÔNG dùng tiền tố '/app/data/').
-   - Cách 2: Dùng công cụ create_image(prompt: "...", provider: "openai-codex").
-   - BẮT BUỘC kết thúc câu trả lời bằng dòng: MEDIA:/app/workspace/output/poster_prontosan_morning.png để hệ thống tự động tải và gửi ảnh poster trực tiếp vào Telegram cùng bài viết cho Sếp duyệt.
+4. BẮT BUỘC THỰC SỰ GỌI CÔNG CỤ TẠO ẢNH MỚI TRONG LƯỢT NÀY (TUYỆT ĐỐI KHÔNG BỊA ĐƯỜNG DẪN ẢNH VÀ KHÔNG GỬI LẠI ẢNH CŨ):
+   - Bạn BẮT BUỘC phải gọi công cụ trong lượt này để tạo ảnh thật:
+     + Cách 1 (Khuyên dùng): Dùng công cụ create_image(prompt: "...") để sinh ảnh bối cảnh mới độc bản cho bài viết.
+     + Cách 2: Dùng công cụ exec chạy: render_poster --type prontosan --headline "<tiêu đề ngắn bài viết>" --subline "Làm sạch  •  Rửa  •  Dưỡng ẩm" --output /app/workspace/output/poster_prontosan_morning.png
+   - Sau khi công cụ hoàn tất và trả về file ảnh thành phẩm, bạn mới kết thúc bài trả lời bằng dòng: MEDIA:<đường_dẫn_ảnh_vừa_tạo> để hệ thống tự động gửi ảnh poster trực tiếp vào Telegram cùng bài viết cho Sếp duyệt.
 5. Gửi toàn bộ nội dung bài viết + ảnh poster vào Telegram này để Sếp duyệt. Nhắc rõ danh sách 8 Fanpage Prontosan sẽ đăng khi Sếp bấm duyệt/xác nhận:
    - https://www.facebook.com/prontosan.globalpharma/
    - https://www.facebook.com/giaiphapnhanhlanhvetthuong
