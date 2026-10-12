@@ -425,8 +425,7 @@ func wrapPoolProvider(ctx context.Context, reg *providers.Registry, entryProvide
 
 	tenantID := store.TenantIDFromContext(ctx)
 	if tenantID.String() == "00000000-0000-0000-0000-000000000000" {
-		// No tenant in context — cannot build a scoped router safely.
-		return resolved
+		tenantID = store.MasterTenantID
 	}
 
 	router := providers.NewChatGPTOAuthRouter(

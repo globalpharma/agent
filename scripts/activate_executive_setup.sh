@@ -434,25 +434,48 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
     END IF;
 
     -- 4. CONFIGURE CHATGPT PLUS POOL ACROSS ALL 3 ACCOUNTS (openai-codex, chatgpthnkt, lequyenopenai-codex)
-    -- Khi 1 tài khoản hết hạn/quota, hệ thống tự failover/round-robin sang 2 tài khoản còn lại
-    UPDATE llm_providers
-    SET settings = jsonb_set(
-        COALESCE(settings, '{}'::jsonb),
-        '{codex_pool}',
-        jsonb_build_object(
-            'strategy', 'round_robin',
-            'extra_provider_names', jsonb_build_array('chatgpthnkt', 'lequyenopenai-codex')
-        )
-    ),
-    updated_at = NOW()
-    WHERE name = 'openai-codex';
-    RAISE NOTICE 'Configured ChatGPT Plus account pool (round_robin with chatgpthnkt, lequyenopenai-codex) on openai-codex';
+    -- Đảm bảo alias 'hnkt' trỏ đến 'chatgpthnkt' (hoặc ngược lại) để agent gọi trực tiếp tên nào cũng chạy
+    INSERT INTO llm_providers (id, name, display_name, provider_type, api_key, api_base, tenant_id, enabled, settings, created_at, updated_at)
+    SELECT gen_random_uuid(), 'hnkt', 'ChatGPT Plus HNKT (Alias)', provider_type, api_key, api_base, tenant_id, enabled, settings, NOW(), NOW()
+    FROM llm_providers
+    WHERE name = 'chatgpthnkt' AND NOT EXISTS (SELECT 1 FROM llm_providers WHERE name = 'hnkt');
+
+    INSERT INTO llm_providers (id, name, display_name, provider_type, api_key, api_base, tenant_id, enabled, settings, created_at, updated_at)
+    SELECT gen_random_uuid(), 'chatgpthnkt', 'ChatGPT Plus HNKT', provider_type, api_key, api_base, tenant_id, enabled, settings, NOW(), NOW()
+    FROM llm_providers
+    WHERE name = 'hnkt' AND NOT EXISTS (SELECT 1 FROM llm_providers WHERE name = 'chatgpthnkt');
+
+    -- Tự động liên kết chéo tất cả tài khoản ChatGPT OAuth trong DB vào codex_pool
+    -- Khi 1 tài khoản hết hạn/quota/auth fail, hệ thống tự failover/round-robin sang các tài khoản còn lại
+    DECLARE
+        r_lp RECORD;
+        v_pool_members text[];
+    BEGIN
+        FOR r_lp IN SELECT name FROM llm_providers WHERE provider_type = 'chatgpt_oauth' LOOP
+            SELECT array_agg(name) INTO v_pool_members
+            FROM llm_providers
+            WHERE provider_type = 'chatgpt_oauth' AND name != r_lp.name;
+
+            IF v_pool_members IS NOT NULL AND array_length(v_pool_members, 1) > 0 THEN
+                UPDATE llm_providers
+                SET settings = jsonb_set(
+                    COALESCE(settings, '{}'::jsonb),
+                    '{codex_pool}',
+                    jsonb_build_object(
+                        'strategy', 'round_robin',
+                        'extra_provider_names', to_jsonb(v_pool_members)
+                    )
+                ),
+                updated_at = NOW()
+                WHERE name = r_lp.name;
+                RAISE NOTICE 'Configured codex_pool on provider % with backups: %', r_lp.name, v_pool_members;
+            END IF;
+        END LOOP;
+    END;
 
     -- Configure create_image builtin tool
-    -- Lưu ý kỹ thuật OpenAI Codex backend: Prompt model cho tool image_generation trong Responses API của tài khoản ChatGPT
-    -- phải dùng 'gpt-5.5' (hoặc rỗng), KHÔNG được truyền 'gpt-5.6' vì backend ChatGPT sẽ trả HTTP 400
-    -- "The 'gpt-5.6' model is not supported when using Codex with a ChatGPT account".
-    -- Model vẽ ảnh thực tế được quản lý bởi image_model: 'gpt-image-2.5-flare' (GPT Sol Image).
+    -- Chuỗi ưu tiên: Thử openai-codex (được router pool hỗ trợ toàn bộ các tài khoản Plus),
+    -- sau đó thử trực tiếp chatgpthnkt, hnkt, lequyenopenai-codex, rồi mới tới Gemini studioaigg
     INSERT INTO builtin_tools (name, display_name, description, category, enabled, settings, requires, metadata, created_at, updated_at)
     VALUES (
         'create_image',
@@ -460,7 +483,7 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
         'Generate images from text descriptions using AI',
         'media',
         true,
-        '{"providers":[{"provider":"openai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"chatgpthnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
+        '{"providers":[{"provider":"openai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"chatgpthnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"hnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"lequyenopenai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
         '{}'::text[],
         '{}'::jsonb,
         NOW(),
@@ -468,13 +491,13 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
     )
     ON CONFLICT (name) DO UPDATE SET 
         enabled = true,
-        settings = '{"providers":[{"provider":"openai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"chatgpthnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
+        settings = '{"providers":[{"provider":"openai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"chatgpthnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"hnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"lequyenopenai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
         updated_at = NOW();
 
     UPDATE builtin_tools 
-    SET settings = '{"providers":[{"provider":"openai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"chatgpthnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb
+    SET settings = '{"providers":[{"provider":"openai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"chatgpthnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"hnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"lequyenopenai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb
     WHERE name = 'create_image';
-    RAISE NOTICE 'Configured builtin_tools settings for create_image with openai-codex (gpt-5.5 + gpt-image-2.5-flare), chatgpthnkt fallback, and studioaigg fallback';
+    RAISE NOTICE 'Configured builtin_tools settings for create_image with full ChatGPT Plus account pool fallback';
 
     -- Configure post_facebook builtin tool
     INSERT INTO builtin_tools (name, display_name, description, category, enabled, settings, requires, metadata, created_at, updated_at)
