@@ -343,16 +343,12 @@ E'  + 🚫 ĐẶC BIỆT CHÚ Ý: Ảnh tham chiếu này CHỈ DÀNH RIÊNG CHO
 E'- **ẢNH THAM CHIẾU ĐẶC QUYỀN DÀNH RIÊNG CHO NUTRICOMP DRINK PLUS:**\n' ||
 E'  + Khi làm ảnh liên quan đến Nutricomp Plus (phục hồi sau phẫu thuật, suy kiệt, ung thư, 300 kcal/chai, 1.5 kcal/ml): BẮT BUỘC dùng đúng thiết kế chuẩn tham chiếu của Sếp (`style_nutricomp_plus_master_1.jpg` / `poster_plus_auto.png` hoặc `style_nutricomp_plus_master_2.jpg` / `poster_nutricomp_drink_plus.png`).\n' ||
 E'  + 🚫 ĐẶC BIỆT CHÚ Ý: Ảnh tham chiếu này CHỈ DÀNH RIÊNG CHO DRINK PLUS, TUYỆT ĐỐI KHÔNG DÙNG CHO RENAL VÀ PRONTOSAN!\n' ||
-E'- **QUY TRÌNH 2 BƯỚC TỰ ĐỘNG THỰC THI:**\n' ||
-E'  1. **Bước 1 (Sinh bối cảnh AI cao cấp từ tài khoản ChatGPT Plus bằng model GPT Sol 5.6 / gpt-5.6):**\n' ||
-E'     Gọi công cụ `create_image(prompt: "...", model: "gpt-5.6", provider: "openai-codex")` với prompt tiếng Anh 5 tầng (commercial editorial lifestyle photography, warm morning sunlight, natural authentic expressions).\n' ||
-E'  2. **Bước 2 (Ghép quang học sản phẩm thật & Logo chính hãng 100%):**\n' ||
-E'     Gọi công cụ `exec` chạy script placement:\n' ||
-E'     `python3 /app/data/skills/tao-creative-fb/scripts/compose_placement.py --bg "<đường_dẫn_ảnh_sinh>" --product [plus|renal|combo|prontosan] --output /app/workspace/output/poster_<product>_placement.png`\n' ||
-E'  3. **Nguyên tắc không bao giờ dừng task:**\n' ||
-E'     Nếu bước 1 gặp lỗi nhà cung cấp, lập tức chạy ngay script với bối cảnh chuẩn:\n' ||
-E'     `python3 /app/data/skills/tao-creative-fb/scripts/compose_placement.py --product [plus|renal|combo|prontosan] --output /app/workspace/output/poster_<product>_placement.png`\n' ||
-E'     hoặc `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type [plus|renal|combo|prontosan] --output-dir /app/workspace/output`\n' ||
+E'- **QUY TRÌNH KẾT XUẤT MASTER TEMPLATE CHUẨN 100% ẢNH THAM CHIẾU:**\n' ||
+E'  1. **Cách chuẩn ưu tiên số 1 (Master Template Engine - Bám sát 100% ảnh tham chiếu của Sếp + Kết xuất tiêu đề bài viết mới):**\n' ||
+E'     Gọi công cụ `exec` chạy ngay lệnh kết xuất từ phôi Master Template:\n' ||
+E'     `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type [renal|plus|prontosan|combo] --headline "<tiêu đề bài viết>" --subline "<tóm tắt thông điệp>" --output /app/workspace/output/poster_<type>_master.png`\n' ||
+E'  2. **Cách 2 (Sinh bối cảnh AI qua GPT Sol 5.6 + Tự động chuẩn hóa Master Template):**\n' ||
+E'     Gọi công cụ `create_image(prompt: "...", model: "gpt-5.6", provider: "openai-codex")` (hệ thống tự động hậu kỳ theo chuẩn Master Template).\n' ||
 E'- **TRẢ VỀ KẾT QUẢ CHO SẾP:** Báo cáo ngắn gọn ý nghĩa thiết kế và BẮT BUỘC giữ nguyên dòng `MEDIA:<đường_dẫn_ảnh>` để giao diện hiển thị trực tiếp!';
 
             INSERT INTO agent_context_files (id, agent_id, file_name, content, tenant_id, created_at, updated_at)
@@ -564,21 +560,10 @@ if [ -d "skills/tao-creative-fb/output" ]; then
     docker cp skills/tao-creative-fb/output/. ${GOCLAW_CID}:/app/data/skills/tao-creative-fb/output/ || true
 fi
 
-# Pre-render any missing posters in container
+# Always render fresh Master Template posters in container
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 1000 goclaw sh -c '
     mkdir -p /app/workspace/output /app/data/skills/tao-creative-fb/output
-    if [ ! -f /app/workspace/output/poster_nutricomp_drink_plus.png ]; then
-        python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type plus --output-dir /app/workspace/output || true
-    fi
-    if [ ! -f /app/workspace/output/poster_nutricomp_renal.png ]; then
-        python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type renal --output-dir /app/workspace/output || true
-    fi
-    if [ ! -f /app/workspace/output/poster_prontosan_wound_spray.png ]; then
-        python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type prontosan --output-dir /app/workspace/output || true
-    fi
-    if [ ! -f /app/workspace/output/poster_nutricomp_combo12.png ]; then
-        python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type combo --output-dir /app/workspace/output || true
-    fi
+    python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type all --output-dir /app/workspace/output || true
     cp -r /app/workspace/output/* /app/data/skills/tao-creative-fb/output/ 2>/dev/null || true
 ' || true
 
