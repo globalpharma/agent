@@ -373,6 +373,29 @@ func (t *CreateImageTool) Execute(ctx context.Context, args map[string]any) *Res
 func maybePostProcessProductPlacement(ctx context.Context, imagePath, prompt, filenameHint string) {
 	pLower := strings.ToLower(prompt + " " + filenameHint)
 
+	// Guard: If prompt or filename indicates a full poster design, ad layout, banner, typography,
+	// or creative composition, the generative AI model already created the complete graphic composition.
+	// We MUST NOT post-process it with duplicate overlays (which caused double-badges and bottles over people's legs).
+	isFullPoster := strings.Contains(pLower, "poster") ||
+		strings.Contains(pLower, "banner") ||
+		strings.Contains(pLower, "headline") ||
+		strings.Contains(pLower, "tiêu đề") ||
+		strings.Contains(pLower, "typography") ||
+		strings.Contains(pLower, "infographic") ||
+		strings.Contains(pLower, "layout") ||
+		strings.Contains(pLower, "creative ad") ||
+		strings.Contains(pLower, "ad copy") ||
+		strings.Contains(pLower, "thiết kế") ||
+		strings.Contains(pLower, "chữ") ||
+		strings.Contains(pLower, "cta") ||
+		strings.Contains(pLower, "badge") ||
+		strings.Contains(pLower, "angle") ||
+		strings.Contains(pLower, "quảng cáo")
+	if isFullPoster {
+		slog.Info("create_image: skipping product placement - prompt is a full poster composition", "path", imagePath)
+		return
+	}
+
 	var productType string
 	if strings.Contains(pLower, "prontosan") || strings.Contains(pLower, "wound") || strings.Contains(pLower, "spray") || strings.Contains(pLower, "vết thương") || strings.Contains(pLower, "biofilm") || strings.Contains(pLower, "loét") {
 		productType = "prontosan"
