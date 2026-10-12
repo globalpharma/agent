@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"strings"
 )
 
 // GenerateImage implements NativeImageProvider for CodexProvider.
