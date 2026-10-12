@@ -483,9 +483,12 @@ func autoAttachCreativeMedia(outMsg *bus.OutboundMessage) {
 
 	var foundPath string
 
-	// Always dynamically generate a unique, tailored poster for this post
+	// Always dynamically generate a unique, tailored creative image for this post
 	if targetType != "" {
 		renderScriptCandidates := []string{
+			"/app/data/skills/tao-creative-fb/scripts/compose_placement.py",
+			"/app/workspace/skills/tao-creative-fb/scripts/compose_placement.py",
+			"skills/tao-creative-fb/scripts/compose_placement.py",
 			"/app/data/skills/tao-creative-fb/scripts/render_poster.py",
 			"/app/workspace/skills/tao-creative-fb/scripts/render_poster.py",
 			"skills/tao-creative-fb/scripts/render_poster.py",
@@ -504,10 +507,15 @@ func autoAttachCreativeMedia(outMsg *bus.OutboundMessage) {
 				outDir = "skills/tao-creative-fb/output"
 			}
 			_ = os.MkdirAll(outDir, 0777)
-			customOutName := fmt.Sprintf("creative_tailored_%s_%d.png", targetType, time.Now().UnixNano()%100000)
+			customOutName := fmt.Sprintf("creative_tailored_%s_%d.png", targetType, time.Now().UnixNano()%1000000)
 			customOutPath := filepath.Join(outDir, customOutName)
 
-			cmdArgs := []string{scriptPath, "--type", targetType, "--output", customOutPath}
+			var cmdArgs []string
+			if strings.HasSuffix(scriptPath, "compose_placement.py") {
+				cmdArgs = []string{scriptPath, "--product", targetType, "--output", customOutPath}
+			} else {
+				cmdArgs = []string{scriptPath, "--type", targetType, "--output", customOutPath}
+			}
 			if headline != "" {
 				cmdArgs = append(cmdArgs, "--headline", headline)
 			}
