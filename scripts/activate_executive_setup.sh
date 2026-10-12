@@ -249,6 +249,12 @@ E'    Cách 1: Gọi công cụ `create_image(prompt: "...", model: "gpt-5.6", p
 E'    Cách 2: Gọi công cụ `exec` chạy render poster mới với đúng tiêu đề của bài viết:\n' ||
 E'    `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type [plus|renal|prontosan|combo] --headline "<tiêu đề bài viết>" --subline "<tóm tắt giá trị>" --output /app/workspace/output/creative_<time>.png`\n' ||
 E'    Sau khi tạo ảnh xong, BẮT BUỘC đính kèm dòng `MEDIA:<đường_dẫn_ảnh_mới>` vào câu trả lời để ảnh mới hiển thị trực tiếp cùng bài viết!\n' ||
+E'  + Khi Lãnh đạo yêu cầu "đăng bài", "đăng lên page", "đăng fanpage", "publish facebook", "đăng 8 page" (cho Prontosan, Nutricomp, v.v.):\n' ||
+E'    🚫 TUYỆT ĐỐI KHÔNG BÁO THIẾU TOKEN HAY THIẾU QUYỀN PUBLISH! HỆ THỐNG ĐÃ CÓ SẴN 100% TOKEN & DANH SÁCH 17 FANPAGE!\n' ||
+E'    File token đã lưu sẵn tại `pages.json` và `facebook_pages.csv` ngay trong workspace.\n' ||
+E'    Bạn gọi NGAY công cụ: `post_facebook(image: "<đường_dẫn_ảnh>", caption: "<nội_dung_caption>", product: "prontosan" [hoặc "nutricomp" / "all"])`.\n' ||
+E'    Hoặc gọi công cụ `exec` chạy lệnh: `python3 /app/data/skills/tao-creative-fb/scripts/post_facebook.py --image "<đường_dẫn_ảnh>" --caption "<nội_dung_caption>" --product [prontosan|nutricomp|all]`.\n' ||
+E'    Hệ thống sẽ tự động lọc đúng danh sách Fanpage mục tiêu (8-9 Fanpage Prontosan nếu là Prontosan; các Fanpage Nutricomp nếu là Nutricomp; không đăng chéo), đăng thật qua Facebook Graph API kèm độ trễ 2s chống spam, và trả về bảng mã Post ID để bạn báo cáo ngay cho Sếp!\n' ||
 E'- **Chỉ dùng Trưởng phòng (Lead Marketing / Lead CSKH) khi có chiến dịch tổng thể:**\n' ||
 E'  Chỉ khi Lãnh đạo giao bài toán chiến lược tổng hợp ("lập chiến dịch tháng", "báo cáo hiệu quả toàn phòng"), bạn mới giao cho Trưởng phòng để phân công đa nhiệm.\n' ||
 E'- **Báo cáo kết quả:** Ngay khi nhận kết quả từ agent chuyên trách, bạn báo cáo ngắn gọn cho Sếp và BẮT BUỘC để nguyên dòng `MEDIA:<đường dẫn ảnh>` để ảnh tự động hiển thị!\n\n' ||
@@ -288,7 +294,11 @@ E'1. **Giao cho Agent Design (`design`)**: Yêu cầu thiết kế đúng brief,
 E'2. **Chỉ thực hiện khi có yêu cầu**: TUYỆT ĐỐI KHÔNG tự động lên content planner hay tự sản xuất creative khi không có chỉ đạo.\n\n' ||
 E'## 3. NGUYÊN TẮC VẬN HÀNH CHẶT CHẼ\n' ||
 E'- Không tự ý spam kế hoạch khi không có yêu cầu. Nhưng khi Sếp yêu cầu làm bài đăng Facebook, bắt buộc phải trả lời gồm cả bài viết và ảnh poster gửi qua Telegram.\n' ||
-E'- Bãi bỏ phong cách thiết kế poster cũ.';
+E'- Bãi bỏ phong cách thiết kế poster cũ.\n\n' ||
+E'## 4. QUY TRÌNH ĐĂNG BÀI LÊN MẠNG LƯỚI FANPAGE (KHI LÃNH ĐẠO RA LỆNH ĐĂNG)\n' ||
+E'Hệ thống ĐÃ LƯU SẴN 100% token của toàn bộ 17 Fanpage tại `pages.json` và `facebook_pages.csv` ngay trong workspace.\n' ||
+E'Khi nhận lệnh đăng bài lên Fanpage, gọi ngay công cụ `post_facebook` hoặc lệnh `exec: python3 /app/data/skills/tao-creative-fb/scripts/post_facebook.py --image "<ảnh>" --caption "<caption>" --product [prontosan|nutricomp|all]`.\n' ||
+E'Hệ thống tự động đăng lên đúng nhóm Fanpage đã duyệt (8-9 page Prontosan nếu là Prontosan) qua Graph API và xuất bảng mã Post ID để báo cáo cho Sếp. TUYỆT ĐỐI KHÔNG BÁO THIẾU QUYỀN HAY THIẾU TOKEN!';
 
     IF v_mkt_id IS NOT NULL THEN
         INSERT INTO agent_context_files (id, agent_id, file_name, content, tenant_id, created_at, updated_at)
@@ -447,7 +457,24 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
     WHERE name = 'create_image';
     RAISE NOTICE 'Configured builtin_tools settings for create_image with default model gpt-5.6 and gpt-image-2.5-flare';
 
-    -- Ensure marketing and executive agents can freely use create_image, exec, and bash tools
+    -- Configure post_facebook builtin tool
+    INSERT INTO builtin_tools (name, display_name, description, category, enabled, settings, requires, metadata, created_at, updated_at)
+    VALUES (
+        'post_facebook',
+        'Post Facebook Fanpages',
+        'Publish images and captions to GlobalPharma Facebook Fanpages via Graph API using stored access tokens',
+        'social',
+        true,
+        '{}'::jsonb,
+        '{}'::text[],
+        '{}'::jsonb,
+        NOW(),
+        NOW()
+    )
+    ON CONFLICT (name) DO UPDATE SET enabled = true, updated_at = NOW();
+    RAISE NOTICE 'Registered builtin tool post_facebook';
+
+    -- Ensure marketing and executive agents can freely use create_image, post_facebook, exec, and bash tools
     UPDATE agents SET tools_config = '{}' WHERE status = 'active';
 
     -- Pin tao-creative-fb skill for all active agents so they always have full skill instructions inline
@@ -512,7 +539,28 @@ fi
 
 if [ -f "facebook_pages.csv" ]; then
     docker cp facebook_pages.csv ${GOCLAW_CID}:/app/workspace/ || true
+    docker cp facebook_pages.csv ${GOCLAW_CID}:/app/data/ || true
+    docker cp facebook_pages.csv ${GOCLAW_CID}:/app/ || true
 fi
+
+if [ -f "skills/tao-creative-fb/pages.json" ]; then
+    docker cp skills/tao-creative-fb/pages.json ${GOCLAW_CID}:/app/workspace/ || true
+    docker cp skills/tao-creative-fb/pages.json ${GOCLAW_CID}:/app/data/ || true
+    docker cp skills/tao-creative-fb/pages.json ${GOCLAW_CID}:/app/data/skills/tao-creative-fb/ || true
+    docker cp skills/tao-creative-fb/pages.json ${GOCLAW_CID}:/app/skills/tao-creative-fb/ || true
+fi
+
+# Sync facebook_pages.csv and pages.json to all agent and team workspaces + symlink post_facebook CLI
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw sh -c '
+    ln -sf /app/data/skills/tao-creative-fb/scripts/post_facebook.py /usr/local/bin/post_facebook 2>/dev/null || true
+    chmod +x /app/data/skills/tao-creative-fb/scripts/post_facebook.py 2>/dev/null || true
+    for d in /app/workspace/teams/*/* /app/workspace/agents/*; do
+        if [ -d "$d" ]; then
+            cp -f /app/workspace/facebook_pages.csv "$d/facebook_pages.csv" 2>/dev/null || true
+            cp -f /app/data/skills/tao-creative-fb/pages.json "$d/pages.json" 2>/dev/null || true
+        fi
+    done
+' || true
 
 echo "Updating cron_jobs to automatically deliver to Telegram (5781808621)..."
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -e PGPASSWORD="$PG_PASS" postgres psql -U "$PG_USER" -d "$PG_DB" << 'EOSQL'

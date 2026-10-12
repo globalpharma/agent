@@ -75,7 +75,9 @@ func wireExtraTools(
 	toolsReg.Register(tools.NewTelegramManagerTool())
 	// MCP credential manager tool (view and manage per-user MCP credentials)
 	toolsReg.Register(tools.NewMCPCredentialManagerTool())
-	slog.Info("session + message + send_file + telegram_manager + mcp_credential_manager tools registered")
+	// Post Facebook tool (publish posters and captions to GlobalPharma fanpages via Graph API)
+	toolsReg.Register(tools.NewPostFacebookTool(workspace))
+	slog.Info("session + message + send_file + telegram_manager + mcp_credential_manager + post_facebook tools registered")
 
 	// Register legacy tool aliases (backward-compat names from policy.go).
 	for alias, canonical := range tools.LegacyToolAliases() {

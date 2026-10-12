@@ -9,6 +9,8 @@ import os
 import sys
 import time
 import json
+import csv
+import re
 import argparse
 from pathlib import Path
 import requests
@@ -98,9 +100,84 @@ def post_single_page(image_path: Path, caption: str, page_id: str, page_token: s
         }
 
 
+def resolve_image_path(raw_path: str) -> Path:
+    """Tìm file ảnh theo đường dẫn tuyệt đối hoặc tương đối trong các thư mục phổ biến"""
+    clean_path = raw_path.strip()
+    if clean_path.startswith("MEDIA:"):
+        clean_path = clean_path[len("MEDIA:"):].strip()
+
+    p = Path(clean_path)
+    if p.exists() and p.is_file():
+        return p
+
+    candidates = [
+        Path.cwd() / clean_path,
+        Path("/app/workspace") / clean_path,
+        Path("/app/workspace/output") / clean_path,
+        Path("/app/workspace/output") / p.name,
+        Path("/app/data/skills/tao-creative-fb/output") / p.name,
+        Path(__file__).resolve().parents[1] / "output" / p.name,
+        Path.cwd() / "skills/tao-creative-fb/output" / p.name,
+    ]
+    for c in candidates:
+        if c.exists() and c.is_file():
+            return c
+
+    return p
+
+
+def load_pages_from_csv(csv_path: Path) -> list:
+    """Nạp danh sách Fanpage và Token từ file CSV facebook_pages.csv"""
+    pages = []
+    if not csv_path.exists():
+        return pages
+
+    try:
+        with open(csv_path, mode="r", encoding="utf-8") as f:
+            reader = csv.reader(f)
+            rows = list(reader)
+            if len(rows) < 2:
+                return pages
+
+            for row in rows[1:]:
+                if len(row) < 6:
+                    continue
+                raw_id = row[1].strip()
+                matches = re.findall(r"\d+", raw_id)
+                page_id = matches[0] if matches else raw_id
+                page_name = row[2].strip()
+                category = row[3].strip()
+                token = row[5].strip()
+
+                if not page_id or not token:
+                    continue
+
+                lower_name = page_name.lower()
+                pg = "nutricomp"
+                if "affiliate" in lower_name:
+                    pg = "affiliate"
+                elif "prontosan" in lower_name or "vết thương" in lower_name:
+                    pg = "prontosan"
+                elif "sức khỏe cho mọi nhà" in lower_name:
+                    pg = "all"
+
+                pages.append({
+                    "id": page_id,
+                    "name": page_name,
+                    "category": category,
+                    "token": token,
+                    "product_group": pg,
+                    "enabled": True
+                })
+    except Exception as e:
+        print(f"  [CẢNH BÁO] Lỗi đọc CSV {csv_path}: {e}")
+
+    return pages
+
+
 def post_to_facebook_multiple(image_path: str, caption: str, pages_config: list, delay_seconds: float = 2.0, dry_run: bool = False):
     """Đăng bài đồng loạt lên danh sách nhiều Fanpage kèm khoảng nghỉ tránh spam"""
-    img_file = Path(image_path)
+    img_file = resolve_image_path(image_path)
     if not img_file.exists():
         raise FileNotFoundError(f"Không tìm thấy file ảnh tại: {image_path}")
 
@@ -207,6 +284,11 @@ def main():
 
     args = parser.parse_args()
 
+    # Làm sạch đường dẫn ảnh nếu có tiền tố MEDIA:
+    clean_image_arg = args.image.strip()
+    if clean_image_arg.startswith("MEDIA:"):
+        clean_image_arg = clean_image_arg[len("MEDIA:"):].strip()
+
     # Đọc caption nếu truyền file
     caption_text = args.caption
     if Path(caption_text).exists() and Path(caption_text).is_file():
@@ -221,28 +303,57 @@ def main():
     # Xác định danh sách pages
     pages_list = []
 
-    # Ưu tiên 1: File danh sách JSON
-    target_pages_file = args.pages_file
-    if not target_pages_file:
-        default_json = Path(__file__).resolve().parents[1] / "pages.json"
-        if default_json.exists():
-            target_pages_file = str(default_json)
+    # Ưu tiên 1: File chỉ định hoặc tìm trong các thư mục hệ thống
+    json_candidates = []
+    if args.pages_file:
+        json_candidates.append(Path(args.pages_file))
+    json_candidates.extend([
+        Path(__file__).resolve().parents[1] / "pages.json",
+        Path("/app/data/skills/tao-creative-fb/pages.json"),
+        Path("/app/workspace/skills/tao-creative-fb/pages.json"),
+        Path("/app/workspace/pages.json"),
+        Path.cwd() / "pages.json",
+        Path.cwd() / "skills/tao-creative-fb/pages.json",
+    ])
 
-    if target_pages_file and Path(target_pages_file).exists():
-        with open(target_pages_file, "r", encoding="utf-8") as f:
-            pages_list = json.load(f)
-    elif getattr(args, "page_id", None) and getattr(args, "token", None):
-        # Ưu tiên 2: Tham số dòng lệnh 1 page
+    for jc in json_candidates:
+        if jc.exists() and jc.is_file():
+            try:
+                with open(jc, "r", encoding="utf-8") as f:
+                    pages_list = json.load(f)
+                if pages_list:
+                    break
+            except Exception:
+                pass
+
+    # Nếu chưa tìm thấy JSON, tìm file CSV
+    if not pages_list:
+        csv_candidates = [
+            Path("/app/workspace/facebook_pages.csv"),
+            Path("/app/facebook_pages.csv"),
+            Path.cwd() / "facebook_pages.csv",
+            Path(__file__).resolve().parents[2] / "facebook_pages.csv",
+            Path(__file__).resolve().parents[3] / "facebook_pages.csv",
+        ]
+        for cc in csv_candidates:
+            if cc.exists() and cc.is_file():
+                pages_list = load_pages_from_csv(cc)
+                if pages_list:
+                    break
+
+    # Ưu tiên 2: Tham số dòng lệnh 1 page
+    if not pages_list and getattr(args, "page_id", None) and getattr(args, "token", None):
         pages_list = [{"id": args.page_id, "token": args.token, "name": "Fanpage chỉ định", "product_group": "all", "enabled": True}]
-    else:
-        # Ưu tiên 3: Biến môi trường .env (1 page đơn lẻ)
+
+    # Ưu tiên 3: Biến môi trường .env (1 page đơn lẻ)
+    if not pages_list:
         env_page_id = os.getenv("FB_PAGE_ID", "").strip()
         env_token = os.getenv("FB_PAGE_TOKEN", "").strip()
         if env_page_id:
             pages_list = [{"id": env_page_id, "token": env_token, "name": "GlobalPharma Official Page", "product_group": "all", "enabled": True}]
 
     if not pages_list:
-        print("[ERROR] Không tìm thấy thông tin Fanpage nào! Vui lòng cung cấp --pages-file hoặc --page-id & --token.")
+        print("[ERROR] Không tìm thấy thông tin Fanpage nào! Đã tìm trong pages.json và facebook_pages.csv.")
         sys.exit(1)
 
     # Nhận diện dòng sản phẩm và điều hướng Fanpage phù hợp
@@ -276,7 +387,7 @@ def main():
         pages_list = filtered_pages
 
     post_to_facebook_multiple(
-        image_path=args.image,
+        image_path=clean_image_arg,
         caption=caption_text,
         pages_config=pages_list,
         delay_seconds=args.delay,
