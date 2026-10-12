@@ -24,8 +24,8 @@ func (p *CodexProvider) GenerateImage(ctx context.Context, req NativeImageReques
 	}
 
 	model := req.Model
-	if model == "" {
-		model = p.defaultModel
+	if model == "" || strings.HasPrefix(strings.ToLower(model), "gpt-5.6") || strings.Contains(strings.ToLower(model), "sol") {
+		model = DefaultCodexModel
 	}
 
 	imageModel, err := ValidateImageModel(req.ImageModel)
