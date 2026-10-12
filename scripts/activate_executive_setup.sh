@@ -433,7 +433,26 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
         RAISE NOTICE 'Configured background.provider and background.model (gpt-5.6) for tenant %', v_ea_tenant;
     END IF;
 
-    -- Configure create_image builtin tool to route via openai-codex default gpt-5.6 (gpt sol 5.6)
+    -- 4. CONFIGURE CHATGPT PLUS POOL ACROSS ALL 3 ACCOUNTS (openai-codex, chatgpthnkt, lequyenopenai-codex)
+    -- Khi 1 tài khoản hết hạn/quota, hệ thống tự failover/round-robin sang 2 tài khoản còn lại
+    UPDATE llm_providers
+    SET settings = jsonb_set(
+        COALESCE(settings, '{}'::jsonb),
+        '{codex_pool}',
+        jsonb_build_object(
+            'strategy', 'round_robin',
+            'extra_provider_names', jsonb_build_array('chatgpthnkt', 'lequyenopenai-codex')
+        )
+    ),
+    updated_at = NOW()
+    WHERE name = 'openai-codex';
+    RAISE NOTICE 'Configured ChatGPT Plus account pool (round_robin with chatgpthnkt, lequyenopenai-codex) on openai-codex';
+
+    -- Configure create_image builtin tool
+    -- Lưu ý kỹ thuật OpenAI Codex backend: Prompt model cho tool image_generation trong Responses API của tài khoản ChatGPT
+    -- phải dùng 'gpt-5.5' (hoặc rỗng), KHÔNG được truyền 'gpt-5.6' vì backend ChatGPT sẽ trả HTTP 400
+    -- "The 'gpt-5.6' model is not supported when using Codex with a ChatGPT account".
+    -- Model vẽ ảnh thực tế được quản lý bởi image_model: 'gpt-image-2.5-flare' (GPT Sol Image).
     INSERT INTO builtin_tools (name, display_name, description, category, enabled, settings, requires, metadata, created_at, updated_at)
     VALUES (
         'create_image',
@@ -441,7 +460,7 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
         'Generate images from text descriptions using AI',
         'media',
         true,
-        '{"providers":[{"provider":"openai-codex","model":"gpt-5.6","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
+        '{"providers":[{"provider":"openai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"chatgpthnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
         '{}'::text[],
         '{}'::jsonb,
         NOW(),
@@ -449,13 +468,13 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
     )
     ON CONFLICT (name) DO UPDATE SET 
         enabled = true,
-        settings = '{"providers":[{"provider":"openai-codex","model":"gpt-5.6","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
+        settings = '{"providers":[{"provider":"openai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"chatgpthnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
         updated_at = NOW();
 
     UPDATE builtin_tools 
-    SET settings = '{"providers":[{"provider":"openai-codex","model":"gpt-5.6","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb
+    SET settings = '{"providers":[{"provider":"openai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"chatgpthnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb
     WHERE name = 'create_image';
-    RAISE NOTICE 'Configured builtin_tools settings for create_image with default model gpt-5.6 and gpt-image-2.5-flare';
+    RAISE NOTICE 'Configured builtin_tools settings for create_image with openai-codex (gpt-5.5 + gpt-image-2.5-flare), chatgpthnkt fallback, and studioaigg fallback';
 
     -- Configure post_facebook builtin tool
     INSERT INTO builtin_tools (name, display_name, description, category, enabled, settings, requires, metadata, created_at, updated_at)
