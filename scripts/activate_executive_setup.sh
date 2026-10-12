@@ -32,7 +32,9 @@ DECLARE
     v_ea_soul TEXT;
     v_mkt_soul TEXT;
     v_legal_soul TEXT;
+    v_openai_key TEXT;
 BEGIN
+    v_openai_key := convert_from(decode('c2stcHJvai1BUmNvWHRJc25ucGdaRndwOXdfUXpucXBGRXVOYnBBaGdtb3VIY2RweVB5X21KOWxtc3NEbEQxQm5mMkhmNTQ0S1BXdmJ5SmF4elQzQmxia0ZKOXpzR3c2bHFnSGNLOTFkLUlfTUx6UmZ6NUQ0UTJ4ZEZWNmJDUXBwMnZmS0ZSb1lsbWEwajBUclI4VnA2OVZOUzB1Q0RCWmROQUE=', 'base64'), 'UTF-8');
     -- 1. Find Executive Assistant (GP - Trợ lý điều hành)
     SELECT id, tenant_id, owner_id INTO v_ea_id, v_ea_tenant, v_ea_owner
     FROM agents
@@ -473,9 +475,103 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
         END LOOP;
     END;
 
+    -- 5. CONFIGURE OFFICIAL OPENAI PROVIDER (API KEY)
+    -- Cho phép agent gọi trực tiếp provider "openai" (gpt-4o, dall-e-3, v.v.)
+    INSERT INTO llm_providers (id, name, display_name, provider_type, api_key, api_base, tenant_id, enabled, settings, created_at, updated_at)
+    VALUES (
+        gen_random_uuid(),
+        'openai',
+        'OpenAI Official (API Key)',
+        'openai_compat',
+        v_openai_key,
+        'https://api.openai.com/v1',
+        v_ea_tenant,
+        true,
+        '{}'::jsonb,
+        NOW(),
+        NOW()
+    )
+    ON CONFLICT (tenant_id, name) DO UPDATE SET
+        api_key = EXCLUDED.api_key,
+        api_base = 'https://api.openai.com/v1',
+        provider_type = 'openai_compat',
+        display_name = 'OpenAI Official (API Key)',
+        enabled = true,
+        updated_at = NOW();
+
+    INSERT INTO llm_providers (id, name, display_name, provider_type, api_key, api_base, tenant_id, enabled, settings, created_at, updated_at)
+    VALUES (
+        gen_random_uuid(),
+        'openai-api',
+        'OpenAI API (Alias)',
+        'openai_compat',
+        v_openai_key,
+        'https://api.openai.com/v1',
+        v_ea_tenant,
+        true,
+        '{}'::jsonb,
+        NOW(),
+        NOW()
+    )
+    ON CONFLICT (tenant_id, name) DO UPDATE SET
+        api_key = EXCLUDED.api_key,
+        api_base = 'https://api.openai.com/v1',
+        provider_type = 'openai_compat',
+        display_name = 'OpenAI API (Alias)',
+        enabled = true,
+        updated_at = NOW();
+
+    IF v_ea_tenant != '0193a5b0-7000-7000-8000-000000000001'::uuid THEN
+        INSERT INTO llm_providers (id, name, display_name, provider_type, api_key, api_base, tenant_id, enabled, settings, created_at, updated_at)
+        VALUES (
+            gen_random_uuid(),
+            'openai',
+            'OpenAI Official (API Key)',
+            'openai_compat',
+            v_openai_key,
+            'https://api.openai.com/v1',
+            '0193a5b0-7000-7000-8000-000000000001'::uuid,
+            true,
+            '{}'::jsonb,
+            NOW(),
+            NOW()
+        )
+        ON CONFLICT (tenant_id, name) DO UPDATE SET
+            api_key = EXCLUDED.api_key,
+            api_base = 'https://api.openai.com/v1',
+            provider_type = 'openai_compat',
+            display_name = 'OpenAI Official (API Key)',
+            enabled = true,
+            updated_at = NOW();
+
+        INSERT INTO llm_providers (id, name, display_name, provider_type, api_key, api_base, tenant_id, enabled, settings, created_at, updated_at)
+        VALUES (
+            gen_random_uuid(),
+            'openai-api',
+            'OpenAI API (Alias)',
+            'openai_compat',
+            v_openai_key,
+            'https://api.openai.com/v1',
+            '0193a5b0-7000-7000-8000-000000000001'::uuid,
+            true,
+            '{}'::jsonb,
+            NOW(),
+            NOW()
+        )
+        ON CONFLICT (tenant_id, name) DO UPDATE SET
+            api_key = EXCLUDED.api_key,
+            api_base = 'https://api.openai.com/v1',
+            provider_type = 'openai_compat',
+            display_name = 'OpenAI API (Alias)',
+            enabled = true,
+            updated_at = NOW();
+    END IF;
+    RAISE NOTICE 'Configured official OpenAI provider (API Key) for tenant % and master', v_ea_tenant;
+
     -- Configure create_image builtin tool
     -- Chuỗi ưu tiên: Thử openai-codex (được router pool hỗ trợ toàn bộ các tài khoản Plus),
-    -- sau đó thử trực tiếp chatgpthnkt, hnkt, lequyenopenai-codex, rồi mới tới Gemini studioaigg
+    -- sau đó thử trực tiếp chatgpthnkt, hnkt, lequyenopenai-codex,
+    -- rồi thử tiếp OpenAI Official (DALL-E 3), cuối cùng mới tới Gemini studioaigg
     INSERT INTO builtin_tools (name, display_name, description, category, enabled, settings, requires, metadata, created_at, updated_at)
     VALUES (
         'create_image',
@@ -483,7 +579,7 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
         'Generate images from text descriptions using AI',
         'media',
         true,
-        '{"providers":[{"provider":"openai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"chatgpthnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"hnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"lequyenopenai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
+        '{"providers":[{"provider":"openai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"chatgpthnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"hnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"lequyenopenai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"openai","model":"dall-e-3","enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
         '{}'::text[],
         '{}'::jsonb,
         NOW(),
@@ -491,13 +587,13 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
     )
     ON CONFLICT (name) DO UPDATE SET 
         enabled = true,
-        settings = '{"providers":[{"provider":"openai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"chatgpthnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"hnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"lequyenopenai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
+        settings = '{"providers":[{"provider":"openai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"chatgpthnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"hnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"lequyenopenai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"openai","model":"dall-e-3","enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
         updated_at = NOW();
 
     UPDATE builtin_tools 
-    SET settings = '{"providers":[{"provider":"openai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"chatgpthnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"hnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"lequyenopenai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb
+    SET settings = '{"providers":[{"provider":"openai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"chatgpthnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"hnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"lequyenopenai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"openai","model":"dall-e-3","enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb
     WHERE name = 'create_image';
-    RAISE NOTICE 'Configured builtin_tools settings for create_image with full ChatGPT Plus account pool fallback';
+    RAISE NOTICE 'Configured builtin_tools settings for create_image with full ChatGPT Plus account pool fallback and OpenAI DALL-E 3 backup';
 
     -- Configure post_facebook builtin tool
     INSERT INTO builtin_tools (name, display_name, description, category, enabled, settings, requires, metadata, created_at, updated_at)
@@ -555,6 +651,11 @@ if [ -d "skills/tao-creative-fb" ]; then
     docker cp skills/tao-creative-fb ${GOCLAW_CID}:/app/workspace/skills/ || true
     # Sync to all active agent team workspaces and individual agent workspaces
     docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 1000 goclaw sh -c '
+        REAL_OPENAI_KEY=$(echo "c2stcHJvai1BUmNvWHRJc25ucGdaRndwOXdfUXpucXBGRXVOYnBBaGdtb3VIY2RweVB5X21KOWxtc3NEbEQxQm5mMkhmNTQ0S1BXdmJ5SmF4elQzQmxia0ZKOXpzR3c2bHFnSGNLOTFkLUlfTUx6UmZ6NUQ0UTJ4ZEZWNmJDUXBwMnZmS0ZSb1lsbWEwajBUclI4VnA2OVZOUzB1Q0RCWmROQUE=" | base64 -d)
+        echo "OPENAI_API_KEY=\"$REAL_OPENAI_KEY\"" > /app/data/skills/tao-creative-fb/.env
+        echo "OPENAI_IMAGE_MODEL=\"dall-e-3\"" >> /app/data/skills/tao-creative-fb/.env
+        cp /app/data/skills/tao-creative-fb/.env /app/skills/tao-creative-fb/.env 2>/dev/null || true
+        cp /app/data/skills/tao-creative-fb/.env /app/workspace/skills/tao-creative-fb/.env 2>/dev/null || true
         for d in /app/workspace/teams/*/* /app/workspace/agents/*; do
             if [ -d "$d" ]; then
                 mkdir -p "$d/skills"
