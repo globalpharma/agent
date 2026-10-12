@@ -569,6 +569,187 @@ SET deliver = true,
     deliver_channel = 'telegram',
     deliver_to = '5781808621'
 WHERE deliver = false OR deliver_channel = '' OR deliver_to = '' OR deliver_to = 'striverle' OR deliver_to = '@striverle';
+
+-- 3 TÁC VỤ ĐỊNH KỲ BUỔI SÁNG (NUTRICOMP DRINK PLUS 9H00, RENAL 9H10, PRONTOSAN 9H20)
+DO $$
+DECLARE
+    v_target_agent UUID;
+    v_tenant UUID;
+    v_owner VARCHAR;
+BEGIN
+    -- Tìm Agent thực thi (ưu tiên Trợ lý điều hành hoặc Lead Marketing)
+    SELECT id, tenant_id, owner_id INTO v_target_agent, v_tenant, v_owner
+    FROM agents
+    WHERE (display_name ILIKE '%Trợ lý điều hành%' OR display_name ILIKE '%Trợ lý%' OR agent_key ILIKE '%tro-ly%' OR agent_key ILIKE '%assistant%')
+      AND status = 'active'
+    ORDER BY created_at ASC
+    LIMIT 1;
+
+    IF v_target_agent IS NULL THEN
+        SELECT id, tenant_id, owner_id INTO v_target_agent, v_tenant, v_owner
+        FROM agents
+        WHERE status = 'active'
+        ORDER BY is_default DESC, created_at ASC
+        LIMIT 1;
+    END IF;
+
+    IF v_target_agent IS NOT NULL AND v_tenant IS NOT NULL THEN
+        -- Task 1: 9h00 sáng - Nutricomp Drink Plus
+        INSERT INTO cron_jobs (
+            id, tenant_id, agent_id, user_id, name, enabled, schedule_kind, cron_expression, timezone,
+            payload, stateless, deliver, deliver_channel, deliver_to, wake_heartbeat, created_at, updated_at
+        ) VALUES (
+            gen_random_uuid(),
+            v_tenant,
+            v_target_agent,
+            v_owner,
+            'daily-morning-nutricomp-plus-0900',
+            true,
+            'cron',
+            '0 9 * * *',
+            'Asia/Ho_Chi_Minh',
+            jsonb_build_object(
+                'kind', 'agent_turn',
+                'message', 'Đã đến lịch định kỳ 9h00 sáng. Hãy thực hiện nhiệm vụ:
+1. Đọc kiến thức và tài liệu sản phẩm Nutricomp Drink Plus trong Brain / Skills.
+2. Chọn ngẫu nhiên 1 góc độ sáng tạo (angle) thật ấn tượng, khác biệt và sâu sắc về mặt lâm sàng/dinh dưỡng (ví dụ: phục hồi sau mổ, người suy kiệt, ung thư cần năng lượng cao 300 kcal/chai, bổ sung EPA chống suy mòn, tiện dụng dễ uống).
+3. Viết 1 bài đăng Facebook chuẩn y khoa và truyền cảm hứng (độ dài 80-150 từ, có hashtag #Nutricomp #NutricompDrinkPlus #Globalpharma #DinhDuongYHoc).
+4. Tạo ảnh poster bằng công cụ tạo ảnh hoặc render poster Master Template chính hãng (tuyệt đối chỉ hiển thị đúng 1 chai Nutricomp Drink Plus màu cam, đúng tỷ lệ bao bì). Đính kèm cú pháp MEDIA:<đường_dẫn_ảnh> để gửi poster vào Telegram.
+5. Gửi toàn bộ nội dung bài viết + ảnh poster vào Telegram này để Sếp duyệt. Nhắc rõ danh sách 8 Fanpage Nutricomp sẽ đăng khi Sếp bấm duyệt/xác nhận:
+   - https://www.facebook.com/nutricomp.globalpharma/
+   - https://www.facebook.com/suadinhduongyhocduc/
+   - https://www.facebook.com/dinhduongducnutricomp/
+   - https://www.facebook.com/nutricomplus/
+   - https://www.facebook.com/nutricomprenal/
+   - https://www.facebook.com/dinhduongphuchoinangluong/
+   - https://www.facebook.com/suadinhduongyhocduc.nutricomp/
+   - https://www.facebook.com/suckhoechomoinhacom/
+(Lưu ý: Chỉ đăng lên 8 page khi Sếp duyệt lệnh đăng qua tool post_facebook).'
+            ),
+            false,
+            true,
+            'telegram',
+            '5781808621',
+            false,
+            NOW(),
+            NOW()
+        )
+        ON CONFLICT (agent_id, tenant_id, name)
+        DO UPDATE SET
+            cron_expression = EXCLUDED.cron_expression,
+            timezone = EXCLUDED.timezone,
+            enabled = true,
+            deliver = true,
+            deliver_channel = 'telegram',
+            deliver_to = '5781808621',
+            payload = EXCLUDED.payload,
+            updated_at = NOW();
+
+        -- Task 2: 9h10 sáng - Nutricomp Drink Renal
+        INSERT INTO cron_jobs (
+            id, tenant_id, agent_id, user_id, name, enabled, schedule_kind, cron_expression, timezone,
+            payload, stateless, deliver, deliver_channel, deliver_to, wake_heartbeat, created_at, updated_at
+        ) VALUES (
+            gen_random_uuid(),
+            v_tenant,
+            v_target_agent,
+            v_owner,
+            'daily-morning-nutricomp-renal-0910',
+            true,
+            'cron',
+            '10 9 * * *',
+            'Asia/Ho_Chi_Minh',
+            jsonb_build_object(
+                'kind', 'agent_turn',
+                'message', 'Đã đến lịch định kỳ 9h10 sáng. Hãy thực hiện nhiệm vụ:
+1. Đọc kiến thức và tài liệu sản phẩm Nutricomp Drink Renal trong Brain / Skills.
+2. Chọn ngẫu nhiên 1 góc độ sáng tạo (angle) thật ấn tượng, khác biệt và chuyên sâu y khoa cho bệnh nhân suy thận (ví dụ: công thức giảm protein, kiểm soát nghiêm ngặt Kali - Natri - Photpho, bảo tồn chức năng thận, năng lượng chuẩn xác 2.0 kcal/ml, hương vani thơm ngon).
+3. Viết 1 bài đăng Facebook chuẩn y khoa, tận tâm (độ dài 80-150 từ, có hashtag #Nutricomp #NutricompDrinkRenal #DinhDuongBenhNhanThan #Globalpharma).
+4. Tạo ảnh poster bằng công cụ tạo ảnh hoặc render poster Master Template chính hãng (tuyệt đối chỉ hiển thị đúng 1 chai Nutricomp Drink Renal màu xanh lá, đúng tỷ lệ bao bì). Đính kèm cú pháp MEDIA:<đường_dẫn_ảnh> để gửi poster vào Telegram.
+5. Gửi toàn bộ nội dung bài viết + ảnh poster vào Telegram này để Sếp duyệt. Nhắc rõ danh sách 8 Fanpage Nutricomp sẽ đăng khi Sếp bấm duyệt/xác nhận:
+   - https://www.facebook.com/nutricomp.globalpharma/
+   - https://www.facebook.com/suadinhduongyhocduc/
+   - https://www.facebook.com/dinhduongducnutricomp/
+   - https://www.facebook.com/nutricomplus/
+   - https://www.facebook.com/nutricomprenal/
+   - https://www.facebook.com/dinhduongphuchoinangluong/
+   - https://www.facebook.com/suadinhduongyhocduc.nutricomp/
+   - https://www.facebook.com/suckhoechomoinhacom/
+(Lưu ý: Chỉ đăng lên 8 page khi Sếp duyệt lệnh đăng qua tool post_facebook).'
+            ),
+            false,
+            true,
+            'telegram',
+            '5781808621',
+            false,
+            NOW(),
+            NOW()
+        )
+        ON CONFLICT (agent_id, tenant_id, name)
+        DO UPDATE SET
+            cron_expression = EXCLUDED.cron_expression,
+            timezone = EXCLUDED.timezone,
+            enabled = true,
+            deliver = true,
+            deliver_channel = 'telegram',
+            deliver_to = '5781808621',
+            payload = EXCLUDED.payload,
+            updated_at = NOW();
+
+        -- Task 3: 9h20 sáng - Prontosan
+        INSERT INTO cron_jobs (
+            id, tenant_id, agent_id, user_id, name, enabled, schedule_kind, cron_expression, timezone,
+            payload, stateless, deliver, deliver_channel, deliver_to, wake_heartbeat, created_at, updated_at
+        ) VALUES (
+            gen_random_uuid(),
+            v_tenant,
+            v_target_agent,
+            v_owner,
+            'daily-morning-prontosan-0920',
+            true,
+            'cron',
+            '20 9 * * *',
+            'Asia/Ho_Chi_Minh',
+            jsonb_build_object(
+                'kind', 'agent_turn',
+                'message', 'Đã đến lịch định kỳ 9h20 sáng. Hãy thực hiện nhiệm vụ:
+1. Đọc kiến thức và tài liệu giải pháp Prontosan (B. Braun / Đức) trong Brain / Skills.
+2. Chọn ngẫu nhiên 1 góc độ sáng tạo (angle) thật ấn tượng, khác biệt và thuyết phục về chăm sóc vết thương (ví dụ: phá vỡ màng Biofilm cứng đầu, ngăn ngừa nhiễm trùng tái phát, làm sạch vết thương không đau xót, bộ đôi dung dịch rửa + gel kháng khuẩn, vết loét tiểu đường/tì đè).
+3. Viết 1 bài đăng Facebook chuẩn chuyên môn y tế (độ dài 80-150 từ, có hashtag #Prontosan #BBraun #PhaVoBiofilm #ChamSocVetThuong #Globalpharma).
+4. Tạo ảnh poster bằng công cụ tạo ảnh hoặc render poster Master Template chính hãng (hiển thị đúng sản phẩm Prontosan chính hãng B. Braun). Đính kèm cú pháp MEDIA:<đường_dẫn_ảnh> để gửi poster vào Telegram.
+5. Gửi toàn bộ nội dung bài viết + ảnh poster vào Telegram này để Sếp duyệt. Nhắc rõ danh sách 8 Fanpage Prontosan sẽ đăng khi Sếp bấm duyệt/xác nhận:
+   - https://www.facebook.com/prontosan.globalpharma/
+   - https://www.facebook.com/giaiphapnhanhlanhvetthuong
+   - https://www.facebook.com/giaiphapchamsocvetthuong
+   - https://www.facebook.com/prontosanchamsocvetthuong/
+   - https://www.facebook.com/chamsocvetthuongprontosan/
+   - https://www.facebook.com/prontosanspray/
+   - https://www.facebook.com/prontosanspraylamlanhvetthuong/
+   - https://www.facebook.com/suckhoechomoinhacom/
+(Lưu ý: Tuyệt đối chỉ đăng vào 8 page Prontosan, không lẫn sang page Nutricomp. Chỉ đăng khi Sếp duyệt lệnh).'
+            ),
+            false,
+            true,
+            'telegram',
+            '5781808621',
+            false,
+            NOW(),
+            NOW()
+        )
+        ON CONFLICT (agent_id, tenant_id, name)
+        DO UPDATE SET
+            cron_expression = EXCLUDED.cron_expression,
+            timezone = EXCLUDED.timezone,
+            enabled = true,
+            deliver = true,
+            deliver_channel = 'telegram',
+            deliver_to = '5781808621',
+            payload = EXCLUDED.payload,
+            updated_at = NOW();
+
+        RAISE NOTICE 'Successfully configured 3 morning cron tasks (09h00, 09h10, 09h20) for agent %', v_target_agent;
+    END IF;
+END $$;
 EOSQL
 
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw chmod -R 777 /app/workspace /app/data /app/skills /app/my-brain || true
