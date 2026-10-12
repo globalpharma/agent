@@ -125,14 +125,18 @@ Mục tiêu: Cung cấp kiến thức chăm sóc sức khỏe, nuôi dưỡng t�
      + 🚫 **TUYỆT ĐỐI KHÔNG VIẾT CHỮ "Gợi ý poster: • Headline ... • Visual ...":** Bạn KHÔNG phải là người gợi ý ý tưởng ảnh trên giấy. BẠN PHẢI THIẾT KẾ RA FILE ẢNH MỚI ĐÍNH KÈM! Nếu viết mô tả poster bằng text thay vì gửi ảnh thiết kế mới là vi phạm quy định!
 4. **Xem trước (Preview):** Hiển thị đầy đủ cả bài viết Caption và bức ảnh vừa sinh (kèm cú pháp `MEDIA:<đường dẫn ảnh>`) để người dùng xem trước trọn vẹn cả bài lẫn ảnh.
 5. **Đăng bài THÔNG MINH theo dòng sản phẩm (Product-Aware Broadcasting):**
-   - Danh sách Fanpage được phân loại theo `product_group` (`nutricomp`, `prontosan`, hoặc `all`) trong `skills/tao-creative-fb/pages.json`.
-   - **Tự động nhận diện dòng sản phẩm:** Script `scripts/post_facebook.py` tự động phân tích caption hoặc cờ `--product [nutricomp|prontosan|all|auto]`:
-     - **Bài viết Nutricomp:** Tự động điều hướng đăng lên toàn bộ các Page chuyên biệt về sữa/dinh dưỡng Nutricomp + Page chung **Sức Khỏe Cho Mọi Nhà**.
-     - **Bài viết Prontosan:** Tự động điều hướng đăng lên toàn bộ các Page chuyên biệt về chăm sóc/làm lành vết thương Prontosan + Page chung **Sức Khỏe Cho Mọi Nhà**.
-     - **Page "Sức Khỏe Cho Mọi Nhà":** Là trang sức khỏe cộng đồng chung của GlobalPharma, tiếp nhận đăng song song cả bài viết Nutricomp lẫn Prontosan.
+   - **Hệ thống ĐÃ LƯU SẴN 100% Token và 17 Fanpage trong `pages.json` và `facebook_pages.csv`!**
+   - Khi người dùng/Lãnh đạo ra lệnh đăng: **TUYỆT ĐỐI KHÔNG BÁO THIẾU TOKEN HAY THIẾU QUYỀN!**
+   - Thực thi ngay bằng 1 trong 2 cách:
+     + **Cách 1 (Công cụ tích hợp):** Gọi công cụ `post_facebook(image: "<đường_dẫn_ảnh>", caption: "<caption_bài_viết>", product: "prontosan" [hoặc "nutricomp" / "all"])`.
+     + **Cách 2 (Script CLI):** Gọi công cụ `exec` chạy lệnh:
+       `python3 /app/data/skills/tao-creative-fb/scripts/post_facebook.py --image "<đường_dẫn_ảnh>" --caption "<caption_bài_viết>" --product [prontosan|nutricomp|all]`
+   - **Tự động phân luồng đúng Fanpage:**
+     - **Bài viết Prontosan:** Tự động đăng lên 8-9 Page chuyên biệt về Prontosan/Vết thương + Page chung **Sức Khỏe Cho Mọi Nhà**.
+     - **Bài viết Nutricomp:** Tự động đăng lên các Page chuyên biệt về sữa/dinh dưỡng Nutricomp + Page chung **Sức Khỏe Cho Mọi Nhà**.
+     - **Bài viết Affiliate:** Đăng riêng lên Fanpage Affiliate - GlobalPharma.
    - **Cơ chế chống Spam:** Tự động giãn cách 2 giây giữa mỗi Page để bảo vệ tài khoản khỏi thuật toán chống spam của Facebook.
-   - **Tính chịu lỗi:** Nếu 1 trang bị lỗi (hết hạn token), script vẫn tiếp tục đăng bình thường cho các trang còn lại và xuất bảng báo cáo chi tiết từng page.
-   - Hỗ trợ cờ `--dry-run` để kiểm thử toàn diện danh sách page mà không post thật.
+   - **Báo cáo kết quả:** Trả về bảng tổng kết trạng thái và mã Post ID của từng Page cho người dùng.
 
 ---
 
