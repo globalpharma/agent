@@ -69,12 +69,12 @@ func (p *ChatGPTOAuthRouter) GenerateImage(ctx context.Context, req NativeImageR
 
 		lastErr = callErr
 
-		// Non-retryable error: surface immediately without trying further members.
-		if !IsRetryableError(callErr) {
+		// Check if error allows failover across independent pool members.
+		if !isChatGPTOAuthPoolFailover(callErr) {
 			return nil, callErr
 		}
 
-		// Retryable: log and continue to the next member if one exists.
+		// Failover: log and continue to the next member if one exists.
 		if i < len(ordered)-1 {
 			slog.Warn("chatgpt_oauth router image failover",
 				"from", provider.Name(),

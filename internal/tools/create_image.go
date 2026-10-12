@@ -282,6 +282,16 @@ func (t *CreateImageTool) Execute(ctx context.Context, args map[string]any) *Res
 		}
 	}
 
+	// Normalize provider aliases
+	switch strings.ToLower(reqProvider) {
+	case "hnkt", "chatgpt-hnkt":
+		reqProvider = "chatgpthnkt"
+	case "lequyen", "lequyen-codex":
+		reqProvider = "lequyenopenai-codex"
+	case "codex", "openai_codex":
+		reqProvider = "openai-codex"
+	}
+
 	refImgs, err := t.resolveReferenceImages(ctx, args)
 	if err != nil {
 		return ErrorResult(fmt.Sprintf("Failed to resolve reference images: %v", err))

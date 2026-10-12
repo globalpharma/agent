@@ -2,6 +2,7 @@ package providers
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log/slog"
 	"net/http"
@@ -140,7 +141,7 @@ func (p *ChatGPTOAuthRouter) call(ctx context.Context, fn func(Provider) (*ChatR
 			return resp, nil
 		}
 		lastErr = callErr
-		if !IsRetryableError(callErr) || i == len(ordered)-1 {
+		if !isChatGPTOAuthPoolFailover(callErr) || i == len(ordered)-1 {
 			return nil, callErr
 		}
 		slog.Warn("chatgpt_oauth router failover",
@@ -150,6 +151,56 @@ func (p *ChatGPTOAuthRouter) call(ctx context.Context, fn func(Provider) (*ChatR
 		)
 	}
 	return nil, lastErr
+}
+
+// isChatGPTOAuthPoolFailover determines whether an error encountered on one member of a
+// multi-account pool should cause failover to another pool member.
+// In addition to standard transient retryable errors (429, 5xx, network timeouts),
+// account-specific authentication, token expiration, quota exhaustion, and billing failures
+// MUST fail over because another pool member has separate credentials, token, and quota.
+func isChatGPTOAuthPoolFailover(err error) bool {
+	if err == nil {
+		return false
+	}
+	if IsRetryableError(err) {
+		return true
+	}
+	var httpErr *HTTPError
+	if errors.As(err, &httpErr) {
+		switch httpErr.Status {
+		case http.StatusUnauthorized,    // 401: token expired / auth error
+			http.StatusPaymentRequired, // 402: quota / payment needed
+			http.StatusForbidden,       // 403: account suspended / forbidden
+			http.StatusTooManyRequests, // 429: rate limit
+			http.StatusInternalServerError,
+			http.StatusBadGateway,
+			http.StatusServiceUnavailable,
+			http.StatusGatewayTimeout:
+			return true
+		}
+	}
+	errStr := strings.ToLower(err.Error())
+	if strings.Contains(errStr, "401") ||
+		strings.Contains(errStr, "402") ||
+		strings.Contains(errStr, "403") ||
+		strings.Contains(errStr, "429") ||
+		strings.Contains(errStr, "token expired") ||
+		strings.Contains(errStr, "unauthorized") ||
+		strings.Contains(errStr, "quota") ||
+		strings.Contains(errStr, "usage limit") ||
+		strings.Contains(errStr, "rate limit") ||
+		strings.Contains(errStr, "exhausted") ||
+		strings.Contains(errStr, "deactivated") ||
+		strings.Contains(errStr, "reauth") ||
+		strings.Contains(errStr, "forbidden") ||
+		strings.Contains(errStr, "subscription") ||
+		strings.Contains(errStr, "billing") ||
+		strings.Contains(errStr, "no image_generation_call") ||
+		strings.Contains(errStr, "no image in sse stream") ||
+		strings.Contains(errStr, "model is not supported") {
+		return true
+	}
+	return false
 }
 
 func (p *ChatGPTOAuthRouter) orderedProviders(ctx context.Context, modality string, advance bool) ([]Provider, error) {
