@@ -292,15 +292,6 @@ func autoAttachCreativeMedia(outMsg *bus.OutboundMessage) {
 		return
 	}
 
-	// Candidate file search directories
-	searchDirs := []string{
-		"/app/workspace/output",
-		"/app/data/skills/tao-creative-fb/output",
-		"skills/tao-creative-fb/output",
-		"/app/skills/tao-creative-fb/output",
-		"output",
-	}
-
 	// Calculate weighted scores for each product to prevent false positives
 	// (e.g. Vietnamese "cẩn thận" or "thận trọng" falsely triggering Renal).
 	var plusScore, renalScore, prontosanScore, comboScore int
@@ -416,44 +407,26 @@ func autoAttachCreativeMedia(outMsg *bus.OutboundMessage) {
 	}
 
 	var targetType string
-	var productCandidates []string
 	maxScore := 0
 
 	if plusScore > maxScore {
 		maxScore = plusScore
 		targetType = "plus"
-		productCandidates = []string{
-			"poster_nutricomp_drink_plus.png",
-			"poster_nutricomp_plus_placement.png",
-			"poster_plus_auto.png",
-		}
 	}
 	if renalScore > maxScore {
 		maxScore = renalScore
 		targetType = "renal"
-		productCandidates = []string{
-			"poster_nutricomp_renal.png",
-			"poster_nutricomp_renal_placement.png",
-			"organic_post_renal.png",
-		}
 	}
 	if prontosanScore > maxScore {
 		maxScore = prontosanScore
 		targetType = "prontosan"
-		productCandidates = []string{
-			"poster_prontosan_wound_spray.png",
-			"poster_prontosan_clinical.jpg",
-		}
 	}
 	if comboScore > maxScore {
 		maxScore = comboScore
 		targetType = "combo"
-		productCandidates = []string{
-			"poster_nutricomp_combo12.png",
-		}
 	}
 
-	if len(productCandidates) == 0 {
+	if targetType == "" {
 		return
 	}
 
