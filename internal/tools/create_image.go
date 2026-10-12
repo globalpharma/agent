@@ -37,14 +37,14 @@ type credentialProvider interface {
 }
 
 // imageGenProviderPriority is the default order for image generation providers.
-var imageGenProviderPriority = []string{"openai-codex", "studioaigg", "gemini", "openai", "openrouter", "minimax", "dashscope", "byteplus"}
+var imageGenProviderPriority = []string{"openai-codex", "openai", "studioaigg", "gemini", "openrouter", "minimax", "dashscope", "byteplus"}
 
 // imageGenModelDefaults maps provider names to default image generation models.
 var imageGenModelDefaults = map[string]string{
 	"studioaigg":   "gemini-2.5-flash-image",
 	"gemini":       "gemini-2.5-flash-image",
 	"openai-codex": "gpt-5.6",
-	"openai":       "gpt-image-2.5-flare",
+	"openai":       "dall-e-3",
 	"openrouter":   "google/gemini-2.5-flash-image",
 	"minimax":      "image-01",
 	"dashscope":    "wan2.6-image",
@@ -634,11 +634,27 @@ func (t *CreateImageTool) callImageGenAPI(ctx context.Context, apiKey, apiBase, 
 
 // callStandardImageGenAPI uses the /images/generations endpoint (OpenAI and compatible providers).
 func (t *CreateImageTool) callStandardImageGenAPI(ctx context.Context, apiKey, apiBase, model, prompt string, params map[string]any) ([]byte, *providers.Usage, error) {
+	if model == "" || strings.HasPrefix(model, "gpt-image") || strings.HasPrefix(model, "gpt-5") || strings.HasPrefix(model, "gpt-4") {
+		model = "dall-e-3"
+	}
+
 	body := map[string]any{
 		"model":           model,
 		"prompt":          prompt,
 		"n":               1,
 		"response_format": "b64_json",
+	}
+
+	if model == "dall-e-3" {
+		aspectRatio := GetParamString(params, "aspect_ratio", "1:1")
+		switch aspectRatio {
+		case "16:9", "3:2", "4:3":
+			body["size"] = "1792x1024"
+		case "9:16", "2:3", "3:4":
+			body["size"] = "1024x1792"
+		default:
+			body["size"] = "1024x1024"
+		}
 	}
 
 	jsonBody, err := json.Marshal(body)

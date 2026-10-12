@@ -115,7 +115,7 @@ def generate_image(prompt: str, output_path: str, size: str = "1024x1024", quali
         sys.exit(1)
 
     client = OpenAI(api_key=api_key)
-    model = os.getenv("OPENAI_IMAGE_MODEL", "gpt-image-1")
+    model = os.getenv("OPENAI_IMAGE_MODEL", "dall-e-3")
     
     # Map quality tương thích với từng model
     api_quality = quality
