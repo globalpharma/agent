@@ -116,6 +116,28 @@ def generate_ai_background(product_type: str, headline: str = None) -> str:
     return None
 
 
+def detect_existing_elements(img):
+    """Detect if image already contains official brand header or full poster layout."""
+    try:
+        w, h = img.size
+        # 1. Top-left region where brand header & German flag live
+        tl = img.crop((0, 0, int(w * 0.42), int(h * 0.22))).convert('RGB')
+        pixels = list(tl.getdata())
+        gold = sum(1 for r, g, b in pixels if (r > 190 and g > 140 and b < 70))
+        green = sum(1 for r, g, b in pixels if (g > 95 and r < 60 and b < 100))
+        has_header = (gold > 30 and green > 30) or gold > 80 or green > 80
+
+        # 2. Check for CTA button or sharp UI elements in bottom region
+        bot = img.crop((0, int(h * 0.65), w, h)).convert('RGB')
+        bot_pixels = list(bot.getdata())
+        teal_btn = sum(1 for r, g, b in bot_pixels if (g > 90 and b > 70 and r < 70))
+        has_cta = teal_btn > 400
+
+        return has_header, has_cta
+    except Exception:
+        return False, False
+
+
 def create_placement(
     bg_path: str = None,
     product_type: str = "renal",
@@ -145,27 +167,41 @@ def create_placement(
             bg = Image.open(bg_path).convert('RGBA')
             canvas_w, canvas_h = bg.size
 
+            bg_lower = str(bg_path).lower()
+            is_preformatted_name = any(k in bg_lower for k in [
+                "template_", "poster_", "creative_", "master_", "placed_", "render_"
+            ])
+            has_header, has_cta = detect_existing_elements(bg)
+
+            # If background is already a finished poster or already has both header and CTA,
+            # NEVER overlay duplicate bottles or duplicate logos.
+            if is_preformatted_name or (has_header and has_cta):
+                print(f"[INFO] Background {bg_path} is already a full poster design, keeping original without duplicate stamping")
+                bg.convert('RGB').save(out_p, quality=95)
+                print(f"MEDIA:{os.path.abspath(out_p)}")
+                return str(out_p)
+
             # Select authentic bottle cut
             if "prontosan" in p_lower:
                 prod_candidates = ["cut_prontosan_bottle.png"]
                 target_scale = 0.44
                 pos_x_ratio = 0.65
-                pos_y_ratio = 0.48
+                pos_y_ratio = 0.52
             elif "plus" in p_lower:
                 prod_candidates = ["cut_nutricomp_plus_bottle.png", "crop_nutricomp_bottle.png"]
-                target_scale = 0.46
+                target_scale = 0.42
                 pos_x_ratio = 0.65
-                pos_y_ratio = 0.46
+                pos_y_ratio = 0.52
             elif "combo" in p_lower or "box" in p_lower:
                 prod_candidates = ["cut_nutricomp_box.png", "real_nutricomp_combo12_giftbox.png"]
                 target_scale = 0.48
                 pos_x_ratio = 0.45
-                pos_y_ratio = 0.46
-            else: # renal
+                pos_y_ratio = 0.50
+            else:  # renal
                 prod_candidates = ["cut_nutricomp_renal_bottle.png", "cut_nutricomp_single_bottle.png"]
-                target_scale = 0.46
+                target_scale = 0.42
                 pos_x_ratio = 0.65
-                pos_y_ratio = 0.46
+                pos_y_ratio = 0.52
 
             prod_file = None
             for cand in prod_candidates:
@@ -174,7 +210,9 @@ def create_placement(
                     prod_file = str(p_cand)
                     break
 
-            if prod_file and os.path.exists(prod_file):
+            composed = bg
+            # Only paste bottle if image is a raw background (not already containing a poster layout)
+            if prod_file and os.path.exists(prod_file) and not has_cta:
                 prod = Image.open(prod_file).convert('RGBA')
                 prod_h = int(canvas_h * target_scale)
                 prod_w = int(prod.width * (prod_h / prod.height))
@@ -183,7 +221,7 @@ def create_placement(
                 pos_x = int(canvas_w * pos_x_ratio)
                 pos_y = int(canvas_h * pos_y_ratio)
 
-                # Keep bottle within canvas boundaries
+                # Keep bottle grounded near bottom and within canvas boundaries
                 if pos_x + prod_w > canvas_w - 20:
                     pos_x = canvas_w - prod_w - 20
                 if pos_y + prod_h > canvas_h - 20:
@@ -199,41 +237,40 @@ def create_placement(
                 )
                 shadow = shadow.filter(ImageFilter.GaussianBlur(10))
 
-                composed = Image.alpha_composite(bg, shadow)
+                composed = Image.alpha_composite(composed, shadow)
                 composed.paste(prod_scaled, (pos_x, pos_y), prod_scaled)
-            else:
-                composed = bg
 
-            # Add Official Brand Header Badge (Top-Left)
-            header_cand = r_dir / "brand_header_master.png"
-            if not header_cand.exists():
-                header_cand = r_dir / "real_logo_globalpharma_master.png"
+            # Add Official Brand Header Badge (Top-Left) ONLY IF NOT ALREADY PRESENT
+            if not has_header:
+                header_cand = r_dir / "brand_header_master.png"
+                if not header_cand.exists():
+                    header_cand = r_dir / "real_logo_globalpharma_master.png"
 
-            if header_cand.exists():
-                header = Image.open(str(header_cand)).convert('RGBA')
-                hdr_w = int(canvas_w * 0.38)
-                hdr_h = int(header.height * (hdr_w / header.width))
-                header_scaled = header.resize((hdr_w, hdr_h), Image.Resampling.LANCZOS)
+                if header_cand.exists():
+                    header = Image.open(str(header_cand)).convert('RGBA')
+                    hdr_w = int(canvas_w * 0.38)
+                    hdr_h = int(header.height * (hdr_w / header.width))
+                    header_scaled = header.resize((hdr_w, hdr_h), Image.Resampling.LANCZOS)
 
-                pad_x = 16
-                pad_y = 10
-                pill_w = hdr_w + pad_x * 2
-                pill_h = hdr_h + pad_y * 2
-                pill_x = int(canvas_w * 0.04)
-                pill_y = int(canvas_h * 0.04)
+                    pad_x = 16
+                    pad_y = 10
+                    pill_w = hdr_w + pad_x * 2
+                    pill_h = hdr_h + pad_y * 2
+                    pill_x = int(canvas_w * 0.04)
+                    pill_y = int(canvas_h * 0.04)
 
-                pill = Image.new('RGBA', (pill_w, pill_h), (0, 0, 0, 0))
-                pdraw = ImageDraw.Draw(pill)
-                pdraw.rounded_rectangle(
-                    [0, 0, pill_w, pill_h],
-                    radius=16,
-                    fill=(255, 255, 255, 235),
-                    outline=(220, 230, 235, 200),
-                    width=1
-                )
+                    pill = Image.new('RGBA', (pill_w, pill_h), (0, 0, 0, 0))
+                    pdraw = ImageDraw.Draw(pill)
+                    pdraw.rounded_rectangle(
+                        [0, 0, pill_w, pill_h],
+                        radius=16,
+                        fill=(255, 255, 255, 235),
+                        outline=(220, 230, 235, 200),
+                        width=1
+                    )
 
-                composed.paste(pill, (pill_x, pill_y), pill)
-                composed.paste(header_scaled, (pill_x + pad_x, pill_y + pad_y), header_scaled)
+                    composed.paste(pill, (pill_x, pill_y), pill)
+                    composed.paste(header_scaled, (pill_x + pad_x, pill_y + pad_y), header_scaled)
 
             composed.convert('RGB').save(out_p, quality=95)
             print(f"MEDIA:{os.path.abspath(out_p)}")
