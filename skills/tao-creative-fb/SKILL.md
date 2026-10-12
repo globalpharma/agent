@@ -119,7 +119,7 @@ Mục tiêu: Cung cấp kiến thức chăm sóc sức khỏe, nuôi dưỡng t�
          - **Nutricomp Drink Renal:** Bối cảnh gia đình người cao tuổi an tâm, nụ cười nhẹ nhõm, tone màu xanh ngọc y tế (teal) thanh lịch, chai Nutricomp Drink Renal 200ml nắp tím trên bàn.
          - **Prontosan Spray:** Bối cảnh đời thường sạch sẽ vô trùng, người dùng xịt dung dịch chăm sóc vết xước nhẹ nhàng ở tay, chai xịt Prontosan trên bàn đá cẩm thạch trắng.
          👉 GoClaw sẽ tự động ghép quang học chai sản phẩm chính hãng và logo GlobalPharma lên bức ảnh sinh được.
-       * *Dự phòng (Chỉ dùng khi create_image gặp lỗi mạng/API):* Chạy script `python3 /app/data/skills/tao-creative-fb/scripts/compose_placement.py --product [plus|renal|combo|prontosan] --output /app/workspace/output/poster_<product>_placement.png`.
+       * *Dự phòng (Chỉ dùng khi create_image gặp lỗi mạng/API):* Chạy script `render_poster --type [plus|renal|combo|prontosan] --output /app/workspace/output/poster_<product>_master.png (hoặc compose_placement --product [plus|renal|combo|prontosan])`.
        * 🚫 **TUYỆT ĐỐI CẤM:** Không được gửi lại file ảnh tham chiếu cũ! Mỗi bài viết phải là một sản phẩm hình ảnh mới được thiết kế riêng!
      + ⚠️ **NGHIÊM CẤM:** TUYỆT ĐỐI KHÔNG chỉ trả về mỗi bài text caption mà không có ảnh! Output BẮT BUỘC phải chứa ảnh thành phẩm kèm cú pháp `MEDIA:<đường_dẫn_ảnh>` ở cuối tin nhắn để giao diện hiển thị ảnh ngay lập tức cùng với caption.
      + 🚫 **TUYỆT ĐỐI KHÔNG VIẾT CHỮ "Gợi ý poster: • Headline ... • Visual ...":** Bạn KHÔNG phải là người gợi ý ý tưởng ảnh trên giấy. BẠN PHẢI THIẾT KẾ RA FILE ẢNH MỚI ĐÍNH KÈM! Nếu viết mô tả poster bằng text thay vì gửi ảnh thiết kế mới là vi phạm quy định!
@@ -130,7 +130,7 @@ Mục tiêu: Cung cấp kiến thức chăm sóc sức khỏe, nuôi dưỡng t�
    - Thực thi ngay bằng 1 trong 2 cách:
      + **Cách 1 (Công cụ tích hợp):** Gọi công cụ `post_facebook(image: "<đường_dẫn_ảnh>", caption: "<caption_bài_viết>", product: "prontosan" [hoặc "nutricomp" / "all"])`.
      + **Cách 2 (Script CLI):** Gọi công cụ `exec` chạy lệnh:
-       `python3 /app/data/skills/tao-creative-fb/scripts/post_facebook.py --image "<đường_dẫn_ảnh>" --caption "<caption_bài_viết>" --product [prontosan|nutricomp|all]`
+       `post_facebook --image "<đường_dẫn_ảnh>" --caption "<caption_bài_viết>" --product [prontosan|nutricomp|all] (hoặc python3 /app/workspace/skills/tao-creative-fb/scripts/post_facebook.py ..., lưu ý KHÔNG gọi tiền tố /app/data/)`
    - **Tự động phân luồng đúng Fanpage:**
      - **Bài viết Prontosan:** Tự động đăng lên 8-9 Page chuyên biệt về Prontosan/Vết thương + Page chung **Sức Khỏe Cho Mọi Nhà**.
      - **Bài viết Nutricomp:** Tự động đăng lên các Page chuyên biệt về sữa/dinh dưỡng Nutricomp + Page chung **Sức Khỏe Cho Mọi Nhà**.
