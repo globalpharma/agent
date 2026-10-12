@@ -247,13 +247,13 @@ E'    🚫 TUYỆT ĐỐI KHÔNG CHỈ GỢI Ý POSTER BẰNG CHỮ!\n' ||
 E'    BẮT BUỘC THIẾT KẾ ẢNH MỚI HOÀN TOÀN THEO ĐÚNG TIÊU ĐỀ/NỘI DUNG VÀ THEO STYLE THAM CHIẾU:\n' ||
 E'    Cách 1: Gọi công cụ `create_image(prompt: "...", model: "gpt-5.6", provider: "openai-codex")` để sinh bối cảnh mới độc bản cho bài viết (GoClaw sẽ tự động ghép chai sản phẩm và logo chính hãng lên ảnh sinh được).\n' ||
 E'    Cách 2: Gọi công cụ `exec` chạy render poster mới với đúng tiêu đề của bài viết:\n' ||
-E'    `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type [plus|renal|prontosan|combo] --headline "<tiêu đề bài viết>" --subline "<tóm tắt giá trị>" --output /app/workspace/output/creative_<time>.png`\n' ||
+E'    `render_poster --type [plus|renal|prontosan|combo] --headline "<tiêu đề bài viết>" --subline "<tóm tắt giá trị>" --output /app/workspace/output/creative_<time>.png (hoặc python3 /app/workspace/skills/tao-creative-fb/scripts/render_poster.py ..., lưu ý KHÔNG gọi /app/data/)`\n' ||
 E'    Sau khi tạo ảnh xong, BẮT BUỘC đính kèm dòng `MEDIA:<đường_dẫn_ảnh_mới>` vào câu trả lời để ảnh mới hiển thị trực tiếp cùng bài viết!\n' ||
 E'  + Khi Lãnh đạo yêu cầu "đăng bài", "đăng lên page", "đăng fanpage", "publish facebook", "đăng 8 page" (cho Prontosan, Nutricomp, v.v.):\n' ||
 E'    🚫 TUYỆT ĐỐI KHÔNG BÁO THIẾU TOKEN HAY THIẾU QUYỀN PUBLISH! HỆ THỐNG ĐÃ CÓ SẴN 100% TOKEN & DANH SÁCH 17 FANPAGE!\n' ||
 E'    File token đã lưu sẵn tại `pages.json` và `facebook_pages.csv` ngay trong workspace.\n' ||
 E'    Bạn gọi NGAY công cụ: `post_facebook(image: "<đường_dẫn_ảnh>", caption: "<nội_dung_caption>", product: "prontosan" [hoặc "nutricomp" / "all"])`.\n' ||
-E'    Hoặc gọi công cụ `exec` chạy lệnh: `python3 /app/data/skills/tao-creative-fb/scripts/post_facebook.py --image "<đường_dẫn_ảnh>" --caption "<nội_dung_caption>" --product [prontosan|nutricomp|all]`.\n' ||
+E'    Hoặc gọi công cụ `exec` chạy lệnh: `post_facebook --image "<đường_dẫn_ảnh>" --caption "<nội_dung_caption>" --product [prontosan|nutricomp|all] (hoặc python3 /app/workspace/skills/tao-creative-fb/scripts/post_facebook.py ..., lưu ý KHÔNG gọi /app/data/)`.\n' ||
 E'    Hệ thống sẽ tự động lọc đúng danh sách Fanpage mục tiêu (8-9 Fanpage Prontosan nếu là Prontosan; các Fanpage Nutricomp nếu là Nutricomp; không đăng chéo), đăng thật qua Facebook Graph API kèm độ trễ 2s chống spam, và trả về bảng mã Post ID để bạn báo cáo ngay cho Sếp!\n' ||
 E'- **Chỉ dùng Trưởng phòng (Lead Marketing / Lead CSKH) khi có chiến dịch tổng thể:**\n' ||
 E'  Chỉ khi Lãnh đạo giao bài toán chiến lược tổng hợp ("lập chiến dịch tháng", "báo cáo hiệu quả toàn phòng"), bạn mới giao cho Trưởng phòng để phân công đa nhiệm.\n' ||
@@ -297,7 +297,7 @@ E'- Không tự ý spam kế hoạch khi không có yêu cầu. Nhưng khi Sếp
 E'- Bãi bỏ phong cách thiết kế poster cũ.\n\n' ||
 E'## 4. QUY TRÌNH ĐĂNG BÀI LÊN MẠNG LƯỚI FANPAGE (KHI LÃNH ĐẠO RA LỆNH ĐĂNG)\n' ||
 E'Hệ thống ĐÃ LƯU SẴN 100% token của toàn bộ 17 Fanpage tại `pages.json` và `facebook_pages.csv` ngay trong workspace.\n' ||
-E'Khi nhận lệnh đăng bài lên Fanpage, gọi ngay công cụ `post_facebook` hoặc lệnh `exec: python3 /app/data/skills/tao-creative-fb/scripts/post_facebook.py --image "<ảnh>" --caption "<caption>" --product [prontosan|nutricomp|all]`.\n' ||
+E'Khi nhận lệnh đăng bài lên Fanpage, gọi ngay công cụ `post_facebook` hoặc lệnh `exec: post_facebook --image "<ảnh>" --caption "<caption>" --product [prontosan|nutricomp|all] (hoặc python3 /app/workspace/skills/tao-creative-fb/scripts/post_facebook.py ..., lưu ý KHÔNG gọi /app/data/)`.\n' ||
 E'Hệ thống tự động đăng lên đúng nhóm Fanpage đã duyệt (8-9 page Prontosan nếu là Prontosan) qua Graph API và xuất bảng mã Post ID để báo cáo cho Sếp. TUYỆT ĐỐI KHÔNG BÁO THIẾU QUYỀN HAY THIẾU TOKEN!';
 
     IF v_mkt_id IS NOT NULL THEN
@@ -356,7 +356,7 @@ E'  + 🚫 ĐẶC BIỆT CHÚ Ý: Ảnh tham chiếu này CHỈ DÀNH RIÊNG CHO
 E'- **QUY TRÌNH KẾT XUẤT MASTER TEMPLATE CHUẨN 100% ẢNH THAM CHIẾU:**\n' ||
 E'  1. **Cách chuẩn ưu tiên số 1 (Master Template Engine - Bám sát 100% ảnh tham chiếu của Sếp + Kết xuất tiêu đề bài viết mới):**\n' ||
 E'     Gọi công cụ `exec` chạy ngay lệnh kết xuất từ phôi Master Template:\n' ||
-E'     `python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type [renal|plus|prontosan|combo] --headline "<tiêu đề bài viết>" --subline "<tóm tắt thông điệp>" --output /app/workspace/output/poster_<type>_master.png`\n' ||
+E'     `render_poster --type [renal|plus|prontosan|combo] --headline "<tiêu đề bài viết>" --subline "<tóm tắt thông điệp>" --output /app/workspace/output/poster_<type>_master.png (hoặc python3 /app/workspace/skills/tao-creative-fb/scripts/render_poster.py ..., lưu ý KHÔNG gọi /app/data/)`\n' ||
 E'  2. **Cách 2 (Sinh bối cảnh AI qua GPT Sol 5.6 + Tự động chuẩn hóa Master Template):**\n' ||
 E'     Gọi công cụ `create_image(prompt: "...", model: "gpt-5.6", provider: "openai-codex")` (hệ thống tự động hậu kỳ theo chuẩn Master Template).\n' ||
 E'- **TRẢ VỀ KẾT QUẢ CHO SẾP:** Báo cáo ngắn gọn ý nghĩa thiết kế và BẮT BUỘC giữ nguyên dòng `MEDIA:<đường_dẫn_ảnh>` để giao diện hiển thị trực tiếp!';
@@ -386,7 +386,7 @@ E'  + Thực thi ngay lập tức trong 1 lượt duy nhất (Single-turn), khô
 E'  + Đọc ngay file Brain `skills/tao-creative-fb/assets/knowledge_globalpharma_products_campaign.md` và `assets/caption-templates.md`.\n' ||
 E'  + Viết đúng 100% chuẩn y khoa: Nutricomp Renal (2.0 kcal/ml, 400 kcal/chai 200ml, kiểm soát kali/natri/phospho, giá combo 12 chai: 1.296.000 VNĐ, giá lẻ 108.000 VNĐ/chai, liều dùng 1-3 chai/ngày).\n' ||
 E'  + Giữ cấu trúc 3 phần: Hook thấu cảm y khoa -> Body kiến thức dinh dưỡng lâm sàng B.Braun -> Soft/Hard CTA tư vấn từ Dược sĩ GlobalPharma.\n' ||
-E'  + KHI ĐƯỢC YÊU CẦU FULL BÀI / CREATIVE HOẶC GỌI SKILL TAO-CREATIVE-FB (CẢ ẢNH VÀ CAPTION): BẮT BUỘC gọi công cụ render poster hoặc delegate cho Agent Design để xuất ảnh mới mang đúng tiêu đề (`python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type [plus|renal|combo|prontosan] --headline "<tiêu đề>" --subline "<tóm tắt>" --output /app/workspace/output/creative_<time>.png`), không bao giờ chỉ trả về mỗi bài viết.\n' ||
+E'  + KHI ĐƯỢC YÊU CẦU FULL BÀI / CREATIVE HOẶC GỌI SKILL TAO-CREATIVE-FB (CẢ ẢNH VÀ CAPTION): BẮT BUỘC gọi công cụ render poster hoặc delegate cho Agent Design để xuất ảnh mới mang đúng tiêu đề (`render_poster --type [plus|renal|combo|prontosan] --headline "<tiêu đề>" --subline "<tóm tắt>" --output /app/workspace/output/creative_<time>.png (hoặc python3 /app/workspace/skills/tao-creative-fb/scripts/render_poster.py ..., lưu ý KHÔNG gọi /app/data/)`), không bao giờ chỉ trả về mỗi bài viết.\n' ||
 E'  + Trả về bài viết hoàn chỉnh, trau chuốt, sẵn sàng đăng tải kèm ảnh `MEDIA:<đường_dẫn_ảnh>`.';
 
             INSERT INTO agent_context_files (id, agent_id, file_name, content, tenant_id, created_at, updated_at)
@@ -573,6 +573,11 @@ fi
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw sh -c '
     ln -sf /app/data/skills/tao-creative-fb/scripts/post_facebook.py /usr/local/bin/post_facebook 2>/dev/null || true
     chmod +x /app/data/skills/tao-creative-fb/scripts/post_facebook.py 2>/dev/null || true
+    ln -sf /app/data/skills/tao-creative-fb/scripts/render_poster.py /usr/local/bin/render_poster 2>/dev/null || true
+    chmod +x /app/data/skills/tao-creative-fb/scripts/render_poster.py 2>/dev/null || true
+    ln -sf /app/data/skills/tao-creative-fb/scripts/compose_placement.py /usr/local/bin/compose_placement 2>/dev/null || true
+    chmod +x /app/data/skills/tao-creative-fb/scripts/compose_placement.py 2>/dev/null || true
+    chmod -R +x /app/workspace/skills/tao-creative-fb/scripts/ /app/data/skills/tao-creative-fb/scripts/ 2>/dev/null || true
     for d in /app/workspace/teams/*/* /app/workspace/agents/*; do
         if [ -d "$d" ]; then
             cp -f /app/workspace/facebook_pages.csv "$d/facebook_pages.csv" 2>/dev/null || true
@@ -633,7 +638,12 @@ BEGIN
 1. Đọc kiến thức và tài liệu sản phẩm Nutricomp Drink Plus trong Brain / Skills.
 2. Chọn ngẫu nhiên 1 góc độ sáng tạo (angle) thật ấn tượng, khác biệt và sâu sắc về mặt lâm sàng/dinh dưỡng (ví dụ: phục hồi sau mổ, người suy kiệt, ung thư cần năng lượng cao 300 kcal/chai, bổ sung EPA chống suy mòn, tiện dụng dễ uống).
 3. Viết 1 bài đăng Facebook chuẩn y khoa và truyền cảm hứng (độ dài 80-150 từ, có hashtag #Nutricomp #NutricompDrinkPlus #Globalpharma #DinhDuongYHoc).
-4. Tạo ảnh poster bằng công cụ tạo ảnh hoặc render poster Master Template chính hãng (tuyệt đối chỉ hiển thị đúng 1 chai Nutricomp Drink Plus màu cam, đúng tỷ lệ bao bì). Đính kèm cú pháp MEDIA:<đường_dẫn_ảnh> để gửi poster vào Telegram.
+4. BẮT BUỘC TẠO ẢNH POSTER ĐÍNH KÈM:
+   - Cách 1 (Khuyên dùng): Dùng công cụ exec chạy lệnh:
+     render_poster --type plus --headline "<tiêu đề ngắn bài viết>" --subline "Bổ sung dinh dưỡng cao năng lượng 300Kcal/200ml" --output /app/workspace/output/poster_plus_morning.png
+     (Lưu ý: Gọi trực tiếp lệnh 'render_poster', TUYỆT ĐỐI KHÔNG dùng tiền tố '/app/data/').
+   - Cách 2: Dùng công cụ create_image(prompt: "...", provider: "openai-codex").
+   - BẮT BUỘC kết thúc câu trả lời bằng dòng: MEDIA:/app/workspace/output/poster_plus_morning.png để hệ thống tự động tải và gửi ảnh poster trực tiếp vào Telegram cùng bài viết cho Sếp duyệt.
 5. Gửi toàn bộ nội dung bài viết + ảnh poster vào Telegram này để Sếp duyệt. Nhắc rõ danh sách 8 Fanpage Nutricomp sẽ đăng khi Sếp bấm duyệt/xác nhận:
    - https://www.facebook.com/nutricomp.globalpharma/
    - https://www.facebook.com/suadinhduongyhocduc/
@@ -684,7 +694,12 @@ BEGIN
 1. Đọc kiến thức và tài liệu sản phẩm Nutricomp Drink Renal trong Brain / Skills.
 2. Chọn ngẫu nhiên 1 góc độ sáng tạo (angle) thật ấn tượng, khác biệt và chuyên sâu y khoa cho bệnh nhân suy thận (ví dụ: công thức giảm protein, kiểm soát nghiêm ngặt Kali - Natri - Photpho, bảo tồn chức năng thận, năng lượng chuẩn xác 2.0 kcal/ml, hương vani thơm ngon).
 3. Viết 1 bài đăng Facebook chuẩn y khoa, tận tâm (độ dài 80-150 từ, có hashtag #Nutricomp #NutricompDrinkRenal #DinhDuongBenhNhanThan #Globalpharma).
-4. Tạo ảnh poster bằng công cụ tạo ảnh hoặc render poster Master Template chính hãng (tuyệt đối chỉ hiển thị đúng 1 chai Nutricomp Drink Renal màu xanh lá, đúng tỷ lệ bao bì). Đính kèm cú pháp MEDIA:<đường_dẫn_ảnh> để gửi poster vào Telegram.
+4. BẮT BUỘC TẠO ẢNH POSTER ĐÍNH KÈM:
+   - Cách 1 (Khuyên dùng): Dùng công cụ exec chạy lệnh:
+     render_poster --type renal --headline "<tiêu đề ngắn bài viết>" --subline "Dinh dưỡng chuyên biệt kiểm soát điện giải" --output /app/workspace/output/poster_renal_morning.png
+     (Lưu ý: Gọi trực tiếp lệnh 'render_poster', TUYỆT ĐỐI KHÔNG dùng tiền tố '/app/data/').
+   - Cách 2: Dùng công cụ create_image(prompt: "...", provider: "openai-codex").
+   - BẮT BUỘC kết thúc câu trả lời bằng dòng: MEDIA:/app/workspace/output/poster_renal_morning.png để hệ thống tự động tải và gửi ảnh poster trực tiếp vào Telegram cùng bài viết cho Sếp duyệt.
 5. Gửi toàn bộ nội dung bài viết + ảnh poster vào Telegram này để Sếp duyệt. Nhắc rõ danh sách 8 Fanpage Nutricomp sẽ đăng khi Sếp bấm duyệt/xác nhận:
    - https://www.facebook.com/nutricomp.globalpharma/
    - https://www.facebook.com/suadinhduongyhocduc/
@@ -735,7 +750,12 @@ BEGIN
 1. Đọc kiến thức và tài liệu giải pháp Prontosan (B. Braun / Đức) trong Brain / Skills.
 2. Chọn ngẫu nhiên 1 góc độ sáng tạo (angle) thật ấn tượng, khác biệt và thuyết phục về chăm sóc vết thương (ví dụ: phá vỡ màng Biofilm cứng đầu, ngăn ngừa nhiễm trùng tái phát, làm sạch vết thương không đau xót, bộ đôi dung dịch rửa + gel kháng khuẩn, vết loét tiểu đường/tì đè).
 3. Viết 1 bài đăng Facebook chuẩn chuyên môn y tế (độ dài 80-150 từ, có hashtag #Prontosan #BBraun #PhaVoBiofilm #ChamSocVetThuong #Globalpharma).
-4. Tạo ảnh poster bằng công cụ tạo ảnh hoặc render poster Master Template chính hãng (hiển thị đúng sản phẩm Prontosan chính hãng B. Braun). Đính kèm cú pháp MEDIA:<đường_dẫn_ảnh> để gửi poster vào Telegram.
+4. BẮT BUỘC TẠO ẢNH POSTER ĐÍNH KÈM:
+   - Cách 1 (Khuyên dùng): Dùng công cụ exec chạy lệnh:
+     render_poster --type prontosan --headline "<tiêu đề ngắn bài viết>" --subline "Làm sạch  •  Rửa  •  Dưỡng ẩm" --output /app/workspace/output/poster_prontosan_morning.png
+     (Lưu ý: Gọi trực tiếp lệnh 'render_poster', TUYỆT ĐỐI KHÔNG dùng tiền tố '/app/data/').
+   - Cách 2: Dùng công cụ create_image(prompt: "...", provider: "openai-codex").
+   - BẮT BUỘC kết thúc câu trả lời bằng dòng: MEDIA:/app/workspace/output/poster_prontosan_morning.png để hệ thống tự động tải và gửi ảnh poster trực tiếp vào Telegram cùng bài viết cho Sếp duyệt.
 5. Gửi toàn bộ nội dung bài viết + ảnh poster vào Telegram này để Sếp duyệt. Nhắc rõ danh sách 8 Fanpage Prontosan sẽ đăng khi Sếp bấm duyệt/xác nhận:
    - https://www.facebook.com/prontosan.globalpharma/
    - https://www.facebook.com/giaiphapnhanhlanhvetthuong

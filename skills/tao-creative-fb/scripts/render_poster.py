@@ -294,7 +294,6 @@ def main():
     out_p = Path(args.output) if args.output else None
 
     t = args.type.lower()
-    print(f"=== GLOBALPHARMA MASTER TEMPLATE ENGINE (TYPE: {t.upper()}) ===")
     results = []
 
     if t in ("plus", "nutricomp-plus"):
