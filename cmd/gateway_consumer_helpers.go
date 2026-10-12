@@ -457,8 +457,7 @@ func autoAttachCreativeMedia(outMsg *bus.OutboundMessage) {
 		return
 	}
 
-	// 1. Check if the message contains explicit Headline / Subline markers.
-	// If so, dynamically generate a tailor-made poster with the exact text!
+	// 1. Extract or infer Headline and Subline from content
 	var headline, subline string
 	lines := strings.Split(outMsg.Content, "\n")
 	for _, l := range lines {
@@ -481,11 +480,12 @@ func autoAttachCreativeMedia(outMsg *bus.OutboundMessage) {
 	if headline == "" {
 		for i, l := range lines {
 			trimmed := strings.TrimSpace(l)
-			if strings.EqualFold(trimmed, "caption:") || strings.EqualFold(trimmed, "caption đề xuất:") {
+			if strings.EqualFold(trimmed, "caption:") || strings.EqualFold(trimmed, "caption đề xuất:") || strings.Contains(strings.ToLower(trimmed), "bài viết") {
 				for j := i + 1; j < len(lines); j++ {
 					candidate := strings.TrimSpace(lines[j])
-					if candidate != "" && len(candidate) < 100 && !strings.HasPrefix(candidate, "*") {
-						headline = candidate
+					clean := strings.Trim(candidate, "*#-_ \t")
+					if clean != "" && len(clean) >= 8 && len(clean) <= 100 && !strings.HasPrefix(clean, "http") {
+						headline = clean
 						break
 					}
 				}
@@ -494,10 +494,24 @@ func autoAttachCreativeMedia(outMsg *bus.OutboundMessage) {
 		}
 	}
 
+	// Fallback headline extraction: first substantive sentence from post
+	if headline == "" {
+		for _, l := range lines {
+			trimmed := strings.TrimSpace(l)
+			clean := strings.Trim(trimmed, "*#-_ \t")
+			if clean != "" && !strings.HasPrefix(clean, "http") && !strings.HasPrefix(clean, "[") &&
+				!strings.HasPrefix(strings.ToLower(clean), "dạ") && !strings.HasPrefix(strings.ToLower(clean), "chào") &&
+				len(clean) >= 10 && len(clean) <= 90 {
+				headline = clean
+				break
+			}
+		}
+	}
+
 	var foundPath string
 
-	// If we have a detected product and a headline, invoke render_poster.py dynamically
-	if targetType != "" && headline != "" {
+	// Always dynamically generate a unique, tailored poster for this post
+	if targetType != "" {
 		renderScriptCandidates := []string{
 			"/app/data/skills/tao-creative-fb/scripts/render_poster.py",
 			"/app/workspace/skills/tao-creative-fb/scripts/render_poster.py",
@@ -516,10 +530,14 @@ func autoAttachCreativeMedia(outMsg *bus.OutboundMessage) {
 			if info, err := os.Stat(outDir); err != nil || !info.IsDir() {
 				outDir = "skills/tao-creative-fb/output"
 			}
+			_ = os.MkdirAll(outDir, 0777)
 			customOutName := fmt.Sprintf("creative_tailored_%s_%d.png", targetType, time.Now().UnixNano()%100000)
 			customOutPath := filepath.Join(outDir, customOutName)
 
-			cmdArgs := []string{scriptPath, "--type", targetType, "--headline", headline, "--output", customOutPath}
+			cmdArgs := []string{scriptPath, "--type", targetType, "--output", customOutPath}
+			if headline != "" {
+				cmdArgs = append(cmdArgs, "--headline", headline)
+			}
 			if subline != "" {
 				cmdArgs = append(cmdArgs, "--subline", subline)
 			}
@@ -533,22 +551,6 @@ func autoAttachCreativeMedia(outMsg *bus.OutboundMessage) {
 
 			if info, err := os.Stat(customOutPath); err == nil && !info.IsDir() && info.Size() > 0 {
 				foundPath = customOutPath
-			}
-		}
-	}
-
-	// 2. Fallback to existing pre-rendered master posters if dynamic rendering wasn't triggered
-	if foundPath == "" {
-		for _, dir := range searchDirs {
-			for _, name := range productCandidates {
-				cand := filepath.Join(dir, name)
-				if info, err := os.Stat(cand); err == nil && !info.IsDir() && info.Size() > 0 {
-					foundPath = cand
-					break
-				}
-			}
-			if foundPath != "" {
-				break
 			}
 		}
 	}

@@ -709,6 +709,14 @@ SET deliver = true,
     deliver_to = '5781808621'
 WHERE deliver = false OR deliver_channel = '' OR deliver_to = '' OR deliver_to = 'striverle' OR deliver_to = '@striverle';
 
+-- Delete conflicting old cron job
+DELETE FROM cron_jobs WHERE name = 'fanpage-content';
+
+-- Reset message history of long-polluted telegram session so agent starts fresh without 500+ old hallucinated turns
+UPDATE sessions
+SET messages = '[]'::jsonb, updated_at = NOW()
+WHERE session_key LIKE '%5781808621%' OR session_key LIKE '%telegram%';
+
 -- 3 TÁC VỤ ĐỊNH KỲ BUỔI SÁNG (NUTRICOMP DRINK PLUS 9H00, RENAL 9H10, PRONTOSAN 9H20)
 DO $$
 DECLARE
@@ -755,8 +763,8 @@ BEGIN
 3. Viết 1 bài đăng Facebook chuẩn y khoa và truyền cảm hứng (độ dài 80-150 từ, có hashtag #Nutricomp #NutricompDrinkPlus #Globalpharma #DinhDuongYHoc).
 4. BẮT BUỘC THỰC SỰ GỌI CÔNG CỤ TẠO ẢNH MỚI TRONG LƯỢT NÀY (TUYỆT ĐỐI KHÔNG BỊA ĐƯỜNG DẪN ẢNH VÀ KHÔNG GỬI LẠI ẢNH CŨ):
    - Bạn BẮT BUỘC phải gọi công cụ trong lượt này để tạo ảnh thật:
-     + Cách 1 (Khuyên dùng): Dùng công cụ create_image(prompt: "...") để sinh ảnh bối cảnh mới độc bản cho bài viết.
-     + Cách 2: Dùng công cụ exec chạy: render_poster --type plus --headline "<tiêu đề ngắn bài viết>" --subline "Bổ sung dinh dưỡng cao năng lượng 300Kcal/200ml" --output /app/workspace/output/poster_plus_morning.png
+     + Cách 1 (Khuyên dùng): Dùng công cụ create_image(prompt: "...") để sinh ảnh bối cảnh mới độc bản cho bài viết (hệ thống sẽ tự động ghép chai Nutricomp Drink Plus nắp cam và logo GlobalPharma lên ảnh).
+     + Cách 2: Dùng công cụ exec chạy: render_poster --type plus --headline "<tiêu đề ngắn bài viết>" --subline "Bổ sung dinh dưỡng cao năng lượng 300Kcal/200ml"
    - Sau khi công cụ hoàn tất và trả về file ảnh thành phẩm, bạn mới kết thúc bài trả lời bằng dòng: MEDIA:<đường_dẫn_ảnh_vừa_tạo> để hệ thống tự động gửi ảnh poster trực tiếp vào Telegram cùng bài viết cho Sếp duyệt.
 5. Gửi toàn bộ nội dung bài viết + ảnh poster vào Telegram này để Sếp duyệt. Nhắc rõ danh sách 8 Fanpage Nutricomp sẽ đăng khi Sếp bấm duyệt/xác nhận:
    - https://www.facebook.com/nutricomp.globalpharma/
@@ -810,8 +818,8 @@ BEGIN
 3. Viết 1 bài đăng Facebook chuẩn y khoa, tận tâm (độ dài 80-150 từ, có hashtag #Nutricomp #NutricompDrinkRenal #DinhDuongBenhNhanThan #Globalpharma).
 4. BẮT BUỘC THỰC SỰ GỌI CÔNG CỤ TẠO ẢNH MỚI TRONG LƯỢT NÀY (TUYỆT ĐỐI KHÔNG BỊA ĐƯỜNG DẪN ẢNH VÀ KHÔNG GỬI LẠI ẢNH CŨ):
    - Bạn BẮT BUỘC phải gọi công cụ trong lượt này để tạo ảnh thật:
-     + Cách 1 (Khuyên dùng): Dùng công cụ create_image(prompt: "...") để sinh ảnh bối cảnh mới độc bản cho bài viết.
-     + Cách 2: Dùng công cụ exec chạy: render_poster --type renal --headline "<tiêu đề ngắn bài viết>" --subline "Dinh dưỡng chuyên biệt kiểm soát điện giải" --output /app/workspace/output/poster_renal_morning.png
+     + Cách 1 (Khuyên dùng): Dùng công cụ create_image(prompt: "...") để sinh ảnh bối cảnh mới độc bản cho bài viết (hệ thống sẽ tự động ghép chai Nutricomp Drink Renal nắp tím và logo GlobalPharma lên ảnh).
+     + Cách 2: Dùng công cụ exec chạy: render_poster --type renal --headline "<tiêu đề ngắn bài viết>" --subline "Dinh dưỡng chuyên biệt kiểm soát điện giải"
    - Sau khi công cụ hoàn tất và trả về file ảnh thành phẩm, bạn mới kết thúc bài trả lời bằng dòng: MEDIA:<đường_dẫn_ảnh_vừa_tạo> để hệ thống tự động gửi ảnh poster trực tiếp vào Telegram cùng bài viết cho Sếp duyệt.
 5. Gửi toàn bộ nội dung bài viết + ảnh poster vào Telegram này để Sếp duyệt. Nhắc rõ danh sách 8 Fanpage Nutricomp sẽ đăng khi Sếp bấm duyệt/xác nhận:
    - https://www.facebook.com/nutricomp.globalpharma/
@@ -865,8 +873,8 @@ BEGIN
 3. Viết 1 bài đăng Facebook chuẩn chuyên môn y tế (độ dài 80-150 từ, có hashtag #Prontosan #BBraun #PhaVoBiofilm #ChamSocVetThuong #Globalpharma).
 4. BẮT BUỘC THỰC SỰ GỌI CÔNG CỤ TẠO ẢNH MỚI TRONG LƯỢT NÀY (TUYỆT ĐỐI KHÔNG BỊA ĐƯỜNG DẪN ẢNH VÀ KHÔNG GỬI LẠI ẢNH CŨ):
    - Bạn BẮT BUỘC phải gọi công cụ trong lượt này để tạo ảnh thật:
-     + Cách 1 (Khuyên dùng): Dùng công cụ create_image(prompt: "...") để sinh ảnh bối cảnh mới độc bản cho bài viết.
-     + Cách 2: Dùng công cụ exec chạy: render_poster --type prontosan --headline "<tiêu đề ngắn bài viết>" --subline "Làm sạch  •  Rửa  •  Dưỡng ẩm" --output /app/workspace/output/poster_prontosan_morning.png
+     + Cách 1 (Khuyên dùng): Dùng công cụ create_image(prompt: "...") để sinh ảnh bối cảnh mới độc bản cho bài viết (hệ thống sẽ tự động ghép chai xịt Prontosan và logo GlobalPharma lên ảnh).
+     + Cách 2: Dùng công cụ exec chạy: render_poster --type prontosan --headline "<tiêu đề ngắn bài viết>" --subline "Làm sạch  •  Rửa  •  Dưỡng ẩm"
    - Sau khi công cụ hoàn tất và trả về file ảnh thành phẩm, bạn mới kết thúc bài trả lời bằng dòng: MEDIA:<đường_dẫn_ảnh_vừa_tạo> để hệ thống tự động gửi ảnh poster trực tiếp vào Telegram cùng bài viết cho Sếp duyệt.
 5. Gửi toàn bộ nội dung bài viết + ảnh poster vào Telegram này để Sếp duyệt. Nhắc rõ danh sách 8 Fanpage Prontosan sẽ đăng khi Sếp bấm duyệt/xác nhận:
    - https://www.facebook.com/prontosan.globalpharma/
@@ -929,22 +937,12 @@ pkill -9 -f "hermes" 2>/dev/null || true
 pkill -9 -f "openclaw" 2>/dev/null || true
 sleep 2
 
-echo "=== ENSURING OFFICIAL GLOBALPHARMA POSTERS EXIST AND ARE SYNCED ==="
-rm -f skills/tao-creative-fb/output/KE_HOACH_NOI_DUNG_TUAN.md 2>/dev/null || true
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw rm -f /app/workspace/output/KE_HOACH_NOI_DUNG_TUAN.md 2>/dev/null || true
-
-# Copy pre-rendered official posters to container
-if [ -d "skills/tao-creative-fb/output" ]; then
-    echo "Syncing official posters to container ($GOCLAW_CID)..."
-    docker cp skills/tao-creative-fb/output/. ${GOCLAW_CID}:/app/workspace/output/ || true
-    docker cp skills/tao-creative-fb/output/. ${GOCLAW_CID}:/app/data/skills/tao-creative-fb/output/ || true
-fi
-
-# Always render fresh Master Template posters in container
-docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 1000 goclaw sh -c '
+echo "=== CLEANING UP OBSOLETE STATIC POSTER MOCKUPS & ENFORCING PERMISSIONS ==="
+rm -f skills/tao-creative-fb/output/KE_HOACH_NOI_DUNG_TUAN.md skills/tao-creative-fb/output/poster_*.png skills/tao-creative-fb/output/poster_*.jpg 2>/dev/null || true
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw sh -c '
+    rm -f /app/workspace/output/KE_HOACH_NOI_DUNG_TUAN.md /app/workspace/output/poster_*.png /app/workspace/output/poster_*.jpg /app/data/skills/tao-creative-fb/output/poster_*.png /app/data/skills/tao-creative-fb/output/poster_*.jpg 2>/dev/null || true
     mkdir -p /app/workspace/output /app/data/skills/tao-creative-fb/output
-    python3 /app/data/skills/tao-creative-fb/scripts/render_poster.py --type all --output-dir /app/workspace/output || true
-    cp -r /app/workspace/output/* /app/data/skills/tao-creative-fb/output/ 2>/dev/null || true
+    chmod -R 777 /app/workspace /app/data /app/skills
 ' || true
 
 echo "=== HOST & DOCKER DIAGNOSTICS ==="

@@ -49,10 +49,10 @@ Skill cấp 3 chuyên trách sản xuất toàn diện nội dung Facebook (Hìn
 
 ### 🎨 2. Master Style Chuẩn Thiết Kế Riêng Biệt Theo Từng Sản Phẩm (Chỉ Đạo Của Sếp)
 🚫 **QUY TẮC CỐT LÕI (STRICT ZERO-REUSE POLICY - TUYỆT ĐỐI CẤM GỬI LẠI ẢNH MẪU CŨ):**
-- Toàn bộ các ảnh tham chiếu (`style_nutricomp_renal_master.jpg`, `poster_nutricomp_renal.png`, `poster_nutricomp_drink_plus.png`, `poster_prontosan_wound_spray.png`, `master_poster_*.png`) **CHỈ LÀ TÀI LIỆU HƯỚNG DẪN VỀ PHONG CÁCH THẨM MỸ, BỐ CỤC VÀ NHẬN DIỆN THƯƠNG HIỆU**.
-- 🚫 **TUYỆT ĐỐI CẤM** hành vi lười biếng lấy file ảnh tham chiếu cũ có sẵn trong máy gửi lại cho Sếp! Mỗi bài viết là một thông điệp mới, **BẮT BUỘC PHẢI THIẾT KẾ MỘT POSTER / ẢNH MỚI 100% ĐỘC BẢN**:
-  + **Cách 1 (Sáng tạo bối cảnh mới qua AI):** Gọi công cụ `create_image(prompt: "...")` để vẽ bối cảnh nhiếp ảnh đời thực mới (phòng ăn gia đình, sau phẫu thuật, phòng tư vấn, v.v.), sau đó hệ thống tự động ghép chai sản phẩm chính hãng và logo GlobalPharma lên.
-  + **Cách 2 (Thiết kế Poster Typography mới):** Gọi lệnh `render_poster --type [plus|renal|prontosan|combo] --headline "<tiêu đề bài viết>" --subline "<tóm tắt thông điệp>" --output /app/workspace/output/creative_<timestamp>.png` để sinh ra file poster mới mang đúng tiêu đề của bài viết!
+- Toàn bộ các ảnh phong cách mẫu trong assets/references **CHỈ LÀ TÀI LIỆU HƯỚNG DẪN VỀ PHONG CÁCH THẨM MỸ, BỐ CỤC VÀ NHẬN DIỆN THƯƠNG HIỆU**.
+- 🚫 **TUYỆT ĐỐI CẤM** hành vi lấy ảnh mẫu tham chiếu cũ gửi lại cho Sếp! Mỗi bài viết là một thông điệp mới, **BẮT BUỘC PHẢI THIẾT KẾ MỘT POSTER / ẢNH MỚI 100% ĐỘC BẢN**:
+  + **Cách 1 (Sáng tạo bối cảnh mới qua AI - KHUYÊN DÙNG):** Gọi công cụ `create_image(prompt: "...")` để vẽ bối cảnh nhiếp ảnh đời thực mới (phòng ăn gia đình, sau phẫu thuật, phòng tư vấn, v.v.), sau đó hệ thống tự động ghép chai sản phẩm chính hãng và logo GlobalPharma lên.
+  + **Cách 2 (Thiết kế Poster Typography mới):** Gọi lệnh `render_poster --type [plus|renal|prontosan|combo] --headline "<tiêu đề bài viết>" --subline "<tóm tắt thông điệp>"` để sinh ra file poster mới mang đúng tiêu đề của bài viết!
 - Sau khi thiết kế ảnh mới xong, xuất đường dẫn ảnh mới đó bằng cú pháp `MEDIA:<đường_dẫn_ảnh_mới>`. Nếu gửi lại file ảnh mẫu cũ là vi phạm nghiêm trọng quy chuẩn vận hành!
 
 ⚠️ **QUY CHUẨN ĐẶC THÙ THEO TỪNG DÒNG SẢN PHẨM:**
@@ -119,7 +119,7 @@ Mục tiêu: Cung cấp kiến thức chăm sóc sức khỏe, nuôi dưỡng t�
          - **Nutricomp Drink Renal:** Bối cảnh gia đình người cao tuổi an tâm, nụ cười nhẹ nhõm, tone màu xanh ngọc y tế (teal) thanh lịch, chai Nutricomp Drink Renal 200ml nắp tím trên bàn.
          - **Prontosan Spray:** Bối cảnh đời thường sạch sẽ vô trùng, người dùng xịt dung dịch chăm sóc vết xước nhẹ nhàng ở tay, chai xịt Prontosan trên bàn đá cẩm thạch trắng.
          👉 GoClaw sẽ tự động ghép quang học chai sản phẩm chính hãng và logo GlobalPharma lên bức ảnh sinh được.
-       * *Dự phòng (Chỉ dùng khi create_image gặp lỗi mạng/API):* Chạy script `render_poster --type [plus|renal|combo|prontosan] --output /app/workspace/output/poster_<product>_master.png (hoặc compose_placement --product [plus|renal|combo|prontosan])`.
+       * *Dự phòng (Chỉ dùng khi create_image gặp lỗi mạng/API):* Chạy script `render_poster --type [plus|renal|combo|prontosan] --headline "<tiêu đề bài viết>"`. Hệ thống sẽ tự động xuất file poster mới độc bản mang đúng tiêu đề bài viết.
        * 🚫 **TUYỆT ĐỐI CẤM:** Không được gửi lại file ảnh tham chiếu cũ! Mỗi bài viết phải là một sản phẩm hình ảnh mới được thiết kế riêng!
      + ⚠️ **NGHIÊM CẤM:** TUYỆT ĐỐI KHÔNG chỉ trả về mỗi bài text caption mà không có ảnh! Output BẮT BUỘC phải chứa ảnh thành phẩm kèm cú pháp `MEDIA:<đường_dẫn_ảnh>` ở cuối tin nhắn để giao diện hiển thị ảnh ngay lập tức cùng với caption.
      + 🚫 **TUYỆT ĐỐI KHÔNG VIẾT CHỮ "Gợi ý poster: • Headline ... • Visual ...":** Bạn KHÔNG phải là người gợi ý ý tưởng ảnh trên giấy. BẠN PHẢI THIẾT KẾ RA FILE ẢNH MỚI ĐÍNH KÈM! Nếu viết mô tả poster bằng text thay vì gửi ảnh thiết kế mới là vi phạm quy định!

@@ -17,6 +17,7 @@ Bám sát 100% thiết kế chuẩn tham chiếu (Master Reference Templates) c�
 
 import sys
 import os
+import time
 import shutil
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
@@ -159,7 +160,7 @@ def render_pro_nutricomp_renal(headline: str = None, subline: str = None, output
             if y_cur <= 232 and sl_lines:
                 draw.text((32, y_cur + 2), sl_lines[0], fill="#065F46", font=f_sl)
 
-    out_file = output_path if output_path else (OUTPUT_DIR / "poster_nutricomp_renal.png")
+    out_file = output_path if output_path else (OUTPUT_DIR / f"creative_renal_{int(time.time()*1000)}.png")
     out_file.parent.mkdir(parents=True, exist_ok=True)
     canvas.convert("RGB").save(out_file, "PNG", quality=95)
     print(f"MEDIA:{os.path.abspath(out_file)}")
@@ -211,7 +212,7 @@ def render_pro_nutricomp_plus(headline: str = None, subline: str = None, output_
                 draw.text((35, y_cur), line, fill="#334155", font=f_sl)
                 y_cur += 26
 
-    out_file = output_path if output_path else (OUTPUT_DIR / "poster_nutricomp_drink_plus.png")
+    out_file = output_path if output_path else (OUTPUT_DIR / f"creative_plus_{int(time.time()*1000)}.png")
     out_file.parent.mkdir(parents=True, exist_ok=True)
     canvas.convert("RGB").save(out_file, "PNG", quality=95)
     print(f"MEDIA:{os.path.abspath(out_file)}")
@@ -257,7 +258,7 @@ def render_pro_prontosan(headline: str = None, subline: str = None, output_path:
     sub_text = sl if (sl and len(sl) <= 42) else "Làm sạch  •  Rửa  •  Dưỡng ẩm"
     draw.text((38, 418), sub_text, fill="#1E293B", font=get_font(20, bold=False))
 
-    out_file = output_path if output_path else (OUTPUT_DIR / "poster_prontosan_wound_spray.png")
+    out_file = output_path if output_path else (OUTPUT_DIR / f"creative_prontosan_{int(time.time()*1000)}.png")
     out_file.parent.mkdir(parents=True, exist_ok=True)
     canvas.convert("RGB").save(out_file, "PNG", quality=95)
     print(f"MEDIA:{os.path.abspath(out_file)}")
@@ -271,7 +272,7 @@ def render_pro_nutricomp_combo(headline: str = None, subline: str = None, output
     return render_pro_nutricomp_plus(
         headline=headline or "COMBO 12 CHAI TIỆT TRÙNG NGUYÊN SEAL",
         subline=subline or "Giải pháp dinh dưỡng tiết kiệm cho liệu trình phục hồi toàn diện",
-        output_path=output_path or (OUTPUT_DIR / "poster_nutricomp_combo12.png"),
+        output_path=output_path or (OUTPUT_DIR / f"creative_combo_{int(time.time()*1000)}.png"),
     )
 
 
