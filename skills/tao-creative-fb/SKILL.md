@@ -131,9 +131,9 @@ Mục tiêu: Cung cấp kiến thức chăm sóc sức khỏe, nuôi dưỡng t�
      + **Cách 1 (Công cụ tích hợp):** Gọi công cụ `post_facebook(image: "<đường_dẫn_ảnh>", caption: "<caption_bài_viết>", product: "prontosan" [hoặc "nutricomp" / "all"])`.
      + **Cách 2 (Script CLI):** Gọi công cụ `exec` chạy lệnh:
        `post_facebook --image "<đường_dẫn_ảnh>" --caption "<caption_bài_viết>" --product [prontosan|nutricomp|all] (hoặc python3 /app/workspace/skills/tao-creative-fb/scripts/post_facebook.py ..., lưu ý KHÔNG gọi tiền tố /app/data/)`
-   - **Tự động phân luồng đúng Fanpage:**
-     - **Bài viết Prontosan:** Tự động đăng lên 8-9 Page chuyên biệt về Prontosan/Vết thương + Page chung **Sức Khỏe Cho Mọi Nhà**.
-     - **Bài viết Nutricomp:** Tự động đăng lên các Page chuyên biệt về sữa/dinh dưỡng Nutricomp + Page chung **Sức Khỏe Cho Mọi Nhà**.
+   - **Tự động phân luồng đúng 9 Fanpage mỗi nhóm (Bắt buộc luôn bao gồm Fanpage chính công ty `https://www.facebook.com/globalpharmavn`):**
+     - **Bài viết Prontosan (9 Fanpage):** Tự động đăng lên **Fanpage chính công ty `Globalpharmavn - Sức Khỏe Cho Mọi Nhà` (`https://www.facebook.com/globalpharmavn` - ID: `321910945365410`)** + 7 Page chuyên biệt về Prontosan/Vết thương + Page chung **Sức Khỏe Cho Mọi Nhà** (`https://www.facebook.com/suckhoechomoinhacom/` - ID: `107035815052209`).
+     - **Bài viết Nutricomp Renal & Plus (9 Fanpage):** Tự động đăng lên **Fanpage chính công ty `Globalpharmavn - Sức Khỏe Cho Mọi Nhà` (`https://www.facebook.com/globalpharmavn` - ID: `321910945365410`)** + 7 Page chuyên biệt về sữa/dinh dưỡng Nutricomp + Page chung **Sức Khỏe Cho Mọi Nhà** (`https://www.facebook.com/suckhoechomoinhacom/` - ID: `107035815052209`).
      - **Bài viết Affiliate:** Đăng riêng lên Fanpage Affiliate - GlobalPharma.
    - **Cơ chế chống Spam:** Tự động giãn cách 2 giây giữa mỗi Page để bảo vệ tài khoản khỏi thuật toán chống spam của Facebook.
    - **Báo cáo kết quả:** Trả về bảng tổng kết trạng thái và mã Post ID của từng Page cho người dùng.
