@@ -21,6 +21,7 @@ import (
 type FacebookPageConfig struct {
 	ID           string `json:"id"`
 	Name         string `json:"name"`
+	URL          string `json:"url,omitempty"`
 	Category     string `json:"category,omitempty"`
 	Token        string `json:"token"`
 	ProductGroup string `json:"product_group"`
@@ -377,21 +378,25 @@ func filterFacebookPages(pages []FacebookPageConfig, product string, targetIDs [
 	var filtered []FacebookPageConfig
 
 	for _, p := range pages {
-		if !p.Enabled {
-			continue
-		}
-
 		if len(targetIDs) > 0 {
 			matched := false
+			pURL := strings.TrimRight(strings.ToLower(p.URL), "/")
+			pName := strings.ToLower(p.Name)
 			for _, tid := range targetIDs {
-				if p.ID == tid {
+				cleanTID := strings.TrimRight(strings.ToLower(strings.TrimSpace(tid)), "/")
+				if p.ID == tid || (pURL != "" && (pURL == cleanTID || strings.HasSuffix(pURL, "/"+cleanTID))) || (cleanTID != "" && strings.Contains(pName, cleanTID)) {
 					matched = true
 					break
 				}
 			}
-			if !matched {
-				continue
+			if matched {
+				filtered = append(filtered, p)
 			}
+			continue
+		}
+
+		if !p.Enabled {
+			continue
 		}
 
 		pg := strings.ToLower(p.ProductGroup)
