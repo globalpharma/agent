@@ -45,13 +45,22 @@
     "enabled": true
   },
   {
+    "id": "1219060984614707",
+    "name": "Prontosan - GlobalPharma",
+    "url": "https://www.facebook.com/prontosan.globalpharma/",
+    "category": "Y tế & Sức khỏe",
+    "token": "EAAV8YPOyjNYBSvz4feZCMDKL9f8ZCFCDqHTxxpcXhZB91o1rSDkCYikZAq8YcI3aKr420X9aw3GHFfbUYnkZAOYZCWmFXrfLk6Qu0HmvbJd9t5vs3aftnLWeDcVekHbhfI2SfZCusVlJibZAHawWeq5FxCDoJr0bI7JcMUwJgIt5lgeZBYjMMXTQWXrCM4ZBzVsFbZA0WL34c51",
+    "product_group": "prontosan",
+    "enabled": true
+  },
+  {
     "id": "638004619395901",
     "name": "Giải Pháp Nhanh Lành Vết Thương Prontosan - GlobalPharma",
-    "url": "https://www.facebook.com/prontosan.globalpharma/",
+    "url": "https://www.facebook.com/stillaius",
     "category": "Trang web giáo dục",
     "token": "EAAV8YPOyjNYBSpru1dXd0UO1DEHgramFY343HjKn4hSMe9BukQQWSxdflybNKZBIqMHKHZCqa0uYZCht0eb5pvkghnnwaCo8OAeZAgOMXigegWeUxHBd4ToC2GZCI3k8YqUB1g1ugVWGr26FYLz10OH97vEK1knQUJDtCLUg7mbXAwDmRZBEPsZC9kDShHACubzX7vv",
     "product_group": "prontosan",
-    "enabled": true
+    "enabled": false
   },
   {
     "id": "285422937994145",
