@@ -14,7 +14,11 @@ import re
 import argparse
 from pathlib import Path
 import requests
-from dotenv import load_dotenv
+try:
+    from dotenv import load_dotenv
+except ImportError:
+    def load_dotenv(*args, **kwargs):
+        pass
 
 # Đảm bảo in tiếng Việt trên console Windows không bị lỗi UnicodeEncodeError
 if sys.platform == "win32":
