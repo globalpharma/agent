@@ -137,11 +137,11 @@
   {
     "id": "321910945365410",
     "name": "Globalpharmavn - Sức Khỏe Cho Mọi Nhà",
-    "url": "https://www.facebook.com/321910945365410",
+    "url": "https://www.facebook.com/globalpharmavn",
     "category": "Y tế & Sức khỏe",
     "token": "EAAV8YPOyjNYBShWL9BhFb4oQOTeBC7guKsChbPUbOshVyTgRXNaN9alo1xc4qkcS3zi1plaepuYmZAn3YPiKOlubjYOnBp5vrIvLa7obZCVhaheLX6ScmMEcUw2EphPZCdcojkPk8zTnJYC0kgyMZAvmApLCpUPdrWrWWe1pPLguZBcFDLeQTZAwqyIW975YV8GS0ZB",
-    "product_group": "other",
-    "enabled": false
+    "product_group": "all",
+    "enabled": true
   },
   {
     "id": "106808800784857",
