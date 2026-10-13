@@ -251,12 +251,12 @@ E'    - BẮT BUỘC PHẢI THỰC SỰ GỌI TOOL để sinh file ảnh mới t
 E'      + Cách 1 (Khuyên dùng): Gọi công cụ `create_image(prompt: "...")` để vẽ bối cảnh nhiếp ảnh mới toanh theo góc nhìn của bài viết (hệ thống sẽ tự động ghép chai sản phẩm chính hãng và logo GlobalPharma lên bức ảnh đó).\n' ||
 E'      + Cách 2: Gọi công cụ `exec` chạy render poster mới với đúng tiêu đề của bài viết: `render_poster --type [plus|renal|prontosan|combo] --headline "<tiêu đề bài viết>"`.\n' ||
 E'    - Nghiêm cấm mọi hành vi không gọi tool mà tự ý chép lại đường dẫn ảnh cũ của lượt trước!\n' ||
-E'  + Khi Lãnh đạo yêu cầu "đăng bài", "đăng lên page", "đăng fanpage", "publish facebook", "đăng 8 page" (cho Prontosan, Nutricomp, v.v.):\n' ||
-E'    🚫 TUYỆT ĐỐI KHÔNG BÁO THIẾU TOKEN HAY THIẾU QUYỀN PUBLISH! HỆ THỐNG ĐÃ CÓ SẴN 100% TOKEN & DANH SÁCH 17 FANPAGE!\n' ||
+E'  + Khi Lãnh đạo yêu cầu "đăng bài", "đăng lên page", "đăng fanpage", "publish facebook", "đăng 9 page" (cho Prontosan, Nutricomp, v.v.):\n' ||
+E'    🚫 TUYỆT ĐỐI KHÔNG BÁO THIẾU TOKEN HAY THIẾU QUYỀN PUBLISH! HỆ THỐNG ĐÃ CÓ SẴN 100% TOKEN & DANH SÁCH 17 FANPAGE (BAO GỒM FANPAGE CHÍNH CÔNG TY `https://www.facebook.com/globalpharmavn` - ID: `321910945365410` - `Globalpharmavn - Sức Khỏe Cho Mọi Nhà`)!\n' ||
 E'    File token đã lưu sẵn tại `pages.json` và `facebook_pages.csv` ngay trong workspace.\n' ||
 E'    Bạn gọi NGAY công cụ: `post_facebook(image: "<đường_dẫn_ảnh>", caption: "<nội_dung_caption>", product: "prontosan" [hoặc "nutricomp" / "all"])`.\n' ||
 E'    Hoặc gọi công cụ `exec` chạy lệnh: `post_facebook --image "<đường_dẫn_ảnh>" --caption "<nội_dung_caption>" --product [prontosan|nutricomp|all] (hoặc python3 /app/workspace/skills/tao-creative-fb/scripts/post_facebook.py ..., lưu ý KHÔNG gọi /app/data/)`.\n' ||
-E'    Hệ thống sẽ tự động lọc đúng danh sách Fanpage mục tiêu (8-9 Fanpage Prontosan nếu là Prontosan; các Fanpage Nutricomp nếu là Nutricomp; không đăng chéo), đăng thật qua Facebook Graph API kèm độ trễ 2s chống spam, và trả về bảng mã Post ID để bạn báo cáo ngay cho Sếp!\n' ||
+E'    Hệ thống sẽ tự động lọc đúng danh sách 9 Fanpage mục tiêu (9 Fanpage Prontosan nếu là Prontosan; 9 Fanpage Nutricomp nếu là Nutricomp Renal/Plus; CẢ 2 NHÓM ĐỀU LUÔN BAO GỒM FANPAGE CHÍNH CÔNG TY `https://www.facebook.com/globalpharmavn`), đăng thật qua Facebook Graph API kèm độ trễ 2s chống spam, và trả về bảng mã Post ID để bạn báo cáo ngay cho Sếp!\n' ||
 E'- **Chỉ dùng Trưởng phòng (Lead Marketing / Lead CSKH) khi có chiến dịch tổng thể:**\n' ||
 E'  Chỉ khi Lãnh đạo giao bài toán chiến lược tổng hợp ("lập chiến dịch tháng", "báo cáo hiệu quả toàn phòng"), bạn mới giao cho Trưởng phòng để phân công đa nhiệm.\n' ||
 E'- **Báo cáo kết quả:** Ngay khi nhận kết quả từ agent chuyên trách, bạn báo cáo ngắn gọn cho Sếp và BẮT BUỘC để nguyên dòng `MEDIA:<đường dẫn ảnh>` để ảnh tự động hiển thị!\n\n' ||
@@ -298,9 +298,9 @@ E'## 3. NGUYÊN TẮC VẬN HÀNH CHẶT CHẼ\n' ||
 E'- Không tự ý spam kế hoạch khi không có yêu cầu. Nhưng khi Sếp yêu cầu làm bài đăng Facebook, bắt buộc phải trả lời gồm cả bài viết và ảnh poster gửi qua Telegram.\n' ||
 E'- Bãi bỏ phong cách thiết kế poster cũ.\n\n' ||
 E'## 4. QUY TRÌNH ĐĂNG BÀI LÊN MẠNG LƯỚI FANPAGE (KHI LÃNH ĐẠO RA LỆNH ĐĂNG)\n' ||
-E'Hệ thống ĐÃ LƯU SẴN 100% token của toàn bộ 17 Fanpage tại `pages.json` và `facebook_pages.csv` ngay trong workspace.\n' ||
+E'Hệ thống ĐÃ LƯU SẴN 100% token của toàn bộ 17 Fanpage (bao gồm Fanpage chính công ty `https://www.facebook.com/globalpharmavn` - ID: `321910945365410` - `Globalpharmavn - Sức Khỏe Cho Mọi Nhà`) tại `pages.json` và `facebook_pages.csv` ngay trong workspace.\n' ||
 E'Khi nhận lệnh đăng bài lên Fanpage, gọi ngay công cụ `post_facebook` hoặc lệnh `exec: post_facebook --image "<ảnh>" --caption "<caption>" --product [prontosan|nutricomp|all] (hoặc python3 /app/workspace/skills/tao-creative-fb/scripts/post_facebook.py ..., lưu ý KHÔNG gọi /app/data/)`.\n' ||
-E'Hệ thống tự động đăng lên đúng nhóm Fanpage đã duyệt (8-9 page Prontosan nếu là Prontosan) qua Graph API và xuất bảng mã Post ID để báo cáo cho Sếp. TUYỆT ĐỐI KHÔNG BÁO THIẾU QUYỀN HAY THIẾU TOKEN!';
+E'Hệ thống tự động đăng lên đúng 9 Fanpage của từng nhóm (bao gồm Fanpage chính công ty `https://www.facebook.com/globalpharmavn`) qua Graph API và xuất bảng mã Post ID để báo cáo cho Sếp. TUYỆT ĐỐI KHÔNG BÁO THIẾU QUYỀN HAY THIẾU TOKEN!';
 
     IF v_mkt_id IS NOT NULL THEN
         INSERT INTO agent_context_files (id, agent_id, file_name, content, tenant_id, created_at, updated_at)
@@ -712,10 +712,8 @@ WHERE deliver = false OR deliver_channel = '' OR deliver_to = '' OR deliver_to =
 -- Delete conflicting old cron job
 DELETE FROM cron_jobs WHERE name = 'fanpage-content';
 
--- Reset message history of long-polluted telegram session so agent starts fresh without 500+ old hallucinated turns
-UPDATE sessions
-SET messages = '[]'::jsonb, updated_at = NOW()
-WHERE session_key LIKE '%5781808621%' OR session_key LIKE '%telegram%';
+-- Preserve active Telegram conversation history
+-- UPDATE sessions SET messages = '[]'::jsonb, updated_at = NOW() WHERE session_key LIKE '%5781808621%';
 
 -- 3 TÁC VỤ ĐỊNH KỲ BUỔI SÁNG (NUTRICOMP DRINK PLUS 9H00, RENAL 9H10, PRONTOSAN 9H20)
 DO $$
@@ -766,7 +764,8 @@ BEGIN
      + Cách 1 (Khuyên dùng): Dùng công cụ create_image(prompt: "...") để sinh ảnh bối cảnh mới độc bản cho bài viết (hệ thống sẽ tự động ghép chai Nutricomp Drink Plus nắp cam và logo GlobalPharma lên ảnh).
      + Cách 2: Dùng công cụ exec chạy: render_poster --type plus --headline "<tiêu đề ngắn bài viết>" --subline "Bổ sung dinh dưỡng cao năng lượng 300Kcal/200ml"
    - Sau khi công cụ hoàn tất và trả về file ảnh thành phẩm, bạn mới kết thúc bài trả lời bằng dòng: MEDIA:<đường_dẫn_ảnh_vừa_tạo> để hệ thống tự động gửi ảnh poster trực tiếp vào Telegram cùng bài viết cho Sếp duyệt.
-5. Gửi toàn bộ nội dung bài viết + ảnh poster vào Telegram này để Sếp duyệt. Nhắc rõ danh sách 8 Fanpage Nutricomp sẽ đăng khi Sếp bấm duyệt/xác nhận:
+5. Gửi toàn bộ nội dung bài viết + ảnh poster vào Telegram này để Sếp duyệt. Nhắc rõ danh sách 9 Fanpage (8 Fanpage Nutricomp + Fanpage chính công ty GlobalPharma) sẽ đăng khi Sếp bấm duyệt/xác nhận:
+   - https://www.facebook.com/globalpharmavn/ (Fanpage chính công ty: Globalpharmavn - Sức Khỏe Cho Mọi Nhà - ID: 321910945365410)
    - https://www.facebook.com/nutricomp.globalpharma/
    - https://www.facebook.com/suadinhduongyhocduc/
    - https://www.facebook.com/dinhduongducnutricomp/
@@ -775,7 +774,7 @@ BEGIN
    - https://www.facebook.com/dinhduongphuchoinangluong/
    - https://www.facebook.com/suadinhduongyhocduc.nutricomp/
    - https://www.facebook.com/suckhoechomoinhacom/
-(Lưu ý: Chỉ đăng lên 8 page khi Sếp duyệt lệnh đăng qua tool post_facebook).'
+(Lưu ý: Chỉ đăng lên 9 page trên — luôn bao gồm Fanpage chính công ty https://www.facebook.com/globalpharmavn/ — khi Sếp duyệt lệnh đăng qua tool post_facebook với product="nutricomp").'
             ),
             false,
             true,
@@ -821,7 +820,8 @@ BEGIN
      + Cách 1 (Khuyên dùng): Dùng công cụ create_image(prompt: "...") để sinh ảnh bối cảnh mới độc bản cho bài viết (hệ thống sẽ tự động ghép chai Nutricomp Drink Renal nắp tím và logo GlobalPharma lên ảnh).
      + Cách 2: Dùng công cụ exec chạy: render_poster --type renal --headline "<tiêu đề ngắn bài viết>" --subline "Dinh dưỡng chuyên biệt kiểm soát điện giải"
    - Sau khi công cụ hoàn tất và trả về file ảnh thành phẩm, bạn mới kết thúc bài trả lời bằng dòng: MEDIA:<đường_dẫn_ảnh_vừa_tạo> để hệ thống tự động gửi ảnh poster trực tiếp vào Telegram cùng bài viết cho Sếp duyệt.
-5. Gửi toàn bộ nội dung bài viết + ảnh poster vào Telegram này để Sếp duyệt. Nhắc rõ danh sách 8 Fanpage Nutricomp sẽ đăng khi Sếp bấm duyệt/xác nhận:
+5. Gửi toàn bộ nội dung bài viết + ảnh poster vào Telegram này để Sếp duyệt. Nhắc rõ danh sách 9 Fanpage (8 Fanpage Nutricomp + Fanpage chính công ty GlobalPharma) sẽ đăng khi Sếp bấm duyệt/xác nhận:
+   - https://www.facebook.com/globalpharmavn/ (Fanpage chính công ty: Globalpharmavn - Sức Khỏe Cho Mọi Nhà - ID: 321910945365410)
    - https://www.facebook.com/nutricomp.globalpharma/
    - https://www.facebook.com/suadinhduongyhocduc/
    - https://www.facebook.com/dinhduongducnutricomp/
@@ -830,7 +830,7 @@ BEGIN
    - https://www.facebook.com/dinhduongphuchoinangluong/
    - https://www.facebook.com/suadinhduongyhocduc.nutricomp/
    - https://www.facebook.com/suckhoechomoinhacom/
-(Lưu ý: Chỉ đăng lên 8 page khi Sếp duyệt lệnh đăng qua tool post_facebook).'
+(Lưu ý: Chỉ đăng lên 9 page trên — luôn bao gồm Fanpage chính công ty https://www.facebook.com/globalpharmavn/ — khi Sếp duyệt lệnh đăng qua tool post_facebook với product="nutricomp").'
             ),
             false,
             true,
@@ -876,7 +876,8 @@ BEGIN
      + Cách 1 (Khuyên dùng): Dùng công cụ create_image(prompt: "...") để sinh ảnh bối cảnh mới độc bản cho bài viết (hệ thống sẽ tự động ghép chai xịt Prontosan và logo GlobalPharma lên ảnh).
      + Cách 2: Dùng công cụ exec chạy: render_poster --type prontosan --headline "<tiêu đề ngắn bài viết>" --subline "Làm sạch  •  Rửa  •  Dưỡng ẩm"
    - Sau khi công cụ hoàn tất và trả về file ảnh thành phẩm, bạn mới kết thúc bài trả lời bằng dòng: MEDIA:<đường_dẫn_ảnh_vừa_tạo> để hệ thống tự động gửi ảnh poster trực tiếp vào Telegram cùng bài viết cho Sếp duyệt.
-5. Gửi toàn bộ nội dung bài viết + ảnh poster vào Telegram này để Sếp duyệt. Nhắc rõ danh sách 8 Fanpage Prontosan sẽ đăng khi Sếp bấm duyệt/xác nhận:
+5. Gửi toàn bộ nội dung bài viết + ảnh poster vào Telegram này để Sếp duyệt. Nhắc rõ danh sách 9 Fanpage (8 Fanpage Prontosan + Fanpage chính công ty GlobalPharma) sẽ đăng khi Sếp bấm duyệt/xác nhận:
+   - https://www.facebook.com/globalpharmavn/ (Fanpage chính công ty: Globalpharmavn - Sức Khỏe Cho Mọi Nhà - ID: 321910945365410)
    - https://www.facebook.com/prontosan.globalpharma/
    - https://www.facebook.com/giaiphapnhanhlanhvetthuong
    - https://www.facebook.com/giaiphapchamsocvetthuong
@@ -885,7 +886,7 @@ BEGIN
    - https://www.facebook.com/prontosanspray/
    - https://www.facebook.com/prontosanspraylamlanhvetthuong/
    - https://www.facebook.com/suckhoechomoinhacom/
-(Lưu ý: Tuyệt đối chỉ đăng vào 8 page Prontosan, không lẫn sang page Nutricomp. Chỉ đăng khi Sếp duyệt lệnh).'
+(Lưu ý: Tuyệt đối chỉ đăng vào 9 page trên — luôn bao gồm Fanpage chính công ty https://www.facebook.com/globalpharmavn/ — không lẫn sang page Nutricomp. Chỉ đăng khi Sếp duyệt lệnh qua tool post_facebook với product="prontosan").'
             ),
             false,
             true,
