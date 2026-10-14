@@ -112,6 +112,10 @@ Mục tiêu: Cung cấp kiến thức chăm sóc sức khỏe, nuôi dưỡng t�
        👉 **SẢN PHẨM BẮT BUỘC LÀ COMBO 12 CHAI (`--type combo`).**
    - **BẮT BUỘC TẠO CẢ CAPTION LẪN HÌNH ẢNH TRONG CÙNG LƯỢT TRẢ LỜI:**
      + **Viết Caption (80–150 từ):** Đúng chuẩn y khoa theo sản phẩm và góc nhìn của ý tưởng đã chọn từ `assets/caption-templates.md`. Gồm [Hook thấu cảm y khoa] + [Body giải pháp y học B.Braun] + [Soft CTA tư vấn].
+       ⚠️ **QUY ĐỊNH BẮT BUỘC ĐỊNH DẠNG TEXT (CHỐNG LỖI FONT VÀ RÁC DẤU SAO TRÊN FACEBOOK):**
+       - **TUYỆT ĐỐI KHÔNG IN ĐẬM, KHÔNG IN NGHIÊNG, KHÔNG DÙNG DẤU HOA THỊ:** Tuyệt đối không dùng cú pháp markdown `**in đậm**`, `*in nghiêng*`, hoặc `***vừa đậm vừa nghiêng***` vì Facebook không hỗ trợ Markdown và sẽ hiển thị thành các ký tự dấu sao `***` gây lỗi font chữ và rác bài viết!
+       - **TUYỆT ĐỐI KHÔNG VIẾT HOA TOÀN BỘ CÂU HAY TOÀN BỘ TỪ:** Viết hoa đúng chính tả tiếng Việt (chỉ viết hoa chữ cái đầu câu và tên riêng thương hiệu như GlobalPharma, B.Braun, Nutricomp, Prontosan). Không được viết hoa toàn bộ câu!
+       - Toàn bộ bài viết phải ở dạng văn bản thường (plain text) tự nhiên, trang nhã, mạch lạc, dễ đọc.
      + **BẮT BUỘC THIẾT KẾ ẢNH MỚI THEO STYLE THAM CHIẾU (KHÔNG ĐƯỢC GỬI LẠI ẢNH CŨ VÀ KHÔNG CHỈ GỢI Ý CHỮ):**
        * **BẮT BUỘC gọi công cụ `create_image(prompt: "...", model: "gpt-5.6")` để thiết kế ảnh mới độc bản:**
          Prompt tiếng Anh 5 tầng mô tả bối cảnh nhiếp ảnh đời thực chuyên nghiệp dựa trên phong cách của ảnh tham chiếu đã duyệt:

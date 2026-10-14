@@ -759,6 +759,9 @@ BEGIN
 1. Đọc kiến thức và tài liệu sản phẩm Nutricomp Drink Plus trong Brain / Skills.
 2. Chọn ngẫu nhiên 1 góc độ sáng tạo (angle) thật ấn tượng, khác biệt và sâu sắc về mặt lâm sàng/dinh dưỡng (ví dụ: phục hồi sau mổ, người suy kiệt, ung thư cần năng lượng cao 300 kcal/chai, bổ sung EPA chống suy mòn, tiện dụng dễ uống).
 3. Viết 1 bài đăng Facebook chuẩn y khoa và truyền cảm hứng (độ dài 80-150 từ, có hashtag #Nutricomp #NutricompDrinkPlus #Globalpharma #DinhDuongYHoc).
+   ⚠️ QUY ĐỊNH BẮT BUỘC ĐỊNH DẠNG TEXT (CHỐNG LỖI FONT FACEBOOK):
+   - TUYỆT ĐỐI KHÔNG IN ĐẬM, KHÔNG IN NGHIÊNG, KHÔNG DÙNG DẤU HOA THỊ (không dùng **...**, *...*, ***...***). Viết bằng văn bản thuần túy tự nhiên, mạch lạc, dễ đọc.
+   - TUYỆT ĐỐI KHÔNG VIẾT HOA TOÀN BỘ CÂU HOẶC TOÀN BỘ TỪ (chỉ viết hoa chữ cái đầu câu và tên riêng).
 4. BẮT BUỘC THỰC SỰ GỌI CÔNG CỤ TẠO ẢNH MỚI TRONG LƯỢT NÀY (TUYỆT ĐỐI KHÔNG BỊA ĐƯỜNG DẪN ẢNH VÀ KHÔNG GỬI LẠI ẢNH CŨ):
    - Bạn BẮT BUỘC phải gọi công cụ trong lượt này để tạo ảnh thật:
      + Cách 1 (Khuyên dùng): Dùng công cụ create_image(prompt: "...") để sinh ảnh bối cảnh mới độc bản cho bài viết (hệ thống sẽ tự động ghép chai Nutricomp Drink Plus nắp tím (purple cap - giống nắp chai Renal, tuyệt đối không bịa nắp cam) và logo GlobalPharma lên ảnh).
@@ -815,6 +818,9 @@ BEGIN
 1. Đọc kiến thức và tài liệu sản phẩm Nutricomp Drink Renal trong Brain / Skills.
 2. Chọn ngẫu nhiên 1 góc độ sáng tạo (angle) thật ấn tượng, khác biệt và chuyên sâu y khoa cho bệnh nhân suy thận (ví dụ: công thức giảm protein, kiểm soát nghiêm ngặt Kali - Natri - Photpho, bảo tồn chức năng thận, năng lượng chuẩn xác 2.0 kcal/ml, hương vani thơm ngon).
 3. Viết 1 bài đăng Facebook chuẩn y khoa, tận tâm (độ dài 80-150 từ, có hashtag #Nutricomp #NutricompDrinkRenal #DinhDuongBenhNhanThan #Globalpharma).
+   ⚠️ QUY ĐỊNH BẮT BUỘC ĐỊNH DẠNG TEXT (CHỐNG LỖI FONT FACEBOOK):
+   - TUYỆT ĐỐI KHÔNG IN ĐẬM, KHÔNG IN NGHIÊNG, KHÔNG DÙNG DẤU HOA THỊ (không dùng **...**, *...*, ***...***). Viết bằng văn bản thuần túy tự nhiên, mạch lạc, dễ đọc.
+   - TUYỆT ĐỐI KHÔNG VIẾT HOA TOÀN BỘ CÂU HOẶC TOÀN BỘ TỪ (chỉ viết hoa chữ cái đầu câu và tên riêng).
 4. BẮT BUỘC THỰC SỰ GỌI CÔNG CỤ TẠO ẢNH MỚI TRONG LƯỢT NÀY (TUYỆT ĐỐI KHÔNG BỊA ĐƯỜNG DẪN ẢNH VÀ KHÔNG GỬI LẠI ẢNH CŨ):
    - Bạn BẮT BUỘC phải gọi công cụ trong lượt này để tạo ảnh thật:
      + Cách 1 (Khuyên dùng): Dùng công cụ create_image(prompt: "...") để sinh ảnh bối cảnh mới độc bản cho bài viết (hệ thống sẽ tự động ghép chai Nutricomp Drink Renal nắp tím và logo GlobalPharma lên ảnh).
@@ -871,6 +877,9 @@ BEGIN
 1. Đọc kiến thức và tài liệu giải pháp Prontosan (B. Braun / Đức) trong Brain / Skills.
 2. Chọn ngẫu nhiên 1 góc độ sáng tạo (angle) thật ấn tượng, khác biệt và thuyết phục về chăm sóc vết thương (ví dụ: phá vỡ màng Biofilm cứng đầu, ngăn ngừa nhiễm trùng tái phát, làm sạch vết thương không đau xót, bộ đôi dung dịch rửa + gel kháng khuẩn, vết loét tiểu đường/tì đè).
 3. Viết 1 bài đăng Facebook chuẩn chuyên môn y tế (độ dài 80-150 từ, có hashtag #Prontosan #BBraun #PhaVoBiofilm #ChamSocVetThuong #Globalpharma).
+   ⚠️ QUY ĐỊNH BẮT BUỘC ĐỊNH DẠNG TEXT (CHỐNG LỖI FONT FACEBOOK):
+   - TUYỆT ĐỐI KHÔNG IN ĐẬM, KHÔNG IN NGHIÊNG, KHÔNG DÙNG DẤU HOA THỊ (không dùng **...**, *...*, ***...***). Viết bằng văn bản thuần túy tự nhiên, mạch lạc, dễ đọc.
+   - TUYỆT ĐỐI KHÔNG VIẾT HOA TOÀN BỘ CÂU HOẶC TOÀN BỘ TỪ (chỉ viết hoa chữ cái đầu câu và tên riêng).
 4. BẮT BUỘC THỰC SỰ GỌI CÔNG CỤ TẠO ẢNH MỚI TRONG LƯỢT NÀY (TUYỆT ĐỐI KHÔNG BỊA ĐƯỜNG DẪN ẢNH VÀ KHÔNG GỬI LẠI ẢNH CŨ):
    - Bạn BẮT BUỘC phải gọi công cụ trong lượt này để tạo ảnh thật:
      + Cách 1 (Khuyên dùng): Dùng công cụ create_image(prompt: "...") để sinh ảnh bối cảnh mới độc bản cho bài viết (hệ thống sẽ tự động ghép chai xịt Prontosan và logo GlobalPharma lên ảnh).

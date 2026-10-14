@@ -102,6 +102,7 @@ func (t *PostFacebookTool) Execute(ctx context.Context, args map[string]any) *Re
 	if content, err := os.ReadFile(captionRaw); err == nil && len(content) > 0 {
 		captionRaw = string(content)
 	}
+	captionRaw = cleanFacebookCaption(captionRaw)
 
 	// Resolve image file path
 	imagePath := t.resolveImagePath(ctx, imageRaw)
@@ -554,4 +555,44 @@ func postPhotoToFacebook(ctx context.Context, client *http.Client, imagePath, ca
 	}
 
 	return postID, nil
+}
+
+// cleanFacebookCaption strips markdown bold (***, **), italic (*, _), and headers (#)
+// so that the caption posted to Facebook Graph API renders as clean plain text without font errors or asterisks.
+func cleanFacebookCaption(text string) string {
+	if text == "" {
+		return ""
+	}
+
+	// 1. Strip bold-italic ***text*** -> text
+	reTriple := regexp.MustCompile(`\*\*\*([^*\n\r]+)\*\*\*`)
+	text = reTriple.ReplaceAllString(text, "$1")
+
+	// 2. Strip bold **text** -> text
+	reDouble := regexp.MustCompile(`\*\*([^*\n\r]+)\*\*`)
+	text = reDouble.ReplaceAllString(text, "$1")
+
+	// 3. Strip italic *text* -> text (when enclosed with spaces or punctuation)
+	reSingle := regexp.MustCompile(`(^|[\s(])\*([^*\n\r]+)\*($|[\s).,!?:;])`)
+	text = reSingle.ReplaceAllString(text, "$1$2$3")
+
+	// 4. Strip ___text___ and __text__
+	reUnderTriple := regexp.MustCompile(`___([^_\n\r]+)___`)
+	text = reUnderTriple.ReplaceAllString(text, "$1")
+	reUnderDouble := regexp.MustCompile(`__([^_\n\r]+)__`)
+	text = reUnderDouble.ReplaceAllString(text, "$1")
+
+	// 5. Strip _text_
+	reUnderSingle := regexp.MustCompile(`(^|[\s(])_([^_\n\r]+)_($|[\s).,!?:;])`)
+	text = reUnderSingle.ReplaceAllString(text, "$1$2$3")
+
+	// 6. Strip markdown headers (# Heading -> Heading)
+	reHeader := regexp.MustCompile(`(?m)^#{1,6}\s+`)
+	text = reHeader.ReplaceAllString(text, "")
+
+	// 7. Strip any leftover asterisks that cause font issues on Facebook
+	text = strings.ReplaceAll(text, "***", "")
+	text = strings.ReplaceAll(text, "**", "")
+
+	return strings.TrimSpace(text)
 }
