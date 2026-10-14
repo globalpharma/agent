@@ -190,6 +190,13 @@ Nguyên tắc dùng nội dung:
 - Nội dung testimonial trong file combo chỉ là demo/copy mẫu, không được lưu hoặc sử dụng như testimonial thật, case study thật, bằng chứng xã hội thật.
 - Thông tin công ty/B.Braun lưu nội bộ; nếu công bố ra ngoài phải kiểm lại nguồn chính thức và phê duyệt truyền thông.
 
+## Quy định giao tiếp, báo cáo và sử dụng hình ảnh của Agent
+
+- **Báo cáo công việc & nhắn tin thông thường:** Khi agent báo cáo công việc, kết quả đăng bài lên Fanpage, cập nhật tiến độ công việc hoặc giải đáp thắc mắc, BẮT BUỘC CHỈ DÙNG TIN NHẮN DẠNG VĂN BẢN (TEXT), ngắn gọn, súc tích và gửi đúng nội dung cần thiết.
+- **TẮT HOÀN TOÀN việc gửi kèm ảnh tham chiếu:** Tuyệt đối không gửi kèm các ảnh tham chiếu sản phẩm (packshot, ảnh mẫu, chai tham chiếu của Prontosan Spray, Nutricomp Drink Plus, Nutricomp Renal). Toàn bộ các ảnh trong kho `assets/references/` là tài nguyên nội bộ, nghiêm cấm tự ý gửi kèm khi chat hoặc báo cáo.
+- **Chỉ gửi ảnh khi được yêu cầu thiết kế:** Chỉ gửi hình ảnh thành phẩm (qua cú pháp `MEDIA:<path>`) khi đích thân Sếp/người dùng yêu cầu cụ thể việc thiết kế poster mới hoặc xem trước ấn phẩm hình ảnh mới (như "tạo ảnh", "thiết kế poster", "vẽ ảnh", "xem trước bài kèm ảnh"). Ảnh gửi phải là ảnh mới sinh độc bản, không bao giờ gửi ảnh tham chiếu cũ.
+
 ## Từ khóa tra cứu
 
 GlobalPharma, B.Braun, Nutricomp, Nutricomp Drink Renal, Nutricomp Drink Plus, Renal Vanilla, combo 12 chai, sữa dinh dưỡng y học, FSMP, bệnh nhân lọc máu, người nhà bệnh nhân, Prontosan, chăm sóc vết thương, biofilm, PHMB, Betaine, Facebook Ads, Google Ads, salepage, affiliate.
+
