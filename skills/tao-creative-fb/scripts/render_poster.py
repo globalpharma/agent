@@ -131,34 +131,38 @@ def render_pro_nutricomp_renal(headline: str = None, subline: str = None, output
     sl = clean_quote_str(subline) if subline else ""
 
     if not hl:
-        # Default Master Reference Typography
-        f_hl = get_font(44, bold=True)
-        f_sl = get_font(21, bold=True)
-        draw.text((32, 142), "NUTRICOMP RENAL", fill="#044E3F", font=f_hl)
-        draw.text((35, 212), "— DINH DƯỠNG CHUYÊN BIỆT —", fill="#065F46", font=f_sl)
-    else:
-        hl_upper = hl.upper()
-        # Try single line or 2-line wrap within max_width = 455px
-        font_size = 32 if len(hl_upper) <= 28 else (26 if len(hl_upper) <= 52 else 22)
-        f_hl = get_font(font_size, bold=True)
-        lines = wrap_text(hl_upper, f_hl, max_width=455)
+        dynamic_renal_headlines = [
+            "BẢO TỒN CHỨC NĂNG THẬN",
+            "KIỂM SOÁT ĐẠM & ĐIỆN GIẢI",
+            "DINH DƯỠNG Y HỌC CHUYÊN BIỆT",
+            "NĂNG LƯỢNG CAO 400 KCAL",
+            "GIẢI PHÁP DINH DƯỠNG THẬN",
+        ]
+        import datetime
+        hl = dynamic_renal_headlines[datetime.datetime.now().day % len(dynamic_renal_headlines)]
 
-        if len(lines) == 1:
-            draw.text((32, 148), lines[0], fill="#044E3F", font=f_hl)
-            sub_text = sl.upper() if sl else "DINH DƯỠNG Y HỌC CHUYÊN BIỆT"
-            f_sl = get_font(17, bold=True)
-            sl_lines = wrap_text(f"— {sub_text} —", f_sl, max_width=455)
-            draw.text((32, 205), sl_lines[0], fill="#065F46", font=f_sl)
-        else:
-            y_cur = 138
-            for line in lines[:2]:
-                draw.text((32, y_cur), line, fill="#044E3F", font=f_hl)
-                y_cur += font_size + 7
-            sub_text = sl if sl else "Dinh dưỡng chuyên biệt kiểm soát điện giải"
-            f_sl = get_font(15, bold=True)
-            sl_lines = wrap_text(f"— {sub_text} —", f_sl, max_width=455)
-            if y_cur <= 232 and sl_lines:
-                draw.text((32, y_cur + 2), sl_lines[0], fill="#065F46", font=f_sl)
+    hl_upper = hl.upper()
+    # Try single line or 2-line wrap within max_width = 455px
+    font_size = 32 if len(hl_upper) <= 28 else (26 if len(hl_upper) <= 52 else 22)
+    f_hl = get_font(font_size, bold=True)
+    lines = wrap_text(hl_upper, f_hl, max_width=455)
+
+    if len(lines) == 1:
+        draw.text((32, 148), lines[0], fill="#044E3F", font=f_hl)
+        sub_text = sl.upper() if sl else "DINH DƯỠNG Y HỌC CHUYÊN BIỆT"
+        f_sl = get_font(17, bold=True)
+        sl_lines = wrap_text(f"— {sub_text} —", f_sl, max_width=455)
+        draw.text((32, 205), sl_lines[0], fill="#065F46", font=f_sl)
+    else:
+        y_cur = 138
+        for line in lines[:2]:
+            draw.text((32, y_cur), line, fill="#044E3F", font=f_hl)
+            y_cur += font_size + 7
+        sub_text = sl if sl else "Dinh dưỡng chuyên biệt kiểm soát điện giải"
+        f_sl = get_font(15, bold=True)
+        sl_lines = wrap_text(f"— {sub_text} —", f_sl, max_width=455)
+        if y_cur <= 232 and sl_lines:
+            draw.text((32, y_cur + 2), sl_lines[0], fill="#065F46", font=f_sl)
 
     out_file = output_path if output_path else (OUTPUT_DIR / f"creative_renal_{int(time.time()*1000)}.png")
     out_file.parent.mkdir(parents=True, exist_ok=True)
@@ -187,30 +191,34 @@ def render_pro_nutricomp_plus(headline: str = None, subline: str = None, output_
     sl = clean_quote_str(subline) if subline else ""
 
     if not hl:
-        f_hl = get_font(38, bold=True)
-        f_sl = get_font(22, bold=True)
-        draw.text((35, 165), "SỰ THẬT VỀ CHĂM NGƯỜI BỆNH", fill="#0F766E", font=f_hl)
-        draw.text((35, 225), "Càng ép ăn nhiều, bạn và người thân", fill="#334155", font=f_sl)
-        draw.text((35, 260), "càng kiệt sức. Hãy làm ngược lại !", fill="#334155", font=f_sl)
-    else:
-        hl_upper = hl.upper()
-        font_size = 34 if len(hl_upper) <= 32 else (28 if len(hl_upper) <= 62 else 24)
-        f_hl = get_font(font_size, bold=True)
-        lines = wrap_text(hl_upper, f_hl, max_width=630)
+        dynamic_plus_headlines = [
+            "BÙ ĐẮP NĂNG LƯỢNG KỊP THỜI",
+            "PHỤC HỒI THỂ TRẠNG VƯỢNG VÀNG",
+            "300 KCAL CHỈ TRONG 200ML",
+            "DINH DƯỠNG CAO NĂNG LƯỢNG",
+            "GIẢI PHÁP HỒI PHỤC TOÀN DIỆN",
+        ]
+        import datetime
+        hl = dynamic_plus_headlines[datetime.datetime.now().day % len(dynamic_plus_headlines)]
 
-        y_cur = 160
-        for line in lines[:2]:
-            draw.text((35, y_cur), line, fill="#0F766E", font=f_hl)
-            y_cur += font_size + 8
+    hl_upper = hl.upper()
+    font_size = 34 if len(hl_upper) <= 32 else (28 if len(hl_upper) <= 62 else 24)
+    f_hl = get_font(font_size, bold=True)
+    lines = wrap_text(hl_upper, f_hl, max_width=630)
 
-        sub_text = sl if sl else "Bổ sung dinh dưỡng cao năng lượng 300Kcal/200ml giúp phục hồi thể trạng nhanh chóng!"
-        f_sl = get_font(19, bold=True)
-        sl_lines = wrap_text(sub_text, f_sl, max_width=610)
-        y_cur += 6
-        for line in sl_lines[:2]:
-            if y_cur <= 310:
-                draw.text((35, y_cur), line, fill="#334155", font=f_sl)
-                y_cur += 26
+    y_cur = 160
+    for line in lines[:2]:
+        draw.text((35, y_cur), line, fill="#0F766E", font=f_hl)
+        y_cur += font_size + 8
+
+    sub_text = sl if sl else "Bổ sung dinh dưỡng cao năng lượng 300Kcal/200ml giúp phục hồi thể trạng nhanh chóng!"
+    f_sl = get_font(19, bold=True)
+    sl_lines = wrap_text(sub_text, f_sl, max_width=610)
+    y_cur += 6
+    for line in sl_lines[:2]:
+        if y_cur <= 310:
+            draw.text((35, y_cur), line, fill="#334155", font=f_sl)
+            y_cur += 26
 
     out_file = output_path if output_path else (OUTPUT_DIR / f"creative_plus_{int(time.time()*1000)}.png")
     out_file.parent.mkdir(parents=True, exist_ok=True)
@@ -239,21 +247,26 @@ def render_pro_prontosan(headline: str = None, subline: str = None, output_path:
     sl = clean_quote_str(subline) if subline else ""
 
     if not hl:
-        draw.text((38, 110), "VẾT THƯƠNG NHỎ,", fill="#1E293B", font=get_font(40, bold=True))
-        draw.text((38, 168), "NHƯNG BẠN", fill="#0D9488", font=get_font(44, bold=True))
-        draw.text((38, 226), "ĐÃ LÀM SẠCH", fill="#0D9488", font=get_font(44, bold=True))
-        draw.text((38, 284), "ĐÚNG CÁCH?", fill="#0D9488", font=get_font(44, bold=True))
-    else:
-        hl_upper = hl.upper()
-        font_size = 38 if len(hl_upper) <= 45 else (32 if len(hl_upper) <= 70 else 28)
-        f_hl = get_font(font_size, bold=True)
-        lines = wrap_text(hl_upper, f_hl, max_width=480)
+        dynamic_prontosan_headlines = [
+            "LÀM SẠCH VẾT THƯƠNG ĐÚNG CÁCH",
+            "PHÁ VỠ MÀNG BIOFILM CỨNG ĐẦU",
+            "GIẢI PHÁP CHĂM SÓC VẾT THƯƠNG",
+            "LÀM SẠCH NHẸ NHÀNG KHÔNG XÓT",
+            "BẢO VỆ NỀN VẾT THƯƠNG TỐI ƯU",
+        ]
+        import datetime
+        hl = dynamic_prontosan_headlines[datetime.datetime.now().day % len(dynamic_prontosan_headlines)]
 
-        y_cur = 112
-        for idx, line in enumerate(lines[:4]):
-            color = "#1E293B" if idx == 0 else "#0D9488"
-            draw.text((38, y_cur), line, fill=color, font=f_hl)
-            y_cur += font_size + 12
+    hl_upper = hl.upper()
+    font_size = 38 if len(hl_upper) <= 45 else (32 if len(hl_upper) <= 70 else 28)
+    f_hl = get_font(font_size, bold=True)
+    lines = wrap_text(hl_upper, f_hl, max_width=480)
+
+    y_cur = 112
+    for idx, line in enumerate(lines[:4]):
+        color = "#1E293B" if idx == 0 else "#0D9488"
+        draw.text((38, y_cur), line, fill=color, font=f_hl)
+        y_cur += font_size + 12
 
     sub_text = sl if (sl and len(sl) <= 42) else "Làm sạch  •  Rửa  •  Dưỡng ẩm"
     draw.text((38, 418), sub_text, fill="#1E293B", font=get_font(20, bold=False))
