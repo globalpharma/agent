@@ -890,8 +890,11 @@ BEGIN
                 'kind', 'agent_turn',
                 'message', 'Đã đến lịch định kỳ 9h20 sáng. Hãy thực hiện nhiệm vụ:
 1. Đọc kiến thức và tài liệu giải pháp Prontosan (B. Braun / Đức) trong Brain / Skills.
-2. Chọn ngẫu nhiên 1 góc độ sáng tạo (angle) thật ấn tượng, khác biệt và thuyết phục về chăm sóc vết thương (ví dụ: phá vỡ màng Biofilm cứng đầu, ngăn ngừa nhiễm trùng tái phát, làm sạch vết thương không đau xót, bộ đôi dung dịch rửa + gel kháng khuẩn, vết loét tiểu đường/tì đè).
+2. Chọn ngẫu nhiên 1 góc độ sáng tạo (angle) thật ấn tượng, khác biệt và thuyết phục về chăm sóc vết thương (ví dụ: phá vỡ màng Biofilm cứng đầu, ngăn ngừa vi khuẩn bám dính, làm sạch êm dịu không cần chà xát mạnh, rửa và làm ẩm nền vết thương ngoài da, vết trầy xước, vết mổ/vết khâu hở).
 3. Viết 1 bài đăng Facebook chuẩn chuyên môn y tế (độ dài 80-150 từ, có hashtag #Prontosan #BBraun #PhaVoBiofilm #ChamSocVetThuong #Globalpharma).
+   🚫 QUY ĐỊNH BẮT BUỘC RIÊNG CHO PRONTOSAN SPRAY:
+   - TUYỆT ĐỐI ĐỪNG ĐỀ CẬP ĐẾN "VẾT THƯƠNG MẠN TÍNH" (hoặc "hỗ trợ vết thương mạn tính") trong cả bài viết caption, hashtag lẫn hình ảnh/poster!
+   - Chỉ tập trung vào: Làm sạch êm dịu không cần chà xát mạnh, rửa và làm ẩm nền vết thương, hỗ trợ xử lý màng Biofilm, chăm sóc vết thương ngoài da, vết trầy xước, vết mổ/vết khâu hở.
    ⚠️ BẮT BUỘC BỐ CỤC PHẢI CÓ TIÊU ĐỀ Ở ĐẦU BÀI VIẾT:
    - DÒNG 1: BẮT BUỘC là TIÊU ĐỀ BÀI VIẾT (HEADLINE) thật cuốn hút, sâu sắc, ngắn gọn (dưới 15 từ), viết hoa chữ cái đầu câu và tên riêng tự nhiên (Ví dụ: "Bí quyết làm sạch màng Biofilm giúp vết thương nhanh lành", "Chăm sóc vết thương đúng chuẩn y khoa không đau xót").
    - DÒNG 2: Cách 1 dòng trống để phân tách tiêu đề với thân bài.
@@ -904,7 +907,7 @@ BEGIN
 4. BẮT BUỘC THỰC SỰ THIẾT KẾ POSTER MỚI ĐỘC BẢN CHO BÀI VIẾT NÀY (TUYỆT ĐỐI CẤM GỬI LẠI ẢNH MẪU THAM CHIẾU CŨ):
    - TUYỆT ĐỐI KHÔNG được gửi lại file ảnh tham chiếu tĩnh cũ (template_prontosan_lifestyle_master.png hay style_prontosan_spray_lifestyle.png).
    - Bạn BẮT BUỘC phải gọi công cụ trong lượt này để tạo ảnh thật:
-     + Cách 1 (Khuyên dùng): Dùng công cụ create_image(prompt: "...") để sinh ảnh bối cảnh mới độc bản cho bài viết (hệ thống sẽ tự động ghép chai xịt Prontosan và logo GlobalPharma lên ảnh).
+     + Cách 1 (Khuyên dùng): Dùng công cụ create_image(prompt: "...") để sinh ảnh bối cảnh mới độc bản cho bài viết (hệ thống sẽ tự động ghép chai xịt Prontosan và logo GlobalPharma lên ảnh - tuyệt đối không đưa chữ hay biểu tượng vết thương mạn tính vào ảnh).
      + Cách 2: Dùng công cụ exec chạy: render_poster --type prontosan --headline "<tiêu đề bài viết vừa tạo ở bước 3>" --subline "Làm sạch  •  Rửa  •  Dưỡng ẩm"
        (Lưu ý: BẮT BUỘC phải truyền đúng tiêu đề bài viết vào tham số --headline để poster được in tiêu đề mới, không bao giờ để trống tiêu đề).
    - Sau khi công cụ hoàn tất và trả về file ảnh thành phẩm, bạn mới kết thúc bài trả lời bằng dòng: MEDIA:<đường_dẫn_ảnh_vừa_tạo> để hệ thống tự động gửi ảnh poster trực tiếp vào Telegram cùng bài viết cho Sếp duyệt.

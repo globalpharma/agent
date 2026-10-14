@@ -137,15 +137,24 @@ Không dùng các con số 3-4 chai/ngày hoặc 6-7 chai/ngày làm liều chu�
 
 Prontosan® thuộc nhóm chăm sóc vết thương của GlobalPharma. Tài liệu mô tả dòng sản phẩm chăm sóc/rửa/làm ẩm vết thương, tập trung vào làm sạch nền vết thương, hỗ trợ xử lý biofilm và kiểm soát vi khuẩn.
 
-Nếu cần phân biệt chính xác SKU như dung dịch, gel, Gel X hoặc Xpray, phải kiểm tra tài liệu/SKU riêng trước khi tư vấn hoặc tạo nội dung bán hàng.
+⚠️ **QUY ĐỊNH BẮT BUỘC ĐẶC BIỆT CHO PRONTOSAN SPRAY (KHO TRI THỨC CÔNG TY):**
+- **ĐỐI VỚI PRONTOSAN SPRAY: TUYỆT ĐỐI ĐỪNG ĐỀ CẬP ĐẾN "VẾT THƯƠNG MẠN TÍNH" (HOẶC "HỖ TRỢ VẾT THƯƠNG MẠN TÍNH") trong cả bài viết (caption, hashtag) lẫn hình ảnh (poster, banner).**
+- **Định vị & thông điệp chuẩn xác cho Prontosan Spray:**
+  - Hỗ trợ làm sạch êm dịu nền vết thương, không cần chà xát mạnh.
+  - Rửa và làm ẩm nền vết thương, hỗ trợ xử lý màng sinh học (Biofilm).
+  - Phù hợp chăm sóc các vết thương ngoài da, vết trầy xước, vết thương cấp tính, vết bỏng nhẹ, vết mổ/vết khâu hở theo hướng dẫn y tế.
+  - Dạng xịt tiện dụng, vệ sinh, dịu nhẹ, không gây đau xót.
+  - Tuyệt đối KHÔNG gán nhãn hay đề cập hỗ trợ vết thương mạn tính cho Prontosan Spray.
+
+Nếu cần phân biệt chính xác SKU như dung dịch, gel, Gel X hoặc Spray, phải kiểm tra tài liệu/SKU riêng trước khi tư vấn hoặc tạo nội dung bán hàng.
 
 ### Thông tin sản phẩm cốt lõi
 
 - Chủ sở hữu: B. Braun Medical AG.
 - Nhóm: chăm sóc vết thương.
 - Thành phần được nêu trong tài liệu: Betaine 0,1%, Polyhexanide/PHMB 0,1%, nước tinh khiết.
-- Công dụng mô tả trong tài liệu: làm sạch, rửa, làm ẩm và hỗ trợ khử trùng cho vết thương cấp tính, mạn tính, viêm nhiễm da và bỏng độ 1-2 theo hướng dẫn sử dụng.
-- Tình trạng/vết thương được nhắc đến: loét tỳ đè, loét bàn chân đái tháo đường, loét tĩnh mạch, vết thương nhiễm trùng, bỏng độ 1-2, vết thương sau xạ trị, lỗ rò, dẫn lưu, rửa vết mổ/vết khâu hở ngoài da.
+- Công dụng mô tả trong tài liệu: làm sạch, rửa, làm ẩm và hỗ trợ xử lý màng Biofilm cho vết thương ngoài da, vết trầy xước, vết thương cấp tính, viêm nhiễm da và bỏng độ 1-2 theo hướng dẫn sử dụng.
+- Tình trạng/vết thương được nhắc đến: vết trầy xước, vết rách da, vết thương nhiễm trùng bề mặt, bỏng nhẹ độ 1-2, rửa vết mổ/vết khâu hở ngoài da. (Lưu ý: Đối với Prontosan Spray, tuyệt đối không đề cập hỗ trợ vết thương mạn tính).
 - ⚠️ PHÂN BIỆT RÕ RÀNG VỚI NUTRICOMP DRINK PLUS: Prontosan CHỈ DÙNG NGOÀI DA để rửa vết thương. Mọi nội dung liên quan đến "phục hồi thể trạng sau phẫu thuật", "bổ sung năng lượng sau mổ", "300 kcal", "dinh dưỡng người bệnh ăn kém" 100% THUỘC VỀ NUTRICOMP DRINK PLUS, TUYỆT ĐỐI KHÔNG DÙNG CHO PRONTOSAN!
 - Công nghệ/chuẩn trong tài liệu: bottelpack® Aseptic, ISO 13485.
 

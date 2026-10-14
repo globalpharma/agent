@@ -86,19 +86,20 @@ Dinh dưỡng đúng phác đồ là nền tảng giúp người bệnh duy trì
 
 ---
 
-### Bộ Creative Ads 3: Prontosan® Spray / Gel (Chăm sóc vết thương mạn)
+### Bộ Creative Ads 3: Prontosan® Wound Spray (Làm sạch êm dịu & Hỗ trợ xử lý màng Biofilm)
+*(⚠️ QUY ĐỊNH BẮT BUỘC: TUYỆT ĐỐI KHÔNG ĐƯỢC ĐỀ CẬP "VẾT THƯƠNG MẠN TÍNH" CHO PRONTOSAN SPRAY)*
 
-#### Angle 1: Pain Point (Vết loét tì đè, loét tiểu đường mãi không lành)
-> **Hook:** Bạn có biết: 90% vết thương mạn tính không lành là do lớp màng vi khuẩn Biofilm bao phủ?  
-> **USP:** Rửa bằng nước muối thông thường không thể phá vỡ màng Biofilm này. Prontosan® chứa phức hợp độc quyền Polihexanide & Betaine từ B.Braun Đức, nhẹ nhàng cuốn trôi vi khuẩn, giảm đau và ngừa nhiễm trùng vượt trội.  
-> **CTA:** 👉 Nhắn tin ngay để được Dược sĩ GlobalPharma hướng dẫn quy trình chăm sóc vết loét chuẩn y tế!
+#### Angle 1: Pain Point (Vết thương khó làm sạch, bám dính màng Biofilm)
+> **Hook:** Bạn có biết: Lớp màng sinh học Biofilm bám dai dẳng trên nền vết thương chính là nguyên nhân khiến việc làm sạch trở nên khó khăn?  
+> **USP:** Rửa bằng nước muối thông thường rất khó xử lý màng Biofilm này. Prontosan® Wound Spray chứa phức hợp Betaine 0,1% & PHMB 0,1% từ B.Braun Đức, hỗ trợ làm sạch êm dịu mà không cần chà xát mạnh, giúp giữ ẩm nền vết thương và tạo môi trường thuận lợi để phục hồi.  
+> **CTA:** 👉 Nhắn tin ngay để được Dược sĩ GlobalPharma hướng dẫn quy trình chăm sóc vết thương đúng chuẩn y khoa!
 
-#### Angle 2: Solution (Bộ đôi giải pháp Prontosan B.Braun Đức)
-> **Hook:** Chăm sóc vết thương mạn tính tại nhà chuẩn vô trùng như phòng mổ bệnh viện.  
-> **USP:** Prontosan® Spray & Gel giúp làm sạch sâu đáy vết thương, ngăn ngừa tạo sẹo xấu và thúc đẩy mô hạt tái tạo nhanh gấp nhiều lần so với dung dịch sát khuẩn thông thường.  
+#### Angle 2: Solution (Giải pháp làm sạch êm dịu không cần chà xát mạnh)
+> **Hook:** Làm sạch vết thương êm dịu hơn, hạn chế tối đa cảm giác đau xót khi chăm sóc tại nhà.  
+> **USP:** Prontosan® Wound Spray dạng xịt tiện dụng giúp làm sạch sâu nền tổn thương, loại bỏ bụi bẩn và dịch tiết, hỗ trợ ngăn ngừa vi khuẩn bám dính mà không gây tổn hại các mô hạt non đang tái tạo.  
 > **CTA:** 👉 Bấm **Nhận tư vấn** để bảo vệ vết thương của người thân an toàn nhất!
 
-#### Angle 3: Social Proof (Khuyến cáo của Hội Chăm Sóc Vết Thương Quốc Tế)
-> **Hook:** Tiêu chuẩn vàng trong quản lý vết thương mạn tính từ Tập đoàn Y tế B.Braun Đức.  
-> **USP:** Được chỉ định lâm sàng tại hơn 60 quốc gia và hầu hết các trung tâm bỏng, ngoại khoa lớn tại Việt Nam. Prontosan mang lại hiệu quả lành thương rõ rệt chỉ sau thời gian ngắn sử dụng.  
-> **CTA:** 👉 Gửi tin nhắn ngay cho GlobalPharma để nhận cẩm nang chăm sóc vết thương miễn phí!
+#### Angle 3: Social Proof (Thương hiệu B.Braun CHLB Đức uy tín hàng đầu)
+> **Hook:** Tiêu chuẩn chăm sóc vết thương chuẩn Châu Âu từ Tập đoàn Y tế B.Braun Đức với hơn 180 năm lịch sử.  
+> **USP:** Được tin dùng rộng rãi tại các bệnh viện và cơ sở y tế trên toàn thế giới. Prontosan® mang lại giải pháp xịt rửa êm ái, vệ sinh và an tâm cho cả gia đình.  
+> **CTA:** 👉 Gửi tin nhắn ngay cho GlobalPharma để nhận hướng dẫn chăm sóc vết thương miễn phí!
