@@ -759,13 +759,20 @@ BEGIN
 1. Đọc kiến thức và tài liệu sản phẩm Nutricomp Drink Plus trong Brain / Skills.
 2. Chọn ngẫu nhiên 1 góc độ sáng tạo (angle) thật ấn tượng, khác biệt và sâu sắc về mặt lâm sàng/dinh dưỡng (ví dụ: phục hồi sau mổ, người suy kiệt, ung thư cần năng lượng cao 300 kcal/chai, bổ sung EPA chống suy mòn, tiện dụng dễ uống).
 3. Viết 1 bài đăng Facebook chuẩn y khoa và truyền cảm hứng (độ dài 80-150 từ, có hashtag #Nutricomp #NutricompDrinkPlus #Globalpharma #DinhDuongYHoc).
+   ⚠️ BẮT BUỘC BỐ CỤC PHẢI CÓ TIÊU ĐỀ Ở ĐẦU BÀI VIẾT:
+   - DÒNG 1: BẮT BUỘC là TIÊU ĐỀ BÀI VIẾT (HEADLINE) thật cuốn hút, sâu sắc, ngắn gọn (dưới 15 từ), viết hoa chữ cái đầu câu và tên riêng tự nhiên (Ví dụ: "Bù đắp năng lượng đúng cách sau phẫu thuật", "Bí quyết giúp người bệnh phục hồi thể trạng nhanh chóng").
+   - DÒNG 2: Cách 1 dòng trống để phân tách tiêu đề với thân bài.
+   - DÒNG 3 TRỞ ĐI: Thân bài (Body) chia sẻ kiến thức chuẩn y khoa, dễ hiểu, thấu cảm.
+   - CUỐI BÀI: Lời nhắn tư vấn nhẹ nhàng + Các Hashtag.
    ⚠️ QUY ĐỊNH BẮT BUỘC ĐỊNH DẠNG TEXT (CHỐNG LỖI FONT FACEBOOK):
    - TUYỆT ĐỐI KHÔNG IN ĐẬM, KHÔNG IN NGHIÊNG, KHÔNG DÙNG DẤU HOA THỊ (không dùng **...**, *...*, ***...***). Viết bằng văn bản thuần túy tự nhiên, mạch lạc, dễ đọc.
    - TUYỆT ĐỐI KHÔNG VIẾT HOA TOÀN BỘ CÂU HOẶC TOÀN BỘ TỪ (chỉ viết hoa chữ cái đầu câu và tên riêng).
-4. BẮT BUỘC THỰC SỰ GỌI CÔNG CỤ TẠO ẢNH MỚI TRONG LƯỢT NÀY (TUYỆT ĐỐI KHÔNG BỊA ĐƯỜNG DẪN ẢNH VÀ KHÔNG GỬI LẠI ẢNH CŨ):
+   - TUYỆT ĐỐI KHÔNG dùng dấu thăng (#) làm tiêu đề.
+4. BẮT BUỘC THỰC SỰ THIẾT KẾ POSTER MỚI ĐỘC BẢN CHO BÀI VIẾT NÀY (TUYỆT ĐỐI CẤM GỬI LẠI ẢNH MẪU THAM CHIẾU CŨ):
    - Bạn BẮT BUỘC phải gọi công cụ trong lượt này để tạo ảnh thật:
      + Cách 1 (Khuyên dùng): Dùng công cụ create_image(prompt: "...") để sinh ảnh bối cảnh mới độc bản cho bài viết (hệ thống sẽ tự động ghép chai Nutricomp Drink Plus nắp tím (purple cap - giống nắp chai Renal, tuyệt đối không bịa nắp cam) và logo GlobalPharma lên ảnh).
-     + Cách 2: Dùng công cụ exec chạy: render_poster --type plus --headline "<tiêu đề ngắn bài viết>" --subline "Bổ sung dinh dưỡng cao năng lượng 300Kcal/200ml"
+     + Cách 2: Dùng công cụ exec chạy: render_poster --type plus --headline "<tiêu đề bài viết vừa tạo ở bước 3>" --subline "Bổ sung dinh dưỡng cao năng lượng 300Kcal/200ml"
+       (Lưu ý: BẮT BUỘC phải truyền tiêu đề bài viết vào tham số --headline để poster được in tiêu đề mới, không bao giờ để trống tiêu đề).
    - Sau khi công cụ hoàn tất và trả về file ảnh thành phẩm, bạn mới kết thúc bài trả lời bằng dòng: MEDIA:<đường_dẫn_ảnh_vừa_tạo> để hệ thống tự động gửi ảnh poster trực tiếp vào Telegram cùng bài viết cho Sếp duyệt.
 5. Gửi toàn bộ nội dung bài viết + ảnh poster vào Telegram này để Sếp duyệt. Nhắc rõ danh sách 9 Fanpage (8 Fanpage Nutricomp + Fanpage chính công ty GlobalPharma) sẽ đăng khi Sếp bấm duyệt/xác nhận:
    - https://www.facebook.com/globalpharmavn/ (Fanpage chính công ty: Globalpharmavn - Sức Khỏe Cho Mọi Nhà - ID: 321910945365410)
@@ -818,13 +825,21 @@ BEGIN
 1. Đọc kiến thức và tài liệu sản phẩm Nutricomp Drink Renal trong Brain / Skills.
 2. Chọn ngẫu nhiên 1 góc độ sáng tạo (angle) thật ấn tượng, khác biệt và chuyên sâu y khoa cho bệnh nhân suy thận (ví dụ: công thức giảm protein, kiểm soát nghiêm ngặt Kali - Natri - Photpho, bảo tồn chức năng thận, năng lượng chuẩn xác 2.0 kcal/ml, hương vani thơm ngon).
 3. Viết 1 bài đăng Facebook chuẩn y khoa, tận tâm (độ dài 80-150 từ, có hashtag #Nutricomp #NutricompDrinkRenal #DinhDuongBenhNhanThan #Globalpharma).
+   ⚠️ BẮT BUỘC BỐ CỤC PHẢI CÓ TIÊU ĐỀ Ở ĐẦU BÀI VIẾT:
+   - DÒNG 1: BẮT BUỘC là TIÊU ĐỀ BÀI VIẾT (HEADLINE) thật cuốn hút, sâu sắc, ngắn gọn (dưới 15 từ), viết hoa chữ cái đầu câu và tên riêng tự nhiên (Ví dụ: "Giải pháp dinh dưỡng y học giúp bảo tồn chức năng thận", "Kiểm soát đạm và điện giải an toàn cho người bệnh thận").
+   - DÒNG 2: Cách 1 dòng trống để phân tách tiêu đề với thân bài.
+   - DÒNG 3 TRỞ ĐI: Thân bài (Body) chia sẻ kiến thức chuẩn y khoa, dễ hiểu, thấu cảm.
+   - CUỐI BÀI: Lời nhắn tư vấn nhẹ nhàng + Các Hashtag.
    ⚠️ QUY ĐỊNH BẮT BUỘC ĐỊNH DẠNG TEXT (CHỐNG LỖI FONT FACEBOOK):
    - TUYỆT ĐỐI KHÔNG IN ĐẬM, KHÔNG IN NGHIÊNG, KHÔNG DÙNG DẤU HOA THỊ (không dùng **...**, *...*, ***...***). Viết bằng văn bản thuần túy tự nhiên, mạch lạc, dễ đọc.
    - TUYỆT ĐỐI KHÔNG VIẾT HOA TOÀN BỘ CÂU HOẶC TOÀN BỘ TỪ (chỉ viết hoa chữ cái đầu câu và tên riêng).
-4. BẮT BUỘC THỰC SỰ GỌI CÔNG CỤ TẠO ẢNH MỚI TRONG LƯỢT NÀY (TUYỆT ĐỐI KHÔNG BỊA ĐƯỜNG DẪN ẢNH VÀ KHÔNG GỬI LẠI ẢNH CŨ):
-   - Bạn BẮT BUỘC phải gọi công cụ trong lượt này để tạo ảnh thật:
+   - TUYỆT ĐỐI KHÔNG dùng dấu thăng (#) làm tiêu đề.
+4. BẮT BUỘC THỰC SỰ THIẾT KẾ POSTER MỚI ĐỘC BẢN CHO BÀI VIẾT NÀY (TUYỆT ĐỐI CẤM GỬI LẠI ẢNH MẪU THAM CHIẾU CŨ):
+   - TUYỆT ĐỐI KHÔNG được gửi lại file ảnh tham chiếu tĩnh cũ (template_nutricomp_renal_master.png hay style_nutricomp_renal_master.jpg).
+   - Bạn BẮT BUỘC phải gọi công cụ trong lượt này để tạo poster mới:
      + Cách 1 (Khuyên dùng): Dùng công cụ create_image(prompt: "...") để sinh ảnh bối cảnh mới độc bản cho bài viết (hệ thống sẽ tự động ghép chai Nutricomp Drink Renal nắp tím và logo GlobalPharma lên ảnh).
-     + Cách 2: Dùng công cụ exec chạy: render_poster --type renal --headline "<tiêu đề ngắn bài viết>" --subline "Dinh dưỡng chuyên biệt kiểm soát điện giải"
+     + Cách 2: Dùng công cụ exec chạy: render_poster --type renal --headline "<tiêu đề bài viết vừa tạo ở bước 3>" --subline "Dinh dưỡng chuyên biệt kiểm soát điện giải"
+       (Lưu ý: BẮT BUỘC phải truyền đúng tiêu đề bài viết vào tham số --headline để poster được in tiêu đề mới độc bản, tuyệt đối không để trống tiêu đề).
    - Sau khi công cụ hoàn tất và trả về file ảnh thành phẩm, bạn mới kết thúc bài trả lời bằng dòng: MEDIA:<đường_dẫn_ảnh_vừa_tạo> để hệ thống tự động gửi ảnh poster trực tiếp vào Telegram cùng bài viết cho Sếp duyệt.
 5. Gửi toàn bộ nội dung bài viết + ảnh poster vào Telegram này để Sếp duyệt. Nhắc rõ danh sách 9 Fanpage (8 Fanpage Nutricomp + Fanpage chính công ty GlobalPharma) sẽ đăng khi Sếp bấm duyệt/xác nhận:
    - https://www.facebook.com/globalpharmavn/ (Fanpage chính công ty: Globalpharmavn - Sức Khỏe Cho Mọi Nhà - ID: 321910945365410)
@@ -877,13 +892,21 @@ BEGIN
 1. Đọc kiến thức và tài liệu giải pháp Prontosan (B. Braun / Đức) trong Brain / Skills.
 2. Chọn ngẫu nhiên 1 góc độ sáng tạo (angle) thật ấn tượng, khác biệt và thuyết phục về chăm sóc vết thương (ví dụ: phá vỡ màng Biofilm cứng đầu, ngăn ngừa nhiễm trùng tái phát, làm sạch vết thương không đau xót, bộ đôi dung dịch rửa + gel kháng khuẩn, vết loét tiểu đường/tì đè).
 3. Viết 1 bài đăng Facebook chuẩn chuyên môn y tế (độ dài 80-150 từ, có hashtag #Prontosan #BBraun #PhaVoBiofilm #ChamSocVetThuong #Globalpharma).
+   ⚠️ BẮT BUỘC BỐ CỤC PHẢI CÓ TIÊU ĐỀ Ở ĐẦU BÀI VIẾT:
+   - DÒNG 1: BẮT BUỘC là TIÊU ĐỀ BÀI VIẾT (HEADLINE) thật cuốn hút, sâu sắc, ngắn gọn (dưới 15 từ), viết hoa chữ cái đầu câu và tên riêng tự nhiên (Ví dụ: "Bí quyết làm sạch màng Biofilm giúp vết thương nhanh lành", "Chăm sóc vết thương đúng chuẩn y khoa không đau xót").
+   - DÒNG 2: Cách 1 dòng trống để phân tách tiêu đề với thân bài.
+   - DÒNG 3 TRỞ ĐI: Thân bài (Body) chia sẻ kiến thức chuẩn chuyên môn, dễ hiểu, thấu cảm.
+   - CUỐI BÀI: Lời nhắn tư vấn nhẹ nhàng + Các Hashtag.
    ⚠️ QUY ĐỊNH BẮT BUỘC ĐỊNH DẠNG TEXT (CHỐNG LỖI FONT FACEBOOK):
    - TUYỆT ĐỐI KHÔNG IN ĐẬM, KHÔNG IN NGHIÊNG, KHÔNG DÙNG DẤU HOA THỊ (không dùng **...**, *...*, ***...***). Viết bằng văn bản thuần túy tự nhiên, mạch lạc, dễ đọc.
    - TUYỆT ĐỐI KHÔNG VIẾT HOA TOÀN BỘ CÂU HOẶC TOÀN BỘ TỪ (chỉ viết hoa chữ cái đầu câu và tên riêng).
-4. BẮT BUỘC THỰC SỰ GỌI CÔNG CỤ TẠO ẢNH MỚI TRONG LƯỢT NÀY (TUYỆT ĐỐI KHÔNG BỊA ĐƯỜNG DẪN ẢNH VÀ KHÔNG GỬI LẠI ẢNH CŨ):
+   - TUYỆT ĐỐI KHÔNG dùng dấu thăng (#) làm tiêu đề.
+4. BẮT BUỘC THỰC SỰ THIẾT KẾ POSTER MỚI ĐỘC BẢN CHO BÀI VIẾT NÀY (TUYỆT ĐỐI CẤM GỬI LẠI ẢNH MẪU THAM CHIẾU CŨ):
+   - TUYỆT ĐỐI KHÔNG được gửi lại file ảnh tham chiếu tĩnh cũ (template_prontosan_lifestyle_master.png hay style_prontosan_spray_lifestyle.png).
    - Bạn BẮT BUỘC phải gọi công cụ trong lượt này để tạo ảnh thật:
      + Cách 1 (Khuyên dùng): Dùng công cụ create_image(prompt: "...") để sinh ảnh bối cảnh mới độc bản cho bài viết (hệ thống sẽ tự động ghép chai xịt Prontosan và logo GlobalPharma lên ảnh).
-     + Cách 2: Dùng công cụ exec chạy: render_poster --type prontosan --headline "<tiêu đề ngắn bài viết>" --subline "Làm sạch  •  Rửa  •  Dưỡng ẩm"
+     + Cách 2: Dùng công cụ exec chạy: render_poster --type prontosan --headline "<tiêu đề bài viết vừa tạo ở bước 3>" --subline "Làm sạch  •  Rửa  •  Dưỡng ẩm"
+       (Lưu ý: BẮT BUỘC phải truyền đúng tiêu đề bài viết vào tham số --headline để poster được in tiêu đề mới, không bao giờ để trống tiêu đề).
    - Sau khi công cụ hoàn tất và trả về file ảnh thành phẩm, bạn mới kết thúc bài trả lời bằng dòng: MEDIA:<đường_dẫn_ảnh_vừa_tạo> để hệ thống tự động gửi ảnh poster trực tiếp vào Telegram cùng bài viết cho Sếp duyệt.
 5. Gửi toàn bộ nội dung bài viết + ảnh poster vào Telegram này để Sếp duyệt. Nhắc rõ danh sách 9 Fanpage (8 Fanpage Prontosan + Fanpage chính công ty GlobalPharma) sẽ đăng khi Sếp bấm duyệt/xác nhận:
    - https://www.facebook.com/globalpharmavn/ (Fanpage chính công ty: Globalpharmavn - Sức Khỏe Cho Mọi Nhà - ID: 321910945365410)

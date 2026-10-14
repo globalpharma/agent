@@ -111,10 +111,16 @@ Mục tiêu: Cung cấp kiến thức chăm sóc sức khỏe, nuôi dưỡng t�
      + **NẾU CHỌN HỘP QUÀ / COMBO 12 CHAI:**
        👉 **SẢN PHẨM BẮT BUỘC LÀ COMBO 12 CHAI (`--type combo`).**
    - **BẮT BUỘC TẠO CẢ CAPTION LẪN HÌNH ẢNH TRONG CÙNG LƯỢT TRẢ LỜI:**
-     + **Viết Caption (80–150 từ):** Đúng chuẩn y khoa theo sản phẩm và góc nhìn của ý tưởng đã chọn từ `assets/caption-templates.md`. Gồm [Hook thấu cảm y khoa] + [Body giải pháp y học B.Braun] + [Soft CTA tư vấn].
+     + **Viết Caption (80–150 từ):** Đúng chuẩn y khoa theo sản phẩm và góc nhìn của ý tưởng đã chọn từ `assets/caption-templates.md`.
+       ⚠️ **QUY TẮC BẮT BUỘC VỀ BỐ CỤC BÀI VIẾT (BẮT BUỘC PHẢI CÓ TIÊU ĐỀ):**
+       - **DÒNG ĐẦU TIÊN CỦA BÀI VIẾT BẮT BUỘC LÀ TIÊU ĐỀ (HEADLINE):** Ngắn gọn, cuốn hút, nêu bật vấn đề hoặc lợi ích then chốt (dưới 15 từ, viết hoa chữ cái đầu câu và tên riêng tự nhiên, ví dụ: "Giải pháp dinh dưỡng y học giúp bảo tồn chức năng thận", "Bù đắp năng lượng chuẩn xác sau phẫu thuật", "Bí quyết làm sạch màng Biofilm giúp vết thương mau lành").
+       - **DÒNG 2:** Cách 1 dòng trống để phân tách tiêu đề với thân bài.
+       - **DÒNG 3 TRỞ ĐI:** Thân bài (Body) chia sẻ kiến thức chuẩn y khoa, dễ hiểu, thấu cảm.
+       - **CUỐI BÀI:** Lời nhắn tư vấn nhẹ nhàng + Các Hashtag.
        ⚠️ **QUY ĐỊNH BẮT BUỘC ĐỊNH DẠNG TEXT (CHỐNG LỖI FONT VÀ RÁC DẤU SAO TRÊN FACEBOOK):**
        - **TUYỆT ĐỐI KHÔNG IN ĐẬM, KHÔNG IN NGHIÊNG, KHÔNG DÙNG DẤU HOA THỊ:** Tuyệt đối không dùng cú pháp markdown `**in đậm**`, `*in nghiêng*`, hoặc `***vừa đậm vừa nghiêng***` vì Facebook không hỗ trợ Markdown và sẽ hiển thị thành các ký tự dấu sao `***` gây lỗi font chữ và rác bài viết!
        - **TUYỆT ĐỐI KHÔNG VIẾT HOA TOÀN BỘ CÂU HAY TOÀN BỘ TỪ:** Viết hoa đúng chính tả tiếng Việt (chỉ viết hoa chữ cái đầu câu và tên riêng thương hiệu như GlobalPharma, B.Braun, Nutricomp, Prontosan). Không được viết hoa toàn bộ câu!
+       - **TUYỆT ĐỐI KHÔNG dùng dấu thăng (#) làm tiêu đề.**
        - Toàn bộ bài viết phải ở dạng văn bản thường (plain text) tự nhiên, trang nhã, mạch lạc, dễ đọc.
      + **BẮT BUỘC THIẾT KẾ ẢNH MỚI THEO STYLE THAM CHIẾU (KHÔNG ĐƯỢC GỬI LẠI ẢNH CŨ VÀ KHÔNG CHỈ GỢI Ý CHỮ):**
        * **BẮT BUỘC gọi công cụ `create_image(prompt: "...", model: "gpt-5.6")` để thiết kế ảnh mới độc bản:**
