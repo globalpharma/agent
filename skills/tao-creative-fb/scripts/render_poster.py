@@ -151,7 +151,7 @@ def render_pro_nutricomp_renal(headline: str = None, subline: str = None, output
         draw.text((32, 148), lines[0], fill="#044E3F", font=f_hl)
         sub_text = sl.upper() if sl else "DINH DƯỠNG Y HỌC CHUYÊN BIỆT"
         f_sl = get_font(17, bold=True)
-        sl_lines = wrap_text(f"— {sub_text} —", f_sl, max_width=455)
+        sl_lines = wrap_text(sub_text, f_sl, max_width=455)
         draw.text((32, 205), sl_lines[0], fill="#065F46", font=f_sl)
     else:
         y_cur = 138
@@ -160,7 +160,7 @@ def render_pro_nutricomp_renal(headline: str = None, subline: str = None, output
             y_cur += font_size + 7
         sub_text = sl if sl else "Dinh dưỡng chuyên biệt kiểm soát điện giải"
         f_sl = get_font(15, bold=True)
-        sl_lines = wrap_text(f"— {sub_text} —", f_sl, max_width=455)
+        sl_lines = wrap_text(sub_text, f_sl, max_width=455)
         if y_cur <= 232 and sl_lines:
             draw.text((32, y_cur + 2), sl_lines[0], fill="#065F46", font=f_sl)
 

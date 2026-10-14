@@ -594,5 +594,15 @@ func cleanFacebookCaption(text string) string {
 	text = strings.ReplaceAll(text, "***", "")
 	text = strings.ReplaceAll(text, "**", "")
 
+	// 8. Strip em-dash and en-dash (—, –)
+	reLineStartDash := regexp.MustCompile(`(?m)^\s*[—–-]\s+`)
+	text = reLineStartDash.ReplaceAllString(text, "")
+	reDash := regexp.MustCompile(`\s*[—–]\s*`)
+	text = reDash.ReplaceAllString(text, ", ")
+	reDoubleComma := regexp.MustCompile(`,\s*,`)
+	text = reDoubleComma.ReplaceAllString(text, ",")
+	reCommaDot := regexp.MustCompile(`,\s*\.`)
+	text = reCommaDot.ReplaceAllString(text, ".")
+
 	return strings.TrimSpace(text)
 }

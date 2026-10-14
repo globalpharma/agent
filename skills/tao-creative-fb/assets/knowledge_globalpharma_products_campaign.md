@@ -195,6 +195,7 @@ Nguyên tắc dùng nội dung:
 - **Báo cáo công việc & nhắn tin thông thường:** Khi agent báo cáo công việc, kết quả đăng bài lên Fanpage, cập nhật tiến độ công việc hoặc giải đáp thắc mắc, BẮT BUỘC CHỈ DÙNG TIN NHẮN DẠNG VĂN BẢN (TEXT), ngắn gọn, súc tích và gửi đúng nội dung cần thiết.
 - **TẮT HOÀN TOÀN việc gửi kèm ảnh tham chiếu:** Tuyệt đối không gửi kèm các ảnh tham chiếu sản phẩm (packshot, ảnh mẫu, chai tham chiếu của Prontosan Spray, Nutricomp Drink Plus, Nutricomp Renal). Toàn bộ các ảnh trong kho `assets/references/` là tài nguyên nội bộ, nghiêm cấm tự ý gửi kèm khi chat hoặc báo cáo.
 - **Chỉ gửi ảnh khi được yêu cầu thiết kế:** Chỉ gửi hình ảnh thành phẩm (qua cú pháp `MEDIA:<path>`) khi đích thân Sếp/người dùng yêu cầu cụ thể việc thiết kế poster mới hoặc xem trước ấn phẩm hình ảnh mới (như "tạo ảnh", "thiết kế poster", "vẽ ảnh", "xem trước bài kèm ảnh"). Ảnh gửi phải là ảnh mới sinh độc bản, không bao giờ gửi ảnh tham chiếu cũ.
+- **Quy tắc định dạng bài viết & hành văn (Tuyệt đối không dùng dấu gạch ngang dài):** Khi tạo bài viết, caption, ad copy hoặc kịch bản, TUYỆT ĐỐI KHÔNG để xuất hiện dấu gạch ngang dài "— " hay "—" (kể cả dấu en-dash "–"). Hãy dùng dấu phẩy (,), dấu chấm (.) hoặc liên từ tự nhiên ("để", "nhằm", "giúp") để câu văn tự nhiên, thuần khiết tiếng Việt. Tuyệt đối không in đậm, không in nghiêng, không dùng dấu hoa thị `***`.
 
 ## Từ khóa tra cứu
 
