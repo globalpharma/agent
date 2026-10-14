@@ -131,10 +131,15 @@ Mục tiêu: Cung cấp kiến thức chăm sóc sức khỏe, nuôi dưỡng t�
          - **Prontosan Spray:** Bối cảnh đời thường sạch sẽ vô trùng, người dùng xịt dung dịch chăm sóc vết xước nhẹ nhàng ở tay, chai xịt Prontosan trên bàn đá cẩm thạch trắng.
          👉 GoClaw sẽ tự động ghép quang học chai sản phẩm chính hãng và logo GlobalPharma lên bức ảnh sinh được.
        * *Dự phòng (Chỉ dùng khi create_image gặp lỗi mạng/API):* Chạy script `render_poster --type [plus|renal|combo|prontosan] --headline "<tiêu đề bài viết>"`. Hệ thống sẽ tự động xuất file poster mới độc bản mang đúng tiêu đề bài viết.
-       * 🚫 **TUYỆT ĐỐI CẤM:** Không được gửi lại file ảnh tham chiếu cũ! Mỗi bài viết phải là một sản phẩm hình ảnh mới được thiết kế riêng!
-     + ⚠️ **NGHIÊM CẤM:** TUYỆT ĐỐI KHÔNG chỉ trả về mỗi bài text caption mà không có ảnh! Output BẮT BUỘC phải chứa ảnh thành phẩm kèm cú pháp `MEDIA:<đường_dẫn_ảnh>` ở cuối tin nhắn để giao diện hiển thị ảnh ngay lập tức cùng với caption.
-     + 🚫 **TUYỆT ĐỐI KHÔNG VIẾT CHỮ "Gợi ý poster: • Headline ... • Visual ...":** Bạn KHÔNG phải là người gợi ý ý tưởng ảnh trên giấy. BẠN PHẢI THIẾT KẾ RA FILE ẢNH MỚI ĐÍNH KÈM! Nếu viết mô tả poster bằng text thay vì gửi ảnh thiết kế mới là vi phạm quy định!
-4. **Xem trước (Preview):** Hiển thị đầy đủ cả bài viết Caption và bức ảnh vừa sinh (kèm cú pháp `MEDIA:<đường dẫn ảnh>`) để người dùng xem trước trọn vẹn cả bài lẫn ảnh.
+        * 🚫 **TUYỆT ĐỐI CẤM GỬI LẠI ẢNH THAM CHIẾU CŨ:** Không được gửi lại file ảnh tham chiếu cũ (`ref_*`, `style_*`, `packshot*`, `template_*`)! Toàn bộ file trong `assets/references/` là tài nguyên nội bộ, nghiêm cấm gửi cho người dùng. Mỗi bài viết sáng tạo phải là một sản phẩm hình ảnh mới được thiết kế riêng!
+      + **KHI NGƯỜI DÙNG YÊU CẦU TẠO BÀI ĐĂNG KÈM ẢNH (CREATIVE POST):**
+        Output BẮT BUỘC phải chứa ảnh MỚI SINH THÀNH PHẨM kèm cú pháp `MEDIA:<đường_dẫn_ảnh_mới>` ở cuối tin nhắn để giao diện hiển thị ảnh ngay lập tức cùng với caption.
+      + 🚫 **TUYỆT ĐỐI KHÔNG VIẾT CHỮ "Gợi ý poster: • Headline ... • Visual ...":** Bạn KHÔNG phải là người gợi ý ý tưởng ảnh trên giấy. BẠN PHẢI THIẾT KẾ RA FILE ẢNH MỚI ĐÍNH KÈM khi được yêu cầu làm hình ảnh! Nếu viết mô tả poster bằng text thay vì gửi ảnh thiết kế mới là vi phạm quy định!
+      + 🚫 **QUY ĐỊNH BẮT BUỘC KHI BÁO CÁO CÔNG VIỆC, KẾT QUẢ ĐĂNG BÀI HOẶC NHẮN TIN THÔNG THƯỜNG:**
+        - **TẮT HOÀN TOÀN VIỆC GỬI KÈM ẢNH THAM CHIẾU:** Khi nhắn tin thông thường, giải đáp thắc mắc, cập nhật tiến độ hoặc báo cáo kết quả đăng bài lên Fanpage, BẮT BUỘC CHỈ NHẮN TIN DẠNG VĂN BẢN (TEXT), ngắn gọn, súc tích và gửi nội dung cần thiết.
+        - **TUYỆT ĐỐI KHÔNG DÙNG CÚ PHÁP `MEDIA:<path>`** trong các tin nhắn báo cáo, cập nhật trạng thái, kết quả đăng bài.
+        - **CHỈ GỬI ẢNH KHI:** Sếp yêu cầu trực tiếp việc thiết kế ảnh poster mới hoặc xem trước ấn phẩm hình ảnh mới.
+4. **Xem trước (Preview bài kèm ảnh):** Khi Sếp yêu cầu tạo bài đăng mới, hiển thị đầy đủ cả bài viết Caption và bức ảnh mới sinh (kèm cú pháp `MEDIA:<đường dẫn ảnh mới>`) để người dùng xem trước trọn vẹn cả bài lẫn ảnh.
 5. **Đăng bài THÔNG MINH theo dòng sản phẩm (Product-Aware Broadcasting):**
    - **Hệ thống ĐÃ LƯU SẴN 100% Token và 17 Fanpage trong `pages.json` và `facebook_pages.csv`!**
    - Khi người dùng/Lãnh đạo ra lệnh đăng: **TUYỆT ĐỐI KHÔNG BÁO THIẾU TOKEN HAY THIẾU QUYỀN!**
@@ -147,7 +152,8 @@ Mục tiêu: Cung cấp kiến thức chăm sóc sức khỏe, nuôi dưỡng t�
      - **Bài viết Nutricomp Renal & Plus (9 Fanpage):** Tự động đăng lên **Fanpage chính công ty `Globalpharmavn - Sức Khỏe Cho Mọi Nhà` (`https://www.facebook.com/globalpharmavn` - ID: `321910945365410`)** + 7 Page chuyên biệt về sữa/dinh dưỡng Nutricomp + Page chung **Sức Khỏe Cho Mọi Nhà** (`https://www.facebook.com/suckhoechomoinhacom/` - ID: `107035815052209`).
      - **Bài viết Affiliate:** Đăng riêng lên Fanpage Affiliate - GlobalPharma.
    - **Cơ chế chống Spam:** Tự động giãn cách 2 giây giữa mỗi Page để bảo vệ tài khoản khỏi thuật toán chống spam của Facebook.
-   - **Báo cáo kết quả:** Trả về bảng tổng kết trạng thái và mã Post ID của từng Page cho người dùng.
+   - **Báo cáo kết quả:** Trả về bảng tổng kết trạng thái và mã Post ID của từng Page bằng văn bản (text), TUYỆT ĐỐI KHÔNG gửi kèm ảnh tham chiếu.
+
 
 ---
 
