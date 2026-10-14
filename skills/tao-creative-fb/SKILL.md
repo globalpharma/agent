@@ -43,7 +43,7 @@ Skill cấp 3 chuyên trách sản xuất toàn diện nội dung Facebook (Hìn
 - **KHI YÊU CẦU NUTRICOMP RENAL:**  
   BẮT BUỘC dùng đúng ảnh **1 chai lẻ Nutricomp® Drink Renal 200ml** (`cut_nutricomp_single_bottle.png`, nắp tím). Định vị cho bệnh nhân suy thận mạn/lọc máu, kiểm soát điện giải (kali, natri, phospho thấp), 2.0 kcal/ml (400 kcal/chai).
 - **KHI YÊU CẦU NUTRICOMP PLUS:**  
-  BẮT BUỘC dùng đúng ảnh **1 chai lẻ Nutricomp® Drink Plus 200ml** (`cut_nutricomp_plus_bottle.png`, nắp vàng/cam). Định vị phục hồi thể trạng sau phẫu thuật, suy kiệt, ung thư, cao năng lượng 1.5 kcal/ml (300 kcal/chai), giàu protein tái tạo tế bào.
+  BẮT BUỘC dùng đúng ảnh **1 chai lẻ Nutricomp® Drink Plus 200ml** (`cut_nutricomp_plus_bottle.png`, nắp tím giống nắp chai Renal; nhãn thân chai có dải màu cam/hồng dâu đặc trưng của Nutricomp Drink Plus). Định vị phục hồi thể trạng sau phẫu thuật, suy kiệt, ung thư, cao năng lượng 1.5 kcal/ml (300 kcal/chai), giàu protein tái tạo tế bào.
 - **CHỈ DÙNG ẢNH HỘP COMBO KHI CÓ YÊU CẦU CỤ THỂ:**  
   CHỈ KHI NÀO Sếp nói rõ từ **"combo"**, **"hộp quà"**, **"thùng 12 chai"**: Mới được sử dụng ảnh hộp Combo 12 chai (`cut_nutricomp_box.png`).
 
@@ -61,7 +61,7 @@ Skill cấp 3 chuyên trách sản xuất toàn diện nội dung Facebook (Hìn
    - Tone màu: Xanh ngọc y tế (Teal `#008080`) phối trắng ngà và tím nắp chai.
    - Bối cảnh: Người lớn tuổi khỏe mạnh, an tâm, thư thái bên gia đình hoặc góc tư vấn y khoa.
 2. **Nutricomp Drink Plus (Dinh dưỡng cao năng lượng 300 kcal, phục hồi sau phẫu thuật/suy kiệt/ung thư):**
-   - Phôi sản phẩm: Đúng 1 chai Plus nắp cam (`cut_nutricomp_plus_bottle.png`).
+   - Phôi sản phẩm: Đúng 1 chai Plus nắp tím (`cut_nutricomp_plus_bottle.png`). ⚠️ LƯU Ý CỐT LÕI: Nắp chai Nutricomp Drink Plus là MÀU TÍM giống nắp chai Nutricomp Drink Renal, TUYỆT ĐỐI KHÔNG TỰ BỊA RA NẮP MÀU CAM! (Chỉ có dải nhãn trên thân chai là màu cam/hồng dâu).
    - Tone màu: Vàng cam ấm áp (Amber `#F59E0B`) phối xanh y tế B.Braun, toát lên năng lượng hồi sinh.
    - Bối cảnh: Bàn ăn gia đình buổi sáng ấm cúng, người thân chăm sóc bệnh nhân sau mổ đang dần bình phục.
 3. **Prontosan Wound Spray (Rửa vết thương, phá màng Biofilm, ngăn nhiễm trùng):**
@@ -115,7 +115,7 @@ Mục tiêu: Cung cấp kiến thức chăm sóc sức khỏe, nuôi dưỡng t�
      + **BẮT BUỘC THIẾT KẾ ẢNH MỚI THEO STYLE THAM CHIẾU (KHÔNG ĐƯỢC GỬI LẠI ẢNH CŨ VÀ KHÔNG CHỈ GỢI Ý CHỮ):**
        * **BẮT BUỘC gọi công cụ `create_image(prompt: "...", model: "gpt-5.6")` để thiết kế ảnh mới độc bản:**
          Prompt tiếng Anh 5 tầng mô tả bối cảnh nhiếp ảnh đời thực chuyên nghiệp dựa trên phong cách của ảnh tham chiếu đã duyệt:
-         - **Nutricomp Drink Plus:** Bối cảnh bàn ăn gia đình ấm cúng, người bệnh sau mổ/suy kiệt đang hồi phục thể trạng khỏe khoắn, ánh sáng ban mai dịu qua rèm, tone màu ấm áp vàng cam hổ phách (amber) phối xanh y tế B.Braun, chai Nutricomp Drink Plus 200ml nắp cam trên bàn.
+         - **Nutricomp Drink Plus:** Bối cảnh bàn ăn gia đình ấm cúng, người bệnh sau mổ/suy kiệt đang hồi phục thể trạng khỏe khoắn, ánh sáng ban mai dịu qua rèm, tone màu ấm áp vàng cam hổ phách (amber) phối xanh y tế B.Braun, chai Nutricomp Drink Plus 200ml nắp tím (purple cap) trên bàn.
          - **Nutricomp Drink Renal:** Bối cảnh gia đình người cao tuổi an tâm, nụ cười nhẹ nhõm, tone màu xanh ngọc y tế (teal) thanh lịch, chai Nutricomp Drink Renal 200ml nắp tím trên bàn.
          - **Prontosan Spray:** Bối cảnh đời thường sạch sẽ vô trùng, người dùng xịt dung dịch chăm sóc vết xước nhẹ nhàng ở tay, chai xịt Prontosan trên bàn đá cẩm thạch trắng.
          👉 GoClaw sẽ tự động ghép quang học chai sản phẩm chính hãng và logo GlobalPharma lên bức ảnh sinh được.

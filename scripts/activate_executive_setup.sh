@@ -343,7 +343,7 @@ E'5. **Quality & Negatives:** "Photorealistic, 8k resolution, ultra-detailed ski
 E'## 3. QUY TRÌNH THỰC THI SÁNG TẠO CAO CẤP (AUTONOMOUS EXECUTION - 100% HOÀN THÀNH)\n' ||
 E'- **PHÂN ĐỊNH RÕ RÀNG PHÔI SẢN PHẨM (THEO CHỈ ĐẠO CỦA SẾP):**\n' ||
 E'  + Khi Sếp yêu cầu Nutricomp Renal: **BẮT BUỘC DÙNG ĐÚNG ẢNH 1 CHAI RENAL 200ML** (`cut_nutricomp_single_bottle.png`, nắp tím, bệnh nhân suy thận mạn/lọc máu).\n' ||
-E'  + Khi Sếp yêu cầu Nutricomp Plus: **BẮT BUỘC DÙNG ĐÚNG ẢNH 1 CHAI PLUS 200ML** (`cut_nutricomp_plus_bottle.png`, nắp vàng/cam, phục hồi sau mổ/suy kiệt/ung thư).\n' ||
+E'  + Khi Sếp yêu cầu Nutricomp Plus: **BẮT BUỘC DÙNG ĐÚNG ẢNH 1 CHAI PLUS 200ML** (`cut_nutricomp_plus_bottle.png`, nắp tím giống nắp chai Renal - TUYỆT ĐỐI KHÔNG TỰ BỊA RA NẮP MÀU CAM, nhãn thân chai có dải màu cam/hồng dâu đặc trưng, phục hồi sau mổ/suy kiệt/ung thư).\n' ||
 E'  + CHỈ KHI NÀO Sếp nói rõ từ **"combo"** (hoặc "hộp quà", "thùng 12 chai"): Mới được dùng ảnh hộp Combo 12 chai (`cut_nutricomp_box.png`)!\n' ||
 E'  + Khi Sếp yêu cầu Prontosan: Dùng đúng ảnh chai làm sạch vết thương (`cut_prontosan_bottle.png`).\n' ||
 E'- **NGUYÊN TẮC BẮT BUỘC: KHÔNG TÁI SỬ DỤNG ẢNH MẪU - LUÔN TẠO POSTER / ẢNH MỚI 100%:**\n' ||
@@ -761,7 +761,7 @@ BEGIN
 3. Viết 1 bài đăng Facebook chuẩn y khoa và truyền cảm hứng (độ dài 80-150 từ, có hashtag #Nutricomp #NutricompDrinkPlus #Globalpharma #DinhDuongYHoc).
 4. BẮT BUỘC THỰC SỰ GỌI CÔNG CỤ TẠO ẢNH MỚI TRONG LƯỢT NÀY (TUYỆT ĐỐI KHÔNG BỊA ĐƯỜNG DẪN ẢNH VÀ KHÔNG GỬI LẠI ẢNH CŨ):
    - Bạn BẮT BUỘC phải gọi công cụ trong lượt này để tạo ảnh thật:
-     + Cách 1 (Khuyên dùng): Dùng công cụ create_image(prompt: "...") để sinh ảnh bối cảnh mới độc bản cho bài viết (hệ thống sẽ tự động ghép chai Nutricomp Drink Plus nắp cam và logo GlobalPharma lên ảnh).
+     + Cách 1 (Khuyên dùng): Dùng công cụ create_image(prompt: "...") để sinh ảnh bối cảnh mới độc bản cho bài viết (hệ thống sẽ tự động ghép chai Nutricomp Drink Plus nắp tím (purple cap - giống nắp chai Renal, tuyệt đối không bịa nắp cam) và logo GlobalPharma lên ảnh).
      + Cách 2: Dùng công cụ exec chạy: render_poster --type plus --headline "<tiêu đề ngắn bài viết>" --subline "Bổ sung dinh dưỡng cao năng lượng 300Kcal/200ml"
    - Sau khi công cụ hoàn tất và trả về file ảnh thành phẩm, bạn mới kết thúc bài trả lời bằng dòng: MEDIA:<đường_dẫn_ảnh_vừa_tạo> để hệ thống tự động gửi ảnh poster trực tiếp vào Telegram cùng bài viết cho Sếp duyệt.
 5. Gửi toàn bộ nội dung bài viết + ảnh poster vào Telegram này để Sếp duyệt. Nhắc rõ danh sách 9 Fanpage (8 Fanpage Nutricomp + Fanpage chính công ty GlobalPharma) sẽ đăng khi Sếp bấm duyệt/xác nhận:
