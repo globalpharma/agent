@@ -49,7 +49,7 @@ A reputable medical consultation scene in a bright Vietnamese hospital room. A f
 
 #### Organic Post:
 ```
-A warm, heart-lifting documentary photograph in a modern home recovery room. A cheerful Vietnamese patient recovering in bed receiving a glass of rich nutritional drink from a caring family member. On the bedside table sits a clinical nutrition bottle labeled 'Nutricomp Drink Plus'. Warm sunlight streaming through window sheer curtains, comforting, hopeful recovery ambiance, photorealistic, 8k.
+A warm, heart-lifting documentary photograph in a modern home recovery room. A cheerful Vietnamese patient recovering in bed receiving a glass of rich nutritional drink from a caring family member. On the bedside table sits a clinical nutrition bottle labeled 'Nutricomp Drink Plus' with an authentic purple bottle cap (nắp màu tím giống Renal, nhãn sọc cam/dâu đặc trưng; tuyệt đối không vẽ nắp cam). Warm sunlight streaming through window sheer curtains, comforting, hopeful recovery ambiance, photorealistic, 8k.
 ```
 
 #### Creative Ads:
