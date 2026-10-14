@@ -41,8 +41,30 @@ for p in env_paths:
         break
 
 
+def clean_facebook_caption(text: str) -> str:
+    """Loại bỏ triệt để markdown bold/italic (***, **, *) và header (#) để caption Facebook không bị lỗi font hay rác dấu sao"""
+    if not text:
+        return ""
+    # Strip bold-italic ***text***
+    text = re.sub(r'\*\*\*([^\*\n\r]+)\*\*\*', r'\1', text)
+    # Strip bold **text**
+    text = re.sub(r'\*\*([^\*\n\r]+)\*\*', r'\1', text)
+    # Strip italic *text*
+    text = re.sub(r'(?:^|(?<=[\s\(]))\*([^\*\n\r]+)\*(?=$|[\s\)\.,!\?:;])', r'\1', text)
+    # Strip ___text___ and __text__
+    text = re.sub(r'___([^_\n\r]+)___', r'\1', text)
+    text = re.sub(r'__([^_\n\r]+)__', r'\1', text)
+    text = re.sub(r'(?:^|(?<=[\s\(]))_([^_\n\r]+)_(?=$|[\s\)\.,!\?:;])', r'\1', text)
+    # Strip markdown headers (e.g. ## Title)
+    text = re.sub(r'(?m)^#{1,6}\s+', '', text)
+    # Remove any leftover asterisks
+    text = text.replace('***', '').replace('**', '')
+    return text.strip()
+
+
 def post_single_page(image_path: Path, caption: str, page_id: str, page_token: str, page_name: str = "", graph_version: str = "v19.0", dry_run: bool = False):
     """Đăng bài lên 1 Fanpage cụ thể"""
+    caption = clean_facebook_caption(caption)
     label = f"[{page_name} - {page_id}]" if page_name else f"[{page_id}]"
     
     if dry_run or not page_token or page_token.startswith("EAAV..."):
