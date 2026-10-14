@@ -59,6 +59,12 @@ def clean_facebook_caption(text: str) -> str:
     text = re.sub(r'(?m)^#{1,6}\s+', '', text)
     # Remove any leftover asterisks
     text = text.replace('***', '').replace('**', '')
+    # Strip em-dash and en-dash (—, –)
+    text = re.sub(r'(?m)^\s*[—–-]\s+', '', text)
+    text = re.sub(r'\s*[—–]\s*', ', ', text)
+    # Clean up double punctuation like ", ," or ", ."
+    text = re.sub(r',\s*,', ',', text)
+    text = re.sub(r',\s*\.', '.', text)
     return text.strip()
 
 

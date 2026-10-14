@@ -5,7 +5,7 @@ Tài liệu quy chuẩn cấu trúc văn bản quảng cáo và bài viết nuô
 ---
 
 ## 1. Cấu Trúc Bài Đăng Organic (Nuôi dưỡng & Giáo dục sức khỏe)
-- **Độ dài lý tưởng:** 100 – 160 từ.
+- **Độ dài lý tưởng:** 100 đến 160 từ.
 - **Bố cục 3 phần:**
   1. **Hook:** Đặt vấn đề hoặc câu hỏi thấu cảm từ góc nhìn người bệnh hoặc người chăm sóc.
   2. **Body:** Cung cấp thông tin khoa học ngắn gọn, giải thích cơ chế dinh dưỡng y học hoặc nguyên lý chăm sóc (theo khuyến nghị ESPEN / B.Braun).
@@ -30,7 +30,7 @@ Dinh dưỡng đúng phác đồ là nền tảng giúp người bệnh duy trì
 ---
 
 ## 2. Cấu Trúc Bộ 3 Creative Ads (Chế độ 2 - Quảng cáo chuyển đổi)
-- **Độ dài lý tưởng:** 80 – 140 từ.
+- **Độ dài lý tưởng:** 80 đến 140 từ.
 - **Bố cục:**
   - **Hook:** Đánh trúng tâm lý, tạo sự đồng cảm hoặc tò mò ngay trong 3 dòng đầu.
   - **USP lâm sàng:** Điểm tựa khoa học, xuất xứ B.Braun CHLB Đức, công thức chuyên biệt đã được chứng minh.
@@ -63,7 +63,7 @@ Dinh dưỡng đúng phác đồ là nền tảng giúp người bệnh duy trì
 > **USP:** Vì mỗi chỉ số dung nạp đều quyết định sức khỏe của thận. Được nghiên cứu và sản xuất 100% tại CHLB Đức, Nutricomp® Drink Renal là lựa chọn dinh dưỡng y học tin cậy hàng đầu:  
 > • Kiểm chứng lâm sàng khắt khe theo tiêu chuẩn dược phẩm Châu Âu.  
 > • Hàng ngàn bệnh nhân lọc máu và trước lọc máu đã phục hồi thể trạng vững vàng.  
-> **CTA:** 👉 Nhận phác đồ tư vấn dinh dưỡng thận miễn phí từ Dược sĩ lâm sàng – Bấm **Nhắn tin** ngay!
+> **CTA:** 👉 Nhận phác đồ tư vấn dinh dưỡng thận miễn phí từ Dược sĩ lâm sàng. Bấm **Nhắn tin** ngay!
 
 ---
 
@@ -72,7 +72,7 @@ Dinh dưỡng đúng phác đồ là nền tảng giúp người bệnh duy trì
 #### Angle 1: Pain Point (Suy kiệt sau phẫu thuật, sút cân ung thư)
 > **Hook:** Sau mổ hoặc trong quá trình hóa xạ trị, cơ thể kiệt sức và ăn gì cũng thấy nghẹn đắng?  
 > **USP:** Cơ thể cần năng lượng gấp đôi để tái tạo tế bào, nhưng hệ tiêu hóa lại quá yếu. Nutricomp® Drink Plus bổ sung 300 kcal cùng 12g đạm chất lượng cao chỉ trong 200ml, bù đắp nhanh thể trạng suy kiệt chuẩn B.Braun CHLB Đức.  
-> **CTA:** 👉 Đừng để người thân suy mòn vì thiếu năng lượng – Bấm **Nhắn tin** để nhận tư vấn ngay!
+> **CTA:** 👉 Đừng để người thân suy mòn vì thiếu năng lượng. Bấm **Nhắn tin** để nhận tư vấn ngay!
 
 #### Angle 2: Solution (Năng lượng cao đậm đặc 1.5 kcal/ml)
 > **Hook:** Nạp đủ 300 kcal dinh dưỡng y học trong tích tắc mà không cần gắng gượng ăn nhiều bát cơm.  

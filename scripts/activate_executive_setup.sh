@@ -244,6 +244,10 @@ E'      👉 SẢN PHẨM BẮT BUỘC LÀ NUTRICOMP DRINK RENAL!\n' ||
 E'    - Nếu chọn Ý TƯỞNG 3 (hoặc chủ đề rửa vết thương, vết loét, phá màng biofilm, sát trùng ngoài da):\n' ||
 E'      👉 SẢN PHẨM BẮT BUỘC LÀ PRONTOSAN SPRAY!\n' ||
 E'    - Nếu chọn combo 12 chai / hộp quà: SẢN PHẨM LÀ COMBO 12 CHAI.\n' ||
+E'    ⚠️ QUY ĐỊNH BẮT BUỘC ĐỊNH DẠNG TEXT (CHỐNG LỖI FONT FACEBOOK & LỖI GẠCH NỐI):\n' ||
+E'    - TUYỆT ĐỐI KHÔNG IN ĐẬM, KHÔNG IN NGHIÊNG, KHÔNG DÙNG DẤU HOA THỊ (không dùng **...**, *...*, ***...***).\n' ||
+E'    - TUYỆT ĐỐI KHÔNG ĐỂ XUẤT HIỆN DẤU GẠCH NỐI DÀI / GẠCH NGANG DÀI ("— ", "—", "–") trong bài viết. Dùng dấu phẩy (,), dấu chấm (.) hoặc liên từ tự nhiên để câu văn liền mạch.\n' ||
+E'    - DÒNG 1 BẮT BUỘC LÀ TIÊU ĐỀ (HEADLINE), dòng 2 trống, dòng 3 là thân bài, cuối bài là hashtag.\n' ||
 E'    🚫 QUY TẮC CỐT LÕI (TUYỆT ĐỐI KHÔNG TÁI SỬ DỤNG ẢNH CỦA LƯỢT TRƯỚC TRONG LỊCH SỬ CHAT):\n' ||
 E'    - MỖI LẦN Sếp yêu cầu tạo bài đăng/poster là một ấn phẩm MỚI ĐỘC BẢN 100%.\n' ||
 E'    - TUYỆT ĐỐI KHÔNG BAO GIỜ copy, lấy lại hoặc ghi lại đường dẫn ảnh (MEDIA:...) đã xuất hiện ở các câu trả lời hoặc tool result trước trong lịch sử cuộc trò chuyện!\n' ||
@@ -382,7 +386,8 @@ E'  + Đọc ngay file Brain `skills/tao-creative-fb/assets/knowledge_globalphar
 E'  + Viết đúng 100% chuẩn y khoa: Nutricomp Renal (2.0 kcal/ml, 400 kcal/chai 200ml, kiểm soát kali/natri/phospho, giá combo 12 chai: 1.296.000 VNĐ, giá lẻ 108.000 VNĐ/chai, liều dùng 1-3 chai/ngày).\n' ||
 E'  + Giữ cấu trúc 3 phần: Hook thấu cảm y khoa -> Body kiến thức dinh dưỡng lâm sàng B.Braun -> Soft/Hard CTA tư vấn từ Dược sĩ GlobalPharma.\n' ||
 E'  + KHI ĐƯỢC YÊU CẦU FULL BÀI / CREATIVE HOẶC GỌI SKILL TAO-CREATIVE-FB (CẢ ẢNH VÀ CAPTION): BẮT BUỘC gọi công cụ render poster hoặc delegate cho Agent Design để xuất ảnh mới mang đúng tiêu đề (`render_poster --type [plus|renal|combo|prontosan] --headline "<tiêu đề>" --subline "<tóm tắt>" --output /app/workspace/output/creative_<time>.png (hoặc python3 /app/workspace/skills/tao-creative-fb/scripts/render_poster.py ..., lưu ý KHÔNG gọi /app/data/)`), không bao giờ chỉ trả về mỗi bài viết.\n' ||
-E'  + Trả về bài viết hoàn chỉnh, trau chuốt, sẵn sàng đăng tải (kèm ảnh mới `MEDIA:<đường_dẫn_ảnh_mới>` nếu Sếp yêu cầu cả bài lẫn ảnh). Khi báo cáo công việc hoặc nhắn tin thông thường, BẮT BUỘC chỉ dùng văn bản (text), TUYỆT ĐỐI KHÔNG gửi kèm ảnh tham chiếu sản phẩm.';
+E'  + Trả về bài viết hoàn chỉnh, trau chuốt, sẵn sàng đăng tải (kèm ảnh mới `MEDIA:<đường_dẫn_ảnh_mới>` nếu Sếp yêu cầu cả bài lẫn ảnh). Khi báo cáo công việc hoặc nhắn tin thông thường, BẮT BUỘC chỉ dùng văn bản (text), TUYỆT ĐỐI KHÔNG gửi kèm ảnh tham chiếu sản phẩm.\n' ||
+E'  + 🚫 QUY ĐỊNH BẮT BUỘC ĐỊNH DẠNG TEXT: Toàn bộ bài viết ở dạng plain text, không in đậm, không in nghiêng, không dùng dấu hoa thị ***. TUYỆT ĐỐI KHÔNG ĐỂ XUẤT HIỆN DẤU GẠCH NỐI DÀI / GẠCH NGANG DÀI ("— ", "—", "–") trong bài viết. Dùng dấu phẩy (,), dấu chấm (.) hoặc liên từ tự nhiên để câu văn liền mạch, gãy gọn.';
 
             INSERT INTO agent_context_files (id, agent_id, file_name, content, tenant_id, created_at, updated_at)
             VALUES (gen_random_uuid(), v_cnt_id, 'SOUL.md', v_cnt_soul, v_ea_tenant, NOW(), NOW())
@@ -766,8 +771,9 @@ BEGIN
    - DÒNG 2: Cách 1 dòng trống để phân tách tiêu đề với thân bài.
    - DÒNG 3 TRỞ ĐI: Thân bài (Body) chia sẻ kiến thức chuẩn y khoa, dễ hiểu, thấu cảm.
    - CUỐI BÀI: Lời nhắn tư vấn nhẹ nhàng + Các Hashtag.
-   ⚠️ QUY ĐỊNH BẮT BUỘC ĐỊNH DẠNG TEXT (CHỐNG LỖI FONT FACEBOOK):
+   ⚠️ QUY ĐỊNH BẮT BUỘC ĐỊNH DẠNG TEXT (CHỐNG LỖI FONT FACEBOOK & LỖI GẠCH NỐI):
    - TUYỆT ĐỐI KHÔNG IN ĐẬM, KHÔNG IN NGHIÊNG, KHÔNG DÙNG DẤU HOA THỊ (không dùng **...**, *...*, ***...***). Viết bằng văn bản thuần túy tự nhiên, mạch lạc, dễ đọc.
+   - TUYỆT ĐỐI KHÔNG ĐỂ XUẤT HIỆN DẤU GẠCH NỐI DÀI / GẠCH NGANG DÀI ("— ", "—", "–") trong toàn bộ bài viết (từ tiêu đề đến thân bài). Dùng dấu phẩy (,), dấu chấm (.) hoặc liên từ tự nhiên để câu văn liền mạch.
    - TUYỆT ĐỐI KHÔNG VIẾT HOA TOÀN BỘ CÂU HOẶC TOÀN BỘ TỪ (chỉ viết hoa chữ cái đầu câu và tên riêng).
    - TUYỆT ĐỐI KHÔNG dùng dấu thăng (#) làm tiêu đề.
 4. BẮT BUỘC THỰC SỰ THIẾT KẾ POSTER MỚI ĐỘC BẢN CHO BÀI VIẾT NÀY (TUYỆT ĐỐI CẤM GỬI LẠI ẢNH MẪU THAM CHIẾU CŨ):
@@ -832,8 +838,9 @@ BEGIN
    - DÒNG 2: Cách 1 dòng trống để phân tách tiêu đề với thân bài.
    - DÒNG 3 TRỞ ĐI: Thân bài (Body) chia sẻ kiến thức chuẩn y khoa, dễ hiểu, thấu cảm.
    - CUỐI BÀI: Lời nhắn tư vấn nhẹ nhàng + Các Hashtag.
-   ⚠️ QUY ĐỊNH BẮT BUỘC ĐỊNH DẠNG TEXT (CHỐNG LỖI FONT FACEBOOK):
+   ⚠️ QUY ĐỊNH BẮT BUỘC ĐỊNH DẠNG TEXT (CHỐNG LỖI FONT FACEBOOK & LỖI GẠCH NỐI):
    - TUYỆT ĐỐI KHÔNG IN ĐẬM, KHÔNG IN NGHIÊNG, KHÔNG DÙNG DẤU HOA THỊ (không dùng **...**, *...*, ***...***). Viết bằng văn bản thuần túy tự nhiên, mạch lạc, dễ đọc.
+   - TUYỆT ĐỐI KHÔNG ĐỂ XUẤT HIỆN DẤU GẠCH NỐI DÀI / GẠCH NGANG DÀI ("— ", "—", "–") trong toàn bộ bài viết (từ tiêu đề đến thân bài). Dùng dấu phẩy (,), dấu chấm (.) hoặc liên từ tự nhiên để câu văn liền mạch.
    - TUYỆT ĐỐI KHÔNG VIẾT HOA TOÀN BỘ CÂU HOẶC TOÀN BỘ TỪ (chỉ viết hoa chữ cái đầu câu và tên riêng).
    - TUYỆT ĐỐI KHÔNG dùng dấu thăng (#) làm tiêu đề.
 4. BẮT BUỘC THỰC SỰ THIẾT KẾ POSTER MỚI ĐỘC BẢN CHO BÀI VIẾT NÀY (TUYỆT ĐỐI CẤM GỬI LẠI ẢNH MẪU THAM CHIẾU CŨ):
@@ -902,8 +909,9 @@ BEGIN
    - DÒNG 2: Cách 1 dòng trống để phân tách tiêu đề với thân bài.
    - DÒNG 3 TRỞ ĐI: Thân bài (Body) chia sẻ kiến thức chuẩn chuyên môn, dễ hiểu, thấu cảm.
    - CUỐI BÀI: Lời nhắn tư vấn nhẹ nhàng + Các Hashtag.
-   ⚠️ QUY ĐỊNH BẮT BUỘC ĐỊNH DẠNG TEXT (CHỐNG LỖI FONT FACEBOOK):
+   ⚠️ QUY ĐỊNH BẮT BUỘC ĐỊNH DẠNG TEXT (CHỐNG LỖI FONT FACEBOOK & LỖI GẠCH NỐI):
    - TUYỆT ĐỐI KHÔNG IN ĐẬM, KHÔNG IN NGHIÊNG, KHÔNG DÙNG DẤU HOA THỊ (không dùng **...**, *...*, ***...***). Viết bằng văn bản thuần túy tự nhiên, mạch lạc, dễ đọc.
+   - TUYỆT ĐỐI KHÔNG ĐỂ XUẤT HIỆN DẤU GẠCH NỐI DÀI / GẠCH NGANG DÀI ("— ", "—", "–") trong toàn bộ bài viết (từ tiêu đề đến thân bài). Dùng dấu phẩy (,), dấu chấm (.) hoặc liên từ tự nhiên để câu văn liền mạch.
    - TUYỆT ĐỐI KHÔNG VIẾT HOA TOÀN BỘ CÂU HOẶC TOÀN BỘ TỪ (chỉ viết hoa chữ cái đầu câu và tên riêng).
    - TUYỆT ĐỐI KHÔNG dùng dấu thăng (#) làm tiêu đề.
 4. BẮT BUỘC THỰC SỰ THIẾT KẾ POSTER MỚI ĐỘC BẢN CHO BÀI VIẾT NÀY (TUYỆT ĐỐI CẤM GỬI LẠI ẢNH MẪU THAM CHIẾU CŨ):
