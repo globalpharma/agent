@@ -15,7 +15,7 @@ metadata:
 Skill cấp 3 chuyên trách sản xuất toàn diện nội dung Facebook (Hình ảnh + Caption/Ad Copy) cho **Công Ty Cổ Phần Global Pharma**, hỗ trợ các dòng sản phẩm y học lâm sàng B.Braun:
 1. **Nutricomp® Drink Renal Vanilla:** Dinh dưỡng y học chuyên biệt cho bệnh nhân suy thận mạn (trước lọc máu và lọc máu chu kỳ).
 2. **Nutricomp® Drink Plus:** Dinh dưỡng cao năng lượng (1.5 kcal/ml, 300 kcal/chai) phục hồi sau phẫu thuật, suy kiệt, ung thư.
-3. **Prontosan Spray / Gel:** Rửa và chăm sóc vết thương mạn tính, phá vỡ màng Biofilm, ngừa nhiễm trùng cho vết loét tì đè, loét đái tháo đường.
+3. **Prontosan® Wound Spray:** Dung dịch xịt rửa và làm ẩm vết thương, làm sạch êm dịu không cần chà xát mạnh, hỗ trợ xử lý màng Biofilm trên nền vết thương ngoài da. (⚠️ ĐỐI VỚI PRONTOSAN SPRAY: TUYỆT ĐỐI KHÔNG ĐƯỢC ĐỀ CẬP HỖ TRỢ "VẾT THƯƠNG MẠN TÍNH").
 
 ---
 
@@ -29,10 +29,11 @@ Skill cấp 3 chuyên trách sản xuất toàn diện nội dung Facebook (Hìn
 - **Đạo đức ngành y:** 
   - KHÔNG cam kết "chữa khỏi suy thận", "thuốc điều trị thận", hay "làm lành vết thương tức thì".
   - Định vị sản phẩm là: **Dinh dưỡng y học lâm sàng** bổ sung chuyên biệt theo từng bệnh lý, giúp bảo tồn chức năng thận, phục hồi thể trạng, hoặc dung dịch rửa vết thương chuẩn vô trùng.
+  - 🚫 **QUY ĐỊNH BẮT BUỘC ĐẶC BIỆT CHO PRONTOSAN SPRAY:** Khi làm nội dung bài viết (caption, hashtag) và hình ảnh (poster, banner), **TUYỆT ĐỐI ĐỪNG ĐỀ CẬP ĐẾN "VẾT THƯƠNG MẠN TÍNH" (hoặc "hỗ trợ vết thương mạn tính")**. Chỉ tập trung vào: Làm sạch êm dịu không cần chà xát mạnh, rửa và làm ẩm nền vết thương, hỗ trợ xử lý màng Biofilm, chăm sóc vết thương ngoài da, vết trầy xước, vết mổ/vết khâu hở.
 - **Giá bán & Liều dùng chuẩn y khoa (từ Brain):**
   - Nutricomp® Drink Renal: Giá chính thức combo 12 chai: **1.296.000 VNĐ** (tương đương **108.000 VNĐ/chai**, giá lẻ 1 chai: 108.000 VNĐ). Liều dùng khuyến nghị: 1-3 chai/ngày theo chỉ định chuyên môn. Năng lượng: 2.0 kcal/ml (400 kcal/chai 200ml).
   - Nutricomp® Drink Plus: Năng lượng: 1.5 kcal/ml (300 kcal/chai 200ml). Phục hồi thể trạng sau phẫu thuật, suy kiệt.
-  - Prontosan: Phá màng Biofilm, ngăn nhiễm trùng vết thương hở, vết loét tì đè, loét tiểu đường.
+  - Prontosan Spray: Làm sạch êm dịu không chà xát mạnh, rửa và làm ẩm nền vết thương, hỗ trợ xử lý màng Biofilm, chăm sóc vết thương ngoài da, vết trầy xước, vết mổ ngoài da. (⚠️ TUYỆT ĐỐI KHÔNG ĐỀ CẬP "VẾT THƯƠNG MẠN TÍNH").
 - **Tone & Mood:** Đĩnh đạc, thấu hiểu, khoa học, tin cậy, ấm áp và hướng đến sức khỏe bền vững của người bệnh.
 
 ---
