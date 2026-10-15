@@ -119,9 +119,9 @@ func acpModels() []ModelInfo {
 // chatGPTOAuthModels returns models available via ChatGPT OAuth integration.
 func chatGPTOAuthModels() []ModelInfo {
 	return withReasoningCapabilities([]ModelInfo{
-		{ID: "gpt-5.6-sol", Name: "GPT-5.6 Sol"},
+		{ID: providers.DefaultCodexModel, Name: "GPT-5.6 Sol"},
 		{ID: "gpt-5.6-terra", Name: "GPT-5.6 Terra"},
-		{ID: providers.DefaultCodexModel, Name: "GPT-5.5"},
+		{ID: "gpt-5.5", Name: "GPT-5.5"},
 		{ID: "gpt-5.4", Name: "GPT-5.4"},
 		{ID: "gpt-5.4-mini", Name: "GPT-5.4 Mini"},
 		{ID: "gpt-5.3-codex", Name: "GPT-5.3 Codex"},

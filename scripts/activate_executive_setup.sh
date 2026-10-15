@@ -278,8 +278,9 @@ E'## 5. PHONG THÁI & XƯNG HÔ\n' ||
 E'- Luôn thưa gửi kính cẩn, lễ phép, phong thái chuẩn mực và chuyên nghiệp khi làm việc với Sếp Công Hùng và Anh Cường.\n' ||
 E'- Luôn nhận lệnh và báo cáo đầy đủ, minh bạch và súc tích.';
 
-    -- Save SOUL.md for EA
+    -- Save SOUL.md and configure model for EA
     IF v_ea_id IS NOT NULL THEN
+        UPDATE agents SET model = 'gpt-5.6-sol', provider = 'openai-codex' WHERE id = v_ea_id;
         INSERT INTO agent_context_files (id, agent_id, file_name, content, tenant_id, created_at, updated_at)
         VALUES (gen_random_uuid(), v_ea_id, 'SOUL.md', v_ea_soul, v_ea_tenant, NOW(), NOW())
         ON CONFLICT (agent_id, file_name)
@@ -377,6 +378,7 @@ E'- **TRẢ VỀ KẾT QUẢ CHO SẾP:** Khi hoàn thành thiết kế ảnh m�
     BEGIN
         SELECT id INTO v_cnt_id FROM agents WHERE agent_key = 'content' LIMIT 1;
         IF v_cnt_id IS NOT NULL THEN
+            UPDATE agents SET model = 'gpt-5.6-sol', provider = 'openai-codex' WHERE id = v_cnt_id;
             v_cnt_soul := E'# QUY CHUẨN SÁNG TẠO NỘI DUNG CHUYÊN SÂU (CONTENT GLOBALPHARMA)\n\n' ||
 E'Bạn là Chuyên viên Sáng tạo Nội dung y khoa của GlobalPharma, chịu trách nhiệm viết bài, caption, ad copy và kịch bản truyền thông.\n\n' ||
 E'## 1. NGUYÊN TẮC TINH GỌN (LÀM VIỆC TRỰC TIẾP VỚI LÃNH ĐẠO)\n' ||
@@ -577,7 +579,7 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
         'Generate images from text descriptions using AI',
         'media',
         true,
-        '{"providers":[{"provider":"openai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"chatgpthnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"hnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"lequyenopenai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"openai","model":"dall-e-3","enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
+        '{"providers":[{"provider":"openai-codex","model":"gpt-5.6","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"chatgpthnkt","model":"gpt-5.6","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"hnkt","model":"gpt-5.6","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"lequyenopenai-codex","model":"gpt-5.6","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"openai","model":"dall-e-3","enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
         '{}'::text[],
         '{}'::jsonb,
         NOW(),
@@ -585,11 +587,11 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
     )
     ON CONFLICT (name) DO UPDATE SET 
         enabled = true,
-        settings = '{"providers":[{"provider":"openai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"chatgpthnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"hnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"lequyenopenai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"openai","model":"dall-e-3","enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
+        settings = '{"providers":[{"provider":"openai-codex","model":"gpt-5.6","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"chatgpthnkt","model":"gpt-5.6","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"hnkt","model":"gpt-5.6","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"lequyenopenai-codex","model":"gpt-5.6","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"openai","model":"dall-e-3","enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb,
         updated_at = NOW();
 
     UPDATE builtin_tools 
-    SET settings = '{"providers":[{"provider":"openai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"chatgpthnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"hnkt","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"lequyenopenai-codex","model":"gpt-5.5","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"openai","model":"dall-e-3","enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb
+    SET settings = '{"providers":[{"provider":"openai-codex","model":"gpt-5.6","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"chatgpthnkt","model":"gpt-5.6","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"hnkt","model":"gpt-5.6","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"lequyenopenai-codex","model":"gpt-5.6","params":{"image_model":"gpt-image-2.5-flare"},"enabled":true},{"provider":"openai","model":"dall-e-3","enabled":true},{"provider":"studioaigg","model":"gemini-2.5-flash-image","enabled":true}]}'::jsonb
     WHERE name = 'create_image';
     RAISE NOTICE 'Configured builtin_tools settings for create_image with full ChatGPT Plus account pool fallback and OpenAI DALL-E 3 backup';
 
@@ -612,6 +614,10 @@ E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xu�
 
     -- Ensure marketing and executive agents can freely use create_image, post_facebook, exec, and bash tools
     UPDATE agents SET tools_config = '{}' WHERE status = 'active';
+
+    -- Ensure all agents and sessions use supported model gpt-5.6-sol instead of deprecated gpt-5.5
+    UPDATE agents SET model = 'gpt-5.6-sol' WHERE model = 'gpt-5.5' OR model IS NULL;
+    UPDATE sessions SET model = 'gpt-5.6-sol' WHERE model = 'gpt-5.5';
 
     -- Pin tao-creative-fb skill for all active agents so they always have full skill instructions inline
     UPDATE agents SET other_config = jsonb_set(COALESCE(other_config, '{}'::jsonb), '{pinned_skills}', '["tao-creative-fb"]'::jsonb) WHERE status = 'active';
