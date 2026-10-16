@@ -112,20 +112,38 @@ def clean_quote_str(s: str) -> str:
 
 
 # ==============================================================================
-# 1. NUTRICOMP DRINK RENAL (MASTER TEMPLATE - DÀNH CHO NGƯỜI BỆNH THẬN)
+# ==============================================================================
+# 1. NUTRICOMP DRINK RENAL (CHUYÊN BIỆT CHO NGƯỜI BỆNH THẬN / LỌC MÁU)
 # ==============================================================================
 def render_pro_nutricomp_renal(headline: str = None, subline: str = None, output_path: Path = None):
-    master_path = REFS_DIR / "template_nutricomp_renal_master.png"
-    fallback_path = REFS_DIR / "style_nutricomp_renal_master.jpg"
-
-    if master_path.exists():
-        canvas = Image.open(master_path).convert("RGBA")
-    elif fallback_path.exists():
-        canvas = Image.open(fallback_path).convert("RGBA")
-    else:
-        canvas = Image.new("RGBA", (1024, 1024), (244, 244, 244, 255))
-
+    w, h = 1024, 1024
+    canvas = Image.new("RGBA", (w, h), (246, 250, 248, 255))
     draw = ImageDraw.Draw(canvas)
+
+    # Top brand header
+    hdr_path = REFS_DIR / "brand_header_master.png"
+    if hdr_path.exists():
+        hdr = Image.open(hdr_path).convert("RGBA")
+        canvas.paste(hdr, (48, 48), hdr)
+
+    # Bottle cut on right: 1 chai Nutricomp Renal nắp tím chuẩn B.Braun
+    bot_path = REFS_DIR / "cut_nutricomp_single_bottle.png"
+    if bot_path.exists():
+        bot = Image.open(bot_path).convert("RGBA")
+        target_h = int(h * 0.68)
+        target_w = int(bot.width * (target_h / bot.height))
+        bot_scaled = bot.resize((target_w, target_h), Image.Resampling.LANCZOS)
+        
+        # Soft contact shadow
+        shadow = Image.new("RGBA", (target_w + 60, 40), (0, 0, 0, 0))
+        sdraw = ImageDraw.Draw(shadow)
+        sdraw.ellipse([10, 5, target_w + 50, 35], fill=(0, 0, 0, 50))
+        shadow = shadow.filter(ImageFilter.GaussianBlur(10))
+        
+        bot_x = w - target_w - 70
+        bot_y = h - target_h - 100
+        canvas.paste(shadow, (bot_x - 30, bot_y + target_h - 25), shadow)
+        canvas.paste(bot_scaled, (bot_x, bot_y), bot_scaled)
 
     hl = clean_quote_str(headline) if headline else ""
     sl = clean_quote_str(subline) if subline else ""
@@ -142,27 +160,51 @@ def render_pro_nutricomp_renal(headline: str = None, subline: str = None, output
         hl = dynamic_renal_headlines[datetime.datetime.now().day % len(dynamic_renal_headlines)]
 
     hl_upper = hl.upper()
-    # Try single line or 2-line wrap within max_width = 455px
-    font_size = 32 if len(hl_upper) <= 28 else (26 if len(hl_upper) <= 52 else 22)
+    font_size = 34 if len(hl_upper) <= 32 else (28 if len(hl_upper) <= 60 else 24)
     f_hl = get_font(font_size, bold=True)
-    lines = wrap_text(hl_upper, f_hl, max_width=455)
+    lines = wrap_text(hl_upper, f_hl, max_width=510)
+    y_text = 200
+    for line in lines[:3]:
+        draw.text((48, y_text), line, fill="#044E3F", font=f_hl)
+        y_text += font_size + 12
 
-    if len(lines) == 1:
-        draw.text((32, 148), lines[0], fill="#044E3F", font=f_hl)
-        sub_text = sl.upper() if sl else "DINH DƯỠNG Y HỌC CHUYÊN BIỆT"
-        f_sl = get_font(17, bold=True)
-        sl_lines = wrap_text(sub_text, f_sl, max_width=455)
-        draw.text((32, 205), sl_lines[0], fill="#065F46", font=f_sl)
-    else:
-        y_cur = 138
-        for line in lines[:2]:
-            draw.text((32, y_cur), line, fill="#044E3F", font=f_hl)
-            y_cur += font_size + 7
-        sub_text = sl if sl else "Dinh dưỡng chuyên biệt kiểm soát điện giải"
-        f_sl = get_font(15, bold=True)
-        sl_lines = wrap_text(sub_text, f_sl, max_width=455)
-        if y_cur <= 232 and sl_lines:
-            draw.text((32, y_cur + 2), sl_lines[0], fill="#065F46", font=f_sl)
+    # Subline
+    sub_text = sl if sl else "Nutricomp Drink Renal • 400 kcal/200ml"
+    f_sl = get_font(20, bold=False)
+    draw.text((48, y_text + 10), sub_text, fill="#065F46", font=f_sl)
+    y_text += 46
+
+    # 3 Badges
+    badges = ["2,0 kcal/ml", "Ít Natri - Kali - Photpho", "Hương vani thơm ngon"]
+    f_bg = get_font(16, bold=True)
+    y_badge = y_text + 15
+    for b in badges:
+        try:
+            bbox = f_bg.getbbox(b)
+            bw = bbox[2] - bbox[0] + 28
+        except Exception:
+            bw = len(b) * 10 + 28
+        bh = 36
+        draw.rounded_rectangle([48, y_badge, 48 + bw, y_badge + bh], radius=18, fill=(230, 243, 238, 255), outline=(180, 215, 202, 255), width=1)
+        draw.text((48 + 14, y_badge + 7), b, fill="#044E3F", font=f_bg)
+        y_badge += 48
+
+    # CTA Button
+    y_cta = y_badge + 25
+    cta_text = "NHẮN TIN NHẬN TƯ VẤN"
+    f_cta = get_font(18, bold=True)
+    try:
+        cbox = f_cta.getbbox(cta_text)
+        cw = cbox[2] - cbox[0] + 48
+    except Exception:
+        cw = 260
+    ch = 48
+    draw.rounded_rectangle([48, y_cta, 48 + cw, y_cta + ch], radius=24, fill="#059669")
+    draw.text((48 + 24, y_cta + 12), cta_text, fill="#FFFFFF", font=f_cta)
+
+    # Disclaimer footer
+    f_disc = get_font(13, bold=False)
+    draw.text((48, h - 55), "Sản phẩm dinh dưỡng y học. Không phải là thuốc và không thay thế thuốc chữa bệnh.", fill="#64748B", font=f_disc)
 
     out_file = output_path if output_path else (OUTPUT_DIR / f"creative_renal_{int(time.time()*1000)}.png")
     out_file.parent.mkdir(parents=True, exist_ok=True)
@@ -172,20 +214,39 @@ def render_pro_nutricomp_renal(headline: str = None, subline: str = None, output
 
 
 # ==============================================================================
-# 2. NUTRICOMP DRINK PLUS (MASTER TEMPLATE - CAO NĂNG LƯỢNG / PHỤC HỒI)
+# 2. NUTRICOMP DRINK PLUS (CAO NĂNG LƯỢNG / PHỤC HỒI SAU PHẪU THUẬT)
 # ==============================================================================
 def render_pro_nutricomp_plus(headline: str = None, subline: str = None, output_path: Path = None):
-    master_path = REFS_DIR / "template_nutricomp_plus_master.png"
-    fallback_path = REFS_DIR / "style_nutricomp_plus_master_2.jpg"
-
-    if master_path.exists():
-        canvas = Image.open(master_path).convert("RGBA")
-    elif fallback_path.exists():
-        canvas = Image.open(fallback_path).convert("RGBA")
-    else:
-        canvas = Image.new("RGBA", (1024, 1024), (231, 244, 237, 255))
-
+    w, h = 1024, 1024
+    canvas = Image.new("RGBA", (w, h), (255, 250, 246, 255))
     draw = ImageDraw.Draw(canvas)
+
+    # Top brand header
+    hdr_path = REFS_DIR / "brand_header_master.png"
+    if hdr_path.exists():
+        hdr = Image.open(hdr_path).convert("RGBA")
+        canvas.paste(hdr, (48, 48), hdr)
+
+    # Bottle cut on right: 1 chai Nutricomp Plus nắp tím kèm dải màu cam/hồng
+    bot_path = REFS_DIR / "cut_nutricomp_plus_bottle.png"
+    if not bot_path.exists():
+        bot_path = REFS_DIR / "crop_nutricomp_bottle.png"
+    if bot_path.exists():
+        bot = Image.open(bot_path).convert("RGBA")
+        target_h = int(h * 0.68)
+        target_w = int(bot.width * (target_h / bot.height))
+        bot_scaled = bot.resize((target_w, target_h), Image.Resampling.LANCZOS)
+        
+        # Soft contact shadow
+        shadow = Image.new("RGBA", (target_w + 60, 40), (0, 0, 0, 0))
+        sdraw = ImageDraw.Draw(shadow)
+        sdraw.ellipse([10, 5, target_w + 50, 35], fill=(0, 0, 0, 50))
+        shadow = shadow.filter(ImageFilter.GaussianBlur(10))
+        
+        bot_x = w - target_w - 70
+        bot_y = h - target_h - 100
+        canvas.paste(shadow, (bot_x - 30, bot_y + target_h - 25), shadow)
+        canvas.paste(bot_scaled, (bot_x, bot_y), bot_scaled)
 
     hl = clean_quote_str(headline) if headline else ""
     sl = clean_quote_str(subline) if subline else ""
@@ -202,23 +263,51 @@ def render_pro_nutricomp_plus(headline: str = None, subline: str = None, output_
         hl = dynamic_plus_headlines[datetime.datetime.now().day % len(dynamic_plus_headlines)]
 
     hl_upper = hl.upper()
-    font_size = 34 if len(hl_upper) <= 32 else (28 if len(hl_upper) <= 62 else 24)
+    font_size = 34 if len(hl_upper) <= 32 else (28 if len(hl_upper) <= 60 else 24)
     f_hl = get_font(font_size, bold=True)
-    lines = wrap_text(hl_upper, f_hl, max_width=630)
+    lines = wrap_text(hl_upper, f_hl, max_width=510)
+    y_text = 200
+    for line in lines[:3]:
+        draw.text((48, y_text), line, fill="#0F766E", font=f_hl)
+        y_text += font_size + 12
 
-    y_cur = 160
-    for line in lines[:2]:
-        draw.text((35, y_cur), line, fill="#0F766E", font=f_hl)
-        y_cur += font_size + 8
+    # Subline
+    sub_text = sl if sl else "Nutricomp Drink Plus • 300 kcal/200ml"
+    f_sl = get_font(20, bold=False)
+    draw.text((48, y_text + 10), sub_text, fill="#C2410C", font=f_sl)
+    y_text += 46
 
-    sub_text = sl if sl else "Bổ sung dinh dưỡng cao năng lượng 300Kcal/200ml giúp phục hồi thể trạng nhanh chóng!"
-    f_sl = get_font(19, bold=True)
-    sl_lines = wrap_text(sub_text, f_sl, max_width=610)
-    y_cur += 6
-    for line in sl_lines[:2]:
-        if y_cur <= 310:
-            draw.text((35, y_cur), line, fill="#334155", font=f_sl)
-            y_cur += 26
+    # 3 Badges
+    badges = ["1,5 kcal/ml", "Dạng uống tiện dụng", "Hỗ trợ phục hồi nhanh"]
+    f_bg = get_font(16, bold=True)
+    y_badge = y_text + 15
+    for b in badges:
+        try:
+            bbox = f_bg.getbbox(b)
+            bw = bbox[2] - bbox[0] + 28
+        except Exception:
+            bw = len(b) * 10 + 28
+        bh = 36
+        draw.rounded_rectangle([48, y_badge, 48 + bw, y_badge + bh], radius=18, fill=(255, 241, 230, 255), outline=(254, 215, 170, 255), width=1)
+        draw.text((48 + 14, y_badge + 7), b, fill="#9A3412", font=f_bg)
+        y_badge += 48
+
+    # CTA Button
+    y_cta = y_badge + 25
+    cta_text = "NHẮN TIN NHẬN TƯ VẤN"
+    f_cta = get_font(18, bold=True)
+    try:
+        cbox = f_cta.getbbox(cta_text)
+        cw = cbox[2] - cbox[0] + 48
+    except Exception:
+        cw = 260
+    ch = 48
+    draw.rounded_rectangle([48, y_cta, 48 + cw, y_cta + ch], radius=24, fill="#059669")
+    draw.text((48 + 24, y_cta + 12), cta_text, fill="#FFFFFF", font=f_cta)
+
+    # Disclaimer footer
+    f_disc = get_font(13, bold=False)
+    draw.text((48, h - 55), "Sản phẩm dinh dưỡng y học. Không phải là thuốc và không thay thế thuốc chữa bệnh.", fill="#64748B", font=f_disc)
 
     out_file = output_path if output_path else (OUTPUT_DIR / f"creative_plus_{int(time.time()*1000)}.png")
     out_file.parent.mkdir(parents=True, exist_ok=True)
@@ -228,20 +317,37 @@ def render_pro_nutricomp_plus(headline: str = None, subline: str = None, output_
 
 
 # ==============================================================================
-# 3. PRONTOSAN WOUND SPRAY (MASTER TEMPLATE - LÀM SẠCH VẾT THƯƠNG)
+# 3. PRONTOSAN WOUND SPRAY (LÀM SẠCH VẾT THƯƠNG NGOÀI DA / KHÔNG MẠN TÍNH)
 # ==============================================================================
 def render_pro_prontosan(headline: str = None, subline: str = None, output_path: Path = None):
-    master_path = REFS_DIR / "template_prontosan_lifestyle_master.png"
-    fallback_path = REFS_DIR / "style_prontosan_spray_lifestyle.png"
-
-    if master_path.exists():
-        canvas = Image.open(master_path).convert("RGBA")
-    elif fallback_path.exists():
-        canvas = Image.open(fallback_path).convert("RGBA")
-    else:
-        canvas = Image.new("RGBA", (819, 1024), (249, 249, 249, 255))
-
+    w, h = 1024, 1024
+    canvas = Image.new("RGBA", (w, h), (245, 251, 253, 255))
     draw = ImageDraw.Draw(canvas)
+
+    # Top brand header
+    hdr_path = REFS_DIR / "brand_header_master.png"
+    if hdr_path.exists():
+        hdr = Image.open(hdr_path).convert("RGBA")
+        canvas.paste(hdr, (48, 48), hdr)
+
+    # Bottle cut on right: 1 chai Prontosan Spray
+    bot_path = REFS_DIR / "cut_prontosan_bottle.png"
+    if bot_path.exists():
+        bot = Image.open(bot_path).convert("RGBA")
+        target_h = int(h * 0.70)
+        target_w = int(bot.width * (target_h / bot.height))
+        bot_scaled = bot.resize((target_w, target_h), Image.Resampling.LANCZOS)
+        
+        # Soft contact shadow
+        shadow = Image.new("RGBA", (target_w + 60, 40), (0, 0, 0, 0))
+        sdraw = ImageDraw.Draw(shadow)
+        sdraw.ellipse([10, 5, target_w + 50, 35], fill=(0, 0, 0, 45))
+        shadow = shadow.filter(ImageFilter.GaussianBlur(10))
+        
+        bot_x = w - target_w - 70
+        bot_y = h - target_h - 90
+        canvas.paste(shadow, (bot_x - 30, bot_y + target_h - 25), shadow)
+        canvas.paste(bot_scaled, (bot_x, bot_y), bot_scaled)
 
     hl = clean_quote_str(headline) if headline else ""
     sl = clean_quote_str(subline) if subline else ""
@@ -249,7 +355,7 @@ def render_pro_prontosan(headline: str = None, subline: str = None, output_path:
     if not hl:
         dynamic_prontosan_headlines = [
             "LÀM SẠCH VẾT THƯƠNG ĐÚNG CÁCH",
-            "PHÁ VỠ MÀNG BIOFILM CỨNG ĐẦU",
+            "HỖ TRỢ XỬ LÝ MÀNG BIOFILM",
             "GIẢI PHÁP CHĂM SÓC VẾT THƯƠNG",
             "LÀM SẠCH NHẸ NHÀNG KHÔNG XÓT",
             "BẢO VỆ NỀN VẾT THƯƠNG TỐI ƯU",
@@ -258,18 +364,51 @@ def render_pro_prontosan(headline: str = None, subline: str = None, output_path:
         hl = dynamic_prontosan_headlines[datetime.datetime.now().day % len(dynamic_prontosan_headlines)]
 
     hl_upper = hl.upper()
-    font_size = 38 if len(hl_upper) <= 45 else (32 if len(hl_upper) <= 70 else 28)
+    font_size = 34 if len(hl_upper) <= 32 else (28 if len(hl_upper) <= 60 else 24)
     f_hl = get_font(font_size, bold=True)
-    lines = wrap_text(hl_upper, f_hl, max_width=480)
+    lines = wrap_text(hl_upper, f_hl, max_width=510)
+    y_text = 200
+    for line in lines[:3]:
+        draw.text((48, y_text), line, fill="#0E7490", font=f_hl)
+        y_text += font_size + 12
 
-    y_cur = 112
-    for idx, line in enumerate(lines[:4]):
-        color = "#1E293B" if idx == 0 else "#0D9488"
-        draw.text((38, y_cur), line, fill=color, font=f_hl)
-        y_cur += font_size + 12
+    # Subline
+    sub_text = sl if sl else "Rửa, làm ẩm và hỗ trợ xử lý Biofilm"
+    f_sl = get_font(20, bold=False)
+    draw.text((48, y_text + 10), sub_text, fill="#0369A1", font=f_sl)
+    y_text += 46
 
-    sub_text = sl if (sl and len(sl) <= 42) else "Làm sạch  •  Rửa  •  Dưỡng ẩm"
-    draw.text((38, 418), sub_text, fill="#1E293B", font=get_font(20, bold=False))
+    # 3 Badges
+    badges = ["0,1% PHMB & 0,1% Betaine", "Làm sạch không chà xát mạnh", "Chăm sóc da và vết khâu hở"]
+    f_bg = get_font(16, bold=True)
+    y_badge = y_text + 15
+    for b in badges:
+        try:
+            bbox = f_bg.getbbox(b)
+            bw = bbox[2] - bbox[0] + 28
+        except Exception:
+            bw = len(b) * 10 + 28
+        bh = 36
+        draw.rounded_rectangle([48, y_badge, 48 + bw, y_badge + bh], radius=18, fill=(224, 242, 254, 255), outline=(186, 230, 253, 255), width=1)
+        draw.text((48 + 14, y_badge + 7), b, fill="#0369A1", font=f_bg)
+        y_badge += 48
+
+    # CTA Button
+    y_cta = y_badge + 25
+    cta_text = "NHẮN TIN NHẬN TƯ VẤN"
+    f_cta = get_font(18, bold=True)
+    try:
+        cbox = f_cta.getbbox(cta_text)
+        cw = cbox[2] - cbox[0] + 48
+    except Exception:
+        cw = 260
+    ch = 48
+    draw.rounded_rectangle([48, y_cta, 48 + cw, y_cta + ch], radius=24, fill="#059669")
+    draw.text((48 + 24, y_cta + 12), cta_text, fill="#FFFFFF", font=f_cta)
+
+    # Disclaimer footer
+    f_disc = get_font(13, bold=False)
+    draw.text((48, h - 55), "Dung dịch chăm sóc vết thương ngoài da. Đọc kỹ hướng dẫn sử dụng trước khi dùng.", fill="#64748B", font=f_disc)
 
     out_file = output_path if output_path else (OUTPUT_DIR / f"creative_prontosan_{int(time.time()*1000)}.png")
     out_file.parent.mkdir(parents=True, exist_ok=True)
@@ -282,11 +421,84 @@ def render_pro_prontosan(headline: str = None, subline: str = None, output_path:
 # 4. NUTRICOMP COMBO 12 CHAI
 # ==============================================================================
 def render_pro_nutricomp_combo(headline: str = None, subline: str = None, output_path: Path = None):
-    return render_pro_nutricomp_plus(
-        headline=headline or "COMBO 12 CHAI TIỆT TRÙNG NGUYÊN SEAL",
-        subline=subline or "Giải pháp dinh dưỡng tiết kiệm cho liệu trình phục hồi toàn diện",
-        output_path=output_path or (OUTPUT_DIR / f"creative_combo_{int(time.time()*1000)}.png"),
-    )
+    w, h = 1024, 1024
+    canvas = Image.new("RGBA", (w, h), (254, 249, 245, 255))
+    draw = ImageDraw.Draw(canvas)
+
+    hdr_path = REFS_DIR / "brand_header_master.png"
+    if hdr_path.exists():
+        hdr = Image.open(hdr_path).convert("RGBA")
+        canvas.paste(hdr, (48, 48), hdr)
+
+    box_path = REFS_DIR / "cut_nutricomp_box.png"
+    if not box_path.exists():
+        box_path = REFS_DIR / "real_nutricomp_combo12_giftbox.png"
+    if box_path.exists():
+        box = Image.open(box_path).convert("RGBA")
+        target_h = int(h * 0.65)
+        target_w = int(box.width * (target_h / box.height))
+        box_scaled = box.resize((target_w, target_h), Image.Resampling.LANCZOS)
+        
+        shadow = Image.new("RGBA", (target_w + 60, 40), (0, 0, 0, 0))
+        sdraw = ImageDraw.Draw(shadow)
+        sdraw.ellipse([10, 5, target_w + 50, 35], fill=(0, 0, 0, 50))
+        shadow = shadow.filter(ImageFilter.GaussianBlur(10))
+        
+        box_x = w - target_w - 60
+        box_y = h - target_h - 100
+        canvas.paste(shadow, (box_x - 30, box_y + target_h - 25), shadow)
+        canvas.paste(box_scaled, (box_x, box_y), box_scaled)
+
+    hl = clean_quote_str(headline) if headline else "COMBO 12 CHAI TIỆT TRÙNG NGUYÊN SEAL"
+    sl = clean_quote_str(subline) if subline else "Giải pháp dinh dưỡng tiết kiệm cho liệu trình phục hồi toàn diện"
+
+    hl_upper = hl.upper()
+    font_size = 32 if len(hl_upper) <= 35 else (26 if len(hl_upper) <= 65 else 22)
+    f_hl = get_font(font_size, bold=True)
+    lines = wrap_text(hl_upper, f_hl, max_width=510)
+    y_text = 200
+    for line in lines[:3]:
+        draw.text((48, y_text), line, fill="#9A3412", font=f_hl)
+        y_text += font_size + 12
+
+    f_sl = get_font(18, bold=False)
+    draw.text((48, y_text + 10), sl, fill="#B45309", font=f_sl)
+    y_text += 46
+
+    badges = ["12 chai x 200ml", "Tiết kiệm chi phí", "Đóng gói quà tặng trang nhã"]
+    f_bg = get_font(16, bold=True)
+    y_badge = y_text + 15
+    for b in badges:
+        try:
+            bbox = f_bg.getbbox(b)
+            bw = bbox[2] - bbox[0] + 28
+        except Exception:
+            bw = len(b) * 10 + 28
+        bh = 36
+        draw.rounded_rectangle([48, y_badge, 48 + bw, y_badge + bh], radius=18, fill=(254, 243, 199, 255), outline=(252, 211, 77, 255), width=1)
+        draw.text((48 + 14, y_badge + 7), b, fill="#92400E", font=f_bg)
+        y_badge += 48
+
+    y_cta = y_badge + 25
+    cta_text = "NHẮN TIN NHẬN TƯ VẤN"
+    f_cta = get_font(18, bold=True)
+    try:
+        cbox = f_cta.getbbox(cta_text)
+        cw = cbox[2] - cbox[0] + 48
+    except Exception:
+        cw = 260
+    ch = 48
+    draw.rounded_rectangle([48, y_cta, 48 + cw, y_cta + ch], radius=24, fill="#059669")
+    draw.text((48 + 24, y_cta + 12), cta_text, fill="#FFFFFF", font=f_cta)
+
+    f_disc = get_font(13, bold=False)
+    draw.text((48, h - 55), "Sản phẩm dinh dưỡng y học. Không phải là thuốc và không thay thế thuốc chữa bệnh.", fill="#64748B", font=f_disc)
+
+    out_file = output_path if output_path else (OUTPUT_DIR / f"creative_combo_{int(time.time()*1000)}.png")
+    out_file.parent.mkdir(parents=True, exist_ok=True)
+    canvas.convert("RGB").save(out_file, "PNG", quality=95)
+    print(f"MEDIA:{os.path.abspath(out_file)}")
+    return out_file
 
 
 def main():

@@ -51,9 +51,9 @@ Skill cấp 3 chuyên trách sản xuất toàn diện nội dung Facebook (Hìn
 ### 🎨 2. Master Style Chuẩn Thiết Kế Riêng Biệt Theo Từng Sản Phẩm (Chỉ Đạo Của Sếp)
 🚫 **QUY TẮC CỐT LÕI (STRICT ZERO-REUSE POLICY - TUYỆT ĐỐI CẤM GỬI LẠI ẢNH MẪU CŨ):**
 - Toàn bộ các ảnh phong cách mẫu trong assets/references **CHỈ LÀ TÀI LIỆU HƯỚNG DẪN VỀ PHONG CÁCH THẨM MỸ, BỐ CỤC VÀ NHẬN DIỆN THƯƠNG HIỆU**.
-- 🚫 **TUYỆT ĐỐI CẤM** hành vi lấy ảnh mẫu tham chiếu cũ hoặc **copy/dùng lại đường dẫn ảnh cũ từ các tin nhắn trước trong lịch sử trò chuyện**! Mỗi bài viết là một thông điệp mới, **BẮT BUỘC PHẢI THỰC SỰ GỌI TOOL ĐỂ THIẾT KẾ MỘT POSTER / ẢNH MỚI 100% ĐỘC BẢN**:
-  + **Cách 1 (Sáng tạo bối cảnh mới qua AI - KHUYÊN DÙNG):** Gọi công cụ `create_image(prompt: "...")` để vẽ bối cảnh nhiếp ảnh đời thực mới (phòng ăn gia đình, sau phẫu thuật, phòng tư vấn, v.v.), sau đó hệ thống tự động ghép chai sản phẩm chính hãng và logo GlobalPharma lên.
-  + **Cách 2 (Thiết kế Poster Typography mới):** Gọi lệnh `render_poster --type [plus|renal|prontosan|combo] --headline "<tiêu đề bài viết>" --subline "<tóm tắt thông điệp>"` để sinh ra file poster mới mang đúng tiêu đề của bài viết!
+- 🚫 **TUYỆT ĐỐI CẤM** hành vi lấy ảnh mẫu tham chiếu cũ (`template_*`, `style_*`, `ref_*`) hoặc **copy/dùng lại đường dẫn ảnh cũ từ các tin nhắn trước trong lịch sử trò chuyện**! Mỗi bài viết là một thông điệp mới, **BẮT BUỘC PHẢI THỰC SỰ GỌI TOOL ĐỂ THIẾT KẾ MỘT POSTER / ẢNH MỚI 100% ĐỘC BẢN**:
+  + **BẮT BUỘC DUY NHẤT:** Gọi công cụ `create_image(prompt: "...", filename_hint: "...")` để vẽ toàn diện poster y khoa mới toanh độc bản theo đúng tiêu đề và bối cảnh của bài viết (tích hợp đầy đủ nhiếp ảnh đời thực, chai sản phẩm chuẩn B.Braun, logo GlobalPharma, tiêu đề, badges và CTA button).
+  + Nếu chạy script nội bộ `render_poster`, hệ thống tự động tổng hợp canvas mới độc bản từ phôi chai và thông số lâm sàng, tuyệt đối không nạp các file template cũ.
 - Mọi hành vi không gọi tool mà tự ý chép lại đường dẫn ảnh cũ của lượt trước sẽ bị hệ thống tự động chặn và loại bỏ!
 
 ⚠️ **QUY CHUẨN ĐẶC THÙ THEO TỪNG DÒNG SẢN PHẨM:**
