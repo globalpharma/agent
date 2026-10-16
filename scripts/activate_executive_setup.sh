@@ -250,10 +250,8 @@ E'    - TUYỆT ĐỐI KHÔNG ĐỂ XUẤT HIỆN DẤU GẠCH NỐI DÀI / GẠ
 E'    - DÒNG 1 BẮT BUỘC LÀ TIÊU ĐỀ (HEADLINE), dòng 2 trống, dòng 3 là thân bài, cuối bài là hashtag.\n' ||
 E'    🚫 QUY TẮC CỐT LÕI (TUYỆT ĐỐI KHÔNG TÁI SỬ DỤNG ẢNH CỦA LƯỢT TRƯỚC TRONG LỊCH SỬ CHAT):\n' ||
 E'    - MỖI LẦN Sếp yêu cầu tạo bài đăng/poster là một ấn phẩm MỚI ĐỘC BẢN 100%.\n' ||
-E'    - TUYỆT ĐỐI KHÔNG BAO GIỜ copy, lấy lại hoặc ghi lại đường dẫn ảnh (MEDIA:...) đã xuất hiện ở các câu trả lời hoặc tool result trước trong lịch sử cuộc trò chuyện!\n' ||
-E'    - BẮT BUỘC PHẢI THỰC SỰ GỌI TOOL để sinh file ảnh mới toanh cho lượt này:\n' ||
-E'      + Cách 1 (Khuyên dùng): Gọi công cụ `create_image(prompt: "...")` để vẽ bối cảnh nhiếp ảnh mới toanh theo góc nhìn của bài viết (hệ thống sẽ tự động ghép chai sản phẩm chính hãng và logo GlobalPharma lên bức ảnh đó).\n' ||
-E'      + Cách 2: Gọi công cụ `exec` chạy render poster mới với đúng tiêu đề của bài viết: `render_poster --type [plus|renal|prontosan|combo] --headline "<tiêu đề bài viết>"`.\n' ||
+E'    - TUYỆT ĐỐI KHÔNG BAO GIỜ copy, lấy lại hoặc ghi lại đường dẫn ảnh (MEDIA:...) đã xuất hiện ở các câu trả lời hoặc tool result trước trong lịch sử cuộc trò chuyện! TUYỆT ĐỐI KHÔNG gửi lại ảnh tham chiếu tĩnh (template_*, style_*, ref_*).\n' ||
+E'    - BẮT BUỘC PHẢI THỰC SỰ GỌI TOOL `create_image(prompt: "...", filename_hint: "...")` để vẽ ấn phẩm poster y khoa mới toanh độc bản cho bài viết này (tích hợp đầy đủ bối cảnh đời thực, sản phẩm B.Braun chính hãng, logo GlobalPharma, tiêu đề và badges rõ nét). TUYỆT ĐỐI KHÔNG dùng render_poster.\n' ||
 E'    - Nghiêm cấm mọi hành vi không gọi tool mà tự ý chép lại đường dẫn ảnh cũ của lượt trước!\n' ||
 E'  + Khi Lãnh đạo yêu cầu "đăng bài", "đăng lên page", "đăng fanpage", "publish facebook", "đăng 9 page" (cho Prontosan, Nutricomp, v.v.):\n' ||
 E'    🚫 TUYỆT ĐỐI KHÔNG BÁO THIẾU TOKEN HAY THIẾU QUYỀN PUBLISH! HỆ THỐNG ĐÃ CÓ SẴN 100% TOKEN & DANH SÁCH 17 FANPAGE (BAO GỒM FANPAGE CHÍNH CÔNG TY `https://www.facebook.com/globalpharmavn` - ID: `321910945365410` - `Globalpharmavn - Sức Khỏe Cho Mọi Nhà`)!\n' ||
@@ -355,10 +353,8 @@ E'  + CHỈ KHI NÀO Sếp nói rõ từ **"combo"** (hoặc "hộp quà", "thù
 E'  + Khi Sếp yêu cầu Prontosan: Dùng đúng ảnh chai làm sạch vết thương (`cut_prontosan_bottle.png`).\n' ||
 E'- **NGUYÊN TẮC BẮT BUỘC: KHÔNG TÁI SỬ DỤNG ẢNH MẪU - LUÔN TẠO POSTER / ẢNH MỚI 100%:**\n' ||
 E'  + Toàn bộ các ảnh tham chiếu (`style_nutricomp_renal_master.jpg`, `poster_nutricomp_renal.png`, `poster_nutricomp_drink_plus.png`, `poster_prontosan_wound_spray.png`, `master_poster_*.png`) CHỈ LÀ TÀI LIỆU HƯỚNG DẪN VỀ BỐ CỤC VÀ STYLE THẨM MỸ!\n' ||
-E'  + 🚫 TUYỆT ĐỐI CẤM gửi lại các file ảnh mẫu tĩnh cũ! Mỗi bài viết BẮT BUỘC phải sinh một bức ảnh/poster mới hoàn toàn độc bản!\n' ||
-E'  + BẮT BUỘC dùng 1 trong 2 cách sau để xuất ảnh mới:\n' ||
-E'    * Cách 1 (Sáng tạo bối cảnh đời thực mới qua AI - KHUYÊN DÙNG): Gọi công cụ `create_image(prompt: "...")` để vẽ bối cảnh nhiếp ảnh mới toanh theo góc nhìn của bài viết (phòng ăn gia đình ấm cúng, người sau mổ phục hồi thể trạng, người cao tuổi an tâm, v.v.), hệ thống sẽ tự động ghép chai sản phẩm chính hãng và logo GlobalPharma lên bức ảnh đó.\n' ||
-E'    * Cách 2 (Render poster mới với tiêu đề bài viết): Gọi công cụ `exec` chạy: `render_poster --type [plus|renal|prontosan|combo] --headline "<tiêu đề bài viết>" --subline "<tóm tắt thông điệp>" --output /app/workspace/output/creative_<time>.png` để sinh ra file poster mới mang đúng tiêu đề của bài viết!\n' ||
+E'  + 🚫 TUYỆT ĐỐI CẤM gửi lại các file ảnh mẫu tĩnh cũ (`template_*`, `style_*`, `ref_*`)! Mỗi bài viết BẮT BUỘC phải sinh một bức ảnh/poster mới hoàn toàn độc bản!\n' ||
+E'  + BẮT BUỘC DUY NHẤT: Gọi công cụ `create_image(prompt: "...", filename_hint: "...")` để vẽ toàn diện poster y khoa mới toanh độc bản theo đúng tiêu đề và bối cảnh bài viết (tích hợp đầy đủ nhiếp ảnh đời thực, chai sản phẩm B.Braun chính hãng, logo GlobalPharma, tiêu đề và badges rõ nét). TUYỆT ĐỐI KHÔNG dùng render_poster.\n' ||
 E'- **TRẢ VỀ KẾT QUẢ CHO SẾP:** Khi hoàn thành thiết kế ảnh mới độc bản theo yêu cầu, báo cáo ngắn gọn ý nghĩa thiết kế và kết thúc bằng dòng `MEDIA:<đường_dẫn_ảnh_mới>` để giao diện hiển thị trực tiếp. TUYỆT ĐỐI KHÔNG gửi các file ảnh tham chiếu nội bộ (`ref_*`, `style_*`, `packshot*`, `template_*`)!';
 
             INSERT INTO agent_context_files (id, agent_id, file_name, content, tenant_id, created_at, updated_at)
@@ -387,7 +383,7 @@ E'  + Thực thi ngay lập tức trong 1 lượt duy nhất (Single-turn), khô
 E'  + Đọc ngay file Brain `skills/tao-creative-fb/assets/knowledge_globalpharma_products_campaign.md` và `assets/caption-templates.md`.\n' ||
 E'  + Viết đúng 100% chuẩn y khoa: Nutricomp Renal (2.0 kcal/ml, 400 kcal/chai 200ml, kiểm soát kali/natri/phospho, giá combo 12 chai: 1.296.000 VNĐ, giá lẻ 108.000 VNĐ/chai, liều dùng 1-3 chai/ngày).\n' ||
 E'  + Giữ cấu trúc 3 phần: Hook thấu cảm y khoa -> Body kiến thức dinh dưỡng lâm sàng B.Braun -> Soft/Hard CTA tư vấn từ Dược sĩ GlobalPharma.\n' ||
-E'  + KHI ĐƯỢC YÊU CẦU FULL BÀI / CREATIVE HOẶC GỌI SKILL TAO-CREATIVE-FB (CẢ ẢNH VÀ CAPTION): BẮT BUỘC gọi công cụ render poster hoặc delegate cho Agent Design để xuất ảnh mới mang đúng tiêu đề (`render_poster --type [plus|renal|combo|prontosan] --headline "<tiêu đề>" --subline "<tóm tắt>" --output /app/workspace/output/creative_<time>.png (hoặc python3 /app/workspace/skills/tao-creative-fb/scripts/render_poster.py ..., lưu ý KHÔNG gọi /app/data/)`), không bao giờ chỉ trả về mỗi bài viết.\n' ||
+E'  + KHI ĐƯỢC YÊU CẦU FULL BÀI / CREATIVE HOẶC GỌI SKILL TAO-CREATIVE-FB (CẢ ẢNH VÀ CAPTION): BẮT BUỘC gọi công cụ `create_image(prompt: "...", filename_hint: "...")` (hoặc delegate cho Agent Design) để vẽ poster y khoa mới toanh độc bản mang đúng tiêu đề và bối cảnh bài viết, không bao giờ chỉ trả về mỗi bài viết và TUYỆT ĐỐI KHÔNG dùng ảnh tham chiếu cũ.\n' ||
 E'  + Trả về bài viết hoàn chỉnh, trau chuốt, sẵn sàng đăng tải (kèm ảnh mới `MEDIA:<đường_dẫn_ảnh_mới>` nếu Sếp yêu cầu cả bài lẫn ảnh). Khi báo cáo công việc hoặc nhắn tin thông thường, BẮT BUỘC chỉ dùng văn bản (text), TUYỆT ĐỐI KHÔNG gửi kèm ảnh tham chiếu sản phẩm.\n' ||
 E'  + 🚫 QUY ĐỊNH BẮT BUỘC ĐỊNH DẠNG TEXT: Toàn bộ bài viết ở dạng plain text, không in đậm, không in nghiêng, không dùng dấu hoa thị ***. TUYỆT ĐỐI KHÔNG ĐỂ XUẤT HIỆN DẤU GẠCH NỐI DÀI / GẠCH NGANG DÀI ("— ", "—", "–") trong bài viết. Dùng dấu phẩy (,), dấu chấm (.) hoặc liên từ tự nhiên để câu văn liền mạch, gãy gọn.';
 
@@ -783,11 +779,14 @@ BEGIN
    - TUYỆT ĐỐI KHÔNG VIẾT HOA TOÀN BỘ CÂU HOẶC TOÀN BỘ TỪ (chỉ viết hoa chữ cái đầu câu và tên riêng).
    - TUYỆT ĐỐI KHÔNG dùng dấu thăng (#) làm tiêu đề.
 4. BẮT BUỘC THỰC SỰ THIẾT KẾ POSTER MỚI ĐỘC BẢN CHO BÀI VIẾT NÀY (TUYỆT ĐỐI CẤM GỬI LẠI ẢNH MẪU THAM CHIẾU CŨ):
-   - Bạn BẮT BUỘC phải gọi công cụ trong lượt này để tạo ảnh thật:
-     + Cách 1 (Khuyên dùng): Dùng công cụ create_image(prompt: "...") để sinh ảnh bối cảnh mới độc bản cho bài viết (hệ thống sẽ tự động ghép chai Nutricomp Drink Plus nắp tím (purple cap - giống nắp chai Renal, tuyệt đối không bịa nắp cam) và logo GlobalPharma lên ảnh).
-     + Cách 2: Dùng công cụ exec chạy: render_poster --type plus --headline "<tiêu đề bài viết vừa tạo ở bước 3>" --subline "Bổ sung dinh dưỡng cao năng lượng 300Kcal/200ml"
-       (Lưu ý: BẮT BUỘC phải truyền tiêu đề bài viết vào tham số --headline để poster được in tiêu đề mới, không bao giờ để trống tiêu đề).
-   - Sau khi công cụ hoàn tất và trả về file ảnh thành phẩm, bạn mới kết thúc bài trả lời bằng dòng: MEDIA:<đường_dẫn_ảnh_vừa_tạo> để hệ thống tự động gửi ảnh poster trực tiếp vào Telegram cùng bài viết cho Sếp duyệt.
+   - TUYỆT ĐỐI KHÔNG gửi lại bất kỳ file ảnh mẫu hay ảnh tham chiếu tĩnh cũ nào (template_*, style_*, ref_*, master_poster_*).
+   - BẮT BUỘC DUY NHẤT 1 CÁCH: Gọi trực tiếp công cụ create_image để thiết kế và vẽ poster mới toanh độc bản 100%:
+     create_image(
+       prompt: "Create a completely new premium square 1:1 Vietnamese medical nutrition Facebook poster for GlobalPharma. Product: Nutricomp Drink Plus 200 ml, authentic bottle from reference image, purple cap, orange and strawberry-pink label accents. Clinical creative angle: high energy 300 kcal recovery nutrition for convalescence after surgery, weakness, or poor intake. Scene: realistic early morning home recovery setting, an adult Vietnamese patient recently discharged from hospital sitting comfortably by a sunlit window, taking a gentle break with caring family member nearby, hopeful, warm and dignified mood. Color palette: amber sunlight, soft cream, and restrained B. Braun medical teal. Place official GlobalPharma logo clearly in the header. Show exactly ONE authentic Nutricomp Drink Plus bottle in foreground with purple cap, no duplicate bottles. Vietnamese headline in natural capitalization: \"<TIÊU ĐỀ BÀI VIẾT VỪA TẠO Ở BƯỚC 3>\". Subline: \"300 kcal trong 200 ml • Nhỏ gọn cho người ăn uống kém\". Add three concise badges: \"1,5 kcal/ml\", \"Dạng uống tiện dụng\", \"Hỗ trợ bổ sung dinh dưỡng\". Include one rounded green CTA button with exact text \"NHẮN TIN NHẬN TƯ VẤN\". Add footer disclaimer: \"Sản phẩm dinh dưỡng y học. Không phải là thuốc và không thay thế thuốc chữa bệnh.\" No cure claims, no long dash characters, high-end realistic medical photography, sharp readable Vietnamese typography.",
+       aspect_ratio: "1:1",
+       filename_hint: "nutricomp-plus-<slug-tieu-de-bai-viet>"
+     )
+   - Sau khi công cụ create_image hoàn tất và trả về file ảnh thành phẩm, bạn mới kết thúc bài trả lời bằng dòng: MEDIA:<đường_dẫn_ảnh_vừa_tạo> để hệ thống tự động gửi ảnh poster trực tiếp vào Telegram cùng bài viết cho Sếp duyệt.
 5. Gửi toàn bộ nội dung bài viết + ảnh poster vào Telegram này để Sếp duyệt. Nhắc rõ danh sách 9 Fanpage (8 Fanpage Nutricomp + Fanpage chính công ty GlobalPharma) sẽ đăng khi Sếp bấm duyệt/xác nhận:
    - https://www.facebook.com/globalpharmavn/ (Fanpage chính công ty: Globalpharmavn - Sức Khỏe Cho Mọi Nhà - ID: 321910945365410)
    - https://www.facebook.com/nutricomp.globalpharma/
@@ -850,12 +849,14 @@ BEGIN
    - TUYỆT ĐỐI KHÔNG VIẾT HOA TOÀN BỘ CÂU HOẶC TOÀN BỘ TỪ (chỉ viết hoa chữ cái đầu câu và tên riêng).
    - TUYỆT ĐỐI KHÔNG dùng dấu thăng (#) làm tiêu đề.
 4. BẮT BUỘC THỰC SỰ THIẾT KẾ POSTER MỚI ĐỘC BẢN CHO BÀI VIẾT NÀY (TUYỆT ĐỐI CẤM GỬI LẠI ẢNH MẪU THAM CHIẾU CŨ):
-   - TUYỆT ĐỐI KHÔNG được gửi lại file ảnh tham chiếu tĩnh cũ (template_nutricomp_renal_master.png hay style_nutricomp_renal_master.jpg).
-   - Bạn BẮT BUỘC phải gọi công cụ trong lượt này để tạo poster mới:
-     + Cách 1 (Khuyên dùng): Dùng công cụ create_image(prompt: "...") để sinh ảnh bối cảnh mới độc bản cho bài viết (hệ thống sẽ tự động ghép chai Nutricomp Drink Renal nắp tím và logo GlobalPharma lên ảnh).
-     + Cách 2: Dùng công cụ exec chạy: render_poster --type renal --headline "<tiêu đề bài viết vừa tạo ở bước 3>" --subline "Dinh dưỡng chuyên biệt kiểm soát điện giải"
-       (Lưu ý: BẮT BUỘC phải truyền đúng tiêu đề bài viết vào tham số --headline để poster được in tiêu đề mới độc bản, tuyệt đối không để trống tiêu đề).
-   - Sau khi công cụ hoàn tất và trả về file ảnh thành phẩm, bạn mới kết thúc bài trả lời bằng dòng: MEDIA:<đường_dẫn_ảnh_vừa_tạo> để hệ thống tự động gửi ảnh poster trực tiếp vào Telegram cùng bài viết cho Sếp duyệt.
+   - TUYỆT ĐỐI KHÔNG gửi lại bất kỳ file ảnh mẫu hay ảnh tham chiếu tĩnh cũ nào (template_*, style_*, ref_*, master_poster_*).
+   - BẮT BUỘC DUY NHẤT 1 CÁCH: Gọi trực tiếp công cụ create_image để thiết kế và vẽ poster mới toanh độc bản 100%:
+     create_image(
+       prompt: "Create a completely new premium square 1:1 Vietnamese medical nutrition Facebook poster for GlobalPharma. Product: Nutricomp Drink Renal 200 ml, authentic bottle from reference image, PURPLE CAP (nắp tím), clinical nutrition for kidney disease and dialysis care. Scene: realistic warm morning home healthcare setting, an elderly Vietnamese kidney patient sitting comfortably with caring family member in a sunlit living room, calm, hopeful, peaceful and dignified atmosphere. Color palette: soft morning sunlight, elegant restrained B. Braun medical teal and warm cream/ivory tones. Place official GlobalPharma logo clearly in the header. Show exactly ONE authentic Nutricomp Drink Renal bottle with purple cap on the table in foreground, no duplicate bottles and nobody holding another bottle. Vietnamese typography in natural capitalization, not all caps: headline \"<TIÊU ĐỀ BÀI VIẾT VỪA TẠO Ở BƯỚC 3>\". Subline: \"400 kcal trong 200 ml • Kiểm soát đạm và điện giải\". Add three concise badges: \"2,0 kcal/ml\", \"Ít Natri - Kali - Photpho\", \"Hương vani thơm ngon\". Include one rounded green CTA button with exact text \"NHẮN TIN NHẬN TƯ VẤN\". Add a small footer disclaimer: \"Sản phẩm dinh dưỡng y học. Không phải là thuốc và không thay thế thuốc chữa bệnh.\" No cure claims, no long dash characters, high-end realistic medical photography, sharp readable Vietnamese typography.",
+       aspect_ratio: "1:1",
+       filename_hint: "nutricomp-renal-<slug-tieu-de-bai-viet>"
+     )
+   - Sau khi công cụ create_image hoàn tất và trả về file ảnh thành phẩm, bạn mới kết thúc bài trả lời bằng dòng: MEDIA:<đường_dẫn_ảnh_vừa_tạo> để hệ thống tự động gửi ảnh poster trực tiếp vào Telegram cùng bài viết cho Sếp duyệt.
 5. Gửi toàn bộ nội dung bài viết + ảnh poster vào Telegram này để Sếp duyệt. Nhắc rõ danh sách 9 Fanpage (8 Fanpage Nutricomp + Fanpage chính công ty GlobalPharma) sẽ đăng khi Sếp bấm duyệt/xác nhận:
    - https://www.facebook.com/globalpharmavn/ (Fanpage chính công ty: Globalpharmavn - Sức Khỏe Cho Mọi Nhà - ID: 321910945365410)
    - https://www.facebook.com/nutricomp.globalpharma/
@@ -921,12 +922,14 @@ BEGIN
    - TUYỆT ĐỐI KHÔNG VIẾT HOA TOÀN BỘ CÂU HOẶC TOÀN BỘ TỪ (chỉ viết hoa chữ cái đầu câu và tên riêng).
    - TUYỆT ĐỐI KHÔNG dùng dấu thăng (#) làm tiêu đề.
 4. BẮT BUỘC THỰC SỰ THIẾT KẾ POSTER MỚI ĐỘC BẢN CHO BÀI VIẾT NÀY (TUYỆT ĐỐI CẤM GỬI LẠI ẢNH MẪU THAM CHIẾU CŨ):
-   - TUYỆT ĐỐI KHÔNG được gửi lại file ảnh tham chiếu tĩnh cũ (template_prontosan_lifestyle_master.png hay style_prontosan_spray_lifestyle.png).
-   - Bạn BẮT BUỘC phải gọi công cụ trong lượt này để tạo ảnh thật:
-     + Cách 1 (Khuyên dùng): Dùng công cụ create_image(prompt: "...") để sinh ảnh bối cảnh mới độc bản cho bài viết (hệ thống sẽ tự động ghép chai xịt Prontosan và logo GlobalPharma lên ảnh - tuyệt đối không đưa chữ hay biểu tượng vết thương mạn tính vào ảnh).
-     + Cách 2: Dùng công cụ exec chạy: render_poster --type prontosan --headline "<tiêu đề bài viết vừa tạo ở bước 3>" --subline "Làm sạch  •  Rửa  •  Dưỡng ẩm"
-       (Lưu ý: BẮT BUỘC phải truyền đúng tiêu đề bài viết vào tham số --headline để poster được in tiêu đề mới, không bao giờ để trống tiêu đề).
-   - Sau khi công cụ hoàn tất và trả về file ảnh thành phẩm, bạn mới kết thúc bài trả lời bằng dòng: MEDIA:<đường_dẫn_ảnh_vừa_tạo> để hệ thống tự động gửi ảnh poster trực tiếp vào Telegram cùng bài viết cho Sếp duyệt.
+   - TUYỆT ĐỐI KHÔNG gửi lại bất kỳ file ảnh mẫu hay ảnh tham chiếu tĩnh cũ nào (template_*, style_*, ref_*, master_poster_*).
+   - BẮT BUỘC DUY NHẤT 1 CÁCH: Gọi trực tiếp công cụ create_image để thiết kế và vẽ poster mới toanh độc bản 100%:
+     create_image(
+       prompt: "Create a completely new premium square 1:1 Vietnamese medical Facebook poster for Prontosan Wound Spray by B. Braun and GlobalPharma. Creative angle: gentle cleansing for external wounds, surgical incisions or open stitches during home dressing care, without harsh rubbing. Scene: realistic clean outpatient dressing room or bright home-care medical corner, adult patient seated calmly, healthcare professional wearing gloves gently irrigating the skin around a small healing incision with sterile gauze, tasteful and non-graphic, no blood, no gore. Bright cyan and white clinical palette, soft daylight, hygienic, reassuring, premium German healthcare aesthetic. Place exactly one authentic Prontosan Spray bottle as the hero product on a sterile white tray in foreground. No additional bottle and no product held by the person. Place the official GlobalPharma logo at the header. Add subtle clean water droplets and a delicate translucent Biofilm layer lifting away as an educational visual metaphor. Vietnamese typography in natural capitalization: headline \"<TIÊU ĐỀ BÀI VIẾT VỪA TẠO Ở BƯỚC 3>\"; subline \"Rửa, làm ẩm và hỗ trợ xử lý Biofilm\"; small badge line \"Dành cho vết thương ngoài da, vết mổ và vết khâu hở\"; green rounded CTA button exactly \"NHẮN TIN NHẬN TƯ VẤN\". Absolutely do not mention or depict chronic wounds. No cure claims, no instant healing claim, no long dash typography.",
+       aspect_ratio: "1:1",
+       filename_hint: "prontosan-spray-<slug-tieu-de-bai-viet>"
+     )
+   - Sau khi công cụ create_image hoàn tất và trả về file ảnh thành phẩm, bạn mới kết thúc bài trả lời bằng dòng: MEDIA:<đường_dẫn_ảnh_vừa_tạo> để hệ thống tự động gửi ảnh poster trực tiếp vào Telegram cùng bài viết cho Sếp duyệt.
 5. Gửi toàn bộ nội dung bài viết + ảnh poster vào Telegram này để Sếp duyệt. Nhắc rõ danh sách 9 Fanpage (8 Fanpage Prontosan + Fanpage chính công ty GlobalPharma) sẽ đăng khi Sếp bấm duyệt/xác nhận:
    - https://www.facebook.com/globalpharmavn/ (Fanpage chính công ty: Globalpharmavn - Sức Khỏe Cho Mọi Nhà - ID: 321910945365410)
    - https://www.facebook.com/prontosan.globalpharma/
@@ -964,6 +967,7 @@ END $$;
 EOSQL
 
 docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw chmod -R 777 /app/workspace /app/data /app/skills /app/my-brain || true
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec -T -u 0 goclaw apk add --no-cache py3-pillow py3-requests || true
 
 echo "=== STOPPING, DISABLING AND MASKING AICOWORKER, HERMES, OPENCLAW SERVICES ==="
 for s in aicoworker hermes-gateway hermes-dashboard hermes openclaw openclaw-gateway; do
