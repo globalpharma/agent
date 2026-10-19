@@ -1,5 +1,7 @@
 # Mẫu Cấu Trúc Caption & Ad Copy Y Khoa - GlobalPharma
 
+> 🚫 QUY ĐỊNH BẮT BUỘC: TUYỆT ĐỐI KHÔNG DÙNG TỪ "DƯỢC SĨ" (hoặc "Dược Sĩ") trong các bài post, tiêu đề, thân bài, CTA, hashtag và poster. Luôn dùng "Chuyên viên tư vấn", "Chuyên gia dinh dưỡng", "Chuyên gia y tế" hoặc "GlobalPharma".
+
 Tài liệu quy chuẩn cấu trúc văn bản quảng cáo và bài viết nuôi dưỡng trang Facebook của GlobalPharma.
 
 ---
@@ -24,7 +26,7 @@ Theo các chuyên gia dinh dưỡng lâm sàng, giải pháp không nằm ở vi
 
 Dinh dưỡng đúng phác đồ là nền tảng giúp người bệnh duy trì thể trạng và an tâm đồng hành cùng gia đình.
 
-👉 Bạn đang băn khoăn về chế độ ăn cho người thân suy thận? Hãy để lại tin nhắn để Dược sĩ GlobalPharma hỗ trợ tư vấn chi tiết nhé!
+👉 Bạn đang băn khoăn về chế độ ăn cho người thân suy thận? Hãy để lại tin nhắn để Chuyên viên tư vấn GlobalPharma hỗ trợ chi tiết nhé!
 ```
 
 ---
@@ -63,7 +65,7 @@ Dinh dưỡng đúng phác đồ là nền tảng giúp người bệnh duy trì
 > **USP:** Vì mỗi chỉ số dung nạp đều quyết định sức khỏe của thận. Được nghiên cứu và sản xuất 100% tại CHLB Đức, Nutricomp® Drink Renal là lựa chọn dinh dưỡng y học tin cậy hàng đầu:  
 > • Kiểm chứng lâm sàng khắt khe theo tiêu chuẩn dược phẩm Châu Âu.  
 > • Hàng ngàn bệnh nhân lọc máu và trước lọc máu đã phục hồi thể trạng vững vàng.  
-> **CTA:** 👉 Nhận phác đồ tư vấn dinh dưỡng thận miễn phí từ Dược sĩ lâm sàng. Bấm **Nhắn tin** ngay!
+> **CTA:** 👉 Nhận phác đồ tư vấn dinh dưỡng thận miễn phí từ Chuyên viên dinh dưỡng GlobalPharma. Bấm **Nhắn tin** ngay!
 
 ---
 
@@ -77,7 +79,7 @@ Dinh dưỡng đúng phác đồ là nền tảng giúp người bệnh duy trì
 #### Angle 2: Solution (Năng lượng cao đậm đặc 1.5 kcal/ml)
 > **Hook:** Nạp đủ 300 kcal dinh dưỡng y học trong tích tắc mà không cần gắng gượng ăn nhiều bát cơm.  
 > **USP:** Nutricomp® Drink Plus cung cấp công thức đạm - béo - đường cân đối, giàu dầu cá MCT và chất chống oxy hóa, giúp vết thương mau liền, tăng cường miễn dịch tức thì.  
-> **CTA:** 👉 Liên hệ GlobalPharma để đặt mua sản phẩm chính ngạch B.Braun với sự hướng dẫn của Dược sĩ!
+> **CTA:** 👉 Liên hệ GlobalPharma để đặt mua sản phẩm chính ngạch B.Braun với sự hướng dẫn của Chuyên viên tư vấn!
 
 #### Angle 3: Social Proof (Được hàng triệu bệnh viện tin dùng)
 > **Hook:** Tiêu chuẩn dinh dưỡng lâm sàng Châu Âu đồng hành cùng bệnh nhân trong giai đoạn phục hồi quan trọng nhất.  
@@ -92,7 +94,7 @@ Dinh dưỡng đúng phác đồ là nền tảng giúp người bệnh duy trì
 #### Angle 1: Pain Point (Vết thương khó làm sạch, bám dính màng Biofilm)
 > **Hook:** Bạn có biết: Lớp màng sinh học Biofilm bám dai dẳng trên nền vết thương chính là nguyên nhân khiến việc làm sạch trở nên khó khăn?  
 > **USP:** Rửa bằng nước muối thông thường rất khó xử lý màng Biofilm này. Prontosan® Wound Spray chứa phức hợp Betaine 0,1% & PHMB 0,1% từ B.Braun Đức, hỗ trợ làm sạch êm dịu mà không cần chà xát mạnh, giúp giữ ẩm nền vết thương và tạo môi trường thuận lợi để phục hồi.  
-> **CTA:** 👉 Nhắn tin ngay để được Dược sĩ GlobalPharma hướng dẫn quy trình chăm sóc vết thương đúng chuẩn y khoa!
+> **CTA:** 👉 Nhắn tin ngay để được Chuyên viên tư vấn GlobalPharma hướng dẫn quy trình chăm sóc vết thương đúng chuẩn y khoa!
 
 #### Angle 2: Solution (Giải pháp làm sạch êm dịu không cần chà xát mạnh)
 > **Hook:** Làm sạch vết thương êm dịu hơn, hạn chế tối đa cảm giác đau xót khi chăm sóc tại nhà.  
