@@ -11,7 +11,7 @@ Tài liệu hướng dẫn và mẫu prompt chi tiết cho mô hình tạo ảnh
    - Ánh sáng tự nhiên (Natural daylight), trong trẻo, mang lại cảm giác tích cực, hy vọng và an tâm.
    - Gam màu chủ đạo: Xanh ngọc y tế (Medical Teal/Cyan của B.Braun), trắng tinh khiết, điểm xuyết màu gỗ sồi ấm áp hoặc cây xanh trong phòng.
 2. **Quy tắc về con người:**
-   - Người Việt Nam / Châu Á (Bác sĩ, dược sĩ, chuyên gia dinh dưỡng hoặc người bệnh và người thân chăm sóc).
+   - Người Việt Nam / Châu Á (Bác sĩ, chuyên gia dinh dưỡng, chuyên gia y tế hoặc người bệnh và người thân chăm sóc).
    - Nét mặt: Thấu hiểu, ấm áp, tận tụy, không gượng gạo.
 3. **Quy tắc cho Quảng Cáo (Mode 2 - Creative Ads):**
    - Luôn bố trí **Negative Space (khoảng trống sạch)** ở 1/3 góc trên hoặc 1/2 bên trái/phải để chèn Text Headline và thông điệp USP.

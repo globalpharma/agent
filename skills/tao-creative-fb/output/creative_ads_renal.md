@@ -18,7 +18,7 @@ Bệnh nhân suy thận kiêng khem khắt khe rất dễ rơi vào vòng luẩn
 • Mở nắp uống trực tiếp, thơm ngậy hương vani dễ tiêu hóa.
 
 **Lời kêu gọi hành động (Hard CTA):**
-👉 Bấm [Gửi tin nhắn] ngay để Dược sĩ lâm sàng GlobalPharma tư vấn chế độ ăn chuẩn cho người thân!
+👉 Bấm [Gửi tin nhắn] ngay để Chuyên viên dinh dưỡng GlobalPharma tư vấn chế độ ăn chuẩn cho người thân!
 
 ---
 
@@ -47,7 +47,7 @@ Nutricomp® Drink Renal Vanilla là công thức dinh dưỡng lâm sàng từ B
 Bởi vì trong bệnh thận mạn, từng ml dung dịch và từng miligram điện giải đều quyết định sự an toàn của người bệnh. Được nhập khẩu chính ngạch từ CHLB Đức bởi GlobalPharma, Nutricomp® Drink Renal đã đồng hành cùng hàng chục ngàn người bệnh tại các trung tâm thận học tuyến đầu Việt Nam, giúp phục hồi thể trạng vững vàng.
 
 **Lời kêu gọi hành động (Hard CTA):**
-👉 Nhận phác đồ tư vấn dinh dưỡng thận miễn phí từ Dược sĩ GlobalPharma – Bấm [Nhắn tin] ngay!
+👉 Nhận phác đồ tư vấn dinh dưỡng thận miễn phí từ Chuyên viên tư vấn GlobalPharma – Bấm [Nhắn tin] ngay!
 
 ---
 

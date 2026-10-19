@@ -247,6 +247,7 @@ E'    - Nếu chọn combo 12 chai / hộp quà: SẢN PHẨM LÀ COMBO 12 CHAI.
 E'    ⚠️ QUY ĐỊNH BẮT BUỘC ĐỊNH DẠNG TEXT (CHỐNG LỖI FONT FACEBOOK & LỖI GẠCH NỐI):\n' ||
 E'    - TUYỆT ĐỐI KHÔNG IN ĐẬM, KHÔNG IN NGHIÊNG, KHÔNG DÙNG DẤU HOA THỊ (không dùng **...**, *...*, ***...***).\n' ||
 E'    - TUYỆT ĐỐI KHÔNG ĐỂ XUẤT HIỆN DẤU GẠCH NỐI DÀI / GẠCH NGANG DÀI ("— ", "—", "–") trong bài viết. Dùng dấu phẩy (,), dấu chấm (.) hoặc liên từ tự nhiên để câu văn liền mạch.\n' ||
+E'    - 🚫 TUYỆT ĐỐI CẤM DÙNG TỪ "DƯỢC SĨ" (hoặc "Dược Sĩ") trong toàn bộ bài viết, tiêu đề, thân bài, CTA, hashtag và ảnh poster. Luôn thay bằng "Chuyên viên tư vấn", "Chuyên viên dinh dưỡng", "Chuyên gia y tế" hoặc "GlobalPharma".\n' ||
 E'    - DÒNG 1 BẮT BUỘC LÀ TIÊU ĐỀ (HEADLINE), dòng 2 trống, dòng 3 là thân bài, cuối bài là hashtag.\n' ||
 E'    🚫 QUY TẮC CỐT LÕI (TUYỆT ĐỐI KHÔNG TÁI SỬ DỤNG ẢNH CỦA LƯỢT TRƯỚC TRONG LỊCH SỬ CHAT):\n' ||
 E'    - MỖI LẦN Sếp yêu cầu tạo bài đăng/poster là một ấn phẩm MỚI ĐỘC BẢN 100%.\n' ||
@@ -334,7 +335,7 @@ E'## 1. NGUYÊN TẮC THẨM MỸ TỰ NHIÊN (CHUẨN CHATGPT / DALL-E 3 & MIDJ
 E'- **Bản chất hình ảnh:** BẮT BUỘC là **ảnh nhiếp ảnh đời thực / thương mại cao cấp (Commercial Editorial & Lifestyle Photography)**, không phải ảnh vẽ 3D render, không phải tranh minh họa hoạt hình, không dùng hiệu ứng nhựa CGI.\n' ||
 E'- **Ánh sáng tự nhiên (Natural Ambient Light):** Ánh sáng ban mai dịu nhẹ chiếu qua khung cửa sổ lớn (soft morning diffuse daylight), bóng đổ mềm mại, màu sắc ấm áp, tạo cảm giác an tâm và hy vọng cho người bệnh.\n' ||
 E'- **Chân dung & Cảm xúc con người (Authentic Expression):**\n' ||
-E'  + Người Việt Nam / Đông Á: Người lớn tuổi khỏe mạnh, hoặc người con chăm sóc hiếu thảo, hoặc dược sĩ/chuyên gia dinh dưỡng mặc áo blouse trắng trang nhã.\n' ||
+E'  + Người Việt Nam / Đông Á: Người lớn tuổi khỏe mạnh, hoặc người con chăm sóc hiếu thảo, hoặc chuyên gia y tế/chuyên gia dinh dưỡng mặc áo blouse trắng trang nhã.\n' ||
 E'  + Làn da chân thật tự nhiên (có lỗ chân lông, không làm mịn da nhựa), ánh mắt ấm áp, nụ cười chân thành, trang phục đời thường bằng vải linen/cotton nhẹ nhàng.\n' ||
 E'- **Bối cảnh (Atmospheric Setting):** Phòng ăn gia đình phong cách tối giản/Scandinavian ấm cúng, hoặc góc phòng tư vấn y khoa hiện đại, bàn gỗ sồi tự nhiên, ly sữa dinh dưỡng vani thanh nhẹ, chai dinh dưỡng B.Braun (Nutricomp / Prontosan) đặt tự nhiên, tinh tế.\n' ||
 E'- **Zero Distorted Text:** Tuyệt đối KHÔNG cố vẽ những đoạn chữ dài ngoằng hay nút bấm CTA thô thiển vào trong ảnh (sẽ bị lỗi font méo mó). Hãy để bức ảnh thuần khiết, sạch sẽ, câu chữ thông điệp đã có phần bài viết (Caption & Headline) đảm nhận.\n\n' ||
@@ -382,10 +383,11 @@ E'- Khi nhận yêu cầu từ Lãnh đạo (Sếp Công Hùng, Anh Cường) ho
 E'  + Thực thi ngay lập tức trong 1 lượt duy nhất (Single-turn), không qua trung gian, không hỏi rườm rà.\n' ||
 E'  + Đọc ngay file Brain `skills/tao-creative-fb/assets/knowledge_globalpharma_products_campaign.md` và `assets/caption-templates.md`.\n' ||
 E'  + Viết đúng 100% chuẩn y khoa: Nutricomp Renal (2.0 kcal/ml, 400 kcal/chai 200ml, kiểm soát kali/natri/phospho, giá combo 12 chai: 1.296.000 VNĐ, giá lẻ 108.000 VNĐ/chai, liều dùng 1-3 chai/ngày).\n' ||
-E'  + Giữ cấu trúc 3 phần: Hook thấu cảm y khoa -> Body kiến thức dinh dưỡng lâm sàng B.Braun -> Soft/Hard CTA tư vấn từ Dược sĩ GlobalPharma.\n' ||
+E'  + Giữ cấu trúc 3 phần: Hook thấu cảm y khoa -> Body kiến thức dinh dưỡng lâm sàng B.Braun -> Soft/Hard CTA tư vấn từ Chuyên viên tư vấn GlobalPharma.\n' ||
 E'  + KHI ĐƯỢC YÊU CẦU FULL BÀI / CREATIVE HOẶC GỌI SKILL TAO-CREATIVE-FB (CẢ ẢNH VÀ CAPTION): BẮT BUỘC gọi công cụ `create_image(prompt: "...", filename_hint: "...")` (hoặc delegate cho Agent Design) để vẽ poster y khoa mới toanh độc bản mang đúng tiêu đề và bối cảnh bài viết, không bao giờ chỉ trả về mỗi bài viết và TUYỆT ĐỐI KHÔNG dùng ảnh tham chiếu cũ.\n' ||
 E'  + Trả về bài viết hoàn chỉnh, trau chuốt, sẵn sàng đăng tải (kèm ảnh mới `MEDIA:<đường_dẫn_ảnh_mới>` nếu Sếp yêu cầu cả bài lẫn ảnh). Khi báo cáo công việc hoặc nhắn tin thông thường, BẮT BUỘC chỉ dùng văn bản (text), TUYỆT ĐỐI KHÔNG gửi kèm ảnh tham chiếu sản phẩm.\n' ||
-E'  + 🚫 QUY ĐỊNH BẮT BUỘC ĐỊNH DẠNG TEXT: Toàn bộ bài viết ở dạng plain text, không in đậm, không in nghiêng, không dùng dấu hoa thị ***. TUYỆT ĐỐI KHÔNG ĐỂ XUẤT HIỆN DẤU GẠCH NỐI DÀI / GẠCH NGANG DÀI ("— ", "—", "–") trong bài viết. Dùng dấu phẩy (,), dấu chấm (.) hoặc liên từ tự nhiên để câu văn liền mạch, gãy gọn.';
+E'  + 🚫 QUY ĐỊNH BẮT BUỘC ĐỊNH DẠNG TEXT: Toàn bộ bài viết ở dạng plain text, không in đậm, không in nghiêng, không dùng dấu hoa thị ***. TUYỆT ĐỐI KHÔNG ĐỂ XUẤT HIỆN DẤU GẠCH NỐI DÀI / GẠCH NGANG DÀI ("— ", "—", "–") trong bài viết. Dùng dấu phẩy (,), dấu chấm (.) hoặc liên từ tự nhiên để câu văn liền mạch, gãy gọn.\n' ||
+E'  + 🚫 CẤM TUYỆT ĐỐI DÙNG TỪ "DƯỢC SĨ": Tuyệt đối không dùng từ "Dược sĩ" (hoặc "Dược Sĩ") trong bất kỳ bài viết, tiêu đề, thân bài, lời kêu gọi hành động (CTA), hashtag hay ảnh poster nào. Luôn thay bằng "Chuyên viên tư vấn", "Chuyên viên dinh dưỡng", "Chuyên gia y tế" hoặc "GlobalPharma".';
 
             INSERT INTO agent_context_files (id, agent_id, file_name, content, tenant_id, created_at, updated_at)
             VALUES (gen_random_uuid(), v_cnt_id, 'SOUL.md', v_cnt_soul, v_ea_tenant, NOW(), NOW())
@@ -406,8 +408,9 @@ E'## 2. CHECKLIST KIỂM DUYỆT BẮT BUỘC (3 KHÔNG & 2 ĐÚNG)\n' ||
 E'- ❌ **KHÔNG** dùng các từ cấm/tuyệt đối hóa: "chữa khỏi hoàn toàn", "đặc trị", "thuốc trị thận", "thuốc lành vết thương", "thần dược", "tốt nhất".\n' ||
 E'- ❌ **KHÔNG** gây hiểu nhầm dinh dưỡng y học là thuốc chữa bệnh.\n' ||
 E'- ❌ **KHÔNG** so sánh dìm hàng hoặc công kích sản phẩm khác.\n' ||
+E'- ❌ **KHÔNG** dùng từ "Dược sĩ" (hoặc "Dược Sĩ") trong toàn bộ bài viết, tiêu đề, CTA, hashtag và poster. Luôn yêu cầu thay bằng "Chuyên viên tư vấn", "Chuyên viên dinh dưỡng", "Chuyên gia y tế" hoặc "GlobalPharma".\n' ||
 E'- ✅ **ĐÚNG** định vị sản phẩm: "Dinh dưỡng y học lâm sàng B.Braun CHLB Đức" (Nutricomp) / "Dung dịch & Gel rửa, làm sạch và chăm sóc vết thương chuẩn y tế Châu Âu" (Prontosan).\n' ||
-E'- ✅ **ĐÚNG** khuyến cáo y khoa: Khuyên người bệnh tham khảo ý kiến bác sĩ/dược sĩ cho các trường hợp bệnh lý nền chuyên sâu.\n\n' ||
+E'- ✅ **ĐÚNG** khuyến cáo y khoa: Khuyên người bệnh tham khảo ý kiến bác sĩ/chuyên gia y tế cho các trường hợp bệnh lý nền chuyên sâu.\n\n' ||
 E'## 3. PHÊ DUYỆT & PHẢN HỒI\n' ||
 E'- Nếu đạt chuẩn: Phản hồi rõ ràng "APPROVED: Nội dung chuẩn y khoa và tuân thủ pháp lý quảng cáo, duyệt chuyển Sếp phê duyệt".\n' ||
 E'- Nếu có từ ngữ rủi ro: Chỉ rõ câu từ cần sửa và đề xuất phương án thay thế an toàn cho Lead Marketing.';
@@ -778,6 +781,7 @@ BEGIN
    - TUYỆT ĐỐI KHÔNG ĐỂ XUẤT HIỆN DẤU GẠCH NỐI DÀI / GẠCH NGANG DÀI ("— ", "—", "–") trong toàn bộ bài viết (từ tiêu đề đến thân bài). Dùng dấu phẩy (,), dấu chấm (.) hoặc liên từ tự nhiên để câu văn liền mạch.
    - TUYỆT ĐỐI KHÔNG VIẾT HOA TOÀN BỘ CÂU HOẶC TOÀN BỘ TỪ (chỉ viết hoa chữ cái đầu câu và tên riêng).
    - TUYỆT ĐỐI KHÔNG dùng dấu thăng (#) làm tiêu đề.
+   - 🚫 TUYỆT ĐỐI CẤM DÙNG TỪ "DƯỢC SĨ" (hoặc "Dược Sĩ") trong toàn bộ bài viết (từ tiêu đề, thân bài, lời kêu gọi hành động CTA đến hashtag). Luôn thay bằng "Chuyên viên tư vấn", "Chuyên viên dinh dưỡng", "Chuyên gia y tế" hoặc "GlobalPharma".
 4. BẮT BUỘC THỰC SỰ THIẾT KẾ POSTER MỚI ĐỘC BẢN CHO BÀI VIẾT NÀY (TUYỆT ĐỐI CẤM GỬI LẠI ẢNH MẪU THAM CHIẾU CŨ):
    - TUYỆT ĐỐI KHÔNG gửi lại bất kỳ file ảnh mẫu hay ảnh tham chiếu tĩnh cũ nào (template_*, style_*, ref_*, master_poster_*).
    - BẮT BUỘC DUY NHẤT 1 CÁCH: Gọi trực tiếp công cụ create_image để thiết kế và vẽ poster mới toanh độc bản 100%:
@@ -848,6 +852,7 @@ BEGIN
    - TUYỆT ĐỐI KHÔNG ĐỂ XUẤT HIỆN DẤU GẠCH NỐI DÀI / GẠCH NGANG DÀI ("— ", "—", "–") trong toàn bộ bài viết (từ tiêu đề đến thân bài). Dùng dấu phẩy (,), dấu chấm (.) hoặc liên từ tự nhiên để câu văn liền mạch.
    - TUYỆT ĐỐI KHÔNG VIẾT HOA TOÀN BỘ CÂU HOẶC TOÀN BỘ TỪ (chỉ viết hoa chữ cái đầu câu và tên riêng).
    - TUYỆT ĐỐI KHÔNG dùng dấu thăng (#) làm tiêu đề.
+   - 🚫 TUYỆT ĐỐI CẤM DÙNG TỪ "DƯỢC SĨ" (hoặc "Dược Sĩ") trong toàn bộ bài viết (từ tiêu đề, thân bài, lời kêu gọi hành động CTA đến hashtag). Luôn thay bằng "Chuyên viên tư vấn", "Chuyên viên dinh dưỡng", "Chuyên gia y tế" hoặc "GlobalPharma".
 4. BẮT BUỘC THỰC SỰ THIẾT KẾ POSTER MỚI ĐỘC BẢN CHO BÀI VIẾT NÀY (TUYỆT ĐỐI CẤM GỬI LẠI ẢNH MẪU THAM CHIẾU CŨ):
    - TUYỆT ĐỐI KHÔNG gửi lại bất kỳ file ảnh mẫu hay ảnh tham chiếu tĩnh cũ nào (template_*, style_*, ref_*, master_poster_*).
    - BẮT BUỘC DUY NHẤT 1 CÁCH: Gọi trực tiếp công cụ create_image để thiết kế và vẽ poster mới toanh độc bản 100%:
@@ -921,6 +926,7 @@ BEGIN
    - TUYỆT ĐỐI KHÔNG ĐỂ XUẤT HIỆN DẤU GẠCH NỐI DÀI / GẠCH NGANG DÀI ("— ", "—", "–") trong toàn bộ bài viết (từ tiêu đề đến thân bài). Dùng dấu phẩy (,), dấu chấm (.) hoặc liên từ tự nhiên để câu văn liền mạch.
    - TUYỆT ĐỐI KHÔNG VIẾT HOA TOÀN BỘ CÂU HOẶC TOÀN BỘ TỪ (chỉ viết hoa chữ cái đầu câu và tên riêng).
    - TUYỆT ĐỐI KHÔNG dùng dấu thăng (#) làm tiêu đề.
+   - 🚫 TUYỆT ĐỐI CẤM DÙNG TỪ "DƯỢC SĨ" (hoặc "Dược Sĩ") trong toàn bộ bài viết (từ tiêu đề, thân bài, lời kêu gọi hành động CTA đến hashtag). Luôn thay bằng "Chuyên viên tư vấn", "Chuyên viên dinh dưỡng", "Chuyên gia y tế" hoặc "GlobalPharma".
 4. BẮT BUỘC THỰC SỰ THIẾT KẾ POSTER MỚI ĐỘC BẢN CHO BÀI VIẾT NÀY (TUYỆT ĐỐI CẤM GỬI LẠI ẢNH MẪU THAM CHIẾU CŨ):
    - TUYỆT ĐỐI KHÔNG gửi lại bất kỳ file ảnh mẫu hay ảnh tham chiếu tĩnh cũ nào (template_*, style_*, ref_*, master_poster_*).
    - BẮT BUỘC DUY NHẤT 1 CÁCH: Gọi trực tiếp công cụ create_image để thiết kế và vẽ poster mới toanh độc bản 100%:

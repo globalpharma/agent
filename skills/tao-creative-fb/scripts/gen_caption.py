@@ -60,7 +60,7 @@ CONTENT_REPOSITORY = {
                     "✔ Tỷ lệ điện giải (Natri, Kali, Phốt pho) thấp, giảm gánh nặng lọc cho cầu thận.\n"
                     "✔ Năng lượng cao (2.0 kcal/ml) trong thể tích chỉ 200ml, hạn chế ứ dịch phù nề."
                 ),
-                "cta": "👉 Bạn đang phân vân chế độ ăn cho người thân bệnh thận? Nhắn tin ngay để Dược sĩ GlobalPharma hướng dẫn phác đồ phù hợp nhé!"
+                "cta": "👉 Bạn đang phân vân chế độ ăn cho người thân bệnh thận? Nhắn tin ngay để Chuyên viên tư vấn GlobalPharma hướng dẫn phác đồ phù hợp nhé!"
             },
             {
                 "id": "renal_org_2",
@@ -88,7 +88,7 @@ CONTENT_REPOSITORY = {
                     "• Mở nắp uống trực tiếp, thơm ngậy hương vani dễ tiêu hóa.\n"
                     "• Combo 12 chai chính thức: 1.296.000 VNĐ (chỉ 108.000 VNĐ/chai)."
                 ),
-                "cta": "👉 Bấm [Gửi tin nhắn] ngay để Dược sĩ lâm sàng GlobalPharma tư vấn chế độ ăn chuẩn cho người thân!"
+                "cta": "👉 Bấm [Gửi tin nhắn] ngay để Chuyên viên dinh dưỡng GlobalPharma tư vấn chế độ ăn chuẩn cho người thân!"
             },
             {
                 "angle": "solution",
@@ -111,7 +111,7 @@ CONTENT_REPOSITORY = {
                     "Được nhập khẩu chính ngạch từ CHLB Đức bởi GlobalPharma, Nutricomp® Drink Renal đã đồng hành cùng hàng chục ngàn người bệnh "
                     "tại các trung tâm thận học tuyến đầu Việt Nam, giúp phục hồi thể trạng vững vàng."
                 ),
-                "cta": "👉 Nhận phác đồ tư vấn dinh dưỡng thận miễn phí từ Dược sĩ GlobalPharma – Bấm [Nhắn tin] ngay!"
+                "cta": "👉 Nhận phác đồ tư vấn dinh dưỡng thận miễn phí từ Chuyên viên tư vấn GlobalPharma – Bấm [Nhắn tin] ngay!"
             }
         ]
     },
@@ -129,7 +129,7 @@ CONTENT_REPOSITORY = {
                     "Nutricomp® Drink Plus bổ sung 300 kcal cùng 12g đạm sinh học cao và chuỗi chất béo trung tính MCT dễ hấp thu chỉ trong 200ml, "
                     "giúp người bệnh nhanh chóng đứng dậy tập đi và rút ngắn số ngày nằm viện."
                 ),
-                "cta": "👉 Để lại tin nhắn để Dược sĩ GlobalPharma tư vấn lộ trình phục hồi sau phẫu thuật chu đáo nhất!"
+                "cta": "👉 Để lại tin nhắn để Chuyên viên tư vấn GlobalPharma tư vấn lộ trình phục hồi sau phẫu thuật chu đáo nhất!"
             }
         ],
         "ads": [
@@ -151,7 +151,7 @@ CONTENT_REPOSITORY = {
                     "Nutricomp® Drink Plus là công thức cao năng lượng chuẩn Đức: Giàu dầu cá Omega-3, MCT và vi chất thiết yếu "
                     "hỗ trợ làm lành vết thương, tăng sinh hồng cầu và nâng cao miễn dịch vượt trội."
                 ),
-                "cta": "👉 Nhắn tin cho GlobalPharma để đặt mua sản phẩm chính ngạch B.Braun kèm hướng dẫn từ Dược sĩ!"
+                "cta": "👉 Nhắn tin cho GlobalPharma để đặt mua sản phẩm chính ngạch B.Braun kèm hướng dẫn từ Chuyên viên tư vấn!"
             },
             {
                 "angle": "social_proof",
@@ -190,7 +190,7 @@ CONTENT_REPOSITORY = {
                     "Nước muối sinh lý thông thường không thể loại bỏ màng Biofilm vi khuẩn. Prontosan® từ B.Braun Đức là giải pháp y khoa "
                     "chuyên biệt giúp phá tan màng Biofilm, khử mùi hôi và kiểm soát nhiễm trùng an toàn."
                 ),
-                "cta": "👉 Nhắn tin ngay để Dược sĩ GlobalPharma hướng dẫn quy trình rửa vết loét an toàn tại nhà!"
+                "cta": "👉 Nhắn tin ngay để Chuyên viên tư vấn GlobalPharma hướng dẫn quy trình rửa vết loét an toàn tại nhà!"
             },
             {
                 "angle": "solution",
@@ -210,7 +210,7 @@ CONTENT_REPOSITORY = {
                     "Prontosan® được nghiên cứu lâm sàng tại Đức và được ứng dụng rộng rãi tại các bệnh viện lớn trên toàn quốc. "
                     "Sản phẩm phân phối chính ngạch bởi GlobalPharma với sự hỗ trợ kỹ thuật tận tâm từ đội ngũ chuyên môn."
                 ),
-                "cta": "👉 Bấm [Gửi tin nhắn] ngay để nhận hướng dẫn sử dụng Prontosan đúng cách từ Dược sĩ!"
+                "cta": "👉 Bấm [Gửi tin nhắn] ngay để nhận hướng dẫn sử dụng Prontosan đúng cách từ Chuyên viên tư vấn!"
             }
         ]
     }

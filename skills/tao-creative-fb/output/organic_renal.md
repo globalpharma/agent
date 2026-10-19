@@ -20,7 +20,7 @@ Theo khuyến nghị dinh dưỡng lâm sàng Châu Âu (ESPEN), chìa khóa kh�
 ✔ Năng lượng cao (2.0 kcal/ml) trong thể tích chỉ 200ml, hạn chế ứ dịch phù nề.
 
 **Kêu gọi hành động (CTA):**
-👉 Bạn đang phân vân chế độ ăn cho người thân bệnh thận? Nhắn tin ngay để Dược sĩ GlobalPharma hướng dẫn phác đồ phù hợp nhé!
+👉 Bạn đang phân vân chế độ ăn cho người thân bệnh thận? Nhắn tin ngay để Chuyên viên tư vấn GlobalPharma hướng dẫn phác đồ phù hợp nhé!
 
 ---
 

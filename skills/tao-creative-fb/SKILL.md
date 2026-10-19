@@ -123,7 +123,8 @@ Mục tiêu: Cung cấp kiến thức chăm sóc sức khỏe, nuôi dưỡng t�
        - **TUYỆT ĐỐI KHÔNG VIẾT HOA TOÀN BỘ CÂU HAY TOÀN BỘ TỪ:** Viết hoa đúng chính tả tiếng Việt (chỉ viết hoa chữ cái đầu câu và tên riêng thương hiệu như GlobalPharma, B.Braun, Nutricomp, Prontosan). Không được viết hoa toàn bộ câu!
        - **TUYỆT ĐỐI KHÔNG dùng dấu thăng (#) làm tiêu đề.**
        - **TUYỆT ĐỐI KHÔNG ĐỂ XUẤT HIỆN DẤU GẠCH NỐI DÀI / GẠCH NGANG DÀI ("— ", "—", "–"):** Trong toàn bộ bài viết (từ tiêu đề, thân bài đến lời kết), TUYỆT ĐỐI KHÔNG dùng dấu gạch ngang dài "— " hay "—". Thay vào đó, hãy dùng dấu phẩy (,), dấu chấm (.), dấu hai chấm (:) hoặc liên từ nối tự nhiên ("để", "nhằm", "giúp") để câu văn gãy gọn, tự nhiên, chuẩn văn phong tiếng Việt.
-       - Toàn bộ bài viết phải ở dạng văn bản thường (plain text) tự nhiên, trang nhã, mạch lạc, dễ đọc.
+       - **TUYỆT ĐỐI CẤM DÙNG TỪ "DƯỢC SĨ" (hoặc "Dược Sĩ"):** Không bao giờ dùng từ "Dược sĩ" hay "Dược Sĩ" trong toàn bộ bài viết (từ tiêu đề, thân bài, lời kêu gọi hành động CTA, hashtag đến ảnh poster). Luôn thay bằng "Chuyên viên tư vấn", "Chuyên viên dinh dưỡng", "Chuyên gia y tế" hoặc "GlobalPharma".
+        - Toàn bộ bài viết phải ở dạng văn bản thường (plain text) tự nhiên, trang nhã, mạch lạc, dễ đọc.
      + **BẮT BUỘC THIẾT KẾ ẢNH MỚI THEO STYLE THAM CHIẾU (KHÔNG ĐƯỢC GỬI LẠI ẢNH CŨ VÀ KHÔNG CHỈ GỢI Ý CHỮ):**
        * **BẮT BUỘC gọi công cụ `create_image(prompt: "...", model: "gpt-5.6")` để thiết kế ảnh mới độc bản:**
          Prompt tiếng Anh 5 tầng mô tả bối cảnh nhiếp ảnh đời thực chuyên nghiệp dựa trên phong cách của ảnh tham chiếu đã duyệt:
@@ -172,7 +173,7 @@ Sinh đồng thời 3 bộ Creative theo 3 góc tiếp cận khác biệt:
 - **Ad Copy (80–150 từ):**
   - **Hook:** Gây ấn tượng trực diện với người bệnh hoặc người thân chăm sóc.
   - **USP lâm sàng:** Điểm vượt trội về công thức hoặc chứng nhận của B.Braun Đức.
-  - **Hard CTA:** Lời kêu gọi hành động dứt khoát: "Nhắn tin ngay để Dược sĩ GlobalPharma tư vấn chế độ dinh dưỡng phù hợp", "Để lại bình luận nhận tài liệu hướng dẫn".
+  - **Hard CTA:** Lời kêu gọi hành động dứt khoát: "Nhắn tin ngay để Chuyên viên tư vấn GlobalPharma hỗ trợ chế độ dinh dưỡng phù hợp", "Để lại bình luận nhận tài liệu hướng dẫn".
 
 Toàn bộ 3 cặp được lưu vào thư mục `output/creative_ads/` và hiển thị bản tổng hợp Markdown cho người dùng tải về đưa vào Ads Manager.
 
